@@ -1,0 +1,16 @@
+{
+  "name": "roland_test",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --inline --colors --progress --port 3000 --content-base src"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "raw-loader": "^0.5.1",
+    "webpack": "^2.6.1",
+    "webpack-dev-server": "^2.4.5"
+  }
+}

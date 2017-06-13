@@ -1,0 +1,38 @@
+.markov-box {
+	background-color: wheat;
+}
+
+/*
+	width = 40 and borderSize = 6
+	so total width = num elements wide * 40 + numElement wide * borderSize * 2
+
+	numElements wide * 40 = 320
+	numElement wide * borderSize * 2 = 48
+*/
+
+.markov-box_grid {
+	border: 1px solid black;
+	width: 368px;
+
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.markov-box_grid-row {
+
+}
+
+/*.markov-box_grid-element {
+	width: 80px;
+	height: 80px;
+	background-color: white;
+}
+
+.markov-box_grid-element--active {
+	background-color: darkcyan;
+}*/
+
+.markov-box_grid-element--inactive {
+	background-color: white;
+}
