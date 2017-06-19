@@ -13,21 +13,11 @@ class MidiDeviceFactory {
   }
 
   getInputByName(deviceName) {
-    return this.getInputList()
-      .find(inputDevice => inputDevice.name === deviceName);
+    return this.getInputList().find(inputDevice => inputDevice.name === deviceName);
   }
 
   getOutputByName(deviceName) {
-    return this.getOutputList()
-      .find(outputDevice => outputDevice.name === deviceName);
-  }
-
-  //TODO: remove
-  getDeviceByName(deviceName) {
-    return {
-      input: this.getInputByName(deviceName),
-      output: this.getOutputByName(deviceName)
-    };
+    return this.getOutputList().find(outputDevice => outputDevice.name === deviceName);
   }
 
 }
@@ -38,7 +28,7 @@ function buildMidiFactory () {
     return;
   }
   return navigator.requestMIDIAccess().then(
-    resolveMidiAccess => new MidiDeviceFactory(resolveMidiAccess),
+    midiAccess => new MidiDeviceFactory(midiAccess),
     error => console.error(error)
   );
 }

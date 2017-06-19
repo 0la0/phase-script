@@ -1,4 +1,5 @@
 import {MarkovStateEntity} from './markovStateEntity';
+import BaseComponent from '../_util/base-component';
 
 const COMPONENT_NAME = 'markov-state';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -6,21 +7,11 @@ const markup = require(`./${COMPONENT_NAME}.html`);
 
 const ACTIVE_CLASS = 'markov-state--active';
 
-function buildShadowDom(element, innerHTML) {
-  let shadowRoot = element.attachShadow({mode: 'open'});
-  const template = document.createElement('template');
-  template.innerHTML = innerHTML;
-  const instance = template.content.cloneNode(true);
-  shadowRoot.appendChild(instance);
-  return shadowRoot;
-}
 
-class MarkovState extends HTMLElement {
+class MarkovState extends BaseComponent {
 
   constructor() {
-    super();
-    const styleMarkup = `<style>${style}</style>${markup}`;
-    this.root = buildShadowDom(this, styleMarkup);
+    super(style, markup);
     this.element = this.root.getElementById('markov-state');
   }
 

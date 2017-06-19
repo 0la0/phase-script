@@ -2,23 +2,13 @@ const COMPONENT_NAME = 'markov-box';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
+import BaseComponent from '../_util/base-component';
 import {MarkovState} from '../markov-state/markov-state';
 
-function buildShadowDom(element, innerHTML) {
-  let shadowRoot = element.attachShadow({mode: 'open'});
-  const template = document.createElement('template');
-  template.innerHTML = innerHTML;
-  const instance = template.content.cloneNode(true);
-  shadowRoot.appendChild(instance);
-  return shadowRoot;
-}
-
-class MarkovBox extends HTMLElement {
+class MarkovBox extends BaseComponent {
 
   constructor() {
-    super();
-    const styleMarkup = `<style>${style}</style>${markup}`;
-    this.root = buildShadowDom(this, styleMarkup);
+    super(style, markup);
   }
 
   connectedCallback() {
@@ -60,8 +50,6 @@ class MarkovBox extends HTMLElement {
       setTimeout(this.loop.bind(this), 1000);
     }
   }
-
-
 
 }
 

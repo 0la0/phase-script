@@ -1,6 +1,6 @@
 //TODO: webpack aliases
-import MARKOV_BOX from './markov-box/markov-box';
-import {MARKOV_STATE} from './markov-state/markov-state';
+import MARKOV_BOX from '../markov-box/markov-box';
+import {MARKOV_STATE} from '../markov-state/markov-state';
 
 
 customElements.define(MARKOV_BOX.tag, MARKOV_BOX.elementClass);

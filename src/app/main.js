@@ -1,27 +1,23 @@
 //Util Imports
-import Http from './util/http';
+import Http from '../app/util/http';
 
-import AudioGraph from './audioGraph/audioGraph';
-import Metronome from './metronome/metronome';
-import Scheduler from './metronome/scheduler';
+import AudioGraph from '../app/audioGraph/audioGraph';
+import Metronome from '../app/metronome/metronome';
+import Scheduler from '../app/metronome/scheduler';
 
 //Midi Imports
-import buildMidiFactory from './midi/midiDeviceFactory';
+import buildMidiFactory from '../app/midi/midiDeviceFactory';
 import {
   buildMidiEventBus,
   getObjectFromMessage,
   getMessageFromObject
-} from './midi/midiEventBus';
+} from '../app/midi/midiEventBus';
 
-import buildSchedulable from './rolandTest';
-import {getMessageFromObject} from './midi/midiEventBus';
+import buildSchedulable from '../app/rolandTest';
+import {getMessageFromObject} from '../app/midi/midiEventBus';
 
-import './componentManager.js';
-
-
-
-import {aeolian} from './scale/scales';
-import ScaleHelper from './scale/scaleHelper';
+import {aeolian} from '../app/scale/scales';
+import ScaleHelper from '../app/scale/scaleHelper';
 
 let baseNote = 60;
 // const scaleHelper = new ScaleHelper(aeolian);
@@ -34,26 +30,31 @@ const metronome = new Metronome(audioGraph.getAudioContext(), scheduler);
 
 const samples = {};
 
-function init () {
+export function initMain () {
   const midiEventBus = buildMidiEventBus();
 
   buildMidiFactory()
     .then(midiDeviceFactory => {
-      const tb03 = midiDeviceFactory.getDeviceByName('TB-03');
-      const tbSchedulable = buildSchedulable(tb03);
-      scheduler.register(tbSchedulable);
-
-
-      tb03.input.onmidimessage = event => {
-        if (event.data[0] === 248) return;
-        console.log(event.data);
-      };
+      const TB_03 = 'TB-03';
+      const TB_03_INPUT = midiDeviceFactory.getInputByName(TB_03);
+      const TB_03_OUTPUT = midiDeviceFactory.getOutputByName(TB_03);
+ 
+      if (TB_03_OUTPUT) {
+        const tbSchedulable = buildSchedulable(TB_03_OUTPUT);
+        scheduler.register(tbSchedulable);
+      }
+      if (TB_03_INPUT) {
+        TB_03_INPUT.onmidimessage = event => {
+          if (event.data[0] === 248) return;
+          console.log(event.data);
+        };
+      }      
 
     })
     .catch(error => console.error(error));
 
   initMetronomeButton(metronome);
-  //initTestAudio();
+  initTestAudio();
 }
 
 const onMessage = {
@@ -86,19 +87,6 @@ function initTestAudio() {
   loadSample('hat', 'assets/audio/hat_loFi.wav');
   loadSample('snare', 'assets/audio/snare_gb03.wav');
   loadSample('kick', 'assets/audio/eKick1.wav');
-
-  //let audioBuffer;
-  // Http.getAudioBuffer('assets/audio/hat_loFi.wav')
-  //   .then(compressedBuffer => audioGraph.getAudioContext().decodeAudioData(compressedBuffer))
-  //   .then(sampleBuffer => {
-  //     audioBuffer = sampleBuffer;
-  //   })
-  //   .catch(error => console.log('error', error));
-
-
-
-
-  //bufferSource.start();
 
   const osc1 = audioGraph.getAudioContext().createOscillator();
   const osc2 = audioGraph.getAudioContext().createOscillator();
@@ -217,4 +205,4 @@ function initMetronomeButton(metronome) {
 
 }
 
-document.addEventListener('DOMContentLoaded', init);
+// document.addEventListener('DOMContentLoaded', init);

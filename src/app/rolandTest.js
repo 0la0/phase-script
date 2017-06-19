@@ -27,7 +27,7 @@ function getNextNote() {
   return someNote;
 }
 
-export default function buildSchedulable(tb03) {
+export default function buildSchedulable(tb03Output) {
 
   return {
     processTick: (tickNumber, time) => {
@@ -51,8 +51,8 @@ export default function buildSchedulable(tb03) {
         offTime += 120 * Math.random();
       }
 
-      tb03.output.send(getMessageFromObject(midiMessage), time);
-      tb03.output.send(getMessageFromObject(offMessage), offTime);
+      tb03Output.send(getMessageFromObject(midiMessage), time);
+      tb03Output.send(getMessageFromObject(offMessage), offTime);
     },
     render: (beatNumber, lastBeatNumber) => {},
     start: () => console.log('tb03 start'),
