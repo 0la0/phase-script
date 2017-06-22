@@ -65,8 +65,6 @@ export default function initTestAudio() {
 
   const audioSchedulable =  {
     processTick: (tickNumber, time) => {
-      //
-      //
       if (tickNumber % 2 === 0) {
         playSample(audioGraph.getAudioContext(), samples.hat, time.audio);
       }
