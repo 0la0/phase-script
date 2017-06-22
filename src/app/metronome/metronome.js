@@ -36,7 +36,7 @@ export default class Metronome {
   scheduler() {
     if (this.nextTickSchedule.midi < performance.now() + SCHEDULE_AHEAD_TIME) {
       const nextSchedule = 0.25 * 60.0 / this.tempo;
-      this.noteScheduler.masterScheduler(this.nextTickSchedule);
+      this.noteScheduler.processTick(this.nextTickSchedule);
 
       this.nextTickSchedule.midi += nextSchedule * 1000;
       this.nextTickSchedule.audio += nextSchedule;

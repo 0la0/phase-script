@@ -1,25 +1,37 @@
+import BaseComponent from '../_util/base-component';
+import Component from '../_util/component';
+import buildGrid from './modules/gridBuilder';
+import metronomeManager from '../../metronome/metronomeManager';
+
+import {sample} from '../../testAudio';
+
 const COMPONENT_NAME = 'markov-box';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
-
-import BaseComponent from '../_util/base-component';
-import {MarkovState} from '../markov-state/markov-state';
 
 class MarkovBox extends BaseComponent {
 
   constructor() {
     super(style, markup);
+    this.width = 4;
+    this.height = 4;
+    this.activeIndex = 5;
+    this.previousIndex = 0;
+    this.isRunning = false;
   }
 
   connectedCallback() {
-    this.width = 4;
-    this.height = 4;
     this.grid = buildGrid(this.width, this.height, this);
     this.root.appendChild(this.grid.root);
 
-    this.activeIndex = 5;
-    this.isRunning = false;
-    setTimeout(() => this.start());
+    this.grid.root.addEventListener('click', event => {
+      this.activeIndex = event.target.id;
+      console.log('activeIndex:', this.activeIndex);
+    });
+
+    const schedulable = this.buildSchedulable();
+    const scheduler = metronomeManager.getScheduler();
+    scheduler.register(schedulable);
   }
 
   disconnectedCallback() {};
@@ -35,53 +47,38 @@ class MarkovBox extends BaseComponent {
     this.isRunning = false;
   }
 
-  loop() {
+  processTick(scheduledTime) {
     const currentNode = this.grid.elementList[this.activeIndex];
-    const previousIndex = this.activeIndex;
     const nextState = currentNode.getNextState();
     const nextIndex = nextState.edge;
-    const bucket = nextState.cumulativeProbability - nextState.normalProbability;
-    
+    // const bucket = nextState.cumulativeProbability - nextState.normalProbability;
+
+    this.previousIndex = this.activeIndex;
     this.activeIndex = nextIndex;
-    this.grid.elementList[previousIndex].turnOff();
-    this.grid.elementList[this.activeIndex].turnOn();
-    
-    if (this.isRunning) {
-      setTimeout(this.loop.bind(this), 1000);
+
+    if (currentNode.isActive) {
+      sample(scheduledTime);
     }
+  }
+
+  render() {
+    this.grid.elementList[this.previousIndex].turnOff();
+    this.grid.elementList[this.activeIndex].turnOn();
+  }
+
+  buildSchedulable() {
+    return {
+      processTick: (tickNumber, time) => {
+        if (tickNumber % 4 === 0) {
+          this.processTick(time.audio);
+        }
+      },
+      render: (beatNumber, lastBeatNumber) => this.render(),
+      start: () => console.log('markov box start'),
+      stop: () => console.log('markov box stop')
+    };
   }
 
 }
 
-function buildGrid(width, height, component) {
-  const size = width * height;
-  const gridParent = document.createElement('div');
-  gridParent.classList.add('markov-box_grid');
-  const gridElementList = Array(size).fill(null)
-    .map((ele, index) => {
-      const element = document.createElement('markov-state');
-      const params = {
-        index: index,
-        width: width,
-        height: height
-      };
-      element.setAttribute('id', index);
-      element.setAttribute('params', JSON.stringify(params));
-      return element;
-    });
-
-  gridElementList.forEach(element => gridParent.appendChild(element));  
-  gridParent.addEventListener('click', event => component.activeIndex = event.target.id); 
-
-  return {
-    root: gridParent,
-    elementList: gridElementList
-  };
-}
-
-
-const MARKOV_BOX = {
-  tag: COMPONENT_NAME,
-  elementClass: MarkovBox
-};
-export default MARKOV_BOX;
+export default new Component(COMPONENT_NAME, MarkovBox);

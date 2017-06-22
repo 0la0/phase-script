@@ -19,4 +19,8 @@ export default class AudioGraph {
     return this.masterCompressor;
   }
 
+  static getInstance() {
+    return 'hello';
+  }
+
 }
