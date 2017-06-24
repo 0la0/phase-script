@@ -4,6 +4,10 @@
 	background-color: white;
 }
 
+.markov-state--ready {
+	background-color: #999999;
+}
+
 .markov-state--active {
 	background-color: darkcyan;
 }

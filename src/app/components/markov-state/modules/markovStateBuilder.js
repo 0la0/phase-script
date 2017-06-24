@@ -44,8 +44,7 @@ export function buildMarkovState(index, width, height, element, isActive) {
   element.style.setProperty('border-left', `${borderSize}px solid ${getColorFromValue(left)}`);
 
   if (isActive) {
-    // element.classList.add('markov-state--live');
-    //element.style.setProperty('background-color', '#999999');
+    element.classList.add('markov-state--ready');
   }
 
   return markovState;

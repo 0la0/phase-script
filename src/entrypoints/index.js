@@ -1,34 +1,19 @@
+import './init';
 import metronomeManager from '../app/metronome/metronomeManager';
 import buildMidiFactory from '../app/midi/midiDeviceFactory';
 import {buildMidiEventBus} from '../app/midi/midiEventBus';
 import buildSchedulable from '../app/rolandTest';
-import initTestAudio from './testAudio';
+import initTestAudio from '../app/testAudio';
+import '../app/components/_util/componentManager';
 
-
-metronomeManager.init();
-const scheduler = metronomeManager.getScheduler();
-const metronome = metronomeManager.getMetronome();
-
-
-function initMetronomeButton(metronome) {
-  const metronomeButton = document.getElementById('metronomeButton');
-  let isRunning = false;
-
-  metronomeButton.addEventListener('click', event => {
-    event.preventDefault();
-    isRunning = !isRunning;
-    if (isRunning) {
-      metronome.start();
-    }
-    else {
-      metronome.stop();
-    }
-  });
-
-}
-
+const globalStyles = require('./main.css');
 
 export function initMain () {
+
+  const entrypoint = document.getElementById('entrypoint');
+  entrypoint.innerHTML = `<style>${globalStyles}</style><app-entry></app-entry>`;
+
+
   const midiEventBus = buildMidiEventBus();
 
   buildMidiFactory()
@@ -51,9 +36,10 @@ export function initMain () {
     })
     .catch(error => console.error(error));
 
-  initMetronomeButton(metronome);
   const schedulables = initTestAudio();
 
   // scheduler.register(schedulables.synthSchedulable);
   // scheduler.register(schedulables.audioSchedulable);
 }
+
+document.addEventListener('DOMContentLoaded', initMain());

@@ -1,7 +1,7 @@
 var path = require('path');
 
 module.exports = {
-  entry: './src/app/components/entrypoint/app',
+  entry: './src/entrypoints',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')

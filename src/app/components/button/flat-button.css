@@ -1,0 +1,14 @@
+.button {
+  border: 1px solid black;
+  color: black;
+  text-align: center;
+  margin: 2px;
+  padding: 4px;
+  user-select: none;
+  cursor: pointer;
+}
+
+.button--active {
+  background-color: black;
+  color: white;
+}

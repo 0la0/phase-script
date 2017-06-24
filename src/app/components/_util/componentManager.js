@@ -1,7 +1,14 @@
 //TODO: webpack aliases
-import markovBox from '../markov-box/markov-box';
-import markovState from '../markov-state/markov-state';
+import app from '../app';
+import markovBox from '../markov-box';
+import markovState from '../markov-state';
+import button from '../button';
 
+const components = [
+  app,
+  markovBox,
+  markovState,
+  button
+];
 
-customElements.define(markovBox.tag, markovBox.element);
-customElements.define(markovState.tag, markovState.element);
+components.forEach(component => customElements.define(component.tag, component.element));

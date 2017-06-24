@@ -14,7 +14,7 @@ class MarkovState extends BaseComponent {
   constructor() {
     super(style, markup);
     this.element = this.root.getElementById('markov-state');
-    this.isActive = Math.random() < 1;
+    this.isActive = Math.random() < 0.4;
   }
 
   static get observedAttributes() {

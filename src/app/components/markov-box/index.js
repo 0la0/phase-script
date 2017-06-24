@@ -25,8 +25,9 @@ class MarkovBox extends BaseComponent {
     this.root.appendChild(this.grid.root);
 
     this.grid.root.addEventListener('click', event => {
+      this.previousIndex = this.activeIndex;
       this.activeIndex = event.target.id;
-      console.log('activeIndex:', this.activeIndex);
+      this.render();
     });
 
     const schedulable = this.buildSchedulable();
@@ -38,11 +39,6 @@ class MarkovBox extends BaseComponent {
 
   attributeChangedCallback(attribute, oldVal, newVal) {}
 
-  start() {
-    this.isRunning = true;
-    this.loop();
-  }
-
   stop() {
     this.isRunning = false;
   }
@@ -51,12 +47,12 @@ class MarkovBox extends BaseComponent {
     const currentNode = this.grid.elementList[this.activeIndex];
     const nextState = currentNode.getNextState();
     const nextIndex = nextState.edge;
-    // const bucket = nextState.cumulativeProbability - nextState.normalProbability;
+    const nextNode = this.grid.elementList[nextIndex];
 
     this.previousIndex = this.activeIndex;
     this.activeIndex = nextIndex;
 
-    if (currentNode.isActive) {
+    if (nextNode.isActive) {
       sample(scheduledTime);
     }
   }
@@ -74,8 +70,10 @@ class MarkovBox extends BaseComponent {
         }
       },
       render: (beatNumber, lastBeatNumber) => this.render(),
-      start: () => console.log('markov box start'),
-      stop: () => console.log('markov box stop')
+      start: () => {},
+      stop: () => {
+        this.grid.elementList[this.activeIndex].turnOff();
+      }
     };
   }
 

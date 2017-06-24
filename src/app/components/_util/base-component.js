@@ -12,6 +12,7 @@ export default class BaseComponent extends HTMLElement {
 
   constructor(style, markup) {
     super();
+    this.originalText = this.innerText;
     this.root = buildShadowDom(this, `<style>${style}</style>${markup}`);
   }
 
