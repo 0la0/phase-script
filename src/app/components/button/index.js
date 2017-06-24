@@ -12,6 +12,7 @@ class FlatButton extends BaseComponent {
   constructor() {
     super(style, markup);
     this.isOn = false;
+    this.isToggle = false;
     this.onClick;
     this.btnElement = this.root.getElementById('button');
     this.btnElement.innerText = this.originalText;
@@ -23,22 +24,26 @@ class FlatButton extends BaseComponent {
       const parent = this.parentNode.host;
       this.onClick = parent[functionName].bind(parent);
     }
+    if (this.hasAttribute('isToggle')) {
+      this.isToggle = true;
+    }
 
-    this.addEventListener('click', event => {
-      if (this.onClick) {
-        this.onClick()
-      }
-      this.isOn = !this.isOn;
-      this.render();
-    });
+    this.addEventListener('click', event => this.trigger(true));
   }
 
   disconnectedCallback() {};
 
   attributeChangedCallback(attribute, oldVal, newVal) {}
 
-  setState(isOn) {
-    this.isOn = isOn;
+  trigger(isFirst) {
+    if (this.onClick && isFirst) {
+      this.onClick()
+    }
+    this.isOn = !this.isOn;
+    this.render();
+    if (!this.isToggle && isFirst) {
+      setTimeout(() => this.trigger(false), 20);
+    }
   }
 
   render() {

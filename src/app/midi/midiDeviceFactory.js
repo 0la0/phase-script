@@ -1,3 +1,5 @@
+let instance;
+
 class MidiDeviceFactory {
 
   constructor(midiAccess) {
@@ -33,4 +35,15 @@ function buildMidiFactory () {
   );
 }
 
-export default buildMidiFactory;
+export default function provideMidiFactory() {
+  if (!instance) {
+    return buildMidiFactory()
+      .then(midiDeviceFactory => {
+        instance = midiDeviceFactory;
+        return instance;
+      });
+  }
+  else {
+    return Promise.resolve(instance);
+  }
+}

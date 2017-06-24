@@ -6,6 +6,8 @@ const LOOKAHEAD_TIME = 25;
 const SCHEDULE_AHEAD_TIME = 100;
 const BASE_TIME = performance.now();
 
+const MIDI_TIME_DELAY = 30;
+
 export default class Metronome {
 
   constructor(audioContext, noteScheduler) {
@@ -36,8 +38,11 @@ export default class Metronome {
   scheduler() {
     if (this.nextTickSchedule.midi < performance.now() + SCHEDULE_AHEAD_TIME) {
       const nextSchedule = 0.25 * 60.0 / this.tempo;
-      this.noteScheduler.processTick(this.nextTickSchedule);
-
+      this.noteScheduler.processTick({
+        audio: this.nextTickSchedule.audio,
+        midi: this.nextTickSchedule.midi + MIDI_TIME_DELAY
+      });
+      
       this.nextTickSchedule.midi += nextSchedule * 1000;
       this.nextTickSchedule.audio += nextSchedule;
     }
