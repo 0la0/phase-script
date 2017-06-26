@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --inline --colors --progress --port 3000 --content-base src"
+    "dev": "webpack-dev-server --inline --colors --progress --port 3000 --content-base src -d"
   },
   "author": "",
   "license": "ISC",

@@ -1,8 +1,8 @@
-import Http from '../app/util/http';
-import provideAudioGraph from '../app/audioGraph/audioGraphProvider';
+import Http from 'services/util/http';
+import provideAudioGraph from 'services/audioGraph/audioGraphProvider';
 import {mtof} from './midi/util';
-import {aeolian} from '../app/scale/scales';
-import ScaleHelper from '../app/scale/scaleHelper';
+import {aeolian} from 'services/scale/scales';
+import ScaleHelper from 'services/scale/scaleHelper';
 
 const audioGraph = provideAudioGraph();
 const samples = {};

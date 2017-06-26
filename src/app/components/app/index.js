@@ -1,7 +1,7 @@
-import BaseComponent from '../_util/base-component';
-import Component from '../_util/component';
-import '../_util/componentManager.js';
-import metronomeManager from '../../metronome/metronomeManager';
+import BaseComponent from 'components/_util/base-component';
+import Component from 'components/_util/component';
+import 'components/_util/componentManager.js';
+import metronomeManager from 'services/metronome/metronomeManager';
 
 
 const COMPONENT_NAME = 'app-entry';

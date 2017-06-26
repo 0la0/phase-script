@@ -1,6 +1,6 @@
 import {buildMarkovState} from './modules/markovStateBuilder';
-import BaseComponent from '../_util/base-component';
-import Component from '../_util/component';
+import BaseComponent from 'components/_util/base-component';
+import Component from 'components/_util/component';
 
 const COMPONENT_NAME = 'markov-state';
 const style = require(`./${COMPONENT_NAME}.css`);

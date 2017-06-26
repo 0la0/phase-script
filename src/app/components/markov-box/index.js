@@ -1,9 +1,9 @@
-import BaseComponent from '../_util/base-component';
-import Component from '../_util/component';
+import BaseComponent from 'components/_util/base-component';
+import Component from 'components/_util/component';
 import buildGrid from './modules/gridBuilder';
-import metronomeManager from '../../metronome/metronomeManager';
+import metronomeManager from 'services/metronome/metronomeManager';
 
-import {sample} from '../../testAudio';
+import {sample} from 'services/testAudio';
 
 const COMPONENT_NAME = 'markov-box';
 const style = require(`./${COMPONENT_NAME}.css`);

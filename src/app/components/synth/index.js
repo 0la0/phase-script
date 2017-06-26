@@ -1,9 +1,9 @@
-import BaseComponent from '../_util/base-component';
-import Component from '../_util/component';
-import metronomeManager from '../../metronome/metronomeManager';
-import {dorian, major, aeolian, minorPentatonic, wholeHalfDiminished} from '../../scale/scales';
-import ScaleHelper from '../../scale/scaleHelper';
-import provideEventBus from '../../EventBus/eventBusProvider';
+import BaseComponent from 'components/_util/base-component';
+import Component from 'components/_util/component';
+import metronomeManager from 'services/metronome/metronomeManager';
+import {dorian, major, aeolian, minorPentatonic, wholeHalfDiminished} from 'services/scale/scales';
+import ScaleHelper from 'services/scale/scaleHelper';
+import provideEventBus from 'services/EventBus/eventBusProvider';
 
 const COMPONENT_NAME = 'synth-driver';
 const style = require(`./${COMPONENT_NAME}.css`);

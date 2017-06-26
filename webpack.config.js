@@ -15,5 +15,11 @@ module.exports = {
         loaders: ['raw-loader']
       }
     ]
+  },
+  resolve: {
+    alias: {
+      components: path.resolve(__dirname, 'src/app/components/'),
+      services: path.resolve(__dirname, 'src/app/services/')
+    }
   }
 };

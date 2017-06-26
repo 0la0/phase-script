@@ -1,8 +1,8 @@
-import BaseComponent from '../_util/base-component';
-import Component from '../_util/component';
-import provideMidiFactory from '../../midi/midiDeviceFactory';
-import provideEventBus from '../../EventBus/eventBusProvider';
-import {getMessageFromObject} from '../../midi/midiEventBus';
+import BaseComponent from 'components/_util/base-component';
+import Component from 'components/_util/component';
+import provideMidiFactory from 'services/midi/midiDeviceFactory';
+import provideEventBus from 'services/EventBus/eventBusProvider';
+import {getMessageFromObject} from 'services/midi/midiEventBus';
 
 const COMPONENT_NAME = 'midi-manager';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -40,9 +40,7 @@ class MidiManager extends BaseComponent {
       note: message.note,
       value: message.value
     };
-
-    this.tb03.send(getMessageFromObject(midiMessage), message.time);
-
+    this.tb03 && this.tb03.send(getMessageFromObject(midiMessage), message.time);
   }
 
   onRefreshDevices() {

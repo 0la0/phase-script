@@ -1,10 +1,9 @@
-//TODO: webpack aliases
-import app from '../app';
-import markovBox from '../markov-box';
-import markovState from '../markov-state';
-import synthDriver from '../synth';
-import button from '../button';
-import midiManager from '../midi';
+import app from 'components/app';
+import markovBox from 'components/markov-box';
+import markovState from 'components/markov-state';
+import synthDriver from 'components/synth';
+import button from 'components/button';
+import midiManager from 'components/midi';
 
 const components = [
   app,
