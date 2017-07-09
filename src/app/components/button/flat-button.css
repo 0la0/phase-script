@@ -6,6 +6,7 @@
   padding: 4px;
   user-select: none;
   cursor: pointer;
+  margin: 30px;
 }
 
 .button--active {

@@ -48,10 +48,10 @@ class MidiManager extends BaseComponent {
     provideMidiFactory()
       .then(midiDeviceFactory => {
         const outputList = midiDeviceFactory.getOutputList();
-        //console.log('outputList', outputList);
+        // console.log('outputList', outputList);
         this.tb03 = outputList.find(output => output.name === INSTRUMENTS.TB03);
       })
-      .then(error => console.log('provideMidiFactory', error));
+      .catch(error => console.log('provideMidiFactory error', error));
   }
 
 }

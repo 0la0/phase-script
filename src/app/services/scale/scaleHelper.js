@@ -24,11 +24,9 @@ function getProgressiveScale(scale) {
 }
 
 function getIndexFromNormalizedScale(normalizedScale, value) {
-  const ocative = Math.floor(Math.abs(value));
   const normalValue = Math.abs(value) % 1;
   let matchingIndex = 0;
-
-  for (let i = 0; i < normalizedScale.length - 2; i++) {
+  for (let i = 0; i < normalizedScale.length - 1; i++) {
     const lowerBound = normalizedScale[i];
     const upperBound = normalizedScale[i + 1];
     if (normalValue >= lowerBound && normalValue <= upperBound) {
@@ -55,10 +53,10 @@ export default class ScaleHelper {
   }
 
   getNoteFromNormalizedValue(normalValue, baseNote) {
-    const someIndex = getIndexFromNormalizedScale(this.normalizedScale, normalValue);
+    const matchingIndex = getIndexFromNormalizedScale(this.normalizedScale, normalValue);
     const octave = Math.floor(Math.abs(normalValue));
     const direction = normalValue >= 0 ? 1 : -1;
-    return getNoteValue(this.progressiveScale, someIndex, octave, direction, baseNote);
+    return getNoteValue(this.progressiveScale, matchingIndex, octave, direction, baseNote);
   }
 
 }
