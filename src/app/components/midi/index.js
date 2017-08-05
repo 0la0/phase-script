@@ -52,7 +52,9 @@ class MidiManager extends BaseComponent {
     this.tr09 = null;
   }
 
-  connectedCallback() {}
+  connectedCallback() {
+    this.onRefreshDevices();
+  }
 
   disconnectedCallback() {};
 

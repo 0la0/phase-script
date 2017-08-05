@@ -4,10 +4,10 @@
   border: 1px solid black;
   width: 40px;
 }
-.poly-rythm__column :nth-child(2n) {
+.poly-rythm__column :nth-child(2n + 1) {
   background-color: #EEEEEE;
 }
-.poly-rythm__column :nth-child(4n) {
+.poly-rythm__column :nth-child(4n + 1) {
   background-color: #CCCCCC;
   height: 24px;
 }

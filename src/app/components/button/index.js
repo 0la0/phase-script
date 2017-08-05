@@ -52,6 +52,11 @@ class FlatButton extends BaseComponent {
       this.btnElement.classList.remove(BUTTON_ACTIVE);
   }
 
+  turnOff() {
+    this.isOn = false;
+    this.render();
+  }
+
 }
 
 export default new Component(COMPONENT_NAME, FlatButton);

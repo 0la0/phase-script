@@ -34,6 +34,7 @@ class PolyRythm extends BaseComponent {
     this.previousIndex = this.activeIndex;
     this.upperBound = this.activeIndex;
     this.outputProcessor = this.root.getElementById('message-filter');
+    this.toggleButton = this.root.getElementById('toggle-button');
   }
 
   connectedCallback() {
@@ -51,8 +52,9 @@ class PolyRythm extends BaseComponent {
     const scheduler = metronomeManager.getScheduler();
     scheduler.register(schedulable);
 
-
+    this.address = this.getAttribute('address');
     this.channel = this.getAttribute('channel');
+    this.timeOption = this.getAttribute('time');
   }
 
   disconnectedCallback() {};
@@ -61,6 +63,10 @@ class PolyRythm extends BaseComponent {
 
   stop() {
     this.isRunning = false;
+    this.isDirty = true;
+    this.gridElementList[this.previousIndex].classList.remove(ACTIVE_CELL_CLASS);
+    this.gridElementList[this.activeIndex].classList.remove(ACTIVE_CELL_CLASS);
+    this.toggleButton.turnOff();
   }
 
   processTick(scheduledTime) {
@@ -70,26 +76,18 @@ class PolyRythm extends BaseComponent {
     const isTriggered = this.activeIndex === LENGTH - 1;
     if (isTriggered) {
       const message = {
-        address: 'TR-09',
+        address: this.address,
         note: this.channel,
         scheduledTime,
-        timeOption: 'midi'
+        timeOption: this.timeOption
       };
       this.outputProcessor.processMessage(message);
     }
   }
 
   render() {
-    // console.log(this.previousIndex, this.activeIndex);
-    try {
-      this.gridElementList[this.previousIndex].classList.remove(ACTIVE_CELL_CLASS);
-      this.gridElementList[this.activeIndex].classList.add(ACTIVE_CELL_CLASS);
-    }
-    catch(error) {
-      console.log('wtf', error);
-      console.log('indices', this.previousIndex, this.activeIndex);
-    }
-
+    this.gridElementList[this.previousIndex].classList.remove(ACTIVE_CELL_CLASS);
+    this.gridElementList[this.activeIndex].classList.add(ACTIVE_CELL_CLASS);
   }
 
   buildSchedulable() {
@@ -119,15 +117,15 @@ class PolyRythm extends BaseComponent {
         this.render();
       },
       start: () => {},
-      stop: () => {
-        this.isRunning = false;
-        this.isDirty = true;
-      }
+      stop: () => this.stop()
     };
   }
 
   onToggle() {
     this.isRunning = !this.isRunning;
+    if (!this.isRunning) {
+      this.stop();
+    }
   }
 
 }

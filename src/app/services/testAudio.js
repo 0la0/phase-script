@@ -1,34 +1,11 @@
-import Http from 'services/util/http';
 import provideAudioGraph from 'services/audioGraph/audioGraphProvider';
 import {mtof} from './midi/util';
 import {aeolian} from 'services/scale/scales';
 import ScaleHelper from 'services/scale/scaleHelper';
 
 const audioGraph = provideAudioGraph();
-const samples = {};
 const synthScale = getProgressiveScale(aeolian);
 let baseNote = 60;
-
-function playSample(audioContext, audioBuffer, scheduledTime) {
-  const sampler = audioContext.createBufferSource();
-  sampler.buffer = audioBuffer;
-  //sampler.playbackRate.value = 1;
-  sampler.connect(audioGraph.getOutput());
-  sampler.start(scheduledTime);
-}
-
-export function sample(scheduledTime) {
-  playSample(audioGraph.getAudioContext(), samples.hat, scheduledTime);
-}
-
-function loadSample(sampleKey, sampleUrl) {
-  Http.getAudioBuffer(sampleUrl)
-    .then(compressedBuffer => audioGraph.getAudioContext().decodeAudioData(compressedBuffer))
-    .then(sampleBuffer => {
-      samples[sampleKey] = sampleBuffer;
-    })
-    .catch(error => console.log('error', error));
-}
 
 function getProgressiveScale(scale) {
   let runningTotal = 0;
@@ -43,9 +20,6 @@ function getProgressiveScale(scale) {
 
 export default function initTestAudio() {
   let audioBuffer;
-  loadSample('hat', 'assets/audio/hat_loFi.wav');
-  loadSample('snare', 'assets/audio/snare_gb03.wav');
-  loadSample('kick', 'assets/audio/eKick1.wav');
 
   const osc1 = audioGraph.getAudioContext().createOscillator();
   const osc2 = audioGraph.getAudioContext().createOscillator();
@@ -60,25 +34,6 @@ export default function initTestAudio() {
   osc1.connect(oscGain);
   osc2.connect(oscGain);
   oscGain.connect(audioGraph.getOutput());
-
-
-
-  const audioSchedulable =  {
-    processTick: (tickNumber, time) => {
-      if (tickNumber % 2 === 0) {
-        playSample(audioGraph.getAudioContext(), samples.hat, time.audio);
-      }
-      if (tickNumber % 4 === 0) {
-        playSample(audioGraph.getAudioContext(), samples.kick, time.audio);
-      }
-      if (tickNumber % 8 === 0) {
-        playSample(audioGraph.getAudioContext(), samples.snare, time.audio);
-      }
-    },
-    render: (beatNumber, lastBeatNumber) => {},
-    start: () => console.log('audio sampler start'),
-    stop: () => console.log('audio sampler stop')
-  };
 
   const synthSchedulable = {
     processTick: (tickNumber, time) => {
@@ -109,8 +64,7 @@ export default function initTestAudio() {
   };
 
   return {
-    synthSchedulable,
-    audioSchedulable
+    synthSchedulable
   };
 
 }
