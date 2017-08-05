@@ -8,3 +8,7 @@ html, body {
   font-family: helvetica, arial, sans-serif;
   font-size: 18px;
 }
+
+p {
+  margin: 0;
+}

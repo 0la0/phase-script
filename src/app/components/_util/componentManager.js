@@ -4,6 +4,9 @@ import markovState from 'components/markov-state';
 import synthDriver from 'components/synth';
 import button from 'components/button';
 import midiManager from 'components/midi';
+import PolyRythm from 'components/poly-rythm';
+import PolyBox from 'components/poly-box';
+import MessageFitler from 'components/message-filter';
 
 const components = [
   app,
@@ -11,7 +14,10 @@ const components = [
   markovState,
   synthDriver,
   button,
-  midiManager
+  midiManager,
+  PolyRythm,
+  PolyBox,
+  MessageFitler
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

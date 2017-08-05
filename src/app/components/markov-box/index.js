@@ -2,12 +2,15 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import buildGrid from './modules/gridBuilder';
 import metronomeManager from 'services/metronome/metronomeManager';
+import provideEventBus from 'services/EventBus/eventBusProvider';
 
 import {sample} from 'services/testAudio';
 
 const COMPONENT_NAME = 'markov-box';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
+
+const eventBus = provideEventBus();
 
 class MarkovBox extends BaseComponent {
 
@@ -53,7 +56,11 @@ class MarkovBox extends BaseComponent {
     this.activeIndex = nextIndex;
 
     if (nextNode.isActive) {
-      sample(scheduledTime);
+      // sample(scheduledTime.audio);
+      eventBus.publish({
+        address: 'TR-09',
+        time: scheduledTime.midi
+      });
     }
   }
 
@@ -64,11 +71,7 @@ class MarkovBox extends BaseComponent {
 
   buildSchedulable() {
     return {
-      processTick: (tickNumber, time) => {
-        if (tickNumber % 4 === 0) {
-          this.processTick(time.audio);
-        }
-      },
+      processTick: (tickNumber, time) => this.processTick(time),
       render: (beatNumber, lastBeatNumber) => this.render(),
       start: () => {},
       stop: () => {

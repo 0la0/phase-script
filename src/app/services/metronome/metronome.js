@@ -20,7 +20,7 @@ export default class Metronome {
     };
 
     this.lookahead = LOOKAHEAD_TIME;
-    this.tempo = 120.0;
+    this.tempo = 210.0;
     this.isRunning = false;
     this.timerWorker = new Worker(workerUrl);
 
@@ -37,14 +37,14 @@ export default class Metronome {
 
   scheduler() {
     if (this.nextTickSchedule.midi < performance.now() + SCHEDULE_AHEAD_TIME) {
-      const nextSchedule = 0.25 * 60.0 / this.tempo;
+      // const nextSchedule = 0.25 * 60.0 / this.tempo;
       this.noteScheduler.processTick({
         audio: this.nextTickSchedule.audio,
         midi: this.nextTickSchedule.midi + MIDI_TIME_DELAY
       });
-      
-      this.nextTickSchedule.midi += nextSchedule * 1000;
-      this.nextTickSchedule.audio += nextSchedule;
+
+      this.nextTickSchedule.midi += this.getTickLength() * 1000;
+      this.nextTickSchedule.audio += this.getTickLength();
     }
   }
 
@@ -73,6 +73,10 @@ export default class Metronome {
 
   getTempo() {
     return this.tempo;
+  }
+
+  getTickLength() {
+    return 0.25 * 60.0 / this.tempo;
   }
 
 }

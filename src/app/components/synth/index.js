@@ -19,7 +19,7 @@ const STEP_LENGTH = 64;
 let index = 0;
 
 const noteSequence = new NoteSequence();
-const scaleHelper = new ScaleHelper(aeolian);
+const scaleHelper = new ScaleHelper(major);
 
 
 const keyPress = {

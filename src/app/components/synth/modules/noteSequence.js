@@ -19,11 +19,10 @@ export default class NoteSequence {
   constructor() {
     this.sequence = new Map();
 
-    const valueFeed = new Array(64).fill(null)
+    let valueFeed = new Array(64).fill(null)
       .map((nullVal, index) => {
         const value = getPosNeg() * 1 * Math.random();
         const duration = Math.floor(4 + 4 * Math.random());
-        //const velocity = Math.floor(127 * Math.random());
         const velocity = 64;
         return new Note(value, duration, velocity);
       })
@@ -34,10 +33,38 @@ export default class NoteSequence {
       .filter((entry, index) => {
         const lookup = index % PROB_LENGTH;
         const isIncluded = noteFilterStrategy[lookup]();
-        // console.log(index, isIncluded);
         return isIncluded;
-      })
-      .forEach(entry => this.sequence.set(entry.startTick, entry.note));
+      });
+
+    console.log('valueFeed', valueFeed);
+    // now that all the notes have been created, recalculate the duration
+    valueFeed = valueFeed.map((entry, index, array) => {
+      const nextIndex = index >= array.length - 1 ? 0 : index + 1;
+      const nextNote = array[nextIndex];
+
+      let endTick;
+      // Three choices for duration: note ends at next note, overlap (slide), short note
+      const decision = Math.random();
+      if (decision < 0.6) {
+        // end at next note
+        endTick = nextNote.startTick;
+      }
+      else if (decision < 0.9) {
+        // overlap (slide)
+        endTick = nextNote.startTick + 1;
+      }
+      else {
+        // short
+        endTick = entry.startTick + 1;
+      }
+
+      entry.note.duration = endTick - entry.startTick;
+      console.log('duration', entry.note.duration);
+      return entry;
+    });
+
+    // set the sequence
+    valueFeed.forEach(entry => this.sequence.set(entry.startTick, entry.note));
   }
 
   getNoteByTick(tickIndex) {
