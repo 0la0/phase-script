@@ -1,22 +1,22 @@
 .poly-rythm {}
 
 .poly-rythm__column {
-  border: 1px solid black;
-  width: 40px;
+  border: 1px solid #333333;
 }
 .poly-rythm__column :nth-child(2n + 1) {
-  background-color: #EEEEEE;
+  background-color: #999999;
 }
 .poly-rythm__column :nth-child(4n + 1) {
-  background-color: #CCCCCC;
+  background-color: #AAAAAA;
   height: 24px;
 }
 
 .poly-rythm__cell {
-  border-bottom: 1px solid black;
-  height: 20px;
+  background-color: #666666;
+  border-bottom: 1px solid #666666;
+  height: 16px;
 }
 
 .poly-rythm__column .poly-rythm__cell--active {
-  background-color: rgb(50, 200, 200);
+  background-color: #7799DD;
 }

@@ -32,7 +32,7 @@
   left: 20;
   top: 0;
   height: 100%;
-  border-left: 1px dashed black;
+  border-left: 1px dashed #DDDDDD;
   content: "";
   width: 0px;
   display: block;
@@ -40,6 +40,6 @@
 
 .synth-note {
   height: 7px;
-  background-color: rgba(50, 200, 200, 0.6);
+  background-color: #7799DD;
   position: absolute;
 }

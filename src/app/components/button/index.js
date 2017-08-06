@@ -29,6 +29,9 @@ class FlatButton extends BaseComponent {
     }
 
     this.addEventListener('click', event => this.trigger(true));
+    this.onText = this.getAttribute('ontext') || '';
+    this.offText = this.getAttribute('offtext') || '';
+    this.render();
   }
 
   disconnectedCallback() {};
@@ -50,6 +53,7 @@ class FlatButton extends BaseComponent {
     this.isOn ?
       this.btnElement.classList.add(BUTTON_ACTIVE) :
       this.btnElement.classList.remove(BUTTON_ACTIVE);
+    this.btnElement.innerText = this.isOn ? this.onText : this.offText;
   }
 
   turnOff() {

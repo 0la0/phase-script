@@ -7,6 +7,7 @@ import midiManager from 'components/midi';
 import PolyRythm from 'components/poly-rythm';
 import PolyBox from 'components/poly-box';
 import MessageFitler from 'components/message-filter';
+import Metronome from 'components/metronome';
 
 const components = [
   app,
@@ -17,7 +18,8 @@ const components = [
   midiManager,
   PolyRythm,
   PolyBox,
-  MessageFitler
+  MessageFitler,
+  Metronome
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

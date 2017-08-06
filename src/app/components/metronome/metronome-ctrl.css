@@ -1,0 +1,27 @@
+:host {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.metronome-button {
+  margin: 0 20px;
+}
+
+.metronome-label {}
+
+.metronome-input {
+  height: 25px;
+  font-size: 1em;
+  margin: 0 10px;
+  width: 60px;
+  background-color: #333333;
+  border: none;
+  border-bottom: 1px solid #DDDDDD;
+  outline: none;
+  color: #DDDDDD;
+}
+.metronome-input:focus {
+  outline: none;
+}

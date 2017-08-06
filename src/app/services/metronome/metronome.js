@@ -20,7 +20,7 @@ export default class Metronome {
     };
 
     this.lookahead = LOOKAHEAD_TIME;
-    this.tempo = 210.0;
+    this.tempo = 120.0;
     this.isRunning = false;
     this.timerWorker = new Worker(workerUrl);
 
@@ -76,7 +76,7 @@ export default class Metronome {
   }
 
   getTickLength() {
-    return 0.25 * 60.0 / this.tempo;
+    return 0.125 * 60.0 / this.tempo;
   }
 
 }

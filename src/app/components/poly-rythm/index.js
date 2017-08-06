@@ -55,6 +55,7 @@ class PolyRythm extends BaseComponent {
     this.address = this.getAttribute('address');
     this.channel = this.getAttribute('channel');
     this.timeOption = this.getAttribute('time');
+    this.toggleButton.title = `${this.address}\n${this.channel}`;
   }
 
   disconnectedCallback() {};

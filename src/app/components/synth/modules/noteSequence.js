@@ -59,7 +59,6 @@ export default class NoteSequence {
       }
 
       entry.note.duration = endTick - entry.startTick;
-      console.log('duration', entry.note.duration);
       return entry;
     });
 

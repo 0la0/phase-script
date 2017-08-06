@@ -14,17 +14,6 @@ class App extends BaseComponent {
 
   constructor() {
     super(style, markup);
-    this.isRunning = false;
-  }
-
-  onMetronomeClick() {
-    this.isRunning = !this.isRunning;
-    if (this.isRunning) {
-      metronome.start();
-    }
-    else {
-      metronome.stop();
-    }
   }
 
 }
