@@ -35,15 +35,12 @@ window.onkeyup = event => {
 
 // Assume that 1 tick is 1% width
 function buildNoteVisualization(parentElement, noteSequence) {
-  const parentDims = parentElement.getBoundingClientRect();
-
   const noteList = Array.from(noteSequence.sequence);
 
-  noteList.map(entry => {
-    const [startTick, note] = entry;
+  noteList.map(note => {
     const yVal = ((note.value - 1) / -2) * 100;
     const y = `${yVal}%`;
-    const x = `${startTick}%`;
+    const x = `${note.startTick}%`;
     const width = `${note.duration}%`;
     const ele = document.createElement('div');
     ele.classList.add('synth-note');
@@ -51,9 +48,88 @@ function buildNoteVisualization(parentElement, noteSequence) {
     ele.style.setProperty('top', y);
     ele.style.setProperty('width', width);
 
-    const realVal = Math.floor(note.value * 100) / 100;
+    const rightAnchor = document.createElement('div');
+    rightAnchor.classList.add('right-anchor');
+    ele.appendChild(rightAnchor);
+
     const normalVal = note.getNormalizedNoteValue(scaleHelper, baseNote);
-    ele.innerText = normalVal;
+    const label = document.createElement('p');
+    label.innerText = normalVal;
+    ele.appendChild(label);
+
+    let isMoving = false;
+    let isDragRight = false;
+    let xBuffer = 0;
+    let yBuffer = 0;
+
+    ele.addEventListener('mousedown', $event => {
+      $event.preventDefault();
+      $event.stopPropagation();
+      isMoving = true;
+      isDragRight = false;
+      const elementBoundingBox = ele.getBoundingClientRect();
+      const x = $event.clientX - elementBoundingBox.left;
+      const y = $event.clientY - elementBoundingBox.top;
+      xBuffer = Math.round(x);
+      yBuffer = Math.round(y);
+    });
+
+    rightAnchor.addEventListener('mousedown', $event => {
+      $event.preventDefault();
+      $event.stopPropagation();
+      isMoving = false;
+      isDragRight = true;
+    });
+
+    eventBus.subscribe({
+      address: 'MOUSE_UP',
+      onNext: message => {
+        isMoving = false;
+        isDragRight = false;
+      }
+    });
+
+    eventBus.subscribe({
+      address: 'MOUSE_MOVE',
+      onNext: message => {
+        if (isMoving) {
+          const event = message.$event;
+          event.preventDefault();
+          event.stopPropagation();
+          const parentDims = parentElement.getBoundingClientRect();
+          const mouseX = event.clientX - xBuffer;
+          const mouseY = event.clientY - yBuffer;
+          const percentX = (mouseX - parentDims.left) / parentDims.width;
+          const percentY = (mouseY - parentDims.top) / parentDims.height;
+          const clampedX = Math.max(0, Math.min(1, percentX));
+          const clampedY = Math.max(0, Math.min(1, percentY));
+          const noteValue = clampedY * -2 + 1;
+          const startTick = Math.round(clampedX * 100);
+          note.value = noteValue;
+          ele.style.setProperty('top', `${clampedY * 100}%`);
+          const normalVal = note.getNormalizedNoteValue(scaleHelper, baseNote);
+          label.innerText = normalVal;
+          if (note.startTick !== startTick) {
+            note.startTick = startTick;
+            ele.style.setProperty('left', `${clampedX * 100}%`);
+          }
+        }
+        else if (isDragRight) {
+          const event = message.$event;
+          event.preventDefault();
+          event.stopPropagation();
+          const parentDims = parentElement.getBoundingClientRect();
+          const leftPosition = ele.getBoundingClientRect().left;
+          const widthInPixels = event.clientX - leftPosition;
+          const widthInPercent = widthInPixels / parentDims.width;
+          const clampedY = Math.max(0, Math.min(1, widthInPercent));
+          const noteDuration = Math.round(clampedY * 100);
+          note.duration = noteDuration;
+          ele.style.setProperty('width', `${clampedY * 100}%`);
+        }
+
+      }
+    });
     return ele;
   })
   .forEach(ele => parentElement.appendChild(ele));

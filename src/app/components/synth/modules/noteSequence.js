@@ -2,43 +2,30 @@ import Note from './note';
 
 const PROB_LENGTH = 8;
 const noteFilterStrategy = {
-  0: () => Math.random() < 0.7,
-  1: () => Math.random() < 0.05,
-  2: () => Math.random() < 0.1,
-  3: () => Math.random() < 0.2,
-  4: () => Math.random() < 0.7,
-  5: () => Math.random() < 0.1,
-  6: () => Math.random() < 0.05,
-  7: () => Math.random() < 0.05
+  0: () => Math.random() < 0.5,
+  1: () => Math.random() < 0.03,
+  2: () => Math.random() < 0.05,
+  3: () => Math.random() < 0.1,
+  4: () => Math.random() < 0.5,
+  5: () => Math.random() < 0.05,
+  6: () => Math.random() < 0.03,
+  7: () => Math.random() < 0.03
 };
 
-const getPosNeg = () => Math.random() < 0.5 ? -1 : 1;
-
-export default class NoteSequence {
-
-  constructor() {
-    this.sequence = new Map();
-
-    let valueFeed = new Array(64).fill(null)
-      .map((nullVal, index) => {
-        const value = getPosNeg() * 1 * Math.random();
-        const duration = Math.floor(4 + 4 * Math.random());
-        const velocity = 64;
-        return new Note(value, duration, velocity);
-      })
-      .map((note, index) => ({
-        note,
-        startTick: index
-      }))
-      .filter((entry, index) => {
-        const lookup = index % PROB_LENGTH;
-        const isIncluded = noteFilterStrategy[lookup]();
-        return isIncluded;
-      });
-
-    console.log('valueFeed', valueFeed);
-    // now that all the notes have been created, recalculate the duration
-    valueFeed = valueFeed.map((entry, index, array) => {
+function buildSequence(numTicks) {
+  return new Array(numTicks).fill(null)
+    .map((nullVal, index) => {
+      const value = getPosNeg() * 1 * Math.random();
+      const duration = Math.floor(4 + 4 * Math.random());
+      const velocity = 64;
+      return new Note(value, duration, velocity, index);
+    })
+    .filter((note, index) => {
+      const lookup = index % PROB_LENGTH;
+      const isIncluded = noteFilterStrategy[lookup]();
+      return isIncluded;
+    })
+    .map((note, index, array) => {
       const nextIndex = index >= array.length - 1 ? 0 : index + 1;
       const nextNote = array[nextIndex];
 
@@ -55,20 +42,25 @@ export default class NoteSequence {
       }
       else {
         // short
-        endTick = entry.startTick + 1;
+        endTick = note.startTick + 1;
       }
 
-      entry.note.duration = endTick - entry.startTick;
-      return entry;
+      note.duration = endTick - note.startTick;
+      note.startTick = note.startTick;
+      return note;
     });
+}
 
-    // set the sequence
-    valueFeed.forEach(entry => this.sequence.set(entry.startTick, entry.note));
+const getPosNeg = () => Math.random() < 0.5 ? -1 : 1;
+
+export default class NoteSequence {
+
+  constructor() {
+    this.sequence = buildSequence(64);
   }
 
   getNoteByTick(tickIndex) {
-    return this.sequence.has(tickIndex)
-      && this.sequence.get(tickIndex);
+    return this.sequence.find(note => note.startTick === tickIndex);
   }
 
 }

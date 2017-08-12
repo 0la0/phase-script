@@ -1,6 +1,7 @@
 import metronomeManager from 'services/metronome/metronomeManager';
 // import initTestAudio from 'services/testAudio';
 import {initSampler} from 'services/sampler';
+import {initListeners} from 'services/EventBus/listeners';
 
 // Logic to run immediately
 (() => {
@@ -12,4 +13,5 @@ import {initSampler} from 'services/sampler';
 // Logic to run upon DOM ready
 export default function initApp() {
   initSampler();
+  initListeners();
 }

@@ -43,3 +43,20 @@
   background-color: #7799DD;
   position: absolute;
 }
+
+.left-anchor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 6px;
+  background-color: black;
+}
+.right-anchor {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 6px;
+  background-color: black;
+}
