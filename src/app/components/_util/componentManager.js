@@ -2,6 +2,7 @@ import app from 'components/app';
 import markovBox from 'components/markov-box';
 import markovState from 'components/markov-state';
 import synthDriver from 'components/synth';
+import SynthNote from 'components/synth-note';
 import button from 'components/button';
 import midiManager from 'components/midi';
 import PolyRythm from 'components/poly-rythm';
@@ -14,6 +15,7 @@ const components = [
   markovBox,
   markovState,
   synthDriver,
+  SynthNote,
   button,
   midiManager,
   PolyRythm,
