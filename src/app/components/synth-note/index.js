@@ -36,6 +36,13 @@ class SynthNote extends BaseComponent {
     let xBuffer = 0;
     let yBuffer = 0;
 
+
+    this.ele.addEventListener('dblclick', $event => {
+      $event.preventDefault();
+      $event.stopPropagation();
+      this.onRemove(this.note, this);
+    });
+
     this.ele.addEventListener('mousedown', $event => {
       $event.preventDefault();
       $event.stopPropagation();
@@ -78,14 +85,16 @@ class SynthNote extends BaseComponent {
           const clampedX = Math.max(0, Math.min(1, percentX));
           const clampedY = Math.max(0, Math.min(1, percentY));
           const noteValue = clampedY * -2 + 1;
-          const startTick = Math.round(clampedX * 100);
+          const startTick = Math.round(clampedX * this.totalTicks);
+
           this.note.value = noteValue;
           this.ele.style.setProperty('top', `${clampedY * 100}%`);
           const normalVal = this.note.getNormalizedNoteValue(scaleHelper, getBaseNote());
           this.label.innerText = normalVal;
           if (this.note.startTick !== startTick) {
+            const x = (startTick / this.totalTicks) * 100;
             this.note.startTick = startTick;
-            this.ele.style.setProperty('left', `${clampedX * 100}%`);
+            this.ele.style.setProperty('left', `${x}%`);
           }
         }
         else if (isDragRight) {
@@ -93,13 +102,16 @@ class SynthNote extends BaseComponent {
           event.preventDefault();
           event.stopPropagation();
           const parentDims = this.parentNode.getBoundingClientRect();
-          const leftPosition = this.ele.getBoundingClientRect().left;
-          const widthInPixels = event.clientX - leftPosition;
-          const widthInPercent = widthInPixels / parentDims.width;
-          const clampedY = Math.max(0, Math.min(1, widthInPercent));
-          const noteDuration = Math.round(clampedY * 100);
-          this.note.duration = noteDuration;
-          this.ele.style.setProperty('width', `${clampedY * 100}%`);
+          const percentX = (event.clientX - parentDims.left) / parentDims.width;
+          const clampedX = Math.max(0, Math.min(1, percentX));
+          const dragTick = Math.round(clampedX * this.totalTicks);
+          const duration = dragTick - this.note.startTick;
+          if (duration > 0 && this.note.duration !== duration) {
+            const widthInPercent = duration / this.totalTicks * 100;
+            this.note.duration = duration;
+            this.ele.style.setProperty('width', `${widthInPercent}%`);
+          }
+
         }
 
       }
@@ -107,27 +119,22 @@ class SynthNote extends BaseComponent {
 
   }
 
-  setNote(note) {
+  init(note, totalTicks, onRemove) {
+    this.totalTicks = totalTicks;
     this.note = note;
+    this.onRemove = onRemove;
 
+    const startPosition = this.note.startTick / totalTicks * 100;
+    const widthInPercent = this.note.duration / totalTicks * 100;
     const yVal = ((this.note.value - 1) / -2) * 100;
-    const y = `${yVal}%`;
-    const x = `${this.note.startTick}%`;
-    const width = `${this.note.duration}%`;
 
-    this.ele.style.setProperty('left', x);
-    this.ele.style.setProperty('top', y);
-    this.ele.style.setProperty('width', width);
+    this.ele.style.setProperty('left', `${startPosition}%`);
+    this.ele.style.setProperty('top', `${yVal}%`);
+    this.ele.style.setProperty('width', `${widthInPercent}%`);
 
     const normalVal = this.note.getNormalizedNoteValue(scaleHelper, getBaseNote());
     this.label.innerText = normalVal;
   }
-
-  setValue(value) {}
-
-  setTick(tick) {}
-
-  setDurationInTicks(duration) {}
 
 }
 

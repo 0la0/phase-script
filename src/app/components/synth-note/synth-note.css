@@ -1,5 +1,5 @@
 .synth-note {
-  height: 7px;
+  height: 15px;
   background-color: #7799DD;
   position: absolute;
 }
@@ -12,7 +12,7 @@
   right: 0;
   top: 0;
   height: 100%;
-  width: 6px;
+  width: 15px;
   background-color: black;
 }
 

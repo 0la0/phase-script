@@ -37,6 +37,7 @@ export default class Scheduler {
 
   stop() {
     this.isRunning = false;
+    this.resetCounterVariables();
   }
 
   render() {

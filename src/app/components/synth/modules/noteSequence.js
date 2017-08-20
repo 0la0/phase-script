@@ -26,8 +26,9 @@ function buildSequence(numTicks) {
       return isIncluded;
     })
     .map((note, index, array) => {
-      const nextIndex = index >= array.length - 1 ? 0 : index + 1;
-      const nextNote = array[nextIndex];
+      const nextNote = index < array.length - 1 ?
+        array[index + 1] :
+        {startTick: numTicks}
 
       let endTick;
       // Three choices for duration: note ends at next note, overlap (slide), short note
@@ -44,9 +45,7 @@ function buildSequence(numTicks) {
         // short
         endTick = note.startTick + 1;
       }
-
       note.duration = endTick - note.startTick;
-      note.startTick = note.startTick;
       return note;
     });
 }
@@ -55,12 +54,16 @@ const getPosNeg = () => Math.random() < 0.5 ? -1 : 1;
 
 export default class NoteSequence {
 
-  constructor() {
-    this.sequence = buildSequence(64);
+  constructor(numTicks) {
+    this.sequence = buildSequence(numTicks);
   }
 
   getNoteByTick(tickIndex) {
     return this.sequence.find(note => note.startTick === tickIndex);
+  }
+
+  removeNote(targetNote) {
+    this.sequence = this.sequence.filter(note => note !== targetNote);
   }
 
 }

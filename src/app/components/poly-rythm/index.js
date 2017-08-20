@@ -96,7 +96,7 @@ class PolyRythm extends BaseComponent {
       processTick: (tickNumber, time) => {
 
         if (this.isRunning && this.isDirty) {
-          const tick = tickNumber % LENGTH;
+          const tick = (tickNumber + 2) % LENGTH;
           if (tick === this.nextActiveIndex) {
             this.previousIndex = this.activeIndex;
             this.activeIndex = this.nextActiveIndex;

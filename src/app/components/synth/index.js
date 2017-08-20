@@ -17,34 +17,35 @@ const eventBus = provideEventBus();
 const scaleHelper = new ScaleHelper(major);
 const STEP_LENGTH = 64;
 
-// Assume that 1 tick is 1% width
-function tempBuildNoteVisualization(parentElement, noteSequence) {
-  noteSequence.sequence
-    .map(note => {
-      const synthNoteElement = document.createElement('synth-note');
-      synthNoteElement.setNote(note);
-      return synthNoteElement;
-    })
-    .forEach(ele => parentElement.appendChild(ele));
-}
-
-
 class SynthDriver extends BaseComponent {
 
   constructor() {
     super(style, markup);
-    this.index = 0;
-    this.noteSequence = new NoteSequence();
+    this.noteSequence = new NoteSequence(STEP_LENGTH);
   }
 
   connectedCallback() {
-    const visualizerElement = this.root.getElementById('visualizer');
     const schedulable = this.buildSchedulable();
     const scheduler = metronomeManager.getScheduler();
     scheduler.register(schedulable);
 
-    tempBuildNoteVisualization(visualizerElement, this.noteSequence);
+    this.synthContainer = this.root.getElementById('visualizer');
     this.playHead = this.root.getElementById('playhead');
+
+    // build notes
+    const noteElements = this.noteSequence.sequence
+      .map(note => {
+        const synthNoteElement = document.createElement('synth-note');
+        synthNoteElement.init(note, STEP_LENGTH, this.removeNote.bind(this));
+        return synthNoteElement;
+      });
+
+    noteElements.forEach(ele => this.synthContainer.appendChild(ele));
+
+    const elementWidth = this.synthContainer.getBoundingClientRect().width;
+    const tickPercentWidth = 100 * (elementWidth / STEP_LENGTH) / elementWidth;
+    const backgroundImage = getBackgroundImage(tickPercentWidth);
+    this.synthContainer.style.setProperty('background-image', backgroundImage);
   }
 
   disconnectedCallback() {};
@@ -54,17 +55,13 @@ class SynthDriver extends BaseComponent {
   buildSchedulable() {
     return {
       processTick: (tickNumber, time) => {
-        const note = this.noteSequence.getNoteByTick(this.index++);
-        if (this.index >= STEP_LENGTH) {
-          this.index = 0;
-        }
+        const note = this.noteSequence.getNoteByTick(tickNumber % STEP_LENGTH);
         if (!note) {
           return;
         }
-
         const address = 'TB-03';
         const onTime = time.midi;
-        const offTime = onTime + note.duration * metronome.tempo; // TODO: midi vs audio?
+        const offTime = onTime + metronome.getTickLength() * note.duration * 1000
         const noteValue = note.getNormalizedNoteValue(scaleHelper, getBaseNote());
 
         // send on note signal
@@ -86,7 +83,8 @@ class SynthDriver extends BaseComponent {
 
       },
       render: (tick, lastTick) => {
-        const playHeadPosition = tick % STEP_LENGTH;
+        const relativeTick = tick % STEP_LENGTH;
+        const playHeadPosition = (relativeTick / STEP_LENGTH) * 100;
         this.playHead.style.setProperty('left', `${playHeadPosition}%`);
       },
       start: () => console.log('synth start'),
@@ -94,6 +92,31 @@ class SynthDriver extends BaseComponent {
     };
   }
 
+  removeNote(targetNote, targetElement) {
+    this.noteSequence.removeNote(targetNote);
+    this.synthContainer.removeChild(targetElement)
+  }
+
+}
+
+function getBackgroundImage(widthInPercent) {
+  const lineColor = '#CCCCCC';
+  return `
+    repeating-linear-gradient(
+      90deg,
+      ${lineColor},
+      ${lineColor}, 3px,
+      transparent 0,
+      transparent ${widthInPercent * 4}%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      ${lineColor},
+      ${lineColor}, 1px,
+      transparent 0,
+      transparent ${widthInPercent}%
+    )
+  `;
 }
 
 export default new Component(COMPONENT_NAME, SynthDriver);

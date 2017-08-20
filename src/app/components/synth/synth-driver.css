@@ -6,25 +6,9 @@
 .synth-visualizer {
   position: relative;
   height: 200px;
-  border: 1px solid black;
-
-  background-image: repeating-linear-gradient(90deg,
-      transparent,
-      transparent 1px,
-      grey 1%,
-      grey 1%
-  );
-
-}
-.synth-visualizer:after {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  height: 0px;
-  border-top: 1px dashed black;
-  content: "";
   width: 100%;
-  display: block;
+  border: 1px solid black;
+  background-size: 1 100%;
 }
 
 .synth-visualizer-playhead {
@@ -32,7 +16,7 @@
   left: 20;
   top: 0;
   height: 100%;
-  border-left: 1px dashed #DDDDDD;
+  border-left: 3px dashed #DDFFDD;
   content: "";
   width: 0px;
   display: block;
