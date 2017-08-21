@@ -9,6 +9,7 @@ import PolyRythm from 'components/poly-rythm';
 import PolyBox from 'components/poly-box';
 import MessageFitler from 'components/message-filter';
 import Metronome from 'components/metronome';
+import ScaleSelector from 'components/scale-selector';
 
 const components = [
   app,
@@ -21,7 +22,8 @@ const components = [
   PolyRythm,
   PolyBox,
   MessageFitler,
-  Metronome
+  Metronome,
+  ScaleSelector
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

@@ -1,7 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import {dorian, major, aeolian, minorPentatonic, wholeHalfDiminished} from 'services/scale/scales';
-import ScaleHelper from 'services/scale/scaleHelper';
+import scaleHelper from 'services/scale/scaleHelper';
 import {getBaseNote} from 'services/audioParams';
 import provideEventBus from 'services/EventBus/eventBusProvider';
 
@@ -10,7 +9,6 @@ const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
 const eventBus = provideEventBus();
-const scaleHelper = new ScaleHelper(major);
 
 class SynthNote extends BaseComponent {
 

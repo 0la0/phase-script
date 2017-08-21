@@ -1,8 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import metronomeManager from 'services/metronome/metronomeManager';
-import {dorian, major, aeolian, minorPentatonic, wholeHalfDiminished} from 'services/scale/scales';
-import ScaleHelper from 'services/scale/scaleHelper';
+import scaleHelper from 'services/scale/scaleHelper';
 import provideEventBus from 'services/EventBus/eventBusProvider';
 import Note from './modules/note';
 import NoteSequence from './modules/noteSequence';
@@ -15,7 +14,6 @@ const markup = require(`./${COMPONENT_NAME}.html`);
 
 const metronome = metronomeManager.getMetronome();
 const eventBus = provideEventBus();
-const scaleHelper = new ScaleHelper(major);
 const STEP_LENGTH = 64;
 
 class SynthDriver extends BaseComponent {

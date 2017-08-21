@@ -1,17 +1,20 @@
-//export const major = [2, 4, 5, 7, 9, 11, 12];
-export const major = [2, 2, 1, 2, 2, 2, 1];
-export const minor = [2, 1, 2, 2, 1, 1, 1];
-export const harmonicMinor = [2, 1, 2, 2, 1, 3, 1];
-export const melodicMinor = [2, 1, 2, 2, 2, 2, 1];
-export const dorian = [2,1,2,2,2,1,2];
-export const phrygian = [1,2,2,2,1,2,2];
-export const lydian = [2,2,2,1,2,2,1];
-export const mixolydian = [2,2,1,2,2,1,2];
-export const aeolian = [2,1,2,2,1,2,2];
-export const locrian = [1,2,2,1,2,2,2];
-export const lydianDomiant = [2,2,2,1,2,1,2];
-export const superLocrian = [1,2,1,2,2,2,2];
-export const minorPentatonic = [3,2,2,3,2];
-export const majorPentatonic = [2,2,3,2,3];
-export const wholeHalfDiminished = [2,1,2,1,2,1,2,1];
-export const halfWholeDiminished = [1,2,1,2,1,2,1,2];
+const scales = {
+  major: [2, 2, 1, 2, 2, 2, 1],
+  minor: [2, 1, 2, 2, 1, 1, 1],
+  harmonicMinor: [2, 1, 2, 2, 1, 3, 1],
+  melodicMinor: [2, 1, 2, 2, 2, 2, 1],
+  dorian: [2,1,2,2,2,1,2],
+  phrygian: [1,2,2,2,1,2,2],
+  lydian: [2,2,2,1,2,2,1],
+  mixolydian: [2,2,1,2,2,1,2],
+  aeolian: [2,1,2,2,1,2,2],
+  locrian: [1,2,2,1,2,2,2],
+  lydianDomiant: [2,2,2,1,2,1,2],
+  superLocrian: [1,2,1,2,2,2,2],
+  minorPentatonic: [3,2,2,3,2],
+  majorPentatonic: [2,2,3,2,3],
+  wholeHalfDiminished: [2,1,2,1,2,1,2,1],
+  halfWholeDiminished: [1,2,1,2,1,2,1,2],
+};
+
+export default scales;

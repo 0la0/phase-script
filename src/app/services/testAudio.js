@@ -1,10 +1,10 @@
 import provideAudioGraph from 'services/audioGraph/audioGraphProvider';
 import {mtof} from './midi/util';
-import {aeolian} from 'services/scale/scales';
+import scales from 'services/scale/scales';
 import ScaleHelper from 'services/scale/scaleHelper';
 
 const audioGraph = provideAudioGraph();
-const synthScale = getProgressiveScale(aeolian);
+const synthScale = getProgressiveScale(scales.aeolian);
 let baseNote = 60;
 
 function getProgressiveScale(scale) {

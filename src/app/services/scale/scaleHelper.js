@@ -45,11 +45,11 @@ function getNoteValue(progressiveScale, index, octave, direction, baseNote) {
   return note;
 }
 
-export default class ScaleHelper {
+class ScaleHelper {
 
-  constructor(inputScale) {
-    this.normalizedScale = getNormalizedScale(inputScale);
-    this.progressiveScale = getProgressiveScale(inputScale);
+  setScale(scale) {
+    this.normalizedScale = getNormalizedScale(scale);
+    this.progressiveScale = getProgressiveScale(scale);
   }
 
   getNoteFromNormalizedValue(normalValue, baseNote) {
@@ -60,3 +60,6 @@ export default class ScaleHelper {
   }
 
 }
+
+const scaleHelper = new ScaleHelper();
+export default scaleHelper;
