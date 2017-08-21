@@ -62,6 +62,10 @@ export default class NoteSequence {
     return this.sequence.find(note => note.startTick === tickIndex);
   }
 
+  addNote(note) {
+    this.sequence.push(note);
+  }
+
   removeNote(targetNote) {
     this.sequence = this.sequence.filter(note => note !== targetNote);
   }

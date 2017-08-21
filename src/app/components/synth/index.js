@@ -4,6 +4,7 @@ import metronomeManager from 'services/metronome/metronomeManager';
 import {dorian, major, aeolian, minorPentatonic, wholeHalfDiminished} from 'services/scale/scales';
 import ScaleHelper from 'services/scale/scaleHelper';
 import provideEventBus from 'services/EventBus/eventBusProvider';
+import Note from './modules/note';
 import NoteSequence from './modules/noteSequence';
 import metronomeManager from 'services/metronome/metronomeManager';
 import {getBaseNote} from 'services/audioParams';
@@ -46,6 +47,21 @@ class SynthDriver extends BaseComponent {
     const tickPercentWidth = 100 * (elementWidth / STEP_LENGTH) / elementWidth;
     const backgroundImage = getBackgroundImage(tickPercentWidth);
     this.synthContainer.style.setProperty('background-image', backgroundImage);
+
+    this.synthContainer.addEventListener('dblclick', $event => {
+      $event.preventDefault();
+      $event.stopPropagation();
+      const boundingBox = this.synthContainer.getBoundingClientRect();
+      const percentX = $event.clientX / boundingBox.width;
+      const startTick = Math.round(percentX * STEP_LENGTH) - 2;
+      const percentY = ($event.clientY - boundingBox.top) / boundingBox.height;
+      const noteValue = percentY * -2 + 1;
+      const note = new Note(noteValue, 4, 12, startTick);
+      const synthNoteElement = document.createElement('synth-note');
+      synthNoteElement.init(note, STEP_LENGTH, this.removeNote.bind(this));
+      this.synthContainer.appendChild(synthNoteElement);
+      this.noteSequence.addNote(note);
+    });
   }
 
   disconnectedCallback() {};
