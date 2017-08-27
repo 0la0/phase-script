@@ -20,7 +20,7 @@ class SynthDriver extends BaseComponent {
 
   constructor() {
     super(style, markup);
-    this.noteSequence = new NoteSequence(STEP_LENGTH);
+    this.noteSequence = new NoteSequence(0);
   }
 
   connectedCallback() {
@@ -29,17 +29,11 @@ class SynthDriver extends BaseComponent {
     scheduler.register(schedulable);
 
     this.synthContainer = this.root.getElementById('visualizer');
+    this.noteContainer = this.root.getElementById('noteContainer');
     this.playHead = this.root.getElementById('playhead');
-
-    // build notes
-    const noteElements = this.noteSequence.sequence
-      .map(note => {
-        const synthNoteElement = document.createElement('synth-note');
-        synthNoteElement.init(note, STEP_LENGTH, this.removeNote.bind(this));
-        return synthNoteElement;
-      });
-
-    noteElements.forEach(ele => this.synthContainer.appendChild(ele));
+    this.clearButton = this.root.getElementById('clearButton');
+    this.genRandomButton = this.root.getElementById('randomButton');
+    this.buildNotes();
 
     const elementWidth = this.synthContainer.getBoundingClientRect().width;
     const tickPercentWidth = 100 * (elementWidth / STEP_LENGTH) / elementWidth;
@@ -60,11 +54,37 @@ class SynthDriver extends BaseComponent {
       this.synthContainer.appendChild(synthNoteElement);
       this.noteSequence.addNote(note);
     });
+
+    this.clearButton.addEventListener('click', $event => {
+      this.noteSequence = new NoteSequence(0);
+      this.clearNotes();
+      this.buildNotes();
+    });
+    this.genRandomButton.addEventListener('click', $event => {
+      this.noteSequence = new NoteSequence(STEP_LENGTH);
+      this.clearNotes();
+      this.buildNotes();
+    });
   }
 
   disconnectedCallback() {};
 
   attributeChangedCallback(attribute, oldVal, newVal) {}
+
+  clearNotes() {
+    [...this.noteContainer.children]
+      .forEach(ele => this.noteContainer.removeChild(ele));
+  }
+
+  buildNotes() {
+    this.noteSequence.sequence
+      .map(note => {
+        const synthNoteElement = document.createElement('synth-note');
+        synthNoteElement.init(note, STEP_LENGTH, this.removeNote.bind(this));
+        return synthNoteElement;
+      })
+      .forEach(ele => this.noteContainer.appendChild(ele));
+  }
 
   buildSchedulable() {
     return {
