@@ -10,6 +10,8 @@ import PolyBox from 'components/poly-box';
 import MessageFitler from 'components/message-filter';
 import Metronome from 'components/metronome';
 import ScaleSelector from 'components/scale-selector';
+import RouterOutlet from 'components/router';
+import GraphicsRoot from 'components/graphics';
 
 const components = [
   app,
@@ -23,7 +25,9 @@ const components = [
   PolyBox,
   MessageFitler,
   Metronome,
-  ScaleSelector
+  ScaleSelector,
+  RouterOutlet,
+  GraphicsRoot
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

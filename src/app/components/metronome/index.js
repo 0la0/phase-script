@@ -32,6 +32,19 @@ class Metronome extends BaseComponent {
       $event.stopPropagation();
       this.metronomeButton.trigger(true);
     });
+
+    this.graphicsChannel = new BroadcastChannel('GRAPHICS_CHANNEL');
+
+    const schedulable = {
+      processTick: (tickNumber, time) => {},
+      render: (beatNumber, lastBeatNumber) => {
+        this.graphicsChannel.postMessage({beatNumber, lastBeatNumber});
+      },
+      start: () => {},
+      stop: () => {}
+    };
+    const scheduler = metronomeManager.getScheduler();
+    scheduler.register(schedulable);
   }
 
   onMetronomeClick() {
@@ -43,6 +56,10 @@ class Metronome extends BaseComponent {
       metronome.stop();
     }
   }
+
+  disconnectedCallback() {
+    metronome.stop();
+  };
 
 }
 

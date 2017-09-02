@@ -1,7 +1,22 @@
-<metronome-ctrl></metronome-ctrl>
-<scale-selector></scale-selector>
-<!-- <poly-rythm channel="hello"></poly-rythm> -->
-<poly-box></poly-box>
-<!-- <markov-box></markov-box> -->
-<synth-driver></synth-driver>
-<midi-manager></midi-manager>
+<router-outlet route="/">
+  <p onclicktoroute="/sound">
+    Sound
+  </p>
+  <p onclicktoroute="/graphics">
+    Graphics
+  </p>
+</router-outlet>
+
+<router-outlet route="/sound">
+  <metronome-ctrl></metronome-ctrl>
+  <scale-selector></scale-selector>
+  <!-- <poly-rythm channel="hello"></poly-rythm> -->
+  <poly-box></poly-box>
+  <!-- <markov-box></markov-box> -->
+  <synth-driver></synth-driver>
+  <midi-manager></midi-manager>
+</router-outlet>
+
+<router-outlet route="/graphics">
+  <graphics-root></graphics-root>
+</router-outlet>
