@@ -8,7 +8,7 @@ import NoteSequence from './modules/noteSequence';
 import metronomeManager from 'services/metronome/metronomeManager';
 import {getBaseNote} from 'services/audioParams';
 
-const COMPONENT_NAME = 'synth-driver';
+const COMPONENT_NAME = 'sequence-driver';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
@@ -16,7 +16,7 @@ const metronome = metronomeManager.getMetronome();
 const eventBus = provideEventBus();
 const STEP_LENGTH = 64;
 
-class SynthDriver extends BaseComponent {
+class Sequencer extends BaseComponent {
 
   constructor() {
     super(style, markup);
@@ -93,28 +93,8 @@ class SynthDriver extends BaseComponent {
         if (!note) {
           return;
         }
-        const address = 'TB-03';
-        const onTime = time.midi;
-        const offTime = onTime + metronome.getTickLength() * note.duration * 1000
-        const noteValue = note.getNormalizedNoteValue(scaleHelper, getBaseNote());
-
-        // send on note signal
-        eventBus.publish({
-          address,
-          note: noteValue,
-          value: note.velocity,
-          isOn: true,
-          time: onTime
-        });
-        // send off note signal
-        eventBus.publish({
-          address,
-          note: noteValue,
-          value: note.velocity,
-          isOn: false,
-          time: offTime
-        });
-
+        // this.publishToMidi(note, tickNumber, time);
+        this.publishToAudio(note, tickNumber, time);
       },
       render: (tick, lastTick) => {
         const relativeTick = tick % STEP_LENGTH;
@@ -129,6 +109,46 @@ class SynthDriver extends BaseComponent {
   removeNote(targetNote, targetElement) {
     this.noteSequence.removeNote(targetNote);
     this.synthContainer.removeChild(targetElement)
+  }
+
+  publishToMidi(note, tickNumber, time) {
+    const address = 'TB-03';
+    const onTime = time.midi;
+    const offTime = onTime + metronome.getTickLength() * note.duration * 1000;
+    const noteValue = note.getNormalizedNoteValue(scaleHelper, getBaseNote());
+
+    // send on note signal
+    eventBus.publish({
+      address,
+      note: noteValue,
+      value: note.velocity,
+      isOn: true,
+      time: onTime
+    });
+    // send off note signal
+    eventBus.publish({
+      address,
+      note: noteValue,
+      value: note.velocity,
+      isOn: false,
+      time: offTime
+    });
+  }
+
+  publishToAudio(note, tickNumber, time) {
+    const address = 'SYNTH';
+    const onTime = time.audio;
+    const offTime = onTime + metronome.getTickLength() * note.duration;
+    const noteValue = note.getNormalizedNoteValue(scaleHelper, getBaseNote());
+
+    // send on note signal
+    eventBus.publish({
+      address,
+      note: noteValue,
+      value: note.velocity,
+      onTime,
+      offTime
+    });
   }
 
 }
@@ -153,4 +173,4 @@ function getBackgroundImage(widthInPercent) {
   `;
 }
 
-export default new Component(COMPONENT_NAME, SynthDriver);
+export default new Component(COMPONENT_NAME, Sequencer);

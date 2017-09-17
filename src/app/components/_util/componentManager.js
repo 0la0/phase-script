@@ -1,7 +1,7 @@
 import app from 'components/app';
 import markovBox from 'components/markov-box';
 import markovState from 'components/markov-state';
-import synthDriver from 'components/synth';
+import Sequencer from 'components/sequencer';
 import SynthNote from 'components/synth-note';
 import button from 'components/button';
 import midiManager from 'components/midi';
@@ -12,12 +12,13 @@ import Metronome from 'components/metronome';
 import ScaleSelector from 'components/scale-selector';
 import RouterOutlet from 'components/router';
 import GraphicsRoot from 'components/graphics';
+import OscSynth from 'components/osc-synth';
 
 const components = [
   app,
   markovBox,
   markovState,
-  synthDriver,
+  Sequencer,
   SynthNote,
   button,
   midiManager,
@@ -27,7 +28,8 @@ const components = [
   Metronome,
   ScaleSelector,
   RouterOutlet,
-  GraphicsRoot
+  GraphicsRoot,
+  OscSynth
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));
