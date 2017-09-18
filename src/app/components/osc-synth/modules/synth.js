@@ -26,7 +26,7 @@ export default class Synth {
 
   playFrequency(frequency, onTime, offTime) {
     this.oscillators.forEach(oscillator => {
-      this.osc1.frequency.value = frequency;
+      oscillator.frequency.value = frequency;
       oscillator.start(onTime);
       oscillator.stop(offTime);
     });

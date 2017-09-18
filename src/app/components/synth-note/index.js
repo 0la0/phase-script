@@ -1,7 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import scaleHelper from 'services/scale/scaleHelper';
-import {getBaseNote} from 'services/audioParams';
 import provideEventBus from 'services/EventBus/eventBusProvider';
 
 const COMPONENT_NAME = 'synth-note';
@@ -87,7 +86,7 @@ class SynthNote extends BaseComponent {
 
           this.note.value = noteValue;
           this.ele.style.setProperty('top', `${clampedY * 100}%`);
-          const normalVal = this.note.getNormalizedNoteValue(scaleHelper, getBaseNote());
+          const normalVal = this.note.getNormalizedNoteValue(scaleHelper, this.getBaseNote());
           this.label.innerText = normalVal;
           if (this.note.startTick !== startTick) {
             const x = (startTick / this.totalTicks) * 100;
@@ -117,10 +116,11 @@ class SynthNote extends BaseComponent {
 
   }
 
-  init(note, totalTicks, onRemove) {
+  init(note, totalTicks, onRemove, getBaseNote) {
     this.totalTicks = totalTicks;
     this.note = note;
     this.onRemove = onRemove;
+    this.getBaseNote = getBaseNote;
 
     const startPosition = this.note.startTick / totalTicks * 100;
     const widthInPercent = this.note.duration / totalTicks * 100;
@@ -130,7 +130,7 @@ class SynthNote extends BaseComponent {
     this.ele.style.setProperty('top', `${yVal}%`);
     this.ele.style.setProperty('width', `${widthInPercent}%`);
 
-    const normalVal = this.note.getNormalizedNoteValue(scaleHelper, getBaseNote());
+    const normalVal = this.note.getNormalizedNoteValue(scaleHelper, this.getBaseNote());
     this.label.innerText = normalVal;
   }
 

@@ -6,7 +6,6 @@ import provideEventBus from 'services/EventBus/eventBusProvider';
 import Note from './modules/note';
 import NoteSequence from './modules/noteSequence';
 import metronomeManager from 'services/metronome/metronomeManager';
-import {getBaseNote} from 'services/audioParams';
 
 const COMPONENT_NAME = 'sequence-driver';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -33,6 +32,7 @@ class Sequencer extends BaseComponent {
     this.playHead = this.root.getElementById('playhead');
     this.clearButton = this.root.getElementById('clearButton');
     this.genRandomButton = this.root.getElementById('randomButton');
+    this.baseNoteInput = this.root.getElementById('base-note-input');
     this.buildNotes();
 
     const elementWidth = this.synthContainer.getBoundingClientRect().width;
@@ -50,7 +50,7 @@ class Sequencer extends BaseComponent {
       const noteValue = percentY * -2 + 1;
       const note = new Note(noteValue, 4, 12, startTick);
       const synthNoteElement = document.createElement('synth-note');
-      synthNoteElement.init(note, STEP_LENGTH, this.removeNote.bind(this));
+      synthNoteElement.init(note, STEP_LENGTH, this.removeNote.bind(this), this.getBaseNote.bind(this));
       this.synthContainer.appendChild(synthNoteElement);
       this.noteSequence.addNote(note);
     });
@@ -80,7 +80,7 @@ class Sequencer extends BaseComponent {
     this.noteSequence.sequence
       .map(note => {
         const synthNoteElement = document.createElement('synth-note');
-        synthNoteElement.init(note, STEP_LENGTH, this.removeNote.bind(this));
+        synthNoteElement.init(note, STEP_LENGTH, this.removeNote.bind(this), this.getBaseNote.bind(this));
         return synthNoteElement;
       })
       .forEach(ele => this.noteContainer.appendChild(ele));
@@ -107,15 +107,17 @@ class Sequencer extends BaseComponent {
   }
 
   removeNote(targetNote, targetElement) {
+    console.log('remove parent child', this.synthContainer, targetElement);
     this.noteSequence.removeNote(targetNote);
-    this.synthContainer.removeChild(targetElement)
+    // this.synthContainer.removeChild(targetElement)
+    this.noteContainer.removeChild(targetElement);
   }
 
   publishToMidi(note, tickNumber, time) {
     const address = 'TB-03';
     const onTime = time.midi;
     const offTime = onTime + metronome.getTickLength() * note.duration * 1000;
-    const noteValue = note.getNormalizedNoteValue(scaleHelper, getBaseNote());
+    const noteValue = note.getNormalizedNoteValue(scaleHelper, this.getBaseNote());
 
     // send on note signal
     eventBus.publish({
@@ -139,7 +141,7 @@ class Sequencer extends BaseComponent {
     const address = 'SYNTH';
     const onTime = time.audio;
     const offTime = onTime + metronome.getTickLength() * note.duration;
-    const noteValue = note.getNormalizedNoteValue(scaleHelper, getBaseNote());
+    const noteValue = note.getNormalizedNoteValue(scaleHelper, parseInt(this.baseNoteInput.value));
 
     // send on note signal
     eventBus.publish({
@@ -149,6 +151,10 @@ class Sequencer extends BaseComponent {
       onTime,
       offTime
     });
+  }
+
+  getBaseNote() {
+    return parseInt(this.baseNoteInput.value);
   }
 
 }

@@ -1,6 +1,9 @@
 .synth {
   border: 1px solid black;
   margin: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
 }
 
 .synth-visualizer {
@@ -27,9 +30,32 @@
   display: block;
 }
 
+.base-note {
+
+}
+
 button {
   border: none;
   padding: 0;
   background: none;
   color: #DDDDDD;
+}
+
+.base-note-label {
+  font-size: 0.7em;
+}
+
+.base-note-input {
+  height: 25px;
+  font-size: 0.7em;
+  margin: 0 10px;
+  width: 60px;
+  background-color: #333333;
+  border: none;
+  border-bottom: 1px solid #DDDDDD;
+  outline: none;
+  color: #DDDDDD;
+}
+.base-note-input:focus {
+  outline: none;
 }
