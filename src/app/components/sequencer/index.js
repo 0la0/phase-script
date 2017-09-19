@@ -107,9 +107,7 @@ class Sequencer extends BaseComponent {
   }
 
   removeNote(targetNote, targetElement) {
-    console.log('remove parent child', this.synthContainer, targetElement);
     this.noteSequence.removeNote(targetNote);
-    // this.synthContainer.removeChild(targetElement)
     this.noteContainer.removeChild(targetElement);
   }
 

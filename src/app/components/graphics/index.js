@@ -17,6 +17,14 @@ function getPosNeg() {
   return Math.random() < 0.5 ? -1 : 1;
 }
 
+function getRandomVector() {
+  return new THREE.Vector3(
+    getPosNeg() * Math.random(),
+    getPosNeg() * Math.random(),
+    getPosNeg() * Math.random()
+  );
+}
+
 class Vertex {
 
   constructor() {
@@ -24,21 +32,25 @@ class Vertex {
     const material = new THREE.LineBasicMaterial({
        color: 0xCCCCCC
     });
-    // this.dynamic = true;
     this.mesh = new THREE.Mesh(geometry, material);
     this.reset();
   }
 
   reset() {
-    this.mesh.position.set(
-      50 * Math.random() - 25,
-      50 * Math.random() - 25,
-      -50 * Math.random()
+    const centroid = this.goal = new THREE.Vector3(
+      150 * getPosNeg() * Math.random(),
+      150 * getPosNeg() * Math.random(),
+     -300 * Math.random()
+    );
+    this.goal = new THREE.Vector3(
+      centroid.x * Math.random(),
+      centroid.y * Math.random(),
+      centroid.z * Math.random(),
     );
     this.velocity = new THREE.Vector3(
-      getPosNeg() * 3 * Math.random(),
-      getPosNeg() * 3 * Math.random(),
-      getPosNeg() * 3 * Math.random()
+      5000 * getPosNeg() * Math.random(),
+      5000 * getPosNeg() * Math.random(),
+      5000 * getPosNeg() * Math.random()
     );
   }
 
@@ -47,14 +59,15 @@ class Vertex {
   }
 
   update(elapsedTime) {
-    const updatedPosition = this.getPosition().add(
-      this.velocity.clone().multiplyScalar(elapsedTime)
+    this.mesh.position.add(
+      this.goal.clone()
+        .sub(this.getPosition())
+        .multiplyScalar(30 * Math.random() * elapsedTime)
     );
-    this.mesh.position.set(
-      updatedPosition.x,
-      updatedPosition.y,
-      updatedPosition.z
-    );
+  }
+
+  getDistance() {
+    return this.goal.clone().sub(this.getPosition()).length();
   }
 
 }
@@ -134,12 +147,13 @@ class GraphicsRoot extends BaseComponent {
     this.graphicsChannel.addEventListener('message', $event => {
       this.beatNumber = $event.data.beatNumber;
       this.lastBeatNumber = $event.data.lastBeatNumber;
-      if ((this.beatNumber + 2) % 4 === 0 && Math.random() < 0.1) {
+      if ((this.beatNumber + 2) % 4 === 0 && Math.random() < 0.5) {
         this.geoContainer.reset();
       }
     });
     this.isInRenderLoop = true;
     this.root.addEventListener('resize', $event => console.log('resize', $event));
+    this.root.addEventListener('click', $event => this.geoContainer.reset());
 
     const canvasElement = this.root.getElementById('cvs');
 
