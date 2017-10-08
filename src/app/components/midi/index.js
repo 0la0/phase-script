@@ -85,6 +85,8 @@ class MidiManager extends BaseComponent {
     provideMidiFactory()
       .then(midiDeviceFactory => {
         const outputList = midiDeviceFactory.getOutputList();
+        console.log('outputList', outputList);
+        console.log(midiDeviceFactory.getInputList())
 
         // TODO: change to: midiDeviceFactory.getOutputByName(INSTRUMENTS.TB03);
         this.tb03 = outputList.find(output => output.name === INSTRUMENTS.TB03);

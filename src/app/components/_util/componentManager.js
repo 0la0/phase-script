@@ -11,7 +11,7 @@ import MessageFitler from 'components/message-filter';
 import Metronome from 'components/metronome';
 import ScaleSelector from 'components/scale-selector';
 import RouterOutlet from 'components/router';
-import GraphicsRoot from 'components/graphics';
+import GraphicsRoot from 'components/graphics/graph';
 import OscSynth from 'components/osc-synth';
 
 const components = [
