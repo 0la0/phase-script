@@ -1,60 +1,77 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import GeoContainer from './modules/geoContainer';
-import GraphicsBase from 'components/graphics/base';
+import GraphicsManager from 'components/graphics/graph/graphicsManager';
+import {WebGLRenderer} from 'three';
 
 const COMPONENT_NAME = 'graphics-root';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-// const resizeListeners = new Set();
-// window.addEventListener('resize', $event => {
-//   resizeListeners.forEach(component => component.onResize($event));
-// });
-
 const NUM_VERTEX = 50;
 
-class GraphicsRoot extends GraphicsBase {
+class GraphicsRoot extends BaseComponent {
 
   constructor() {
     super(style, markup);
+    console.log('-----GraphicsRoot', this);
   }
 
   connectedCallback() {
-    // resizeListeners.add(this);
-    this.graphicsChannel = new BroadcastChannel('GRAPHICS_CHANNEL');
-    this.graphicsChannel.addEventListener('message', $event => {
-      this.beatNumber = $event.data.beatNumber;
-      this.lastBeatNumber = $event.data.lastBeatNumber;
-      if ((this.beatNumber + 2) % 4 === 0 && Math.random() < 0.5) {
-        this.geoContainer.reset();
-      }
-    });
-    this.isInRenderLoop = true;
-    this.camera.position.set(0, 0, 100);
+    const canvasElement = this.root.getElementById('cvs');;
+    this.renderer = new WebGLRenderer({canvas: canvasElement});
+    this.graphicsManager = new GraphicsManager();
 
-    this.geoContainer = new GeoContainer(NUM_VERTEX);
-    this.geoContainer.getMeshList().forEach(mesh => this.scene.add(mesh));
+    this.lastRenderTime = performance.now();
+    this.addEventListeners();
+
+    this.isInRenderLoop = true;
     this.onResize();
     this.loop();
   }
 
   disconnectedCallback() {
-    super.disconnectedCallback();
-    // this.isInRenderLoop = false;
+    this.isInRenderLoop = false;
     this.graphicsChannel.close();
-    // resizeListeners.delete(this);
-    // TODO: clean entire three scene
+    this.graphicsManager.destroy();
+    window.removeEventListener('resize', this.onResizeListener);
   };
 
-  onClick($event) {
-    $event.preventDefault();
-    $event.stopPropagation();
-    this.geoContainer.reset();
+  loop() {
+    const now = performance.now();
+    const elapsedTime = (now - this.lastRenderTime) / 1000;
+    this.lastRenderTime = now;
+    this.graphicsManager.update(elapsedTime);
+    this.graphicsManager.render(this.renderer);
+    if (this.isInRenderLoop) {
+      requestAnimationFrame(this.loop.bind(this));
+    }
   }
 
-  update(elapsedTime) {
-    this.geoContainer.update(elapsedTime);
+  addEventListeners() {
+    this.root.getElementById('fullscreen-button')
+      .addEventListener('click', $event => canvasElement.webkitRequestFullscreen());
+    this.root.addEventListener('click', $event => this.graphicsManager.onClick($event));
+
+    this.graphicsChannel = new BroadcastChannel('GRAPHICS_CHANNEL');
+    this.graphicsChannel.addEventListener('message', $event => {
+      console.log('graphics message', $event.data);
+    });
+
+    this.onResizeListener = this.onResize.bind(this);
+    window.addEventListener('resize', this.onResizeListener);
+  }
+
+  onResize() {
+    const DPR = window.devicePixelRatio || 1;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    const aspectRatio = windowWidth / windowHeight;
+    this.renderer.setPixelRatio(DPR);
+    this.renderer.setSize(windowWidth / DPR, windowHeight / DPR, false);
+    this.graphicsManager.onResize(aspectRatio);
+    if (!this.isInRenderLoop) {
+      this.loop();
+    }
   }
 
 }
