@@ -1,7 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import graphicsChannel from 'services/BroadcastChannel';
-import {GraphicsManager} from 'components/graphics/graph/graphicsManager';
+import {GraphicsManager} from './modules/graphicsManager';
 import {WebGLRenderer} from 'three';
 
 const COMPONENT_NAME = 'graphics-root';

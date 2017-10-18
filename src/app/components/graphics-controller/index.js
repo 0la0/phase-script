@@ -1,13 +1,13 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import graphicsChannel from 'services/BroadcastChannel';
-import {getGraphicsStates} from 'components/graphics/graph/graphicsManager';
+import {getGraphicsStates} from 'components/graphics/graphics-root/modules/graphicsManager';
 
-const COMPONENT_NAME = 'graphics-controler';
+const COMPONENT_NAME = 'graphics-controller';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-class GraphicsControler extends BaseComponent {
+class GraphicsController extends BaseComponent {
 
   constructor() {
     super(style, markup);
@@ -38,4 +38,4 @@ class GraphicsControler extends BaseComponent {
 
 }
 
-export default new Component(COMPONENT_NAME, GraphicsControler);
+export default new Component(COMPONENT_NAME, GraphicsController);

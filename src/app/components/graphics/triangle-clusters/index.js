@@ -1,4 +1,4 @@
-import {buildDefaultScene} from 'components/graphics/base';
+import {buildDefaultScene} from 'components/graphics/util';
 import {
   MeshBasicMaterial,
   DoubleSide,

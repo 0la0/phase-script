@@ -11,9 +11,9 @@ import MessageFitler from 'components/message-filter';
 import Metronome from 'components/metronome';
 import ScaleSelector from 'components/scale-selector';
 import RouterOutlet from 'components/router';
-import GraphicsRoot from 'components/graphics/graph';
+import GraphicsRoot from 'components/graphics/graphics-root';
 import OscSynth from 'components/osc-synth';
-import GraphicsControler from 'components/graphics-controler';
+import GraphicsController from 'components/graphics-controller';
 
 const components = [
   app,
@@ -31,7 +31,7 @@ const components = [
   RouterOutlet,
   GraphicsRoot,
   OscSynth,
-  GraphicsControler
+  GraphicsController
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

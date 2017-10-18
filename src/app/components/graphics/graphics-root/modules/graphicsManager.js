@@ -15,7 +15,7 @@ class GraphicsManager {
     this.map = new Map();
     this.map.set(options.CONNECTED_GRAPH, new ConnectedGraph());
     this.map.set(options.TRIANGLE_CLUSTERS, new TriangleClusters());
-    this.activeState = options.CONNECTED_GRAPH;
+    this.activeState = options.TRIANGLE_CLUSTERS;
   }
 
   setActiveState(activeState) {

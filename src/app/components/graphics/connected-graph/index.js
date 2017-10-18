@@ -1,5 +1,5 @@
 import GeoContainer from './modules/geoContainer';
-import {buildDefaultScene} from 'components/graphics/base';
+import {buildDefaultScene} from 'components/graphics/util';
 
 const NUM_VERTEX = 50;
 
