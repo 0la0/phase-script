@@ -14,6 +14,7 @@ class App extends BaseComponent {
 
   constructor() {
     super(style, markup);
+    console.log('---', this)
   }
 
 }

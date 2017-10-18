@@ -1,5 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
+import graphicsChannel from 'services/BroadcastChannel';
 import metronomeManager from 'services/metronome/metronomeManager';
 
 const COMPONENT_NAME = 'metronome-ctrl';
@@ -33,12 +34,14 @@ class Metronome extends BaseComponent {
       this.metronomeButton.trigger(true);
     });
 
-    this.graphicsChannel = new BroadcastChannel('GRAPHICS_CHANNEL');
-
     const schedulable = {
       processTick: (tickNumber, time) => {},
       render: (beatNumber, lastBeatNumber) => {
-        this.graphicsChannel.postMessage({beatNumber, lastBeatNumber});
+        graphicsChannel.postMessage({
+          type: 'TICK',
+          beatNumber,
+          lastBeatNumber
+        });
       },
       start: () => {},
       stop: () => {}

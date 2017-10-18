@@ -1,6 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import GraphicsManager from 'components/graphics/graph/graphicsManager';
+import graphicsChannel from 'services/BroadcastChannel';
+import {GraphicsManager} from 'components/graphics/graph/graphicsManager';
 import {WebGLRenderer} from 'three';
 
 const COMPONENT_NAME = 'graphics-root';
@@ -31,7 +32,7 @@ class GraphicsRoot extends BaseComponent {
 
   disconnectedCallback() {
     this.isInRenderLoop = false;
-    this.graphicsChannel.close();
+    // this.graphicsChannel.close(); // TODO
     this.graphicsManager.destroy();
     window.removeEventListener('resize', this.onResizeListener);
   };
@@ -52,9 +53,13 @@ class GraphicsRoot extends BaseComponent {
       .addEventListener('click', $event => canvasElement.webkitRequestFullscreen());
     this.root.addEventListener('click', $event => this.graphicsManager.onClick($event));
 
-    this.graphicsChannel = new BroadcastChannel('GRAPHICS_CHANNEL');
-    this.graphicsChannel.addEventListener('message', $event => {
-      console.log('graphics message', $event.data);
+    graphicsChannel.addEventListener('message', $event => {
+      const type = $event.data.type;
+      if (type === 'GRAPHICS_MODE') {
+        const graphicsState = $event.data.value;
+        this.graphicsManager.setActiveState(graphicsState);
+      }
+      else if (type === 'TICK') {}
     });
 
     this.onResizeListener = this.onResize.bind(this);

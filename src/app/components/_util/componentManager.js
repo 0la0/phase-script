@@ -13,6 +13,7 @@ import ScaleSelector from 'components/scale-selector';
 import RouterOutlet from 'components/router';
 import GraphicsRoot from 'components/graphics/graph';
 import OscSynth from 'components/osc-synth';
+import GraphicsControler from 'components/graphics-controler';
 
 const components = [
   app,
@@ -29,7 +30,8 @@ const components = [
   ScaleSelector,
   RouterOutlet,
   GraphicsRoot,
-  OscSynth
+  OscSynth,
+  GraphicsControler
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));
