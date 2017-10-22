@@ -1,14 +1,15 @@
 import {buildDefaultScene} from 'components/graphics/util';
+// import Triangle from './Triangle';
+import TriangleCluster from './TriangleCluster';
 import {
-  MeshBasicMaterial,
-  DoubleSide,
-  Geometry,
-  Vector3,
-  Face3,
-  Mesh
+  // MeshBasicMaterial,
+  // DoubleSide,
+  // Geometry,
+  // Vector3,
+  // Face3,
+  // Mesh
 } from 'three';
 
-const NUM_VERTEX = 50;
 
 export default class TriangleClusters {
 
@@ -19,25 +20,24 @@ export default class TriangleClusters {
 
     this.camera.position.set(0, 0, 100);
 
-    const material = new MeshBasicMaterial({color: 0xFF0000, side: DoubleSide});
-    const geometry = new Geometry();
-    const v1 = new Vector3(0, 0, 0);
-    const v2 = new Vector3(0, 500, 0);
-    const v3 = new Vector3(500, 500, 0);
-    geometry.vertices.push(v1);
-    geometry.vertices.push(v2);
-    geometry.vertices.push(v3);
-    geometry.faces.push(new Face3(0, 1, 2));
-    this.triangle = new Mesh(geometry, material);
-    this.scene.add(this.triangle);
+    this.triangleCluster = new TriangleCluster(10);
+    // this.triangle = new Triangle(10);
+    // this.scene.add(this.triangle.getMesh());
+    // this.scene.add(this.triangle.getGoal());
+    this.scene.add(...this.triangleCluster.getMesh());
   }
 
   onClick($event) {
     console.log('triangleClusters onClick');
+    // this.triangle.createGoal();
+    this.triangleCluster.reset();
   }
 
   update(elapsedTime) {
-    this.triangle.rotation.z += 0.01;
+    // this.triangle.rotation.z += 0.01;
+    // this.triangle.getMesh().rotation.z += 0.01;
+    // this.triangle.update(elapsedTime);
+    this.triangleCluster.update(elapsedTime);
   }
 
   render(renderer) {
