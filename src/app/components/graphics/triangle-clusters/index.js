@@ -12,16 +12,17 @@ export default class TriangleClusters {
     this.scene = defaultScene.scene;
     this.camera.position.set(0, 0, 100);
     this.activeIndex = 0;
-    this.numClusters = 30;
+    this.numClusters = 20;
     this.triangleClusters = new Array(this.numClusters).fill(null)
       .map(() => {
         const center = getRandomVector(80, true)
-        return new TriangleCluster(40, center);
+        return new TriangleCluster(30, center);
       });
 
     const allMesh = this.triangleClusters.reduce((meshList, triangleCluster) => {
       return [].concat(meshList, triangleCluster.getMesh());
     }, []);
+    console.log('allMesh', allMesh);
     this.scene.add(...allMesh);
   }
 
