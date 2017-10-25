@@ -1,4 +1,4 @@
-import {getPosNeg} from 'components/_util/math';
+import {getRandomVector} from 'components/graphics/util';
 import {
   MeshBasicMaterial,
   DoubleSide,
@@ -26,43 +26,29 @@ function buildTriangle(size) {
   geometry.vertices.push(v3);
   geometry.faces.push(new Face3(0, 1, 2));
   material.transparent = true;
-  material.opacity = 0.5;
+  material.opacity = 0.25;
   return new Mesh(geometry, material);
-}
-
-function getRandomNumber(multiplier, canBeNegative) {
-  return canBeNegative ? getPosNeg() : 1 * multiplier * Math.random();
-}
-
-function getRandomVector(multiplier, canBeNegative) {
-  return new Vector3(
-    getRandomNumber(multiplier, canBeNegative),
-    getRandomNumber(multiplier, canBeNegative),
-    getRandomNumber(multiplier, canBeNegative)
-  );
 }
 
 export default class Triangle {
 
-  constructor(size) {
-
-    this.mesh = buildTriangle(size);
-
+  constructor(size, center) {
+    this.center = center.clone();
+    this.mesh = buildTriangle(size, center);
     this.positionGoal = getRandomVector(30, true);
     this.positionVelocity = getRandomVector(0, false);
     this.scaleGoal = getRandomVector(10, false);
     this.scaleVelocity = getRandomVector(0, false);
     this.rotateGoal = getRandomVector(Math.PI, false);
     this.rotateVelocity = getRandomVector(0, false);
-
     this.reset();
   }
 
   reset() {
     this.shouldRender = true;
-    this.positionGoal = getRandomVector(30);
-    this.scaleGoal = getRandomVector(10);
-    this.rotateGoal = getRandomVector(Math.PI);
+    this.positionGoal = this.center.clone().add(getRandomVector(10, true));
+    this.scaleGoal = getRandomVector(4, false);
+    this.rotateGoal = getRandomVector(Math.PI, false);
   }
 
   getMesh() {
@@ -78,10 +64,10 @@ export default class Triangle {
       .sub(this.mesh.position.clone())
       .multiplyScalar(50 * Math.random() * elapsedTime);
     this.positionVelocity.add(positionDistance);
-    const velocity = this.positionVelocity.clone()
+    const positionVelocity = this.positionVelocity.clone()
       .multiplyScalar(0.5)
       .add(positionDistance.multiplyScalar(0.5));
-    this.mesh.position.add(velocity);
+    this.mesh.position.add(positionVelocity);
 
     const scaleDistance = this.scaleGoal.clone()
       .sub(this.mesh.scale.clone())

@@ -3,9 +3,9 @@ import Triangle from './Triangle';
 
 export default class TriangleCluster {
 
-  constructor(numTriangles) {
+  constructor(numTriangles, center) {
     this.triangles = new Array(numTriangles).fill(null)
-      .map(() => new Triangle(10));
+      .map(() => new Triangle(10, center));
   }
 
   reset() {
