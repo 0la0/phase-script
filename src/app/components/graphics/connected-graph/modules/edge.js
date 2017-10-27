@@ -10,7 +10,7 @@ export default class Edge {
   constructor(v1, v2) {
     const geometry = new Geometry();
     const material = new LineBasicMaterial({
-       color: 0xFFFFFF, transparent: true
+      color: 0xFFFFFF, transparent: true
     });
     const opacity = 0.1 + 0.15 * Math.random();
     material.opacity = opacity;

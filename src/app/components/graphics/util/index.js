@@ -32,4 +32,11 @@ function getRandomVector(multiplier, canBeNegative) {
   );
 }
 
-export {buildDefaultScene, getRandomVector};
+function lerpVectors(p1, p2, value) {
+  const x = p1.x * value + p2.x * (1 - value);
+  const y = p1.y * value + p2.y * (1 - value);
+  const z = p1.z * value + p2.z * (1 - value);
+  return new Vector3(x, y, z);
+}
+
+export {buildDefaultScene, getRandomVector, lerpVectors};

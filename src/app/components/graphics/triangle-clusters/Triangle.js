@@ -1,4 +1,5 @@
 import {getRandomVector} from 'components/graphics/util';
+import {getPosNeg} from 'components/_util/math';
 import {
   MeshBasicMaterial,
   DoubleSide,
@@ -10,15 +11,26 @@ import {
   BoxHelper,
   Group,
   LineBasicMaterial,
-  Line
+  Line,
+  Color
 } from 'three';
 
 const TWO_PI = 2 * Math.PI;
-const DISTANCE_THRESH = 0.005;
 
-function buildTriangle(size) {
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function getColorFromBase(baseColor, spread) {
+  const r = baseColor.x + getPosNeg() * spread * Math.random();
+  const g = baseColor.y + getPosNeg() * spread * Math.random();
+  const b = baseColor.z + getPosNeg() * spread * Math.random();
+  return new Color(r, g, b);
+}
+
+function buildTriangle(size, center, baseColor) {
   const buffer = size / 2;
-  const color = Math.random() * 0xFFFFFF;
+  const color = getColorFromBase(baseColor, 0.2);
   const triangleMaterial = new MeshBasicMaterial({color, side: DoubleSide});
   const triangleGeometry = new Geometry();
   const lineGeometry1 = new Geometry();
@@ -47,30 +59,54 @@ function buildTriangle(size) {
   const line2 = new Line(lineGeometry2, lineMaterial);
   const line3 = new Line(lineGeometry3, lineMaterial);
   const group = new Group();
-  group.add(triangleMesh, line1, line2, line3);
+  // group.add(triangleMesh, line1, line2, line3);
+  group.add(triangleMesh);
   return group;
-  // return new Mesh(triangleGeometry, triangleMaterial);
+}
+
+const defaultOptions = {
+  shouldSet: false,
+  size: 10,
+  positionSpread: 10,
+  scaleSpread: 4,
+};
+
+function fillOptions(options) {
+  return {
+    shouldSet: options.shouldSet || defaultOptions.shouldSet,
+    size: options.size || defaultOptions.size,
+    positionSpread: options.positionSpread || defaultOptions.positionSpread,
+    scaleSpread: options.scaleSpread || defaultOptions.scaleSpread,
+  };
 }
 
 export default class Triangle {
 
-  constructor(size, center) {
+  constructor(center, baseColor, options) {
+    this.options = fillOptions(options || {});
     this.center = center.clone();
-    // this.mesh = buildTriangle(size, center);
-    this.triangle = buildTriangle(size, center);
-    this.positionGoal = getRandomVector(30, true);
+    this.triangle = buildTriangle(this.options.size, center, baseColor);
+    this.positionGoal = getRandomVector(this.options.positionSpread, true);
     this.positionVelocity = getRandomVector(0, false);
-    this.scaleGoal = getRandomVector(10, false);
+    this.scaleGoal = getRandomVector(this.options.scaleSpread, false);
     this.scaleVelocity = getRandomVector(0, false);
     this.rotateGoal = getRandomVector(Math.PI, false);
     this.rotateVelocity = getRandomVector(0, false);
-    this.reset();
+
+    if (this.options.shouldSet) {
+      const position = center.clone().add(this.positionGoal);
+      this.triangle.position.add(position);
+      this.triangle.scale.add(this.scaleGoal);
+      this.triangle.rotation.setFromVector3(this.rotateGoal);
+    }
+    else {
+      this.reset();
+    }
   }
 
   reset() {
-    this.shouldRender = true;
-    this.positionGoal = this.center.clone().add(getRandomVector(10, true));
-    this.scaleGoal = getRandomVector(4, false);
+    this.positionGoal = this.center.clone().add(getRandomVector(this.options.positionSpread, true));
+    this.scaleGoal = getRandomVector(this.options.scaleSpread, false);
     this.rotateGoal = getRandomVector(Math.PI, false);
   }
 
@@ -79,10 +115,6 @@ export default class Triangle {
   }
 
   update(elapsedTime) {
-    if (!this.shouldRender) {
-      return;
-    }
-
     const positionDistance = this.positionGoal.clone()
       .sub(this.triangle.position.clone())
       .multiplyScalar(50 * Math.random() * elapsedTime);
@@ -116,10 +148,7 @@ export default class Triangle {
       .add(rotateDistance)
       .multiplyScalar(0.33)
       .length();
-
-    if (meanDistance <= DISTANCE_THRESH) {
-      this.shouldRender = false;
-    }
+    return meanDistance;
   }
 
 }
