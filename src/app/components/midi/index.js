@@ -1,7 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import provideMidiFactory from 'services/midi/midiDeviceFactory';
-import provideEventBus from 'services/EventBus/eventBusProvider';
+import eventBus from 'services/EventBus';
 import {getMessageFromObject, getObjectFromMessage} from 'services/midi/midiEventBus';
 
 const COMPONENT_NAME = 'midi-manager';
@@ -37,13 +37,12 @@ class MidiManager extends BaseComponent {
 
   constructor() {
     super(style, markup);
-    this.eventBus = provideEventBus();
-    this.eventBus.subscribe({
+    eventBus.subscribe({
       address: INSTRUMENTS.TB03,
       onNext: message => this.onSynthMessage(message)
     });
 
-    this.eventBus.subscribe({
+    eventBus.subscribe({
       address: INSTRUMENTS.TR09,
       onNext: this.onDrumMessage.bind(this)
     });

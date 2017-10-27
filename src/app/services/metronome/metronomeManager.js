@@ -1,4 +1,4 @@
-import provideAudioGraph from '../audioGraph/audioGraphProvider';
+import audioGraph from '../audioGraph';
 import Metronome from './metronome';
 import Scheduler from './scheduler';
 
@@ -10,7 +10,6 @@ function init() {
     console.error('metronomeManager error', 'cannot init more than once');
     return;
   }
-  const audioGraph = provideAudioGraph();
   scheduler = new Scheduler(audioGraph.getAudioContext());
   metronome = new Metronome(audioGraph.getAudioContext(), scheduler);
 }

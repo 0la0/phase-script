@@ -1,13 +1,11 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import metronomeManager from 'services/metronome/metronomeManager';
-import provideEventBus from 'services/EventBus/eventBusProvider';
+// import eventBus from 'services/EventBus';
 
 const COMPONENT_NAME = 'poly-rythm';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
-
-const eventBus = provideEventBus();
 
 const LENGTH = 16;
 const ACTIVE_CELL_CLASS = 'poly-rythm__cell--active';

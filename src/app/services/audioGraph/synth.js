@@ -1,7 +1,5 @@
-import provideAudioGraph from 'services/audioGraph/audioGraphProvider';
+import audioGraph from 'services/audioGraph';
 import {mtof} from './midi/util';
-
-const audioGraph = provideAudioGraph();
 
 function buildSynth() {
   let audioBuffer;

@@ -2,7 +2,7 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import metronomeManager from 'services/metronome/metronomeManager';
 import scaleHelper from 'services/scale/scaleHelper';
-import provideEventBus from 'services/EventBus/eventBusProvider';
+import eventBus from 'services/EventBus';
 import Note from './modules/note';
 import NoteSequence from './modules/noteSequence';
 import metronomeManager from 'services/metronome/metronomeManager';
@@ -12,7 +12,6 @@ const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
 const metronome = metronomeManager.getMetronome();
-const eventBus = provideEventBus();
 const STEP_LENGTH = 64;
 
 class Sequencer extends BaseComponent {
@@ -93,8 +92,8 @@ class Sequencer extends BaseComponent {
         if (!note) {
           return;
         }
-        this.publishToMidi(note, tickNumber, time);
-        // this.publishToAudio(note, tickNumber, time);
+        // this.publishToMidi(note, tickNumber, time);
+        this.publishToAudio(note, tickNumber, time);
       },
       render: (tick, lastTick) => {
         const relativeTick = tick % STEP_LENGTH;

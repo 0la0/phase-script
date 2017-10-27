@@ -1,6 +1,5 @@
 
-export default class EventBus {
-
+class EventBus {
   constructor() {
     this.subscribers = new Set();
   }
@@ -18,5 +17,7 @@ export default class EventBus {
   unsubscribe(subscriber) {
     this.subscribers.delete(subscriber);
   }
-
 }
+
+const eventBus = new EventBus();
+export default eventBus;

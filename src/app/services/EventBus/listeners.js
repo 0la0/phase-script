@@ -1,6 +1,4 @@
-import provideEventBus from 'services/EventBus/eventBusProvider';
-
-const eventBus = provideEventBus();
+import eventBus from 'services/EventBus';
 
 export function initListeners() {
   window.addEventListener('mousemove', $event =>
@@ -10,9 +8,9 @@ export function initListeners() {
     })
   );
   window.addEventListener('mouseup', $event =>
-  eventBus.publish({
-    address: 'MOUSE_UP',
-    $event
-  })
+    eventBus.publish({
+      address: 'MOUSE_UP',
+      $event
+    })
   );
 }

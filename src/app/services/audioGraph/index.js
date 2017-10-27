@@ -1,6 +1,5 @@
 
-export default class AudioGraph {
-
+class AudioGraph {
   constructor () {
     this.audioContext = new AudioContext();
     this.masterCompressor = this.audioContext.createDynamicsCompressor();
@@ -18,5 +17,7 @@ export default class AudioGraph {
   getOutput() {
     return this.masterCompressor;
   }
-
 }
+
+const audioGraph = new AudioGraph();
+export default audioGraph;

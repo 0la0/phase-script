@@ -14,6 +14,7 @@ import RouterOutlet from 'components/router';
 import GraphicsRoot from 'components/graphics/graphics-root';
 import OscSynth from 'components/osc-synth';
 import GraphicsController from 'components/graphics-controller';
+import SliderHorizontal from 'components/slider-horizontal';
 
 const components = [
   app,
@@ -31,7 +32,8 @@ const components = [
   RouterOutlet,
   GraphicsRoot,
   OscSynth,
-  GraphicsController
+  GraphicsController,
+  SliderHorizontal
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

@@ -1,9 +1,7 @@
 import Http from 'services/util/http';
-import provideAudioGraph from 'services/audioGraph/audioGraphProvider';
-import provideEventBus from 'services/EventBus/eventBusProvider';
+import audioGraph from 'services/audioGraph';
+import eventBus from 'services/EventBus';
 
-const audioGraph = provideAudioGraph();
-const eventBus = provideEventBus();
 const samples = {};
 const BASE_PATH = 'assets/audio/';
 

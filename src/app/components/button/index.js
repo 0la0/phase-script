@@ -1,5 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
+import {getElementWithFunctionName} from 'components/_util/dom';
 
 const COMPONENT_NAME = 'flat-button';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -21,8 +22,10 @@ class FlatButton extends BaseComponent {
   connectedCallback() {
     if (this.hasAttribute('click')) {
       const functionName = this.getAttribute('click');
-      const parent = this.parentNode.host;
-      this.onClick = parent[functionName].bind(parent);
+      const targetElement = getElementWithFunctionName(this.parentNode, functionName);
+      if (targetElement) {
+        this.onClick = targetElement[functionName].bind(targetElement);
+      }
     }
     if (this.hasAttribute('isToggle')) {
       this.isToggle = true;
