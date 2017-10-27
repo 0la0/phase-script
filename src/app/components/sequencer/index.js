@@ -43,14 +43,14 @@ class Sequencer extends BaseComponent {
       $event.preventDefault();
       $event.stopPropagation();
       const boundingBox = this.synthContainer.getBoundingClientRect();
-      const percentX = $event.clientX / boundingBox.width;
+      const percentX = ($event.clientX - boundingBox.left) / boundingBox.width;
       const startTick = Math.round(percentX * STEP_LENGTH) - 2;
       const percentY = ($event.clientY - boundingBox.top) / boundingBox.height;
       const noteValue = percentY * -2 + 1;
       const note = new Note(noteValue, 4, 12, startTick);
       const synthNoteElement = document.createElement('synth-note');
       synthNoteElement.init(note, STEP_LENGTH, this.removeNote.bind(this), this.getBaseNote.bind(this));
-      this.synthContainer.appendChild(synthNoteElement);
+      this.noteContainer.appendChild(synthNoteElement);
       this.noteSequence.addNote(note);
     });
 
