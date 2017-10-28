@@ -13,6 +13,7 @@ import ScaleSelector from 'components/scale-selector';
 import RouterOutlet from 'components/router';
 import GraphicsRoot from 'components/graphics/graphics-root';
 import OscSynth from 'components/osc-synth';
+import OscVoice from 'components/osc-voice';
 import GraphicsController from 'components/graphics-controller';
 import SliderHorizontal from 'components/slider-horizontal';
 
@@ -33,7 +34,8 @@ const components = [
   GraphicsRoot,
   OscSynth,
   GraphicsController,
-  SliderHorizontal
+  SliderHorizontal,
+  OscVoice
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

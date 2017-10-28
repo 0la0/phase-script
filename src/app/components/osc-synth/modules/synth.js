@@ -3,13 +3,12 @@ import audioGraph from 'services/audioGraph';
 import {ArEnvelope} from 'services/audioUtil/Envelopes';
 import {mtof} from 'services/midi/util';
 
-
 // flow: oscillator -> adsr -> gain -> abstractOutput
 
-function buildOsc(type, output) {
-  const synth = new Osc(type);
+function buildOsc(oscillator, output) {
+  const synth = new Osc(oscillator.type);
   const gain = audioGraph.getAudioContext().createGain();
-  gain.gain.value = 0.5;
+  gain.gain.value = oscillator.gain;
   gain.connect(output);
   return {gain, synth};
 }
@@ -23,28 +22,28 @@ export default class SynthContainer {
       sustain: 0.5,
       release: 0.1
     };
-    this.oscillators = ['SINE'];
     this.output = audioGraph.getOutput();
   }
 
-  playNote(midiNote, onTime, offTime) {
+  playNote(midiNote, oscillators, onTime, offTime) {
     const frequency = mtof(midiNote);
-    this.playFrequency(frequency, onTime, offTime);
+    this.playFrequency(frequency, oscillators, onTime, offTime);
   }
 
-  playFrequency(frequency, onTime, offTime) {
-    this.oscillators.forEach(type => {
-      const osc = buildOsc(type, this.output);
+  playFrequency(frequency, oscillators, onTime, offTime) {
+    oscillators.forEach(oscillator => {
+      const osc = buildOsc(oscillator, this.output);
       const envelope = new ArEnvelope(this.asr.attack, this.asr.release).build(osc.gain, onTime, offTime);
       osc.synth.play(frequency, envelope, onTime, offTime + this.asr.release);
     });
   }
 
-  setOscilator(index, type) {
-    if (index < 0 || index >= this.synthList.length) {
-      throw new Error('index out of bounds, SynthContainer.setOscilator', arguments);
-    }
-    this.synthList[index].synth.setOscilator(type);
+  setAttack(attack) {
+    this.asr.attack = attack;
+  }
+
+  setRelease(release) {
+    this.asr.release = release;
   }
 
 }

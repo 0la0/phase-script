@@ -1,21 +1,28 @@
 
 <div class="synth">
-  Synth
 
   <div class="synth-row">
-    <p>osc1</p>
+    <p>Attack</p>
     <slider-horizontal
-      onchange="onOsc1GainUpdate"
+      onchange="onAttackUpdate"
       class="slider">
     </slider-horizontal>
+    <p id="attackOutput" class="output"></p>
   </div>
 
   <div class="synth-row">
-    <p>osc1</p>
+    <p>Release</p>
     <slider-horizontal
-      onchange="onOsc2GainUpdate"
+      onchange="onReleaseUpdate"
       class="slider">
     </slider-horizontal>
+    <p id="releaseOutput" class="output"></p>
   </div>
+
+  <div class="synth-row">
+    <p id="addVoice">Add Voice</p>
+  </div>
+
+  <div id="voiceContainer"></div>
 
 </div>

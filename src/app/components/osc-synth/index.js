@@ -12,6 +12,10 @@ class OscSynth extends BaseComponent {
   constructor() {
     super(style, markup);
     this.synth = new Synth();
+    this.oscillators = [{
+      type: 'SINE',
+      gain: 0.5
+    }];
   }
 
   connectedCallback() {
@@ -19,22 +23,43 @@ class OscSynth extends BaseComponent {
     eventBus.subscribe({
       address: 'SYNTH',
       onNext: message => {
-        this.synth.playNote(message.note, message.onTime, message.offTime);
+        this.synth.playNote(message.note, this.oscillators, message.onTime, message.offTime);
       }
     });
+
+    this.output = {
+      attack: this.root.getElementById('attackOutput'),
+      release: this.root.getElementById('releaseOutput')
+    };
+    this.voiceContainer = this.root.getElementById('voiceContainer');
+    this.root.getElementById('addVoice').addEventListener('click', $event => {
+      const voice = {
+        type: 'SQUARE',
+        gain: 0.5
+      };
+      this.oscillators.push(voice);
+      this.addVoice(voice);
+    });
+    this.oscillators.forEach(osc => this.addVoice(osc));
   }
 
-  onOsc1GainUpdate(value) {
-    console.log('onOsc1GainUpdate...', value);
+  onAttackUpdate(value) {
+    this.synth.setAttack(value);
+    this.output.attack.innerText = value;
   }
 
-  onOsc2GainUpdate(value) {
-    console.log('onOsc2GainUpdate', value);
+  onReleaseUpdate(value) {
+    this.synth.setRelease(value);
+    this.output.release.innerText = value;
   }
 
-  disconnectedCallback() {};
+  addVoice(voice) {
+    const ele = document.createElement('osc-voice');
+    ele.setModel(voice);
+    this.voiceContainer.appendChild(ele);
+  }
 
-  attributeChangedCallback(attribute, oldVal, newVal) {}
+  removeVoice(voice) {}
 
 }
 
