@@ -1,4 +1,4 @@
-import audioGraph from '../audioGraph';
+import audioGraph from 'services/audio/graph';
 import Metronome from './metronome';
 import Scheduler from './scheduler';
 

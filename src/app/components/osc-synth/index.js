@@ -1,6 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import Synth from 'components/osc-synth/modules/synth';
+import Synth from 'services/audio/synth';
 import eventBus from 'services/EventBus';
 
 const COMPONENT_NAME = 'osc-synth';

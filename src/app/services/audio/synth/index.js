@@ -1,6 +1,6 @@
 import {OSCILATORS, Osc} from './Osc';
-import audioGraph from 'services/audioGraph';
-import {ArEnvelope} from 'services/audioUtil/Envelopes';
+import audioGraph from 'services/audio/graph';
+import {ArEnvelope} from 'services/audio/util/Envelopes';
 import {mtof} from 'services/midi/util';
 
 // flow: oscillator -> adsr -> gain -> abstractOutput

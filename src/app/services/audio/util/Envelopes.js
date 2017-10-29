@@ -1,4 +1,4 @@
-import audioGraph from 'services/audioGraph';
+import audioGraph from 'services/audio/graph';
 
 class AsrEnvelope {
   constructor(attack, sustain, release) {

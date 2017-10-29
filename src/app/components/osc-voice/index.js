@@ -1,6 +1,5 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-// import {round} from 'components/_util/math';
 
 const COMPONENT_NAME = 'osc-voice';
 const style = require(`./${COMPONENT_NAME}.css`);

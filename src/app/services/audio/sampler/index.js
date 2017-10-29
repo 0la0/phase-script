@@ -1,5 +1,5 @@
 import Http from 'services/util/http';
-import audioGraph from 'services/audioGraph';
+import audioGraph from 'services/audio/graph';
 import eventBus from 'services/EventBus';
 
 const samples = {};
