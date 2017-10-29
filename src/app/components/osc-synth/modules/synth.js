@@ -42,8 +42,16 @@ export default class SynthContainer {
     this.asr.attack = attack;
   }
 
+  getAttack() {
+    return this.asr.attack;
+  }
+
   setRelease(release) {
     this.asr.release = release;
+  }
+
+  getRelease() {
+    return this.asr.release;
   }
 
 }

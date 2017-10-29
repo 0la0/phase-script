@@ -12,10 +12,6 @@ class OscSynth extends BaseComponent {
   constructor() {
     super(style, markup);
     this.synth = new Synth();
-    this.oscillators = [{
-      type: 'SINE',
-      gain: 0.5
-    }];
   }
 
   connectedCallback() {
@@ -23,7 +19,7 @@ class OscSynth extends BaseComponent {
     eventBus.subscribe({
       address: 'SYNTH',
       onNext: message => {
-        this.synth.playNote(message.note, this.oscillators, message.onTime, message.offTime);
+        this.synth.playNote(message.note, this.getOscillators(), message.onTime, message.offTime);
       }
     });
 
@@ -32,34 +28,29 @@ class OscSynth extends BaseComponent {
       release: this.root.getElementById('releaseOutput')
     };
     this.voiceContainer = this.root.getElementById('voiceContainer');
-    this.root.getElementById('addVoice').addEventListener('click', $event => {
-      const voice = {
-        type: 'SQUARE',
-        gain: 0.5
-      };
-      this.oscillators.push(voice);
-      this.addVoice(voice);
-    });
-    this.oscillators.forEach(osc => this.addVoice(osc));
+    this.root.getElementById('addVoice').addEventListener('click', $event => this.addVoice());
+    this.onAttackUpdate(this.synth.getAttack());
+    this.onReleaseUpdate(this.synth.getRelease());
   }
 
   onAttackUpdate(value) {
     this.synth.setAttack(value);
-    this.output.attack.innerText = value;
+    this.output.attack.innerText = value.toFixed(3);
   }
 
   onReleaseUpdate(value) {
     this.synth.setRelease(value);
-    this.output.release.innerText = value;
+    this.output.release.innerText = value.toFixed(3);
   }
 
-  addVoice(voice) {
+  addVoice() {
     const ele = document.createElement('osc-voice');
-    ele.setModel(voice);
     this.voiceContainer.appendChild(ele);
   }
 
-  removeVoice(voice) {}
+  getOscillators() {
+    return [...this.voiceContainer.children].map(ele => ele.getOsc());
+  }
 
 }
 

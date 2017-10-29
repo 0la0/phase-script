@@ -1,8 +1,21 @@
 <div class="synth-row">
+
+  <p>Type</p>
+  <select id="oscType" class="select-box">
+    <option value="SINE" selected>sin</option>
+    <option value="SQUARE">squ</option>
+    <option value="SAWTOOTH">saw</option>
+    <option value="TRIANGLE">tri</option>
+  </select>
+
   <p>Gain</p>
   <slider-horizontal
     onchange="onGainUpdate"
     class="slider">
   </slider-horizontal>
   <p id="gainOutput" class="output"></p>
+
+  <div id="removeButton" class="remove">
+    Remove
+  </div>
 </div>

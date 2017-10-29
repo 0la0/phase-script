@@ -1,5 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
+// import {round} from 'components/_util/math';
 
 const COMPONENT_NAME = 'osc-voice';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -9,25 +10,30 @@ class OscVoice extends BaseComponent {
 
   constructor() {
     super(style, markup);
+    this.osc = {
+      type: 'SINE',
+      gain: 0.2
+    };
   }
 
   connectedCallback() {
     this.output = {
       gain: this.root.getElementById('gainOutput')
     };
-  }
-
-  setModel(osc) {
-    this.osc = osc;
+    this.typeSelector = this.root.getElementById('oscType');
+    this.typeSelector.addEventListener('change', $event => this.osc.type = this.typeSelector.value);
+    this.root.getElementById('removeButton')
+      .addEventListener('click', $event => this.parentNode.removeChild(this));
+    this.onGainUpdate(this.osc.gain);
   }
 
   onGainUpdate(value) {
     this.osc.gain = value;
-    this.output.gain.innerText = value;
+    this.output.gain.innerText = value.toFixed(3);
   }
 
-  setPropertyUpdateCallback(onUpdate) {
-    this.onUpdate = onUpdate;
+  getOsc() {
+    return this.osc;
   }
 
 }
