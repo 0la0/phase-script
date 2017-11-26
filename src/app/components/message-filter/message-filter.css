@@ -6,17 +6,3 @@
   font-size: 0.7em;
   margin: 0;
 }
-
-.select-box {
-  width: 50px;
-  background-color: #333333;
-  color: #DDDDDD;
-  outline: none;
-}
-.select-box:focus {
-  outline: none;
-}
-.select-box option {
-  background-color: #DDDDDD;
-  color: #333333;
-}

@@ -9,17 +9,3 @@
   width: 100px;
   height: 20px;
 }
-
-.select-box {
-  width: 50px;
-  background-color: #333333;
-  color: #DDDDDD;
-  outline: none;
-}
-.select-box:focus {
-  outline: none;
-}
-.select-box option {
-  background-color: #DDDDDD;
-  color: #333333;
-}

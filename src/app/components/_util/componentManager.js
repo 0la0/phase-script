@@ -17,6 +17,7 @@ import OscVoice from 'components/osc-voice';
 import GraphicsController from 'components/graphics-controller';
 import SliderHorizontal from 'components/slider-horizontal';
 import GrainMaker from 'components/grain-maker';
+import ComboBox from 'components/combo-box';
 
 const components = [
   app,
@@ -37,7 +38,8 @@ const components = [
   GraphicsController,
   SliderHorizontal,
   OscVoice,
-  GrainMaker
+  GrainMaker,
+  ComboBox
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

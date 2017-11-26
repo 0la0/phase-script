@@ -1,8 +1,16 @@
 <div class="synth">
 
   <div class="synth-options">
-    <button id="clearButton">Clear</button>
-    <button id="randomButton">Generate Random</button>
+    <flat-button
+      click="onClear"
+      ontext="Clear"
+      offtext="Clear">
+    </flat-button>
+    <flat-button
+      click="onGenerateRandom"
+      ontext="Generate Random"
+      offtext="Generate Random">
+    </flat-button>
     <div class="base-note">
       <p class="base-note-label">Base Note:</p>
       <input
@@ -11,6 +19,10 @@
         type="number"
         value="60" />
     </div>
+
+    <p class="base-note-label">Send to:</p>
+    <combo-box id="sendComboBox" change="onSendChange"></combo-box>
+
   </div>
 
   <div id="visualizer" class="synth-visualizer">

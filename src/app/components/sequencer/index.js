@@ -29,9 +29,8 @@ class Sequencer extends BaseComponent {
     this.synthContainer = this.root.getElementById('visualizer');
     this.noteContainer = this.root.getElementById('noteContainer');
     this.playHead = this.root.getElementById('playhead');
-    this.clearButton = this.root.getElementById('clearButton');
-    this.genRandomButton = this.root.getElementById('randomButton');
     this.baseNoteInput = this.root.getElementById('base-note-input');
+    this.sendComboBox = this.root.getElementById('sendComboBox');
     this.buildNotes();
 
     const elementWidth = this.synthContainer.getBoundingClientRect().width;
@@ -54,16 +53,14 @@ class Sequencer extends BaseComponent {
       this.noteSequence.addNote(note);
     });
 
-    this.clearButton.addEventListener('click', $event => {
-      this.noteSequence = new NoteSequence(0);
-      this.clearNotes();
-      this.buildNotes();
-    });
-    this.genRandomButton.addEventListener('click', $event => {
-      this.noteSequence = new NoteSequence(STEP_LENGTH);
-      this.clearNotes();
-      this.buildNotes();
-    });
+    // TODO: update send options
+    this.sendComboBox.setOptions(
+      [
+        {label: 'foo', value: 'foo'},
+        {label: 'bar', value: 'bar'},
+        {label: 'something', value: 'something'},
+      ]
+    );
   }
 
   disconnectedCallback() {};
@@ -92,8 +89,9 @@ class Sequencer extends BaseComponent {
         if (!note) {
           return;
         }
-        this.publishToMidi(note, tickNumber, time);
-        // this.publishToAudio(note, tickNumber, time);
+        // this.publishToGrainMaker(note, tickNumber, time)
+        // this.publishToMidi(note, tickNumber, time);
+        this.publishToAudio(note, tickNumber, time);
       },
       render: (tick, lastTick) => {
         const relativeTick = tick % STEP_LENGTH;
@@ -108,6 +106,22 @@ class Sequencer extends BaseComponent {
   removeNote(targetNote, targetElement) {
     this.noteSequence.removeNote(targetNote);
     this.noteContainer.removeChild(targetElement);
+  }
+
+  publishToGrainMaker(note, tickNumber, time) {
+    const address = 'GRAIN-MAKER';
+    const onTime = time.audio;
+    const offTime = onTime + metronome.getTickLength() * note.duration;
+    const noteValue = note.getNormalizedNoteValue(scaleHelper, parseInt(this.baseNoteInput.value));
+
+    // send on note signal
+    eventBus.publish({
+      address,
+      note: noteValue,
+      value: note.velocity,
+      onTime,
+      offTime
+    });
   }
 
   publishToMidi(note, tickNumber, time) {
@@ -152,6 +166,22 @@ class Sequencer extends BaseComponent {
 
   getBaseNote() {
     return parseInt(this.baseNoteInput.value);
+  }
+
+  onClear() {
+    this.noteSequence = new NoteSequence(0);
+    this.clearNotes();
+    this.buildNotes();
+  }
+
+  onGenerateRandom() {
+    this.noteSequence = new NoteSequence(STEP_LENGTH);
+    this.clearNotes();
+    this.buildNotes();
+  }
+
+  onSendChange(value) {
+    console.log('...onChange?', value)
   }
 
 }

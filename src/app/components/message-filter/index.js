@@ -12,44 +12,22 @@ class MessageFilter extends BaseComponent {
   constructor() {
     super(style, markup);
     this.count = 0;
-
-    this.filterSelect = this.root.getElementById('filter-select-box');
-    this.setFilterValue();
-    this.filterSelect.addEventListener('change', $event => this.setFilterValue());
-
-    this.repeatFrequencySelect = this.root.getElementById('repeat-frequency-select-box');
-    this.setRepeatFrequency();
-    this.repeatFrequencySelect.addEventListener('change', $event => this.setRepeatFrequency());
-
-    this.repeatSelect = this.root.getElementById('repeat-select-box');
-    this.setRepeatValue();
-    this.repeatSelect.addEventListener('change', $event => this.setRepeatValue());
-
-    this.repeatModifier = this.root.getElementById('repeat-modifier');
-    this.setRepeatModifierValue();
-    this.repeatModifier.addEventListener('change', $event => this.setRepeatModifierValue());
   }
 
-  connectedCallback() {}
-
-  disconnectedCallback() {};
-
-  attributeChangedCallback(attribute, oldVal, newVal) {}
-
-  setFilterValue() {
-    this.filterValue = this.filterSelect[this.filterSelect.selectedIndex].value;
+  setFilterValue(value) {
+    this.filterValue = value;
   }
 
-  setRepeatValue() {
-    this.repeatValue = this.repeatSelect[this.repeatSelect.selectedIndex].value;
+  setRepeatValue(value) {
+    this.repeatValue = value;
   }
 
-  setRepeatFrequency() {
-    this.repeatFrequency = this.repeatFrequencySelect[this.repeatFrequencySelect.selectedIndex].value;
+  setRepeatFrequency(value) {
+    this.repeatFrequency = value;
   }
 
-  setRepeatModifierValue() {
-    this.repeatModifierValue = this.repeatModifier[this.repeatModifier.selectedIndex].value;
+  setRepeatModifierValue(value) {
+    this.repeatModifierValue = value;
   }
 
   processMessage(message) {

@@ -4,6 +4,7 @@
   <div class="synth-row">
     <p>Attack</p>
     <slider-horizontal
+      id="attack-slider"
       onchange="onAttackUpdate"
       class="slider">
     </slider-horizontal>
@@ -13,6 +14,7 @@
   <div class="synth-row">
     <p>Release</p>
     <slider-horizontal
+      id="release-slider"
       onchange="onReleaseUpdate"
       class="slider">
     </slider-horizontal>
@@ -20,7 +22,11 @@
   </div>
 
   <div class="synth-row">
-    <p id="addVoice">Add Voice</p>
+    <flat-button
+      click="addVoice"
+      ontext="Add Voice"
+      offtext="Add Voice">
+    </flat-button>
   </div>
 
   <div id="voiceContainer"></div>

@@ -7,6 +7,11 @@ const COMPONENT_NAME = 'osc-synth';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
+const PARAMS = {
+  attack: 'attack',
+  release: 'release'
+};
+
 class OscSynth extends BaseComponent {
 
   constructor() {
@@ -23,14 +28,18 @@ class OscSynth extends BaseComponent {
       }
     });
 
-    this.output = {
-      attack: this.root.getElementById('attackOutput'),
-      release: this.root.getElementById('releaseOutput')
-    };
+    this.output = Object.keys(PARAMS).reduce((output, param) => {
+      const element = this.root.getElementById(`${param}Output`);
+      return Object.assign(output, { [param]: element });
+    }, {});
+
+    this.sliders = Object.keys(PARAMS).reduce((output, param) => {
+      const element = this.root.getElementById(`${param}-slider`);
+      element.setValue(this.synth.asr[param], true);
+      return Object.assign(output, { [param]: element });
+    }, {});
+
     this.voiceContainer = this.root.getElementById('voiceContainer');
-    this.root.getElementById('addVoice').addEventListener('click', $event => this.addVoice());
-    this.onAttackUpdate(this.synth.getAttack());
-    this.onReleaseUpdate(this.synth.getRelease());
   }
 
   onAttackUpdate(value) {

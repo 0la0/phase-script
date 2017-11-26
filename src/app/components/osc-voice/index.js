@@ -19,11 +19,12 @@ class OscVoice extends BaseComponent {
     this.output = {
       gain: this.root.getElementById('gainOutput')
     };
-    this.typeSelector = this.root.getElementById('oscType');
-    this.typeSelector.addEventListener('change', $event => this.osc.type = this.typeSelector.value);
-    this.root.getElementById('removeButton')
-      .addEventListener('click', $event => this.parentNode.removeChild(this));
-    this.onGainUpdate(this.osc.gain);
+    this.gainSlider = this.root.getElementById('gain-slider');
+    this.typeSelector = this.root.getElementById('oscTypeComboBox');
+
+    setTimeout(() => {
+      this.gainSlider.setValue(this.osc.gain);
+    });
   }
 
   onGainUpdate(value) {
@@ -33,6 +34,14 @@ class OscVoice extends BaseComponent {
 
   getOsc() {
     return this.osc;
+  }
+
+  onOscTypeChange(value) {
+    this.osc.type = value
+  }
+
+  onRemove() {
+    this.parentNode.removeChild(this);
   }
 
 }
