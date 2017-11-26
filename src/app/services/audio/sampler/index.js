@@ -1,6 +1,6 @@
 import Http from 'services/util/http';
 import audioGraph from 'services/audio/graph';
-import eventBus from 'services/EventBus';
+import audioEventBus from 'services/AudioEventBus';
 
 const samples = {};
 const BASE_PATH = 'assets/audio/';
@@ -45,7 +45,7 @@ function loadSamples() {
 }
 
 function registerEvents() {
-  eventBus.subscribe({
+  audioEventBus.subscribe({
     address: 'SAMPLER',
     onNext: message => {
       play(message.note, message.time);

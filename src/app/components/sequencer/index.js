@@ -2,7 +2,7 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import metronomeManager from 'services/metronome/metronomeManager';
 import scaleHelper from 'services/scale/scaleHelper';
-import eventBus from 'services/EventBus';
+import audioEventBus from 'services/AudioEventBus';
 import Note from './modules/note';
 import NoteSequence from './modules/noteSequence';
 import metronomeManager from 'services/metronome/metronomeManager';
@@ -19,6 +19,7 @@ class Sequencer extends BaseComponent {
   constructor() {
     super(style, markup);
     this.noteSequence = new NoteSequence(0);
+    this.publishAddress;
   }
 
   connectedCallback() {
@@ -53,14 +54,15 @@ class Sequencer extends BaseComponent {
       this.noteSequence.addNote(note);
     });
 
-    // TODO: update send options
-    this.sendComboBox.setOptions(
-      [
-        {label: 'foo', value: 'foo'},
-        {label: 'bar', value: 'bar'},
-        {label: 'something', value: 'something'},
-      ]
-    );
+    // continuously update output options
+    audioEventBus.subscribe({
+      onNewSubscription: addresses => {
+        const optionList = addresses.map(address => ({
+          label: address, value: address
+        }));
+        this.sendComboBox.setOptions(optionList);
+      }
+    });
   }
 
   disconnectedCallback() {};
@@ -89,9 +91,8 @@ class Sequencer extends BaseComponent {
         if (!note) {
           return;
         }
-        // this.publishToGrainMaker(note, tickNumber, time)
-        // this.publishToMidi(note, tickNumber, time);
-        this.publishToAudio(note, tickNumber, time);
+        const eventMessage = this.getAudioEventMessage(note, tickNumber, time);
+        audioEventBus.publish(eventMessage);
       },
       render: (tick, lastTick) => {
         const relativeTick = tick % STEP_LENGTH;
@@ -108,60 +109,27 @@ class Sequencer extends BaseComponent {
     this.noteContainer.removeChild(targetElement);
   }
 
-  publishToGrainMaker(note, tickNumber, time) {
-    const address = 'GRAIN-MAKER';
-    const onTime = time.audio;
-    const offTime = onTime + metronome.getTickLength() * note.duration;
-    const noteValue = note.getNormalizedNoteValue(scaleHelper, parseInt(this.baseNoteInput.value));
-
-    // send on note signal
-    eventBus.publish({
-      address,
+  getAudioEventMessage(note, tickNumber, time) {
+    let onTime;
+    let offTime;
+    let noteValue;
+    if (this.publishAddress === 'TB-03') {
+      onTime = time.midi;
+      offTime = onTime + metronome.getTickLength() * note.duration * 1000;
+      noteValue = note.getNormalizedNoteValue(scaleHelper, this.getBaseNote());
+    }
+    else {
+      onTime = time.audio;
+      offTime = onTime + metronome.getTickLength() * note.duration;
+      noteValue = note.getNormalizedNoteValue(scaleHelper, parseInt(this.baseNoteInput.value));
+    }
+    return {
+      address: this.publishAddress,
       note: noteValue,
       value: note.velocity,
       onTime,
       offTime
-    });
-  }
-
-  publishToMidi(note, tickNumber, time) {
-    const address = 'TB-03';
-    const onTime = time.midi;
-    const offTime = onTime + metronome.getTickLength() * note.duration * 1000;
-    const noteValue = note.getNormalizedNoteValue(scaleHelper, this.getBaseNote());
-
-    // send on note signal
-    eventBus.publish({
-      address,
-      note: noteValue,
-      value: note.velocity,
-      isOn: true,
-      time: onTime
-    });
-    // send off note signal
-    eventBus.publish({
-      address,
-      note: noteValue,
-      value: note.velocity,
-      isOn: false,
-      time: offTime
-    });
-  }
-
-  publishToAudio(note, tickNumber, time) {
-    const address = 'SYNTH';
-    const onTime = time.audio;
-    const offTime = onTime + metronome.getTickLength() * note.duration;
-    const noteValue = note.getNormalizedNoteValue(scaleHelper, parseInt(this.baseNoteInput.value));
-
-    // send on note signal
-    eventBus.publish({
-      address,
-      note: noteValue,
-      value: note.velocity,
-      onTime,
-      offTime
-    });
+    }
   }
 
   getBaseNote() {
@@ -181,7 +149,7 @@ class Sequencer extends BaseComponent {
   }
 
   onSendChange(value) {
-    console.log('...onChange?', value)
+    this.publishAddress = value;
   }
 
 }

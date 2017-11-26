@@ -1,7 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import provideMidiFactory from 'services/midi/midiDeviceFactory';
-import eventBus from 'services/EventBus';
+import audioEventBus from 'services/AudioEventBus';
 import {getMessageFromObject, getObjectFromMessage} from 'services/midi/midiEventBus';
 
 const COMPONENT_NAME = 'midi-manager';
@@ -37,36 +37,43 @@ class MidiManager extends BaseComponent {
 
   constructor() {
     super(style, markup);
-    eventBus.subscribe({
-      address: INSTRUMENTS.TB03,
-      onNext: message => this.onSynthMessage(message)
-    });
-
-    eventBus.subscribe({
-      address: INSTRUMENTS.TR09,
-      onNext: this.onDrumMessage.bind(this)
-    });
-
     this.tb03 = null;
     this.tr09 = null;
   }
 
   connectedCallback() {
     this.onRefreshDevices();
+
+    audioEventBus.subscribe({
+      address: INSTRUMENTS.TB03,
+      onNext: message => this.onSynthMessage(message)
+    });
+
+    audioEventBus.subscribe({
+      address: INSTRUMENTS.TR09,
+      onNext: this.onDrumMessage.bind(this)
+    });
   }
 
   disconnectedCallback() {};
 
-  attributeChangedCallback(attribute, oldVal, newVal) {}
-
   onSynthMessage(message) {
-    const midiMessage = {
-      command: message.isOn ? 9 : 8,
+    const onMessage = {
+      command: 9,
       status: 1,
       note: message.note,
       value: message.value
     };
-    this.tb03 && this.tb03.send(getMessageFromObject(midiMessage), message.time);
+
+    const offMessage = {
+      command: 8,
+      status: 1,
+      note: message.note,
+      value: message.value
+    };
+
+    this.tb03 && this.tb03.send(getMessageFromObject(onMessage), message.onTime);
+    this.tb03 && this.tb03.send(getMessageFromObject(offMessage), message.offTime);
   }
 
   onDrumMessage(message) {

@@ -5,7 +5,7 @@ class EventBus {
   }
 
   publish(message) {
-    Array.from(this.subscribers)
+    [...this.subscribers]
       .filter(subscriber => subscriber.address === message.address)
       .forEach(subscriber => subscriber.onNext(message));
   }

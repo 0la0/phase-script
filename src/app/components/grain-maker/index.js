@@ -1,6 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import eventBus from 'services/EventBus';
+import audioEventBus from 'services/AudioEventBus';
 
 const COMPONENT_NAME = 'grain-maker';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -47,13 +47,13 @@ class GrainMaker extends BaseComponent {
   }
 
   connectedCallback() {
-    eventBus.subscribe({
+    audioEventBus.subscribe({
       address: 'GRAIN-MAKER',
       onNext: message => {
         console.log('grain message', message);
       }
     });
-    
+
     this.output = Object.keys(PARAMS).reduce((output, param) => {
       const element = this.root.getElementById(`${param}Output`);
       return Object.assign(output, { [param]: element });

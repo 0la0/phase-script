@@ -1,6 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import eventBus from 'services/EventBus';
+import audioEventBus from 'services/AudioEventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
 
 const COMPONENT_NAME = 'message-filter';
@@ -45,7 +45,7 @@ class MessageFilter extends BaseComponent {
     messageList.forEach(offset => {
       const time = message.scheduledTime[message.timeOption] + offset;
       message.time = time;
-      eventBus.publish(message);
+      audioEventBus.publish(message);
     });
   }
 

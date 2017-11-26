@@ -2,7 +2,7 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import buildGrid from './modules/gridBuilder';
 import metronomeManager from 'services/metronome/metronomeManager';
-import eventBus from 'services/EventBus';
+import audioEventBus from 'services/AudioEventBus';
 
 const COMPONENT_NAME = 'markov-box';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -52,7 +52,7 @@ class MarkovBox extends BaseComponent {
     this.activeIndex = nextIndex;
 
     if (nextNode.isActive) {
-      eventBus.publish({
+      audioEventBus.publish({
         address: 'TR-09',
         time: scheduledTime.midi
       });

@@ -1,7 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import Synth from 'services/audio/synth';
-import eventBus from 'services/EventBus';
+import audioEventBus from 'services/AudioEventBus';
 
 const COMPONENT_NAME = 'osc-synth';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -21,7 +21,7 @@ class OscSynth extends BaseComponent {
 
   connectedCallback() {
     // TODO: static implementation of addresses on event bus class
-    eventBus.subscribe({
+    audioEventBus.subscribe({
       address: 'SYNTH',
       onNext: message => {
         this.synth.playNote(message.note, this.getOscillators(), message.onTime, message.offTime);
