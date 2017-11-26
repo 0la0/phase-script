@@ -16,6 +16,7 @@ import {
 } from 'three';
 
 const TWO_PI = 2 * Math.PI;
+const VELOCITY_MULT = 0.1;
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
@@ -120,8 +121,8 @@ export default class Triangle {
       .multiplyScalar(50 * Math.random() * elapsedTime);
     this.positionVelocity.add(positionDistance);
     const positionVelocity = this.positionVelocity.clone()
-      .multiplyScalar(0.5)
-      .add(positionDistance.multiplyScalar(0.5));
+      .multiplyScalar(VELOCITY_MULT)
+      .add(positionDistance.multiplyScalar(VELOCITY_MULT));
     this.triangle.position.add(positionVelocity);
 
     const scaleDistance = this.scaleGoal.clone()
@@ -129,8 +130,8 @@ export default class Triangle {
       .multiplyScalar(50 * Math.random() * elapsedTime);
     this.scaleVelocity.add(scaleDistance);
     const scaleVelocity = this.scaleVelocity.clone()
-      .multiplyScalar(0.5)
-      .add(scaleDistance.multiplyScalar(0.5));
+      .multiplyScalar(VELOCITY_MULT)
+      .add(scaleDistance.multiplyScalar(VELOCITY_MULT));
     this.triangle.scale.add(scaleVelocity);
 
     const rotateDistance = this.rotateGoal.clone()
@@ -138,8 +139,8 @@ export default class Triangle {
       .multiplyScalar(50 * Math.random() * elapsedTime);
     this.rotateVelocity.add(rotateDistance);
     const rotateVelocity = this.rotateVelocity.clone()
-      .multiplyScalar(0.5)
-      .add(rotateDistance.multiplyScalar(0.5));
+      .multiplyScalar(VELOCITY_MULT)
+      .add(rotateDistance.multiplyScalar(VELOCITY_MULT));
     const rotation = this.triangle.rotation.clone().toVector3().add(rotateVelocity);
     this.triangle.rotation.setFromVector3(rotation);
 

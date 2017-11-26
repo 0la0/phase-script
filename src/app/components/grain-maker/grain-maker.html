@@ -1,0 +1,63 @@
+
+<div class="grain-maker">
+  <p>Grains</p>
+
+  <!--
+    PARAMS FROM POLYSOUND:
+      position
+      spread
+      loop duration
+      time scatter
+      number of voices
+      voice spread
+      pitch
+      threshold
+  -->
+
+  <div class="grain-param-row">
+    <p>Position</p>
+    <slider-horizontal
+      onchange="onPositionUpdate"
+      class="slider">
+    </slider-horizontal>
+    <p id="positionOutput"></p>
+  </div>
+
+  <div class="grain-param-row">
+    <p>Spread</p>
+    <slider-horizontal
+      onchange="onSpreadUpdate"
+      class="slider">
+    </slider-horizontal>
+    <p id="spreadOutput"></p>
+  </div>
+
+  <div class="grain-param-row">
+    <p>Loop Duration</p>
+    <slider-horizontal
+      onchange="onLoopDurationUpdate"
+      class="slider">
+    </slider-horizontal>
+    <p id="loopDurationOutput"></p>
+  </div>
+
+  <div class="grain-param-row">
+    <p>Time Scatter</p>
+    <slider-horizontal
+      onchange="onTimeScatterUpdate"
+      class="slider">
+    </slider-horizontal>
+    <p id="timeScatterOutput"></p>
+  </div>
+
+  <div class="grain-param-row">
+    <p>Number of Voices</p>
+    <slider-horizontal
+      onchange="onNumVoicesUpdate"
+      class="slider">
+    </slider-horizontal>
+    <p id="numVoicesOutput"></p>
+  </div>
+
+
+</div>

@@ -59,7 +59,9 @@ class GraphicsRoot extends BaseComponent {
         const graphicsState = $event.data.value;
         this.graphicsManager.setActiveState(graphicsState);
       }
-      else if (type === 'TICK') {}
+      else if (type === 'TICK') {
+        this.graphicsManager.onTick(event.data);
+      }
     });
 
     this.onResizeListener = this.onResize.bind(this);

@@ -92,8 +92,8 @@ class Sequencer extends BaseComponent {
         if (!note) {
           return;
         }
-        // this.publishToMidi(note, tickNumber, time);
-        this.publishToAudio(note, tickNumber, time);
+        this.publishToMidi(note, tickNumber, time);
+        // this.publishToAudio(note, tickNumber, time);
       },
       render: (tick, lastTick) => {
         const relativeTick = tick % STEP_LENGTH;

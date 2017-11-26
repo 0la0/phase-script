@@ -15,6 +15,12 @@ export default class ConnectedGraph {
     this.geoContainer.getMeshList().forEach(mesh => this.scene.add(mesh));
   }
 
+  onTick(tick) {
+    if (tick.beatNumber % 8 === 0) {
+      this.geoContainer.reset();
+    }
+  }
+
   onClick($event) {
     this.geoContainer.reset();
   }

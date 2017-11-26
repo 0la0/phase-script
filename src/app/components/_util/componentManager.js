@@ -16,6 +16,7 @@ import OscSynth from 'components/osc-synth';
 import OscVoice from 'components/osc-voice';
 import GraphicsController from 'components/graphics-controller';
 import SliderHorizontal from 'components/slider-horizontal';
+import GrainMaker from 'components/grain-maker';
 
 const components = [
   app,
@@ -35,7 +36,8 @@ const components = [
   OscSynth,
   GraphicsController,
   SliderHorizontal,
-  OscVoice
+  OscVoice,
+  GrainMaker
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

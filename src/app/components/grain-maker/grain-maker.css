@@ -1,0 +1,17 @@
+
+.grain-maker {
+  border: 1px solid white;
+}
+
+.grain-param-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.slider {
+  margin: 5px;
+  width: 100px;
+  height: 20px;
+}

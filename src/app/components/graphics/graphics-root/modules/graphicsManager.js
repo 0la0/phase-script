@@ -30,6 +30,10 @@ class GraphicsManager {
     this.map.get(this.activeState).onClick($event);
   }
 
+  onTick(tick) {
+    this.map.get(this.activeState).onTick(tick);
+  }
+
   update(elapsedTime) {
     this.map.get(this.activeState).update(elapsedTime);
   }

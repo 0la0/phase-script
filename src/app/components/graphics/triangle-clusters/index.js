@@ -42,6 +42,12 @@ export default class TriangleClusters {
     this.scene.add(...allMesh);
   }
 
+  onTick(tick) {
+    if (tick.beatNumber % 8 === 0) {
+      this.onClick();
+    }
+  }
+
   onClick($event) {
     this.triangleClusters[this.activeIndex].reset();
     this.activeIndex = (this.activeIndex + 1 >= this.numClusters) ? 0 : this.activeIndex + 1;
