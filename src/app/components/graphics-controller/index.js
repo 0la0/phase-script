@@ -26,7 +26,6 @@ class GraphicsController extends BaseComponent {
     });
     getGraphicsStates()
       .map(name => {
-        console.log('----name', name);
         const element = document.createElement('div');
         element.classList.add('option');
         element.innerText = name;

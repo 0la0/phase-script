@@ -1,0 +1,48 @@
+<div class="sampler">
+
+  <p id="samplerLabel" class="sampler-label">Sample selector</p>
+  <sample-visualizer id="sampleVisualizer"></sample-visualizer>
+  <br />
+  <combo-box id="sampleSelect" change="onSampleChange"></combo-box>
+
+  <flat-button
+    click="onPlayerClick"
+    ontext="Play"
+    offtext="Play">
+  </flat-button>
+
+  <div class="sampler-asr">
+
+    <div class="row">
+      <p class="param-label">Attack</p>
+      <slider-horizontal
+        id="attack-slider"
+        onchange="onAttackUpdate"
+        class="slider">
+      </slider-horizontal>
+      <p id="attackOutput" class="param-output" />
+    </div>
+
+    <div class="row">
+      <p class="param-label">Sustain</p>
+      <slider-horizontal
+        id="sustain-slider"
+        onchange="onSustainUpdate"
+        class="slider">
+      </slider-horizontal>
+      <p id="sustainOutput" class="param-output" />
+    </div>
+
+    <div class="row">
+      <p class="param-label">Release</p>
+      <slider-horizontal
+        id="release-slider"
+        onchange="onReleaseUpdate"
+        class="slider">
+      </slider-horizontal>
+      <p id="releaseOutput" class="param-output" />
+    </div>
+
+  </div>
+
+</div>

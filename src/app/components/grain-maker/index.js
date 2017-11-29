@@ -1,6 +1,8 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import audioEventBus from 'services/AudioEventBus';
+// import sampler from 'services/audio/sampler';
+import { getSampleKeys } from 'services/audio/sampleBank';
 
 const COMPONENT_NAME = 'grain-maker';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -64,26 +66,27 @@ class GrainMaker extends BaseComponent {
       element.setValue(this.grainInstrument[param], true);
       return Object.assign(output, { [param]: element });
     }, {});
+
   }
 
   onPositionUpdate(value) {
     this.grainInstrument.position = value;
-    this.output.position.innerText = value.toFixed(3);
+    this.output.position.innerText = value.toFixed(2);
   }
 
   onSpreadUpdate(value) {
     this.grainInstrument.spread = value;
-    this.output.spread.innerText = value.toFixed(3);
+    this.output.spread.innerText = value.toFixed(2);
   }
 
   onLoopDurationUpdate(value) {
     this.grainInstrument.loopDuration = value;
-    this.output.loopDuration.innerText = value.toFixed(3);
+    this.output.loopDuration.innerText = value.toFixed(2);
   }
 
   onTimeScatterUpdate(value) {
     this.grainInstrument.timeScatter = value;
-    this.output.timeScatter.innerText = value.toFixed(3);
+    this.output.timeScatter.innerText = value.toFixed(2);
   }
 
   onNumVoicesUpdate(value) {

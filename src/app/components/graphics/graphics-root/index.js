@@ -14,7 +14,6 @@ class GraphicsRoot extends BaseComponent {
 
   constructor() {
     super(style, markup);
-    console.log('-----GraphicsRoot', this);
   }
 
   connectedCallback() {

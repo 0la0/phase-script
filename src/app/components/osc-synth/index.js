@@ -44,12 +44,12 @@ class OscSynth extends BaseComponent {
 
   onAttackUpdate(value) {
     this.synth.setAttack(value);
-    this.output.attack.innerText = value.toFixed(3);
+    this.output.attack.innerText = value.toFixed(2);
   }
 
   onReleaseUpdate(value) {
     this.synth.setRelease(value);
-    this.output.release.innerText = value.toFixed(3);
+    this.output.release.innerText = value.toFixed(2);
   }
 
   addVoice() {

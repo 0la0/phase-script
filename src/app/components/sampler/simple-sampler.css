@@ -1,0 +1,21 @@
+.sampler {
+  border: 1px solid white;
+}
+
+.sampler-label {
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+  border-bottom: 1px solid white;
+}
+
+.slider {
+  margin: 5px;
+  width: 100px;
+  height: 20px;
+}

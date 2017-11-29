@@ -1,50 +1,36 @@
-import Http from 'services/util/http';
 import audioGraph from 'services/audio/graph';
 import audioEventBus from 'services/AudioEventBus';
+import { AsrEnvelope } from 'services/audio/util/Envelopes';
+import { getAudioBuffer } from 'services/audio/sampleBank';
 
-const samples = {};
-const BASE_PATH = 'assets/audio/';
+// flow: sampler -> adsr -> gain -> abstractOutput
 
-function loadSample(sampleKey, sampleUrl) {
-  Http.getAudioBuffer(sampleUrl)
-    .then(compressedBuffer => audioGraph.getAudioContext().decodeAudioData(compressedBuffer))
-    .then(sampleBuffer => {
-      samples[sampleKey] = sampleBuffer;
-    })
-    .catch(error => console.log('error', error));
-}
-
-function playSample(audioContext, audioBuffer, scheduledTime) {
+function playSample(audioContext, audioBuffer, scheduledTime, asr) {
   const sampler = audioContext.createBufferSource();
+  const gain = audioContext.createGain();
+  const output = audioGraph.getOutput();
+
+  if (!scheduledTime) {
+    scheduledTime = audioGraph.getAudioContext().getOutputTimestamp().contextTime;
+  }
+
+  const envelope = new AsrEnvelope(asr.attack, asr.sustain, asr.release)
+    .build(scheduledTime);
+  gain.connect(output);
+  envelope.connect(gain);
+  sampler.connect(envelope);
   sampler.buffer = audioBuffer;
-  //sampler.playbackRate.value = 1;
-  sampler.connect(audioGraph.getOutput());
   sampler.start(scheduledTime);
 }
 
-function play(sampleKey, scheduledTime) {
-  playSample(audioGraph.getAudioContext(), samples[sampleKey], scheduledTime);
+function play(sampleKey, scheduledTime, asr) {
+  const audioBuffer = getAudioBuffer(sampleKey);
+  playSample(audioGraph.getAudioContext(), audioBuffer, scheduledTime, asr);
 }
 
-function getSampleKeys() {
-  return Object.keys(this.samples);
-}
-
-function loadSamples() {
-  loadSample('hat', `${BASE_PATH}hat_loFi.wav`);
-  loadSample('snare', `${BASE_PATH}snare_gb03.wav`);
-  loadSample('kick', `${BASE_PATH}eKick1.wav`);
-  loadSample('high_pluck', `${BASE_PATH}cogs4.wav`);
-  loadSample('lo_fi_bright', `${BASE_PATH}snare_loFi_bright.wav`);
-  loadSample('lo_fi_muff', `${BASE_PATH}snare_loFi_muff.wav`);
-  loadSample('click', `${BASE_PATH}spatialized6.wav`);
-  loadSample('pop', `${BASE_PATH}vinyl9.wav`);
-  loadSample('metal', `${BASE_PATH}woodClog51.wav`);
-  loadSample('metal', `${BASE_PATH}woodClog51.wav`);
-  loadSample('tom_pop', `${BASE_PATH}woodClog60.wav`);
-}
-
+// TODO: remove ... regristration should happen in instrument components
 function registerEvents() {
+  console.log('----subscribe???')
   audioEventBus.subscribe({
     address: 'SAMPLER',
     onNext: message => {
@@ -53,9 +39,4 @@ function registerEvents() {
   });
 }
 
-function initSampler() {
-  loadSamples();
-  registerEvents();
-}
-
-export {initSampler, getSampleKeys};
+export { play };

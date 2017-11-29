@@ -34,7 +34,7 @@ class Sequencer extends BaseComponent {
     this.sendComboBox = this.root.getElementById('sendComboBox');
     this.buildNotes();
 
-    const elementWidth = this.synthContainer.getBoundingClientRect().width;
+    const elementWidth = this.noteContainer.getBoundingClientRect().width;
     const tickPercentWidth = 100 * (elementWidth / STEP_LENGTH) / elementWidth;
     const backgroundImage = getBackgroundImage(tickPercentWidth);
     this.synthContainer.style.setProperty('background-image', backgroundImage);
@@ -42,10 +42,10 @@ class Sequencer extends BaseComponent {
     this.synthContainer.addEventListener('dblclick', $event => {
       $event.preventDefault();
       $event.stopPropagation();
-      const boundingBox = this.synthContainer.getBoundingClientRect();
+      const boundingBox = this.noteContainer.getBoundingClientRect();
       const percentX = ($event.clientX - boundingBox.left) / boundingBox.width;
-      const startTick = Math.round(percentX * STEP_LENGTH) - 2;
-      const percentY = ($event.clientY - boundingBox.top) / boundingBox.height;
+      const startTick = Math.round(percentX * STEP_LENGTH);
+      const percentY = ($event.clientY - 10 - boundingBox.top) / boundingBox.height;
       const noteValue = percentY * -2 + 1;
       const note = new Note(noteValue, 4, 12, startTick);
       const synthNoteElement = document.createElement('synth-note');

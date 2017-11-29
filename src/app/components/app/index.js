@@ -3,7 +3,6 @@ import Component from 'components/_util/component';
 import 'components/_util/componentManager.js';
 import metronomeManager from 'services/metronome/metronomeManager';
 
-
 const COMPONENT_NAME = 'app-entry';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
@@ -14,7 +13,6 @@ class App extends BaseComponent {
 
   constructor() {
     super(style, markup);
-    console.log('---', this)
   }
 
 }

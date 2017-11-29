@@ -1,7 +1,5 @@
 
 <div class="grain-maker">
-  <p>Grains</p>
-
   <!--
     PARAMS FROM POLYSOUND:
       position
@@ -14,55 +12,63 @@
       threshold
   -->
 
-  <div class="grain-param-row">
-    <p>Position</p>
-    <slider-horizontal
-      id="position-slider"
-      onchange="onPositionUpdate"
-      class="slider">
-    </slider-horizontal>
-    <p id="positionOutput"></p>
+  <div class="grain-column">
+
+    <div class="grain-param-row">
+      <p class="param-label">Position</p>
+      <slider-horizontal
+        id="position-slider"
+        onchange="onPositionUpdate"
+        class="slider">
+      </slider-horizontal>
+      <p id="positionOutput" class="param-output" />
+    </div>
+
+    <div class="grain-param-row">
+      <p class="param-label">Spread</p>
+      <slider-horizontal
+        id="spread-slider"
+        onchange="onSpreadUpdate"
+        class="slider">
+      </slider-horizontal>
+      <p id="spreadOutput" class="param-output" />
+    </div>
+
+    <div class="grain-param-row ">
+      <p class="param-label">Loop Duration</p>
+      <slider-horizontal
+        id="loopDuration-slider"
+        onchange="onLoopDurationUpdate"
+        class="slider">
+      </slider-horizontal>
+      <p id="loopDurationOutput" class="param-output" />
+    </div>
+
+    <div class="grain-param-row ">
+      <p class="param-label">Time Scatter</p>
+      <slider-horizontal
+        id="timeScatter-slider"
+        onchange="onTimeScatterUpdate"
+        class="slider">
+      </slider-horizontal>
+      <p id="timeScatterOutput" class="param-output" />
+    </div>
+
+    <div class="grain-param-row ">
+      <p class="param-label">Number of Voices</p>
+      <slider-horizontal
+        id="numVoices-slider"
+        onchange="onNumVoicesUpdate"
+        class="slider">
+      </slider-horizontal>
+      <p id="numVoicesOutput" class="param-output" />
+    </div>
+
   </div>
 
-  <div class="grain-param-row">
-    <p>Spread</p>
-    <slider-horizontal
-      id="spread-slider"
-      onchange="onSpreadUpdate"
-      class="slider">
-    </slider-horizontal>
-    <p id="spreadOutput"></p>
+  <!--   SAMPLER   -->
+  <div class="grain-column">
+    <simple-sampler></simple-sampler>
   </div>
-
-  <div class="grain-param-row">
-    <p>Loop Duration</p>
-    <slider-horizontal
-      id="loopDuration-slider"
-      onchange="onLoopDurationUpdate"
-      class="slider">
-    </slider-horizontal>
-    <p id="loopDurationOutput"></p>
-  </div>
-
-  <div class="grain-param-row">
-    <p>Time Scatter</p>
-    <slider-horizontal
-      id="timeScatter-slider"
-      onchange="onTimeScatterUpdate"
-      class="slider">
-    </slider-horizontal>
-    <p id="timeScatterOutput"></p>
-  </div>
-
-  <div class="grain-param-row">
-    <p>Number of Voices</p>
-    <slider-horizontal
-      id="numVoices-slider"
-      onchange="onNumVoicesUpdate"
-      class="slider">
-    </slider-horizontal>
-    <p id="numVoicesOutput"></p>
-  </div>
-
 
 </div>

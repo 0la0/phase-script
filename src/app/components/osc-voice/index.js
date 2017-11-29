@@ -29,7 +29,7 @@ class OscVoice extends BaseComponent {
 
   onGainUpdate(value) {
     this.osc.gain = value;
-    this.output.gain.innerText = value.toFixed(3);
+    this.output.gain.innerText = value.toFixed(2);
   }
 
   getOsc() {
