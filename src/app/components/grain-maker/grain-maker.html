@@ -14,6 +14,23 @@
 
   <div class="grain-column">
 
+    <flat-button
+      click="onContinuousToggle"
+      isToggle="true"
+      ontext="stop"
+      offtext="start">
+    </flat-button>
+
+    <div class="grain-param-row">
+      <p class="param-label">Grains/Tick</p>
+      <slider-horizontal
+        id="grainsPerTick-slider"
+        onchange="onGrainsPerTickUpdate"
+        class="slider">
+      </slider-horizontal>
+      <p id="grainsPerTickOutput" class="param-output" />
+    </div>
+
     <div class="grain-param-row">
       <p class="param-label">Position</p>
       <slider-horizontal
@@ -68,7 +85,7 @@
 
   <!--   SAMPLER   -->
   <div class="grain-column">
-    <simple-sampler></simple-sampler>
+    <simple-sampler id="sampler"></simple-sampler>
   </div>
 
 </div>

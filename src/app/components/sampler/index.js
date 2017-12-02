@@ -60,6 +60,10 @@ class Sampler extends BaseComponent {
     play(this.sampleKey, 0, this.asr);
   }
 
+  schedule(onTime) {
+    play(this.sampleKey, onTime, this.asr);
+  }
+
   onAttackUpdate(value) {
     this.asr.attack = value;
     this.output.attack.innerText = value.toFixed(2);

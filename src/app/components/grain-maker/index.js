@@ -1,7 +1,8 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
+import { IntArray } from 'components/_util/math';
 import audioEventBus from 'services/AudioEventBus';
-// import sampler from 'services/audio/sampler';
+import metronomeManager from 'services/metronome/metronomeManager';
 import { getSampleKeys } from 'services/audio/sampleBank';
 
 const COMPONENT_NAME = 'grain-maker';
@@ -26,7 +27,8 @@ const PARAMS = {
   spread: 'spread',
   loopDuration: 'loopDuration',
   timeScatter: 'timeScatter',
-  numVoices: 'numVoices'
+  numVoices: 'numVoices',
+  grainsPerTick: 'grainsPerTick'
 };
 
 class GrainInstrument {
@@ -37,6 +39,7 @@ class GrainInstrument {
     this.loopDuration = 0.01;
     this.timeScatter = 0;
     this.numVoices = 0;
+    this.grainsPerTick = 0;
   }
 
 }
@@ -45,15 +48,17 @@ class GrainMaker extends BaseComponent {
 
   constructor() {
     super(style, markup);
-    this.grainInstrument = new GrainInstrument();
   }
 
   connectedCallback() {
+    this.schedulable = this.buildSchedulable();
+    // this.scheduler = metronomeManager.getScheduler();
+    this.grainInstrument = new GrainInstrument();
+    this.isContinuouslyPlaying = false;
+
     audioEventBus.subscribe({
       address: 'GRAIN-MAKER',
-      onNext: message => {
-        console.log('grain message', message);
-      }
+      onNext: message => this.scheduleAudio(message)
     });
 
     this.output = Object.keys(PARAMS).reduce((output, param) => {
@@ -67,6 +72,39 @@ class GrainMaker extends BaseComponent {
       return Object.assign(output, { [param]: element });
     }, {});
 
+    this.sampler = this.root.getElementById('sampler');
+  }
+
+  scheduleAudio(message) {
+    if (this.isContinuouslyPlaying) { return; }
+    const { note, onTime, offTime, value, } = message;
+    // TODO: make this a paramater of the grainInstrument
+    const tempo = metronomeManager.getMetronome().getTempo();
+    const deltaTimeStep = tempo / 60 / 128; // GET TICK LENGTH?
+    const numberOfGrains =  (offTime - onTime) / deltaTimeStep;
+    const timeScatter = this.grainInstrument.timeScatter * Math.random(); // NOTE: this only scatters in positive direction
+
+
+    const grainSchedules = new Array(numberOfGrains).fill(null)
+      .map((nullVal, index) => onTime + (index * deltaTimeStep))
+      .map(schedule => schedule + this.grainInstrument.timeScatter * Math.random());
+
+    // let voiceSpread = this.voiceSpread * i;
+    const playShedule = onTime + timeScatter;
+    // if (Math.random() <= this.playThreshold) {
+      // this.sampler.schedule(playShedule);
+    // }
+
+    grainSchedules.forEach(schedule => this.sampler.schedule(schedule));
+  }
+
+  scheduleTicks(onTime) {
+    const tickLength = metronomeManager.getMetronome().getTickLength();
+    const deltaTimeStep = tickLength / this.grainInstrument.grainsPerTick;
+    const schedules = IntArray(this.grainInstrument.grainsPerTick)
+      .map(index => onTime + (index * deltaTimeStep))
+      .map(schedule => schedule + this.grainInstrument.timeScatter * Math.random())
+      .forEach(schedule => this.sampler.schedule(schedule));
   }
 
   onPositionUpdate(value) {
@@ -93,6 +131,28 @@ class GrainMaker extends BaseComponent {
     const discreetValue = Math.floor(value * 5) + 1;
     this.grainInstrument.numVoices = discreetValue;
     this.output.numVoices.innerText = discreetValue;
+  }
+
+  onGrainsPerTickUpdate(value) {
+    const discreetValue = Math.floor(value * 8) + 1;
+    this.grainInstrument.grainsPerTick = discreetValue;
+    this.output.grainsPerTick.innerText = discreetValue;
+  }
+
+  onContinuousToggle(value) {
+    this.isContinuouslyPlaying = !this.isContinuouslyPlaying;
+    this.isContinuouslyPlaying ?
+      metronomeManager.getScheduler().register(this.schedulable) :
+      metronomeManager.getScheduler().deregister(this.schedulable);
+  }
+
+  buildSchedulable() {
+    return {
+      processTick: (tickNumber, time) => this.scheduleTicks(time.audio),
+      render: (tick, lastTick) => {},
+      start: () => console.log('grain schedule start'),
+      stop: () => console.log('grain schedule stop')
+    };
   }
 
 }
