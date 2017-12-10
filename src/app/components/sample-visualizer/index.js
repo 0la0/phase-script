@@ -12,7 +12,6 @@ const HALF_HEIGHT = HEIGHT / 2;
 const RENDER_MAGNITUDE = 15;
 
 function getWaveform(audioBuffer, canvasWidth) {
-  //assume one channel for Now
   const peaks = [];
   const stepSize = Math.floor(audioBuffer.length / canvasWidth);
   const leftChannel = audioBuffer.getChannelData(0);
@@ -37,19 +36,52 @@ class SampleVisualizer extends BaseComponent {
       sustain: 0,
       release: 0
     };
+    this.mouseIsDown = false;
+    this.bufferDuration = 0;
+    this.startOffset = 0;
+    this.startOffsetCallback = () => {};
   }
 
   connectedCallback() {
-    const canvas = this.root.getElementById('canvas');
-    canvas.width = WIDTH;
-    canvas.height = HEIGHT;
-    this.g2d = canvas.getContext('2d');
+    this.canvas = this.root.getElementById('canvas');
+    this.canvas.width = WIDTH;
+    this.canvas.height = HEIGHT;
+    this.g2d = this.canvas.getContext('2d');
     this.g2d.strokeStyle = 'rgba(0, 0, 0, 0.4)';
     this.g2d.fillStyle = 'rgba(0, 0, 0, 0.4)';
+
+    this.canvas.addEventListener('mousedown', this.onMouseDown.bind(this));
+    this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
+    this.canvas.addEventListener('mouseup', () => this.mouseIsDown = false);
+    this.canvas.addEventListener('mouseout', () => this.mouseIsDown = false);
+  }
+
+  onMouseDown(event) {
+    this.mouseIsDown = true;
+    this.setStart(event.clientX);
+  }
+
+  onMouseMove(event) {
+    if (!this.mouseIsDown) { return; }
+    this.setStart(event.clientX);
+  }
+
+  setStart(clientX) {
+    const boundingBox = this.canvas.getBoundingClientRect();
+    const percentX = (clientX - boundingBox.left) / boundingBox.width;
+    const startOffset = percentX * this.bufferDuration;
+    this.startOffset = percentX;
+    this.startOffsetCallback(startOffset);
+    this.render();
+  }
+
+  setStartOffsetCallback(cb) {
+    this.startOffsetCallback = cb;
   }
 
   setAudioBuffer(audioBuffer, asr) {
     this.audioBuffer = audioBuffer;
+    this.bufferDuration = audioBuffer.duration;
     this.asr = asr;
     getWaveform(audioBuffer, WIDTH)
       .then(frequencyList => this.frequencyList = frequencyList)
@@ -66,7 +98,7 @@ class SampleVisualizer extends BaseComponent {
   }
 
   render() {
-    const playbackStart = (this.playbackPosition || 0) * WIDTH;
+    const playbackStart = (this.startOffset || 0) * WIDTH;
     const secondMultiplier = (1 / this.audioBuffer.duration) * WIDTH;
     const sustainStart = playbackStart + secondMultiplier * this.asr.attack;
     const decayStart = sustainStart + secondMultiplier * this.asr.sustain

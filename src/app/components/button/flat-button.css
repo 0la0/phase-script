@@ -1,13 +1,16 @@
-.button {
+button {
+  background-color: Transparent;
+  background-repeat:no-repeat;
   border: 1px solid #DDDDDD;
   border-radius: 4px;
-  color: black;
-  text-align: center;
-  margin: 2px;
-  padding: 4px;
-  user-select: none;
-  cursor: pointer;
   color: #DDDDDD;
+  cursor: pointer;
+  margin: 2px;
+  outline: none;
+  padding: 4px;
+  text-align: center;
+  user-select: none;
+  width: 100%;
 }
 
 .button--active {

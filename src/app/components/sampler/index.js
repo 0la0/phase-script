@@ -23,6 +23,7 @@ class Sampler extends BaseComponent {
       sustain: 0.1,
       release: 0.01
     };
+    this.startOffset = 0;
   }
 
   connectedCallback() {
@@ -34,6 +35,7 @@ class Sampler extends BaseComponent {
 
     this.samplerLabel = this.root.getElementById('samplerLabel');
     this.sampleVisualizer = this.root.getElementById('sampleVisualizer');
+    this.sampleVisualizer.setStartOffsetCallback(startOffset => this.startOffset = startOffset);
 
     // --- SLIDERS --- //
     this.output = Object.keys(PARAMS).reduce((output, param) => {
@@ -57,11 +59,11 @@ class Sampler extends BaseComponent {
   }
 
   onPlayerClick() {
-    play(this.sampleKey, 0, this.asr);
+    play(this.sampleKey, 0, this.startOffset, this.asr);
   }
 
   schedule(onTime) {
-    play(this.sampleKey, onTime, this.asr);
+    play(this.sampleKey, onTime, this.startOffset, this.asr);
   }
 
   onAttackUpdate(value) {

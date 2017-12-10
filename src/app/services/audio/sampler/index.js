@@ -5,7 +5,7 @@ import { getAudioBuffer } from 'services/audio/sampleBank';
 
 // flow: sampler -> adsr -> gain -> abstractOutput
 
-function playSample(audioContext, audioBuffer, scheduledTime, asr) {
+function playSample(audioContext, audioBuffer, scheduledTime, startOffset, asr) {
   const sampler = audioContext.createBufferSource();
   const gain = audioContext.createGain();
   const output = audioGraph.getOutput();
@@ -20,12 +20,12 @@ function playSample(audioContext, audioBuffer, scheduledTime, asr) {
   envelope.connect(gain);
   sampler.connect(envelope);
   sampler.buffer = audioBuffer;
-  sampler.start(scheduledTime);
+  sampler.start(scheduledTime, startOffset);
 }
 
-function play(sampleKey, scheduledTime, asr) {
+function play(sampleKey, scheduledTime, startOffset, asr) {
   const audioBuffer = getAudioBuffer(sampleKey);
-  playSample(audioGraph.getAudioContext(), audioBuffer, scheduledTime, asr);
+  playSample(audioGraph.getAudioContext(), audioBuffer, scheduledTime, startOffset, asr);
 }
 
 // TODO: remove ... regristration should happen in instrument components
