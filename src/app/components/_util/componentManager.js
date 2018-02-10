@@ -20,6 +20,7 @@ import GrainMaker from 'components/grain-maker';
 import ComboBox from 'components/combo-box';
 import Sampler from 'components/sampler';
 import SampleVisualizer from 'components/sample-visualizer';
+import SoundRoot from 'components/sound-root';
 
 const components = [
   app,
@@ -43,7 +44,8 @@ const components = [
   GrainMaker,
   ComboBox,
   Sampler,
-  SampleVisualizer
+  SampleVisualizer,
+  SoundRoot
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

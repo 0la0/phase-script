@@ -31,6 +31,8 @@ const PARAMS = {
   grainsPerTick: 'grainsPerTick'
 };
 
+let instanceCnt = 0;
+
 class GrainInstrument {
 
   constructor() {
@@ -57,7 +59,7 @@ class GrainMaker extends BaseComponent {
     this.isContinuouslyPlaying = false;
 
     audioEventBus.subscribe({
-      address: 'GRAIN-MAKER',
+      address: `GRAIN-MAKER_${instanceCnt++}`,
       onNext: message => this.scheduleAudio(message)
     });
 
@@ -66,11 +68,13 @@ class GrainMaker extends BaseComponent {
       return Object.assign(output, { [param]: element });
     }, {});
 
-    this.sliders = Object.keys(PARAMS).reduce((output, param) => {
-      const element = this.root.getElementById(`${param}-slider`);
-      element.setValue(this.grainInstrument[param], true);
-      return Object.assign(output, { [param]: element });
-    }, {});
+    setTimeout(() => {
+      this.sliders = Object.keys(PARAMS).reduce((output, param) => {
+        const element = this.root.getElementById(`${param}-slider`);
+        element.setValue(this.grainInstrument[param], true);
+        return Object.assign(output, { [param]: element });
+      }, {});
+    });
 
     this.sampler = this.root.getElementById('sampler');
   }
@@ -153,6 +157,14 @@ class GrainMaker extends BaseComponent {
       start: () => console.log('grain schedule start'),
       stop: () => console.log('grain schedule stop')
     };
+  }
+
+  setOnRemoveCallback(onRemoveCallback) {
+    this.onRemoveCallback = onRemoveCallback;
+  }
+
+  onRemove() {
+    this.onRemoveCallback && this.onRemoveCallback();
   }
 
 }

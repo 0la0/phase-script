@@ -12,6 +12,8 @@ const PARAMS = {
   release: 'release'
 };
 
+let instanceCnt = 0;
+
 class OscSynth extends BaseComponent {
 
   constructor() {
@@ -22,7 +24,7 @@ class OscSynth extends BaseComponent {
   connectedCallback() {
     // TODO: static implementation of addresses on event bus class
     audioEventBus.subscribe({
-      address: 'SYNTH',
+      address: `SYNTH_${instanceCnt++}`,
       onNext: message => {
         this.synth.playNote(message.note, this.getOscillators(), message.onTime, message.offTime);
       }
@@ -33,11 +35,13 @@ class OscSynth extends BaseComponent {
       return Object.assign(output, { [param]: element });
     }, {});
 
-    this.sliders = Object.keys(PARAMS).reduce((output, param) => {
-      const element = this.root.getElementById(`${param}-slider`);
-      element.setValue(this.synth.asr[param], true);
-      return Object.assign(output, { [param]: element });
-    }, {});
+    setTimeout(() => {
+      this.sliders = Object.keys(PARAMS).reduce((output, param) => {
+        const element = this.root.getElementById(`${param}-slider`);
+        element.setValue(this.synth.asr[param], true);
+        return Object.assign(output, { [param]: element });
+      }, {});
+    });
 
     this.voiceContainer = this.root.getElementById('voiceContainer');
   }
@@ -59,6 +63,14 @@ class OscSynth extends BaseComponent {
 
   getOscillators() {
     return [...this.voiceContainer.children].map(ele => ele.getOsc());
+  }
+
+  setOnRemoveCallback(onRemoveCallback) {
+    this.onRemoveCallback = onRemoveCallback;
+  }
+
+  onRemove() {
+    this.onRemoveCallback && this.onRemoveCallback();
   }
 
 }

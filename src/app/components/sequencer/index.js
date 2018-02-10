@@ -60,7 +60,7 @@ class Sequencer extends BaseComponent {
         const optionList = addresses.map(address => ({
           label: address, value: address
         }));
-        this.sendComboBox.setOptions(optionList);
+        setTimeout(() => this.sendComboBox.setOptions(optionList));
       }
     });
   }
@@ -99,8 +99,8 @@ class Sequencer extends BaseComponent {
         const playHeadPosition = (relativeTick / STEP_LENGTH) * 100;
         this.playHead.style.setProperty('left', `${playHeadPosition}%`);
       },
-      start: () => console.log('synth start'),
-      stop: () => console.log('synth stop')
+      start: () => {},
+      stop: () => {}
     };
   }
 
@@ -150,6 +150,14 @@ class Sequencer extends BaseComponent {
 
   onSendChange(value) {
     this.publishAddress = value;
+  }
+
+  setOnRemoveCallback(onRemoveCallback) {
+    this.onRemoveCallback = onRemoveCallback;
+  }
+
+  onRemove() {
+    this.onRemoveCallback && this.onRemoveCallback();
   }
 
 }
