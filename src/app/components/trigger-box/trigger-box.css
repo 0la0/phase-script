@@ -1,0 +1,16 @@
+.trigger-box {
+  border: var(--border-default);
+  border-radius: var(--border-radius);
+}
+
+.visualizer {
+  border: var(--border-default);
+  border-radius: var(--border-radius);
+  background-color: var(--color-dark);
+  width: 10px;
+  height: 8px;
+}
+
+.visualizer--active {
+  background-color: var(--color-accent);
+}

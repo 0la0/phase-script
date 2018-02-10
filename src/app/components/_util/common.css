@@ -4,6 +4,7 @@
   --color-grey: #999;
   --color-grey-light: #CCC;
   --color-white: #FFF;
+  --color-accent: #7799DD;
 
   --border-default: 1px solid var(--color-grey);
   --border-radius: 4px;

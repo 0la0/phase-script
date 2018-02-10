@@ -1,5 +1,4 @@
 const commonStyles = require('./common.css');
-console.log('commonStyles', commonStyles);
 
 function buildShadowDom(element, innerHTML) {
   let shadowRoot = element.attachShadow({mode: 'open'});

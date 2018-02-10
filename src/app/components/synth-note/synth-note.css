@@ -1,6 +1,6 @@
 .synth-note {
   height: 15px;
-  background-color: #7799DD;
+  background-color: var(--color-accent);
   position: absolute;
 }
 .synth-note:hover > .label {

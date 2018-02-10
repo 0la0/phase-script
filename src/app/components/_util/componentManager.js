@@ -21,6 +21,7 @@ import ComboBox from 'components/combo-box';
 import Sampler from 'components/sampler';
 import SampleVisualizer from 'components/sample-visualizer';
 import SoundRoot from 'components/sound-root';
+import TriggerBox from 'components/trigger-box';
 
 const components = [
   app,
@@ -45,7 +46,8 @@ const components = [
   ComboBox,
   Sampler,
   SampleVisualizer,
-  SoundRoot
+  SoundRoot,
+  TriggerBox
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));
