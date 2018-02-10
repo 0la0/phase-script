@@ -35,7 +35,7 @@ class SliderHorizontal extends BaseComponent {
     this.addEventListener('mousemove', $event => this.userEvent($event));
   }
 
-  userEvent($event) {
+  userEvent(event) {
     if (!this.isActive) { return; }
     const boundingRect = this.getBoundingClientRect();
     const normalizedPosition = event.pageX - boundingRect.left;

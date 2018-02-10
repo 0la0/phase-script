@@ -17,7 +17,7 @@ class Osc {
     const osc = audioGraph.getAudioContext().createOscillator();
     osc.connect(adsrEnvelope);
     osc.type = this.type;
-    osc.frequency.value = frequency;
+    osc.frequency.setValueAtTime(frequency, 0);
     osc.start(onTime);
     osc.stop(offTime);
   }

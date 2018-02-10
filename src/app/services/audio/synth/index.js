@@ -8,7 +8,7 @@ import {mtof} from 'services/midi/util';
 function buildOsc(oscillator, output) {
   const synth = new Osc(oscillator.type);
   const gain = audioGraph.getAudioContext().createGain();
-  gain.gain.value = oscillator.gain;
+  gain.gain.setValueAtTime(oscillator.gain, 0);
   gain.connect(output);
   return {gain, synth};
 }
