@@ -15,6 +15,8 @@ class SoundRoot extends BaseComponent {
     this.sequencerContainer = this.root.getElementById('sequencer-container');
     this.synthContainer = this.root.getElementById('synth-container');
     this.grainContainer = this.root.getElementById('grain-container');
+    this.samplerContainer = this.root.getElementById('sampler-container');
+    this.triggerContainer = this.root.getElementById('trigger-box-container');
   }
 
   onAddSequencer() {
@@ -33,6 +35,18 @@ class SoundRoot extends BaseComponent {
     const grainularSampler = document.createElement('grain-maker');
     grainularSampler.setOnRemoveCallback(() => this.grainContainer.removeChild(grainularSampler));
     this.grainContainer.appendChild(grainularSampler);
+  }
+
+  onAddSampler() {
+    const sampler = document.createElement('simple-sampler');
+    sampler.setOnRemoveCallback(() => this.samplerContainer.removeChild(sampler));
+    this.samplerContainer.appendChild(sampler);
+  }
+
+  onAddTrigger() {
+    const trigger = document.createElement('trigger-box');
+    trigger.setOnRemoveCallback(() => this.triggerContainer.removeChild(trigger));
+    this.triggerContainer.appendChild(trigger);
   }
 
 }

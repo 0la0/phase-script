@@ -42,14 +42,10 @@ class FlatButton extends BaseComponent {
   attributeChangedCallback(attribute, oldVal, newVal) {}
 
   trigger(isFirst) {
-    if (this.onClick && isFirst) {
-      this.onClick()
-    }
+    this.onClick();
+    if (!this.isToggle) { return; }
     this.isOn = !this.isOn;
     this.render();
-    if (!this.isToggle && isFirst) {
-      setTimeout(() => this.trigger(false), 20);
-    }
   }
 
   render() {

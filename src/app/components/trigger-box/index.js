@@ -33,8 +33,7 @@ class TriggerBox extends BaseComponent {
         const optionList = addresses.map(address => ({
           label: address, value: address
         }));
-        this.sendComboBox.setOptions(optionList);
-        // setTimeout(() => this.sendComboBox.setOptions(optionList));
+        setTimeout(() => this.sendComboBox.setOptions(optionList));
       }
     });
   }
@@ -65,24 +64,32 @@ class TriggerBox extends BaseComponent {
   buildSchedulable() {
     return {
       processTick: (tickNumber, time) => {
-        if (tickNumber % this.params.frequency !== 0) {
+        if ((tickNumber - this.params.base) % this.params.frequency !== 0) {
           return;
         }
         this.trigger(tickNumber, time);
       },
       render: (tickNumber, lastTickNumber) => {
-        if (tickNumber % this.params.frequency === 0) {
+        if ((tickNumber - this.params.base) % this.params.frequency === 0) {
           this.visualizer.classList.add('visualizer--active');
           return;
         }
-        if (tickNumber % this.params.frequency === 1) {
+        if ((tickNumber - this.params.base) % this.params.frequency === 1) {
           this.visualizer.classList.remove('visualizer--active');
           return;
         }
       },
       start: () => {},
-      stop: () => {}
+      stop: () => this.visualizer.classList.remove('visualizer--active')
     };
+  }
+
+  setOnRemoveCallback(onRemoveCallback) {
+    this.onRemoveCallback = onRemoveCallback;
+  }
+
+  onRemove() {
+    this.onRemoveCallback && this.onRemoveCallback();
   }
 
 }

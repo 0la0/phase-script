@@ -2,6 +2,7 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { getSampleKeys, getAudioBuffer } from 'services/audio/sampleBank';
 import { play } from 'services/audio/sampler';
+import audioEventBus from 'services/AudioEventBus';
 
 const COMPONENT_NAME = 'simple-sampler';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -12,6 +13,8 @@ const PARAMS = {
   sustain: 'sustain',
   release: 'release'
 };
+
+let instanceCnt = 0;
 
 class Sampler extends BaseComponent {
 
@@ -31,11 +34,17 @@ class Sampler extends BaseComponent {
     const samples = getSampleKeys().map(sampleName => ({
       label: sampleName, value: sampleName
     }));
-    sampleSelect.setOptions(samples);
+
+    this.audioEventSubscription = {
+      address: `SAMPLE_${instanceCnt++}`,
+      onNext: message => {
+        play(this.sampleKey, message.onTime, this.startOffset, this.asr);
+      }
+    };
+    audioEventBus.subscribe(this.audioEventSubscription);
 
     this.samplerLabel = this.root.getElementById('samplerLabel');
     this.sampleVisualizer = this.root.getElementById('sampleVisualizer');
-    this.sampleVisualizer.setStartOffsetCallback(startOffset => this.startOffset = startOffset);
 
     // --- SLIDERS --- //
     this.output = Object.keys(PARAMS).reduce((output, param) => {
@@ -43,11 +52,16 @@ class Sampler extends BaseComponent {
       return Object.assign(output, { [param]: element });
     }, {});
 
-    this.sliders = Object.keys(PARAMS).reduce((output, param) => {
-      const element = this.root.getElementById(`${param}-slider`);
-      element.setValue(this.asr[param], true);
-      return Object.assign(output, { [param]: element });
-    }, {});
+    setTimeout(() => {
+      sampleSelect.setOptions(samples);
+      this.sampleVisualizer.setStartOffsetCallback(startOffset => this.startOffset = startOffset);
+
+      this.sliders = Object.keys(PARAMS).reduce((output, param) => {
+        const element = this.root.getElementById(`${param}-slider`);
+        element.setValue(this.asr[param], true);
+        return Object.assign(output, { [param]: element });
+      }, {});
+    });
   }
 
   onSampleChange(value) {
@@ -82,6 +96,15 @@ class Sampler extends BaseComponent {
     this.asr.release = value;
     this.output.release.innerText = value.toFixed(2);
     this.sampleVisualizer.setAsr(this.asr);
+  }
+
+  setOnRemoveCallback(onRemoveCallback) {
+    this.onRemoveCallback = onRemoveCallback;
+  }
+
+  onRemove() {
+    this.onRemoveCallback && this.onRemoveCallback();
+    audioEventBus.unsubscribe(this.audioEventSubscription);
   }
 
 }

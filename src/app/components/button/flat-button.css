@@ -1,12 +1,10 @@
 button {
   background-color: Transparent;
   background-repeat:no-repeat;
-  border: 1px solid #DDDDDD;
   border: var(--border-default);
   border-radius: var(--border-radius);
   color: #DDDDDD;
   cursor: pointer;
-  margin: 2px;
   outline: none;
   padding: 4px;
   text-align: center;

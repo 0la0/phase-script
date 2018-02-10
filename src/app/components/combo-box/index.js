@@ -18,14 +18,18 @@ class ComboBox extends BaseComponent {
       const functionName = this.getAttribute('change');
       const targetElement = getElementWithFunctionName(this.parentNode, functionName);
       if (targetElement) {
-        const onChange = targetElement[functionName].bind(targetElement);
-        setTimeout(() => this.setCallback(onChange));
+        setTimeout(() => {
+          const onChange = targetElement[functionName].bind(targetElement);
+          this.setCallback(onChange);
+        });
       }
     }
 
     this.selectElement = this.root.getElementById('select-box');
     this.selectElement.innerHTML = this.originalMarkup;
     this.selectElement.addEventListener('change', this.onValueChange.bind(this));
+
+    setTimeout(() => this.onValueChange(), 20);
   }
 
   setCallback(onChangeCallback) {
@@ -46,6 +50,7 @@ class ComboBox extends BaseComponent {
   }
 
   onValueChange() {
+    if (this.selectElement.selectedIndex < 0) { return; }
     const value = this.selectElement[this.selectElement.selectedIndex].value;
     this.onChangeCallback(value);
   }
