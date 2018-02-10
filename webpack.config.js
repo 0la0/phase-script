@@ -1,12 +1,26 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-  entry: './src/entrypoints',
+  context: path.resolve(__dirname, 'src'),
+  entry: {
+    main: './entrypoints/main.js',
+  },
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    publicPath: '',
+    path: path.resolve(__dirname, './dist'),
+    filename: '[name].bundle.js',
+    sourceMapFilename: '[name].map',
+    chunkFilename: '[id].chunk.js'
   },
   devtool: 'source-map',
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'index.html',
+      filename: 'index.html',
+      inject: 'body'
+    }),
+  ],
   module: {
     loaders: [
       {
@@ -21,5 +35,15 @@ module.exports = {
       components: path.resolve(__dirname, 'src/app/components/'),
       services: path.resolve(__dirname, 'src/app/services/')
     }
-  }
+  },
+  devServer: {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+    },
+    port: 3000,
+    // To access dev server from other devices on the network uncomment the following line
+    // host: '0.0.0.0', disableHostCheck: true
+  },
 };
