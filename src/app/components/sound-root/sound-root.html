@@ -1,12 +1,16 @@
-<metronome-ctrl></metronome-ctrl>
-<scale-selector></scale-selector>
-<!-- <poly-rythm channel="hello"></poly-rythm> -->
-<div class="row">
-  <poly-box></poly-box>
+
+<div class="row top-row">
+  <scale-selector></scale-selector>
+  <midi-manager></midi-manager>
   <graphics-controller></graphics-controller>
+  <metronome-ctrl></metronome-ctrl>
 </div>
-<midi-manager></midi-manager>
+<!-- <poly-rythm channel="hello"></poly-rythm> -->
 <!-- <markov-box></markov-box> -->
+<poly-box></poly-box>
+
+
+
 <flat-button
   id="add-sequencer-button"
   class="add-element-button"
@@ -17,7 +21,7 @@
   id="sequencer-container"
   class="container">
 </div>
-<!-- <sequence-driver></sequence-driver> -->
+
 <flat-button
   id="add-synth-button"
   class="add-element-button"
@@ -28,7 +32,6 @@
   id="synth-container"
   class="container">
 </div>
-<!-- <osc-synth></osc-synth> -->
 
 <flat-button
   id="add-grain-button"
@@ -40,4 +43,3 @@
   id="grain-container"
   class="container">
 </div>
-<!-- <grain-maker></grain-maker> -->

@@ -14,8 +14,8 @@ class GraphicsController extends BaseComponent {
   }
 
   connectedCallback() {
-    const stateContainer = this.root.getElementById('optionsContainer');
-    stateContainer.addEventListener('click', $event => {
+    this.stateContainer = this.root.getElementById('optionsContainer');
+    this.stateContainer.addEventListener('click', $event => {
       if (!$event.target.id) {
         return;
       }
@@ -32,7 +32,11 @@ class GraphicsController extends BaseComponent {
         element.id = name;
         return element;
       })
-      .forEach(element => stateContainer.appendChild(element));
+      .forEach(element => this.stateContainer.appendChild(element));
+  }
+
+  onGraphicsToggleClick() {
+    this.stateContainer.classList.toggle('options-container--active');
   }
 
 }
