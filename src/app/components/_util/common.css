@@ -1,0 +1,20 @@
+:host {
+  --color-black: #000;
+  --color-grey-dark: #666;
+  --color-grey: #999;
+  --color-grey-light: #CCC;
+  --color-white: #FFF;
+
+  --border-default: 1px solid var(--color-grey);
+  --border-radius: 4px;
+}
+
+p {
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

@@ -1,3 +1,5 @@
+const commonStyles = require('./common.css');
+console.log('commonStyles', commonStyles);
 
 function buildShadowDom(element, innerHTML) {
   let shadowRoot = element.attachShadow({mode: 'open'});
@@ -15,7 +17,7 @@ export default class BaseComponent extends HTMLElement {
     this.originalText = this.innerText;
     this.originalMarkup = this.innerHTML;
     this.innerHTML = '';
-    this.root = buildShadowDom(this, `<style>${style}</style>${markup}`);
+    this.root = buildShadowDom(this, `<style>${commonStyles}${style}</style>${markup}`);
   }
 
 }
