@@ -17,6 +17,7 @@ class AudioEventBus {
 
   unsubscribe(subscriber) {
     this.subscribers.delete(subscriber);
+    this.onNewSubscription();
   }
 
   onNewSubscription() {

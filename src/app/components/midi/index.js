@@ -101,13 +101,15 @@ class MidiManager extends BaseComponent {
 
         const trInput = midiDeviceFactory.getInputByName(INSTRUMENTS.TR09);
         // const testInput = midiDeviceFactory.getInputList.find(input => input.name === INSTRUMENTS.TRO9);
-        trInput.onmidimessage = event => {
-          if (event.data.length === 1 && event.data[0] === 248) {
-            return;
-          }
-          const msg = getObjectFromMessage(event.data);
-          console.log('msg', msg)
-        };
+        if (trInput) {
+          trInput.onmidimessage = event => {
+            if (event.data.length === 1 && event.data[0] === 248) {
+              return;
+            }
+            const msg = getObjectFromMessage(event.data);
+            console.log('msg', msg)
+          };
+        }
       })
       .catch(error => console.log('provideMidiFactory error', error));
   }

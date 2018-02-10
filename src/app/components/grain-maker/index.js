@@ -58,10 +58,11 @@ class GrainMaker extends BaseComponent {
     this.grainInstrument = new GrainInstrument();
     this.isContinuouslyPlaying = false;
 
-    audioEventBus.subscribe({
+    this.audioEventSubscription = {
       address: `GRAIN-MAKER_${instanceCnt++}`,
       onNext: message => this.scheduleAudio(message)
-    });
+    };
+    audioEventBus.subscribe(this.audioEventSubscription);
 
     this.output = Object.keys(PARAMS).reduce((output, param) => {
       const element = this.root.getElementById(`${param}Output`);
@@ -165,6 +166,7 @@ class GrainMaker extends BaseComponent {
 
   onRemove() {
     this.onRemoveCallback && this.onRemoveCallback();
+    audioEventBus.unsubscribe(this.audioEventSubscription);
   }
 
 }

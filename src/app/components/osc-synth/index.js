@@ -22,13 +22,13 @@ class OscSynth extends BaseComponent {
   }
 
   connectedCallback() {
-    // TODO: static implementation of addresses on event bus class
-    audioEventBus.subscribe({
+    this.audioEventSubscription = {
       address: `SYNTH_${instanceCnt++}`,
       onNext: message => {
         this.synth.playNote(message.note, this.getOscillators(), message.onTime, message.offTime);
       }
-    });
+    };
+    audioEventBus.subscribe(this.audioEventSubscription);
 
     this.output = Object.keys(PARAMS).reduce((output, param) => {
       const element = this.root.getElementById(`${param}Output`);
@@ -71,6 +71,7 @@ class OscSynth extends BaseComponent {
 
   onRemove() {
     this.onRemoveCallback && this.onRemoveCallback();
+    audioEventBus.unsubscribe(this.audioEventSubscription);
   }
 
 }
