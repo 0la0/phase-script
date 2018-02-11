@@ -2,7 +2,7 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import metronomeManager from 'services/metronome/metronomeManager';
 import scaleHelper from 'services/scale/scaleHelper';
-import audioEventBus from 'services/AudioEventBus';
+import { audioEventBus } from 'services/EventBus';
 import Note from './modules/note';
 import NoteSequence from './modules/noteSequence';
 import metronomeManager from 'services/metronome/metronomeManager';
@@ -23,9 +23,8 @@ class Sequencer extends BaseComponent {
   }
 
   connectedCallback() {
-    const schedulable = this.buildSchedulable();
-    const scheduler = metronomeManager.getScheduler();
-    scheduler.register(schedulable);
+    this.schedulable = this.buildSchedulable();
+    metronomeManager.getScheduler().register(this.schedulable);
 
     this.synthContainer = this.root.getElementById('visualizer');
     this.noteContainer = this.root.getElementById('noteContainer');
@@ -65,7 +64,9 @@ class Sequencer extends BaseComponent {
     });
   }
 
-  disconnectedCallback() {};
+  disconnectedCallback() {
+    metronomeManager.getScheduler().deregister(this.schedulable);
+  };
 
   attributeChangedCallback(attribute, oldVal, newVal) {}
 

@@ -1,5 +1,5 @@
 import audioGraph from 'services/audio/graph';
-import audioEventBus from 'services/AudioEventBus';
+import { audioEventBus } from 'services/EventBus';
 import { AsrEnvelope } from 'services/audio/util/Envelopes';
 import { getAudioBuffer } from 'services/audio/sampleBank';
 

@@ -1,7 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import provideMidiFactory from 'services/midi/midiDeviceFactory';
-import audioEventBus from 'services/AudioEventBus';
+import { audioEventBus } from 'services/EventBus';
 import {getMessageFromObject, getObjectFromMessage} from 'services/midi/midiEventBus';
 
 const COMPONENT_NAME = 'midi-manager';
@@ -87,12 +87,11 @@ class MidiManager extends BaseComponent {
   }
 
   onRefreshDevices() {
-    console.log('refresh devices');
     provideMidiFactory()
       .then(midiDeviceFactory => {
         const outputList = midiDeviceFactory.getOutputList();
-        console.log('outputList', outputList);
-        console.log(midiDeviceFactory.getInputList())
+        console.log('midi output list', outputList);
+        console.log('midi input list', midiDeviceFactory.getInputList())
 
         // TODO: change to: midiDeviceFactory.getOutputByName(INSTRUMENTS.TB03);
         this.tb03 = outputList.find(output => output.name === INSTRUMENTS.TB03);

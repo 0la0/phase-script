@@ -2,7 +2,7 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import buildGrid from './modules/gridBuilder';
 import metronomeManager from 'services/metronome/metronomeManager';
-import audioEventBus from 'services/AudioEventBus';
+import { audioEventBus } from 'services/EventBus';
 
 const COMPONENT_NAME = 'markov-box';
 const style = require(`./${COMPONENT_NAME}.css`);

@@ -1,6 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import audioEventBus from 'services/AudioEventBus';
+import { audioEventBus } from 'services/EventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
 
 const COMPONENT_NAME = 'trigger-box';
@@ -21,9 +21,8 @@ class TriggerBox extends BaseComponent {
   }
 
   connectedCallback() {
-    const schedulable = this.buildSchedulable();
-    const scheduler = metronomeManager.getScheduler();
-    scheduler.register(schedulable);
+    this.schedulable = this.buildSchedulable();
+    metronomeManager.getScheduler().register(this.schedulable);
 
     this.visualizer = this.root.getElementById('visualizer');
     this.sendComboBox = this.root.getElementById('sendComboBox');
@@ -36,6 +35,10 @@ class TriggerBox extends BaseComponent {
         setTimeout(() => this.sendComboBox.setOptions(optionList));
       }
     });
+  }
+
+  disconnectedCallback() {
+    metronomeManager.getScheduler().deregister(this.schedulable);
   }
 
   setFrequency(frequency) {

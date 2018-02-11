@@ -1,7 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import scaleHelper from 'services/scale/scaleHelper';
-import eventBus from 'services/EventBus';
+import { eventBus } from 'services/EventBus';
 
 const COMPONENT_NAME = 'synth-note';
 const style = require(`./${COMPONENT_NAME}.css`);

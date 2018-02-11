@@ -1,7 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { IntArray } from 'components/_util/math';
-import audioEventBus from 'services/AudioEventBus';
+import { audioEventBus } from 'services/EventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
 import { getSampleKeys } from 'services/audio/sampleBank';
 
@@ -78,6 +78,10 @@ class GrainMaker extends BaseComponent {
     });
 
     this.sampler = this.root.getElementById('sampler');
+  }
+
+  disconnectedCallback() {
+    metronomeManager.getScheduler().deregister(this.schedulable);
   }
 
   scheduleAudio(message) {

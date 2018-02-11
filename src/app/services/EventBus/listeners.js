@@ -1,4 +1,4 @@
-import eventBus from 'services/EventBus';
+import { eventBus } from 'services/EventBus';
 
 export function initListeners() {
   window.addEventListener('mousemove', $event =>

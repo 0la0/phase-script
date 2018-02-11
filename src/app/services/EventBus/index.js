@@ -12,12 +12,34 @@ class EventBus {
 
   subscribe(subscriber) {
     this.subscribers.add(subscriber);
+    this.onNewSubscription();
   }
 
   unsubscribe(subscriber) {
     this.subscribers.delete(subscriber);
+    this.onNewSubscription();
+  }
+
+  onNewSubscription() {
+    const addresses = this.getAddresses();
+    [...this.subscribers]
+      .filter(subscriber => subscriber.onNewSubscription)
+      .forEach(subscriber => subscriber.onNewSubscription(addresses));
+  }
+
+  getAddresses() {
+    return [...this.subscribers]
+      .filter(subscriber => subscriber.address)
+      .map(subscriber => subscriber.address);
   }
 }
 
 const eventBus = new EventBus();
-export default eventBus;
+const audioEventBus = new EventBus();
+const tickEventBus = new EventBus();
+
+export {
+  eventBus,
+  audioEventBus,
+  tickEventBus
+}
