@@ -1,7 +1,9 @@
 
+const EMPTY_SUBSCRIPTION = { address: '-', onNext: () => {} };
+
 class EventBus {
   constructor() {
-    this.subscribers = new Set();
+    this.subscribers = new Set([ EMPTY_SUBSCRIPTION ]);
   }
 
   publish(message) {

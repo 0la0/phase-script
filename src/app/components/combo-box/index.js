@@ -38,21 +38,34 @@ class ComboBox extends BaseComponent {
   }
 
   setOptions(options) {
-    this.selectElement.innerHTML = '';
+    const selectedValue = this.getSelectedValue();
+    let selectIndex = 0;
+    // clear dom contents
+    while (this.selectElement.firstChild) {
+      this.selectElement.firstChild.remove();
+    }
     options
       .map((option, index) => {
         const optionElement = document.createElement('option');
         optionElement.value = option.value;
         optionElement.innerText = option.label;
+        if (option.value === selectedValue) {
+          selectIndex = index;
+        }
         return optionElement;
       })
       .forEach(option => this.selectElement.appendChild(option));
+    this.selectElement.selectedIndex = selectIndex;
   }
 
   onValueChange() {
     if (this.selectElement.selectedIndex < 0) { return; }
-    const value = this.selectElement[this.selectElement.selectedIndex].value;
-    this.onChangeCallback(value);
+    this.onChangeCallback(this.getSelectedValue());
+  }
+
+  getSelectedValue() {
+    if (this.selectElement.selectedIndex < 0) { return; }
+    return this.selectElement[this.selectElement.selectedIndex].value;
   }
 
 }
