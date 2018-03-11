@@ -24,7 +24,7 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.css$|\.html$|\.worker.js$/,
+        test: /\.css$|\.html$|\.worker.js$|\.vert$|\.frag$/,
         exclude: /node_modules/,
         loaders: ['raw-loader']
       }

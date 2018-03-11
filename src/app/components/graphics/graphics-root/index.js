@@ -18,7 +18,7 @@ class GraphicsRoot extends BaseComponent {
 
   connectedCallback() {
     this.canvasElement = this.root.getElementById('cvs');;
-    this.renderer = new WebGLRenderer({canvas: this.canvasElement});
+    this.renderer = new WebGLRenderer({canvas: this.canvasElement, alpha: false, antialias: false});
     this.graphicsManager = new GraphicsManager();
 
     this.lastRenderTime = performance.now();

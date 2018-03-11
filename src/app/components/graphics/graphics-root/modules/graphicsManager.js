@@ -1,9 +1,11 @@
 import ConnectedGraph from 'components/graphics/connected-graph';
 import TriangleClusters from 'components/graphics/triangle-clusters';
+import DisplacedSpheres from 'components/graphics/displaced-spheres';
 
 const options = {
   CONNECTED_GRAPH: 'CONNECTED_GRAPH',
-  TRIANGLE_CLUSTERS: 'TRIANGLE_CLUSTERS'
+  TRIANGLE_CLUSTERS: 'TRIANGLE_CLUSTERS',
+  DISPLACED_SPHERES: 'DISPLACED_SPHERES'
 };
 
 function getGraphicsStates() {
@@ -15,7 +17,8 @@ class GraphicsManager {
     this.map = new Map();
     this.map.set(options.CONNECTED_GRAPH, new ConnectedGraph());
     this.map.set(options.TRIANGLE_CLUSTERS, new TriangleClusters());
-    this.activeState = options.TRIANGLE_CLUSTERS;
+    this.map.set(options.DISPLACED_SPHERES, new DisplacedSpheres());
+    this.activeState = options.DISPLACED_SPHERES;
   }
 
   setActiveState(activeState) {
