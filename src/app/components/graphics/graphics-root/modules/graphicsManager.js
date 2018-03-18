@@ -1,11 +1,15 @@
 import ConnectedGraph from 'components/graphics/connected-graph';
-import TriangleClusters from 'components/graphics/triangle-clusters';
 import DisplacedSpheres from 'components/graphics/displaced-spheres';
+import Particles from 'components/graphics/Particles';
+import TriangleClusters from 'components/graphics/triangle-clusters';
+import WaterSpheres from 'components/graphics/water-spheres';
 
 const options = {
   CONNECTED_GRAPH: 'CONNECTED_GRAPH',
+  DISPLACED_SPHERES: 'DISPLACED_SPHERES',
+  PARTICLES: 'PARTICLES',
   TRIANGLE_CLUSTERS: 'TRIANGLE_CLUSTERS',
-  DISPLACED_SPHERES: 'DISPLACED_SPHERES'
+  WATER_SPHERES: 'WATER_SPHERES'
 };
 
 function getGraphicsStates() {
@@ -16,9 +20,11 @@ class GraphicsManager {
   constructor() {
     this.map = new Map();
     this.map.set(options.CONNECTED_GRAPH, new ConnectedGraph());
-    this.map.set(options.TRIANGLE_CLUSTERS, new TriangleClusters());
     this.map.set(options.DISPLACED_SPHERES, new DisplacedSpheres());
-    this.activeState = options.DISPLACED_SPHERES;
+    this.map.set(options.PARTICLES, new Particles());
+    this.map.set(options.TRIANGLE_CLUSTERS, new TriangleClusters());
+    this.map.set(options.WATER_SPHERES, new WaterSpheres());
+    this.activeState = options.PARTICLES;
   }
 
   setActiveState(activeState) {

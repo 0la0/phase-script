@@ -5,7 +5,6 @@ import scaleHelper from 'services/scale/scaleHelper';
 import { audioEventBus } from 'services/EventBus';
 import Note from './modules/note';
 import NoteSequence from './modules/noteSequence';
-import metronomeManager from 'services/metronome/metronomeManager';
 
 const COMPONENT_NAME = 'sequence-driver';
 const style = require(`./${COMPONENT_NAME}.css`);

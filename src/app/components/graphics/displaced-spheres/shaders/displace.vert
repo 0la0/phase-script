@@ -1,29 +1,20 @@
-// varying vec2 vUv;
-// varying float noise;
-varying float displace;
-uniform float time;
+uniform float displaceList[5];
 
+float rand(vec2 co) {
+  return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
 
-float turbulence( vec3 p ) {
-  float t = -0.5;
-  for (float f = 1.0 ; f <= 10.0 ; f++ ){
-    float power = pow( 2.0, f );
-    t += abs( pnoise( vec3( power * p ), vec3( 10.0, 10.0, 10.0 ) ) / power );
+float getPosNeg(vec2 co) {
+  if (rand(co) > 0.5) {
+    return -1.0;
   }
-  return t;
+  return 1.0;
 }
 
 void main() {
-  float noiseBuffer = 4.0 * pnoise( 0.09 * position + vec3( 2.0 * time ), vec3( 100.0 ) );
-  float noiseBuffer2 = 8.0 * pnoise( 0.12 * position + vec3( 4.0 * time ), vec3( 100.0 ) );
-
-  float vertexNoise = 3.0 * turbulence( 0.5 * normal + time );
-  float fragmentNoise = 0.5 * turbulence( 0.5 * normal + time );
-
-  float displacement = vertexNoise + noiseBuffer;
-  float fragmentDisplacement = fragmentNoise + noiseBuffer2;
-  displace = fragmentDisplacement;
-  vec3 newPosition = position + normal * displacement;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
-
+  vec2 pos = position.xy;
+  float x = position.x + 5.0 * getPosNeg(pos) * rand(pos);
+  float y = position.y + 5.0 * getPosNeg(pos) * rand(pos);
+  float z = position.z + 5.0 * getPosNeg(pos) * rand(pos);
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(x, y, z, 1.0);
 }

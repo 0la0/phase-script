@@ -22,11 +22,11 @@ module.exports = {
     }),
   ],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.css$|\.html$|\.worker.js$|\.vert$|\.frag$/,
         exclude: /node_modules/,
-        loaders: ['raw-loader']
+        loader: 'raw-loader'
       }
     ]
   },
@@ -37,13 +37,6 @@ module.exports = {
     }
   },
   devServer: {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
-    },
-    port: 3000,
-    // To access dev server from other devices on the network uncomment the following line
-    // host: '0.0.0.0', disableHostCheck: true
-  },
+    port: 3001
+  }
 };

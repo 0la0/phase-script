@@ -7,7 +7,7 @@ import {
 } from 'three';
 import {getPosNeg} from 'components/_util/math';
 
-const goalRange = 4;
+const goalRange = 2;
 
 export default class WaterSphere {
 
