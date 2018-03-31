@@ -21,7 +21,7 @@ function getPointInSpace() {
 }
 
 function getTTL() {
-  return 50 + 900 * Math.random();
+  return 0.4 + 0.4 * Math.random();
 }
 
 function getRandomVelocity() {

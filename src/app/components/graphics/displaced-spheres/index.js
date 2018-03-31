@@ -22,18 +22,18 @@ export default class DisplacedSpheres {
     this.spheres = IntArray(NUM_SPHERES).map(index => new DisplacedSphere(vertexShader, fragmentShader));
     this.spheres.forEach(sphere => this.scene.add(sphere.getMesh()));
 
-    const light = new PointLight(0xff0000, 1, 100);
-    light.position.set(100, 100, 100);
-    this.scene.add(light);
+    // const light = new PointLight(0xff0000, 1, 100);
+    // light.position.set(100, 100, 100);
+    // this.scene.add(light);
 
     this.camera.position.set(0, 0, 200);
     this.totalTime = 0;
   }
 
   onTick(tick) {
-    if (tick.beatNumber % 8 === 0) {
-      this.activateRandomSphere();
-    }
+    // if (tick.beatNumber % 8 === 0) {
+    //   this.activateRandomSphere();
+    // }
   }
 
   update(elapsedTime) {
@@ -50,7 +50,7 @@ export default class DisplacedSpheres {
   }
 
   onClick() {
-    this.activateRandomSphere();
+    // this.activateRandomSphere();
   }
 
   activateRandomSphere() {

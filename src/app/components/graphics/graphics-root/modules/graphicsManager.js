@@ -24,7 +24,7 @@ class GraphicsManager {
     this.map.set(options.PARTICLES, new Particles());
     this.map.set(options.TRIANGLE_CLUSTERS, new TriangleClusters());
     this.map.set(options.WATER_SPHERES, new WaterSpheres());
-    this.activeState = options.PARTICLES;
+    this.activeState = options.DISPLACED_SPHERES;
   }
 
   setActiveState(activeState) {

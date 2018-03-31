@@ -1,5 +1,5 @@
 import {
-  // BackSide,
+  FrontSide,
   IcosahedronGeometry,
   Mesh,
   ShaderMaterial,
@@ -15,11 +15,14 @@ export default class DisplacedSphere {
     const size = 25 + Math.floor(10 * Math.random());
     const geometry = new IcosahedronGeometry(size, 4);
 
-
     this.uniforms = {
-      displaceList: {
-        type: 'fv1',
-        value: [0.1, 0.2, 0.3, 0.7, 0.8]
+      time: {
+        type: 'f',
+        value: Math.random()
+      },
+      magnitude: {
+        type: 'f',
+        value: 0
       }
     };
 
@@ -27,7 +30,7 @@ export default class DisplacedSphere {
       uniforms: this.uniforms,
       vertexShader,
       fragmentShader,
-      // side: BackSide,
+      side: FrontSide,
     });
     this.mesh = new Mesh(geometry, material);
     this.goalPosition = new Vector3(0, 0, 0);
@@ -42,16 +45,8 @@ export default class DisplacedSphere {
 
   update(elapsedTime, totalTime) {
     const deltaTime = performance.now() - this.startTime;
-    // this.uniforms.time.value = this.rate * totalTime * 1000;
-
-    if (!this.isActive) { return; }
-
-    this.mesh.position.add(
-      this.goalPosition.clone()
-        .sub(this.mesh.position.clone())
-        .multiplyScalar(30 * Math.random() * elapsedTime)
-    );
-    this.isActive = this.goalPosition.distanceTo(this.mesh.position) > 0.01;
+    this.uniforms.time.value = this.rate * totalTime * 1000;
+    this.uniforms.magnitude.value = 2 * Math.abs(Math.sin(totalTime));
   }
 
   activate() {

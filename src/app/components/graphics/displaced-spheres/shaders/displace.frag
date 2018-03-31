@@ -1,9 +1,9 @@
-// varying float noise;
-// varying float displace;
+varying float noise;
+varying float displacement;
 
 void main() {
-  // float b = 0.8 - displace * abs(cos(displace * 1.3));
-  // float g = (0.15 - displace * 0.2) + 0.2;
-  // float r = (1.0 - displace * 0.2) * abs(sin(displace));
-  gl_FragColor = vec4(0.8, 0.2, 0.2, 1.0);
+  float b = 0.4 - displacement;
+  float g = 0.7 - (0.15 - displacement * 0.2);
+  float r = 0.6 - displacement * 0.2;
+  gl_FragColor = vec4(r, g, b, 1.0);
 }
