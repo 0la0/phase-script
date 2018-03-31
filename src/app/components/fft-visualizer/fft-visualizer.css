@@ -1,0 +1,13 @@
+.visualizer {
+  display: none;
+}
+.visualizer--active {
+  display: block;
+}
+
+.visualizer-canvas {
+  border: 1px solid var(--color-black);
+  width: 200px;
+  height: 100px;
+  background-color: var(--color-white);
+}

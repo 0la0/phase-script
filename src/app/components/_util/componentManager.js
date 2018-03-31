@@ -22,6 +22,7 @@ import Sampler from 'components/sampler';
 import SampleVisualizer from 'components/sample-visualizer';
 import SoundRoot from 'components/sound-root';
 import TriggerBox from 'components/trigger-box';
+import FftVisualizer from 'components/fft-visualizer';
 
 const components = [
   app,
@@ -47,7 +48,8 @@ const components = [
   Sampler,
   SampleVisualizer,
   SoundRoot,
-  TriggerBox
+  TriggerBox,
+  FftVisualizer
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));
