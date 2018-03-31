@@ -6,7 +6,6 @@
 }
 
 .container {
-  /* border: 1px solid grey; */
   border: var(--border-default);
   border-radius: var(--border-radius);
   margin: 10px;

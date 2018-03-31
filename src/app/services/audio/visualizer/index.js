@@ -1,11 +1,9 @@
-// import BaseEffect from './BaseEffect.js';
 import audioGraph from 'services/audio/graph';
 
 class Visualizer {
 
   constructor () {
     this.source = audioGraph.getOutput();
-    // console.log('source', this.source)
     this.analyser = audioGraph.getAudioContext().createAnalyser();
     this.analyser.fftSize = Math.pow(2, 11);
     this.timeDataArray = new Uint8Array(this.getBufferLength());

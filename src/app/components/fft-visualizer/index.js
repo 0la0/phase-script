@@ -49,7 +49,6 @@ class FftVisualizer extends BaseComponent {
   }
 
   onToggle(event) {
-    console.log(this.visualizerParent)
     this.isOn = !this.isOn;
     this.isOn ?
       this.visualizerParent.classList.add(ACTIVE_CLASS) :
@@ -57,22 +56,13 @@ class FftVisualizer extends BaseComponent {
   }
 
   render() {
-    // console.log('render')
-
-    const timeData = visualizer.getTimeData();
-    const freqData = visualizer.getFrequencyData();
     const bufferLength = visualizer.getBufferLength();
     const step = WIDTH / bufferLength;
 
-    // const freqHasNonZeroVal = freqData.some(val => val !== 0);
-    // const timeHasNonZeroVal = timeData.some(val => val !== 128);
-    // console.log('hasNonZeroVal', freqHasNonZeroVal, timeHasNonZeroVal);
-    // return;
-    //let hzPerBin = this.model.getHzPerBin();
-
+    // render time domain
     this.timeVisualizer.clearRect(0, 0, WIDTH, HEIGHT);
     this.timeVisualizer.beginPath();
-    timeData.forEach((value, index) => {
+    visualizer.getTimeData().forEach((value, index) => {
       const normalValue = (value / MAX_BYTE) * 100;
       const x = step * index;
       const y = (MAX_BYTE / HEIGHT) + normalValue;
@@ -82,8 +72,9 @@ class FftVisualizer extends BaseComponent {
     });
     this.timeVisualizer.stroke();
 
+    // render frequency domain
     this.frequencyVisualizer.clearRect(0, 0, WIDTH, HEIGHT);
-    freqData.forEach((value, index) => {
+    visualizer.getFrequencyData().forEach((value, index) => {
       const x = step * index;
       const height = (value / MAX_BYTE) * HEIGHT;
       this.frequencyVisualizer.fillRect(x, 0, step, height);
