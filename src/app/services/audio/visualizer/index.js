@@ -34,6 +34,10 @@ class Visualizer {
     return this.freqDataArray;
   }
 
+  getCachedFrequencyData() {
+    return this.freqDataArray;
+  }
+
   getHzPerBin () {
     // note that the number of bins is half the fftSize
     return this.sampleRate / this.analyser.fftSize;

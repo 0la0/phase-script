@@ -1,20 +1,12 @@
-.container {
-  position: relative;
+.select-box {
+  background-color: var(--color-black-light);
+  color: var(--color-grey-light);
+  outline: none;
 }
-
-.options-container {
-  display: none;
-  border: 1px solid white;
-  border-radius: 4px;
-  background-color: grey;
-  position: absolute;
+.select-box:focus {
+  outline: none;
 }
-
-.options-container--active {
-  display: block;
-}
-
-.option {
-  cursor: pointer;
-  padding: 10px;
+.select-box option {
+  background-color: var(--color-grey-light);
+  color: var(--color-black-light);
 }

@@ -52,14 +52,17 @@ class GraphicsRoot extends BaseComponent {
       .addEventListener('click', $event => this.canvasElement.webkitRequestFullscreen());
     this.root.addEventListener('click', $event => this.graphicsManager.onClick($event));
 
-    graphicsChannel.addEventListener('message', $event => {
-      const type = $event.data.type;
+    graphicsChannel.addEventListener('message', event => {
+      const type = event.data.type;
       if (type === 'GRAPHICS_MODE') {
-        const graphicsState = $event.data.value;
+        const graphicsState = event.data.value;
         this.graphicsManager.setActiveState(graphicsState);
       }
       else if (type === 'TICK') {
         this.graphicsManager.onTick(event.data);
+      }
+      else if (type === 'FFT') {
+        this.graphicsManager.setFftArray(event.data);
       }
     });
 

@@ -5,26 +5,41 @@ import TriangleClusters from 'components/graphics/triangle-clusters';
 import WaterSpheres from 'components/graphics/water-spheres';
 
 const options = {
-  CONNECTED_GRAPH: 'CONNECTED_GRAPH',
-  DISPLACED_SPHERES: 'DISPLACED_SPHERES',
-  PARTICLES: 'PARTICLES',
-  TRIANGLE_CLUSTERS: 'TRIANGLE_CLUSTERS',
-  WATER_SPHERES: 'WATER_SPHERES'
+  CONNECTED_GRAPH: {
+    label: 'connected graph',
+    value: 'CONNECTED_GRAPH'
+  },
+  DISPLACED_SPHERES: {
+    label: 'displaced spheres',
+    value: 'DISPLACED_SPHERES'
+  },
+  PARTICLES: {
+    label: 'particles',
+    value: 'PARTICLES'
+  },
+  TRIANGLE_CLUSTERS: {
+    label: 'triangle clusers',
+    value: 'TRIANGLE_CLUSTERS'
+  },
+  WATER_SPHERES: {
+    label: 'water spheres',
+    value: 'WATER_SPHERES'
+  }
 };
 
 function getGraphicsStates() {
-  return Object.keys(options);
+  return Object.values(options);
 }
 
 class GraphicsManager {
   constructor() {
     this.map = new Map();
-    this.map.set(options.CONNECTED_GRAPH, new ConnectedGraph());
-    this.map.set(options.DISPLACED_SPHERES, new DisplacedSpheres());
-    this.map.set(options.PARTICLES, new Particles());
-    this.map.set(options.TRIANGLE_CLUSTERS, new TriangleClusters());
-    this.map.set(options.WATER_SPHERES, new WaterSpheres());
-    this.activeState = options.DISPLACED_SPHERES;
+    this.map.set(options.CONNECTED_GRAPH.value, new ConnectedGraph());
+    this.map.set(options.DISPLACED_SPHERES.value, new DisplacedSpheres());
+    this.map.set(options.PARTICLES.value, new Particles());
+    this.map.set(options.TRIANGLE_CLUSTERS.value, new TriangleClusters());
+    this.map.set(options.WATER_SPHERES.value, new WaterSpheres());
+    this.activeState = options.DISPLACED_SPHERES.value;
   }
 
   setActiveState(activeState) {
@@ -41,6 +56,10 @@ class GraphicsManager {
 
   onTick(tick) {
     this.map.get(this.activeState).onTick(tick);
+  }
+
+  setFftArray(fftArray) {
+    // TODO: send to graphics consumer
   }
 
   update(elapsedTime) {
