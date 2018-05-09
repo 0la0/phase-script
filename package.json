@@ -4,17 +4,19 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server --inline --colors --progress --content-base src -d"
+    "build:webpack": "webpack --mode=production --inline --colors --progress --content-base src",
+    "build": "npm run clean; npm run build:webpack",
+    "clean": "rm -rf dist",
+    "start": "webpack-dev-server --mode=development --inline --colors --progress --content-base src"
   },
   "devDependencies": {
-    "html-webpack-plugin": "^3.0.6",
+    "html-webpack-plugin": "^3.2.0",
     "raw-loader": "^0.5.1",
-    "webpack": "^4.1.1",
-    "webpack-cli": "^2.0.12",
-    "webpack-dev-server": "^3.1.1"
+    "webpack": "^4.8.1",
+    "webpack-cli": "^2.1.3",
+    "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
-    "three": "^0.91.0"
+    "three": "^0.92.0"
   }
 }
