@@ -105,8 +105,11 @@ class TriggerBox extends BaseComponent {
       // TODO: set note value ??
       // note: note.getNormalizedNoteValue(scaleHelper, parseInt(this.baseNoteInput.value)),
       // value: note.velocity,
-      onTime: time.audio,
-      offTime: time.audio + metronome.getTickLength()
+      // onTime: time.audio,
+      // offTime: time.audio + metronome.getTickLength(),
+      onTime: time.midi,
+      offTime: 0,
+      // offTime: time.midi + metronome.getTickLength() * note.duration * 1000
     });
   }
 

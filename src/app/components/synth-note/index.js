@@ -15,6 +15,7 @@ class SynthNote extends BaseComponent {
     this.ele = this.root.getElementById('synth-note');
     this.rightAnchor = this.root.getElementById('right-anchor');
     this.label = this.root.getElementById('label');
+    this.shouldNotifyParent = false;
   }
 
   connectedCallback() {
@@ -62,6 +63,10 @@ class SynthNote extends BaseComponent {
       onNext: message => {
         isMoving = false;
         isDragRight = false;
+        if (this.shouldNotifyParent) {
+          this.onNoteChange();
+          this.shouldNotifyParent = false;
+        }
       }
     });
 
@@ -82,6 +87,9 @@ class SynthNote extends BaseComponent {
           const noteValue = clampedY * -2 + 1;
           const startTick = Math.round(clampedX * this.totalTicks);
 
+          const shouldUpdate = this.note.value !== noteValue || this.note.startTick !== startTick;
+          if (!shouldUpdate) { return; }
+
           this.note.value = noteValue;
           this.ele.style.setProperty('top', `${clampedY * 100}%`);
           const normalVal = this.note.getNormalizedNoteValue(scaleHelper, this.getBaseNote());
@@ -91,6 +99,7 @@ class SynthNote extends BaseComponent {
             this.note.startTick = startTick;
             this.ele.style.setProperty('left', `${x}%`);
           }
+          this.shouldNotifyParent = true;
         }
         else if (isDragRight) {
           const event = message.$event;
@@ -105,8 +114,8 @@ class SynthNote extends BaseComponent {
             const widthInPercent = duration / this.totalTicks * 100;
             this.note.duration = duration;
             this.ele.style.setProperty('width', `${widthInPercent}%`);
+            this.shouldNotifyParent = true;
           }
-
         }
 
       }
@@ -114,11 +123,12 @@ class SynthNote extends BaseComponent {
 
   }
 
-  init(note, totalTicks, onRemove, getBaseNote) {
+  init(note, totalTicks, onRemove, getBaseNote, onNoteChange) {
     this.totalTicks = totalTicks;
     this.note = note;
     this.onRemove = onRemove;
     this.getBaseNote = getBaseNote;
+    this.onNoteChange = onNoteChange;
 
     const startPosition = this.note.startTick / totalTicks * 100;
     const widthInPercent = this.note.duration / totalTicks * 100;

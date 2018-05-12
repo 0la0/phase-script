@@ -46,6 +46,7 @@ export default class Tb03 extends BaseMidiMapper {
       note: message.note,
       value: message.value
     };
+    // console.log('synth send at', message.onTime);
     this.deviceOutput && this.deviceOutput.send(getMessageFromObject(onMessage), message.onTime);
     this.deviceOutput && this.deviceOutput.send(getMessageFromObject(offMessage), message.offTime);
   }

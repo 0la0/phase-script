@@ -15,8 +15,7 @@ class EventBus {
   subscribe(subscriber) {
     const hasSubscription = this.hasSubscription(subscriber.address, subscriber.onNext);
     if (hasSubscription) {
-      console.log('Cannot subscribe multiple times:', subscriber)
-      return;
+      console.log('Warning: subscribed multiple times', subscriber)
     }
     this.subscribers.add(subscriber);
     this.onNewSubscription();
