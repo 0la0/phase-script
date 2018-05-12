@@ -162,27 +162,13 @@ class Sequencer extends BaseComponent {
   }
 
   getAudioEventMessage(note, tickNumber, time) {
-    let onTime;
-    let offTime;
     const noteValue = note.getNormalizedNoteValue(scaleHelper, this.getBaseNote());
-
-    // TODO: move this logic to consumer
-    if (this.publishAddress === 'TB-03') {
-      onTime = time.midi;
-      offTime = onTime + metronome.getTickLength() * note.duration * 1000;
-      noteValue = note.getNormalizedNoteValue(scaleHelper, this.getBaseNote());
-    }
-    else {
-      onTime = time.audio;
-      offTime = onTime + metronome.getTickLength() * note.duration;
-      // noteValue = note.getNormalizedNoteValue(scaleHelper, this.getBaseNote());
-    }
     return {
       address: this.publishAddress,
       note: noteValue,
       value: note.velocity,
       time,
-      offTime
+      duration: metronome.getTickLength() * note.duration,
     }
   }
 

@@ -25,7 +25,8 @@ class OscSynth extends BaseComponent {
     this.audioEventSubscription = {
       address: `SYNTH_${instanceCnt++}`,
       onNext: message => {
-        this.synth.playNote(message.note, this.getOscillators(), message.onTime, message.offTime);
+        const offTime = message.time.audio + message.duration;
+        this.synth.playNote(message.note, this.getOscillators(), message.time.audio, offTime);
       }
     };
     audioEventBus.subscribe(this.audioEventSubscription);

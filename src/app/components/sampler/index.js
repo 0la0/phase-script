@@ -38,7 +38,7 @@ class Sampler extends BaseComponent {
     this.audioEventSubscription = {
       address: `SAMPLE_${instanceCnt++}`,
       onNext: message => {
-        play(this.sampleKey, message.onTime, this.startOffset, this.asr);
+        play(this.sampleKey, message.time.audio, this.startOffset, this.asr);
       }
     };
     audioEventBus.subscribe(this.audioEventSubscription);

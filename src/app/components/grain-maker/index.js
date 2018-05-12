@@ -86,7 +86,10 @@ class GrainMaker extends BaseComponent {
 
   scheduleAudio(message) {
     if (this.isContinuouslyPlaying) { return; }
-    const { note, onTime, offTime, value, } = message;
+    // const { note, onTime, offTime, value, } = message;
+    const { note, time, duration, value, } = message;
+    const onTime = time.audio;
+    const offTime = onTime + duration;
     // TODO: make this a paramater of the grainInstrument
     const tempo = metronomeManager.getMetronome().getTempo();
     const deltaTimeStep = tempo / 60 / 128; // GET TICK LENGTH?

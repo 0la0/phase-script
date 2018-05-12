@@ -62,8 +62,7 @@ export default class Tr09 extends BaseMidiMapper {
     const midiMessage = getMessageFromObject(midiMessageObj);
 
     return message => {
-      // console.log('drum send at', message);
-      this.deviceOutput && this.deviceOutput.send(midiMessage, message.onTime);
+      this.deviceOutput && this.deviceOutput.send(midiMessage, message.time.midi);
     };
   }
 }
