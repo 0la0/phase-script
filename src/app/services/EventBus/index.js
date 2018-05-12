@@ -13,6 +13,11 @@ class EventBus {
   }
 
   subscribe(subscriber) {
+    const hasSubscription = this.hasSubscription(subscriber.address, subscriber.onNext);
+    if (hasSubscription) {
+      console.log('Cannot subscribe multiple times:', subscriber)
+      return;
+    }
     this.subscribers.add(subscriber);
     this.onNewSubscription();
   }
@@ -33,6 +38,11 @@ class EventBus {
     return [...this.subscribers]
       .filter(subscriber => subscriber.address)
       .map(subscriber => subscriber.address);
+  }
+
+  hasSubscription(address, onNext) {
+    return [...this.subscribers]
+      .some(subscriber => subscriber.address === address && subscriber.onNext === onNext);
   }
 }
 
