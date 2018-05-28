@@ -23,6 +23,7 @@ import SampleVisualizer from 'components/sample-visualizer';
 import SoundRoot from 'components/sound-root';
 import TriggerBox from 'components/trigger-box';
 import FftVisualizer from 'components/fft-visualizer';
+import EventNetwork from 'components/event-network';
 
 const components = [
   app,
@@ -49,7 +50,8 @@ const components = [
   SampleVisualizer,
   SoundRoot,
   TriggerBox,
-  FftVisualizer
+  FftVisualizer,
+  EventNetwork
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

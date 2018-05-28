@@ -1,0 +1,40 @@
+
+<div class="event-network">
+  <svg
+    id="svgContainer"
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+    version="1.1">
+    <defs>
+      <marker
+        id='arrow'
+        orient='auto'
+        markerWidth='2'
+        markerHeight='4'
+        refX='0.1'
+        refY='2'>
+        <path d='M0,0 V4 L2,2 Z' class="arrow" />
+      </marker>
+    </defs>
+    <g id="edgeGroup"></g>
+    <g id="nodeGroup"></g>
+  </svg>
+  <!-- <div class="metronome-input metronome-input-top-left">
+  </div>
+  <div class="metronome-input metronome-input-top-right">
+  </div> -->
+  <div id="menu" class="menu">
+    <flat-button
+      click="addNode"
+      ontext="Add Node"
+      offtext="Add Node"
+      class="menu-option">
+    </flat-button>
+    <flat-button
+      click="addInput"
+      ontext="Add Input"
+      offtext="Add Input"
+      class="menu-option">
+    </flat-button>
+  </div>
+</div>

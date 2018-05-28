@@ -17,6 +17,7 @@ class SoundRoot extends BaseComponent {
     this.grainContainer = this.root.getElementById('grain-container');
     this.samplerContainer = this.root.getElementById('sampler-container');
     this.triggerContainer = this.root.getElementById('trigger-box-container');
+    this.eventNetworkContainer = this.root.getElementById('event-network-container');
   }
 
   onAddSequencer() {
@@ -47,6 +48,12 @@ class SoundRoot extends BaseComponent {
     const trigger = document.createElement('trigger-box');
     trigger.setOnRemoveCallback(() => this.triggerContainer.removeChild(trigger));
     this.triggerContainer.appendChild(trigger);
+  }
+
+  onAddEventNetwork() {
+    const eventNetwork = document.createElement('event-network');
+    eventNetwork.setOnRemoveCallback(() => this.eventNetworkContainer.removeChild(eventNetwork));
+    this.eventNetworkContainer.appendChild(eventNetwork);
   }
 
 }

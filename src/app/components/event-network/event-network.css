@@ -1,0 +1,91 @@
+
+.event-network {
+  border: var(--border-default);
+  border-radius: var(--border-radius);
+  width: 400px;
+  height: 400px;
+  position: relative;
+  display: block;
+}
+
+svg {
+  border: var(--border-default);
+  border-radius: var(--border-radius);
+  cursor: default;
+}
+
+.circle {
+  fill: aquamarine;
+  stroke-width: 0;
+  transition: fill 0.25s ease-in-out;
+}
+.circle:hover {
+  fill: wheat;
+}
+
+.circle-outline {
+  fill: lightcoral;
+  stroke: lightcoral;
+  stroke-width: 0;
+  stroke-opacity: 0.5;
+  transition: stroke-width 0.25s ease-in-out;
+}
+.circle-active {
+  stroke-width: 8;
+  stroke: lightcoral;
+}
+
+.circle-activation {
+  fill: red;
+  stroke: red;
+  stroke-width: 2;
+  stroke-opacity: 0.5;
+  /* transition: stroke-width 0.25s ease-in-out; */
+}
+
+.line {
+  stroke-width: 2;
+  stroke: fuchsia;
+  transition: stroke-width 0.25s ease-in-out;
+}
+.line:hover {
+  stroke-width: 4;
+}
+
+.arrow {
+  fill: fuchsia;
+}
+
+.menu {
+  background-color: var(--color-grey-dark);
+  display: none;
+  position: absolute;
+}
+.menu-active {
+  display: block;
+}
+.menu-option {
+  background-color: var(--color-grey-dark);
+  color: var(--color-black-light);
+}
+/* .menu-option:hover {
+  background-color: var(--color-grey-light);
+  color: var(--color-black-dark);
+} */
+
+/* .metronome-input {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+}
+
+.metronome-input-top-left {
+  top: 0;
+  left: 0;
+}
+
+.metronome-input-top-right {
+  top: 0;
+  right: 0;
+} */

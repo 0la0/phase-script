@@ -31,7 +31,7 @@ class FlatButton extends BaseComponent {
       this.isToggle = true;
     }
 
-    this.addEventListener('click', event => this.trigger(true));
+    this.addEventListener('click', event => this.trigger(true, event));
     this.onText = this.getAttribute('ontext') || '';
     this.offText = this.getAttribute('offtext') || '';
     this.render();
@@ -41,8 +41,8 @@ class FlatButton extends BaseComponent {
 
   attributeChangedCallback(attribute, oldVal, newVal) {}
 
-  trigger(isFirst) {
-    this.onClick();
+  trigger(isFirst, event) {
+    this.onClick(event);
     if (!this.isToggle) { return; }
     this.isOn = !this.isOn;
     this.render();
