@@ -19,11 +19,7 @@
     <g id="edgeGroup"></g>
     <g id="nodeGroup"></g>
   </svg>
-  <!-- <div class="metronome-input metronome-input-top-left">
-  </div>
-  <div class="metronome-input metronome-input-top-right">
-  </div> -->
-  <div id="menu" class="menu">
+  <div id="containerMenu" class="menu">
     <flat-button
       click="addNode"
       ontext="Add Node"
@@ -34,6 +30,15 @@
       click="addInput"
       ontext="Add Input"
       offtext="Add Input"
+      class="menu-option">
+    </flat-button>
+  </div>
+  <div id="nodeMenu" class="menu">
+    <p>Node Menu</p>
+    <flat-button
+      click="deleteNode"
+      ontext="Delete"
+      offtext="Delete"
       class="menu-option">
     </flat-button>
   </div>

@@ -21,29 +21,31 @@ export default class SvgNode {
   }
 
   addToDom(parentElement) {
+    parentElement.appendChild(this.svgActivation);
     parentElement.appendChild(this.svgOutline);
     parentElement.appendChild(this.svgCenter);
   }
 
   remove() {
+    this.svgActivation.parentElement.removeChild(this.svgActivation);
     this.svgOutline.parentElement.removeChild(this.svgOutline);
     this.svgCenter.parentElement.removeChild(this.svgCenter);
-  }
-
-  activate() {
-
   }
 }
 
 export class SvgCircleNode extends SvgNode {
   constructor(radius) {
     super();
+    this.lastRender = false;
     this.svgCenter = document.createElementNS(SVG_NS, 'circle');
     this.svgOutline = document.createElementNS(SVG_NS, 'circle');
+    this.svgActivation = document.createElementNS(SVG_NS, 'circle');
     this.svgCenter.setAttribute('r', radius);
     this.svgOutline.setAttribute('r', radius);
+    this.svgActivation.setAttribute('r', radius);
     this.svgCenter.classList.add('circle');
     this.svgOutline.classList.add('circle-outline');
+    this.svgActivation.classList.add('circle-activation');
   }
 
   setPosition(x, y) {
@@ -51,6 +53,18 @@ export class SvgCircleNode extends SvgNode {
     this.svgCenter.setAttribute('cy', y);
     this.svgOutline.setAttribute('cx', x);
     this.svgOutline.setAttribute('cy', y);
+    this.svgActivation.setAttribute('cx', x);
+    this.svgActivation.setAttribute('cy', y);
+  }
+
+  renderActivation(isActivated) {
+    if (isActivated && !this.lastRender) {
+      this.svgActivation.classList.add('circle-activation-active');
+    }
+    else {
+      this.svgActivation.classList.remove('circle-activation-active');
+    }
+    this.lastRender = isActivated;
   }
 }
 
@@ -60,16 +74,16 @@ export class SvgSquareNode extends SvgNode {
     this.halfSize = size / 2;
     this.svgCenter = document.createElementNS(SVG_NS, 'rect');
     this.svgOutline = document.createElementNS(SVG_NS, 'rect');
-    // this.svgActivation = document.createElementNS(SVG_NS, 'rect');
+    this.svgActivation = document.createElementNS(SVG_NS, 'rect');
     this.svgCenter.setAttribute('width', size);
     this.svgCenter.setAttribute('height', size);
     this.svgOutline.setAttribute('width', size);
     this.svgOutline.setAttribute('height', size);
-    // this.svgActivation.setAttribute('width', size);
-    // this.svgActivation.setAttribute('height', size);
+    this.svgActivation.setAttribute('width', size);
+    this.svgActivation.setAttribute('height', size);
     this.svgCenter.classList.add('circle');
     this.svgOutline.classList.add('circle-outline');
-    // this.svgActivation.classList.add('circle-activation');
+    this.svgActivation.classList.add('circle-activation');
   }
 
   setPosition(x, y) {
@@ -77,7 +91,11 @@ export class SvgSquareNode extends SvgNode {
     this.svgCenter.setAttribute('y', y - this.halfSize);
     this.svgOutline.setAttribute('x', x - this.halfSize);
     this.svgOutline.setAttribute('y', y - this.halfSize);
-    // this.svgActivation.setAttribute('x', x - this.halfSize);
-    // this.svgActivation.setAttribute('y', y - this.halfSize);
+    this.svgActivation.setAttribute('x', x - this.halfSize);
+    this.svgActivation.setAttribute('y', y - this.halfSize);
+  }
+
+  renderActivation() {
+    // this.svgActivation.classList.toggle('circle-activation-active');
   }
 }

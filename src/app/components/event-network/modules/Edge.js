@@ -35,7 +35,7 @@ export default class Edge {
   }
 
   remove() {
-    this.onRemove();
+    this.onRemove(this);
     this.svgLine.destroy();
   }
 }

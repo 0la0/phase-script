@@ -66,11 +66,17 @@ function applyEventListeners() {
 
         const isInDroppingDistance = nearestNode && nearestNode.distance <= RADIUS;
         const edgeDoesNotExist = this.edges.every(edge => edge.getEndNode() !== nearestNode.node);
-        const isInputToNode = this instanceof InputNode && nearestNode.node instanceof EventNode;
-        const isNodeToNode = this instanceof EventNode && nearestNode.node instanceof EventNode;
-        if (isInDroppingDistance && edgeDoesNotExist && (isInputToNode || isNodeToNode)) {
-          const edge = new Edge(this, nearestNode.node, this.svgLine, this.removeEdge.bind(this));
-          this.addEdge(edge);
+        if (isInDroppingDistance && edgeDoesNotExist) {
+          const isInputToNode = this instanceof InputNode && nearestNode.node instanceof EventNode;
+          const isNodeToNode = this instanceof EventNode && nearestNode.node instanceof EventNode;
+          if (isInputToNode || isNodeToNode) {
+            const edge = new Edge(this, nearestNode.node, this.svgLine, this.removeEdge.bind(this));
+            this.addEdge(edge);
+          }
+          else {
+            console.log('destroyLine')
+            this.svgLine.destroy();
+          }
         }
         else {
           console.log('destroyLine')
@@ -85,16 +91,17 @@ function applyEventListeners() {
   this.svgNode.getCenter().addEventListener('contextmenu', event => {
     event.preventDefault();
     event.stopPropagation();
-    console.log('right click on node', event.target);
+    this.openMenu(true, event, this);
   });
 }
 
 export default class Node {
-  constructor(x, y, parentElement, getAllNodes) {
+  constructor(x, y, parentElement, getAllNodes, openMenu) {
     this.x = x;
     this.y = y;
     this.parentElement = parentElement;
     this.getAllNodes = getAllNodes;
+    this.openMenu = openMenu;
     this.edges = [];
     this._isActive = false;
     this.isDragging = false;
@@ -140,20 +147,68 @@ export default class Node {
   isActive() {
     return this._isActive;
   }
+
+  detachFromNode(node) {
+    if (this === node) {
+      this.remove();
+    }
+    else {
+      this.edgesToRemove = this.edges.filter(edge => edge.getEndNode() === node);
+      this.edges = this.edges.filter(edge => edge.getEndNode() !== node);
+      this.edgesToRemove.forEach(edge => edge.remove());
+    }
+  }
+
+  remove() {
+    // console.log('remove node', this.edges);
+    this.edges.forEach(edge => edge.remove());
+    this.svgNode.remove();
+  }
 }
 
 export class EventNode extends Node {
-  constructor(x, y, parentElement, getAllNodes) {
-    super(x, y, parentElement, getAllNodes);
+  constructor(x, y, parentElement, getAllNodes, openMenu) {
+    super(x, y, parentElement, getAllNodes, openMenu);
     this.svgNode = new SvgCircleNode(RADIUS);
     this.init(x, y);
+    this.activationThreshold = 4;
+    this.activationCnt = 0;
+    this.isActivated = false;
+  }
+
+  onBeforeActivate() {
+    if (!this.isActivated) { return; }
+    this.activationCnt = 0;
+    this.isActivated = false;
+  }
+
+  activate(tickNumber, time) {
+    this.activationCnt++;
+    if (this.activationCnt === this.activationThreshold) {
+      this.edges.map(edge => edge.getEndNode())
+        .forEach(outputNode => outputNode.activate(tickNumber, time));
+      this.isActivated = true;
+    }
+  }
+
+  renderActivationState() {
+    this.svgNode.renderActivation(this.isActivated);
   }
 }
 
 export class InputNode extends Node {
-  constructor(x, y, parentElement, getAllNodes) {
-    super(x, y, parentElement, getAllNodes);
+  constructor(x, y, parentElement, getAllNodes, openMenu) {
+    super(x, y, parentElement, getAllNodes, openMenu);
     this.svgNode = new SvgSquareNode(RADIUS);
     this.init(x, y);
+  }
+
+  activate(tickNumber, time) {
+    this.edges.map(edge => edge.getEndNode())
+      .forEach(outputNode => outputNode.activate(tickNumber, time));
+  }
+
+  render(tickNumber, lastTickNumber) {
+    this.svgNode.renderActivation();
   }
 }

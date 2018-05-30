@@ -33,21 +33,23 @@ class EventNetwork extends BaseComponent {
     this.inputNodes = [];
     this.getAllNodes = () => this.nodes;
     this.getAllInputNodes = () => [...this.inputNodes, ...this.nodes];
-    this.menuIsActive = false;
+    this.containerMenuIsActive = false;
+    this.menuNode = null;
   }
 
   connectedCallback() {
     this.id = `EventNetwork${instanceCnt++}`;
     this.metronomeSchedulable = this.buildMetronomeSchedulable();
-    this.tickSchedulable = this.buildTickSchedulable();
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
 
     this.svgContainer = this.root.getElementById('svgContainer');
-    this.menu = this.root.getElementById('menu');
+    this.containerMenu = this.root.getElementById('containerMenu');
+    this.nodeMenu = this.root.getElementById('nodeMenu');
 
     this.svgContainer.addEventListener('contextmenu', this.onRightClick.bind(this));
     this.svgContainer.addEventListener('mousedown', event => {
-      this.showMenu(false);
+      this.showContainerMenu(false);
+      this.openNodeMenu(false);
       this.nodes.forEach(node => node.setActive(false, event.target))
       this.inputNodes.forEach(node => node.setActive(false, event.target))
     });
@@ -60,39 +62,31 @@ class EventNetwork extends BaseComponent {
 
   addNode(event) {
     const coords = getCoordinatesFromEvent(event.clientX, event.clientY, this.svgContainer);
-    const node = new EventNode(coords.x, coords.y, this.svgContainer, this.getAllInputNodes, VIEWBOX_SIZE);
+    const node = new EventNode(coords.x, coords.y, this.svgContainer, this.getAllInputNodes, this.openNodeMenu.bind(this));
     this.nodes.push(node);
-    this.showMenu(false);
+    this.showContainerMenu(false);
+    this.openNodeMenu(false);
   }
 
   addInput(event) {
     const coords = getCoordinatesFromEvent(event.clientX, event.clientY, this.svgContainer);
-    const node = new InputNode(coords.x, coords.y, this.svgContainer, this.getAllInputNodes, VIEWBOX_SIZE);
+    const node = new InputNode(coords.x, coords.y, this.svgContainer, this.getAllInputNodes, this.openNodeMenu.bind(this));
     this.inputNodes.push(node);
-    this.showMenu(false);
+    this.showContainerMenu(false);
   }
 
   buildMetronomeSchedulable() {
     return {
       processTick: (tickNumber, time) => {
+        this.nodes.forEach(node => node.onBeforeActivate());
         this.inputNodes.forEach(node => node.activate(tickNumber))
       },
       render: (tickNumber, lastTickNumber) => {
-        this.inputNodes.forEach(node => node.render(tickNumber))
+        this.inputNodes.forEach(node => node.render(tickNumber));
+        this.nodes.forEach(node => node.renderActivationState());
       },
       start: () => {},
       stop: () => {}
-    };
-  }
-
-  buildTickSchedulable() {
-    let tickCounter = 0;
-    return {
-      address: this.id,
-      onNext: (msg) => {
-        this.processTick(tickCounter, msg.time);
-        tickCounter++;
-      },
     };
   }
 
@@ -106,19 +100,49 @@ class EventNetwork extends BaseComponent {
 
   onRightClick(event) {
     event.preventDefault();
-    this.showMenu(true, event.clientX, event.clientY);
+    this.showContainerMenu(true, event.clientX, event.clientY);
+    this.openNodeMenu(false);
   }
 
-  showMenu(isActive, clientX, clientY) {
+  showContainerMenu(isActive, clientX, clientY) {
     if (isActive) {
       const coords = getCoordinatesFromEvent(clientX, clientY, this.svgContainer);
-      this.menu.classList.add('menu-active');
-      this.menu.style.setProperty('left', `${coords.x * elementScale}px`);
-      this.menu.style.setProperty('top', `${coords.y  * elementScale}px`);
+      this.containerMenu.classList.add('menu-active');
+      this.containerMenu.style.setProperty('left', `${coords.x * elementScale}px`);
+      this.containerMenu.style.setProperty('top', `${coords.y  * elementScale}px`);
     }
     else {
-      this.menu.classList.remove('menu-active');
+      this.containerMenu.classList.remove('menu-active');
     }
+  }
+
+  openNodeMenu(isActive, event, node) {
+    if (isActive) {
+      const coords = getCoordinatesFromEvent(event.clientX, event.clientY, this.svgContainer);
+      this.nodeMenu.classList.add('menu-active');
+      this.nodeMenu.style.setProperty('left', `${coords.x * elementScale}px`);
+      this.nodeMenu.style.setProperty('top', `${coords.y  * elementScale}px`);
+      this.menuNode = node;
+    }
+    else {
+      this.nodeMenu.classList.remove('menu-active');
+      this.menuNode = null;
+    }
+  }
+
+  deleteNode(event) {
+    if (!this.menuNode) { return; }
+    if (this.menuNode instanceof EventNode) {
+      this.nodes.forEach(node => node.detachFromNode(this.menuNode));
+      this.inputNodes.forEach(node => node.detachFromNode(this.menuNode));
+      this.nodes = this.nodes.filter(node => node !== this.menuNode);
+    }
+    else if (this.menuNode instanceof InputNode) {
+      this.menuNode.remove();
+      this.inputNodes = this.inputNodes.filter(node => node !== this.menuNode);
+    }
+    this.menuNode = null;
+    this.openNodeMenu(false);
   }
 
 }
