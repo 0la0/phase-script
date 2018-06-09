@@ -33,7 +33,6 @@ class EventNetwork extends BaseComponent {
     this.inputNodes = [];
     this.getAllNodes = () => this.nodes;
     this.getAllInputNodes = () => [...this.inputNodes, ...this.nodes];
-    this.containerMenuIsActive = false;
     this.menuNode = null;
   }
 
@@ -44,14 +43,30 @@ class EventNetwork extends BaseComponent {
 
     this.svgContainer = this.root.getElementById('svgContainer');
     this.containerMenu = this.root.getElementById('containerMenu');
+    // TODO: make node menu a different component
     this.nodeMenu = this.root.getElementById('nodeMenu');
+    this.nodeMenu.addEventListener('click', event => {
+      if (event.target !== this.nodeMenu) { return; }
+      this.openPropertyMenu(false);
+    });
+    this.root.getElementById('tresholdInput').addEventListener('blur', this.onThresholdChange.bind(this));
+    this.sendComboBox = this.root.getElementById('sendComboBox');
 
     this.svgContainer.addEventListener('contextmenu', this.onRightClick.bind(this));
     this.svgContainer.addEventListener('mousedown', event => {
       this.showContainerMenu(false);
-      this.openNodeMenu(false);
+      this.openPropertyMenu(false);
       this.nodes.forEach(node => node.setActive(false, event.target))
       this.inputNodes.forEach(node => node.setActive(false, event.target))
+    });
+
+    audioEventBus.subscribe({
+      onNewSubscription: addresses => {
+        const optionList = addresses.map(address => ({
+          label: address, value: address
+        }));
+        setTimeout(() => this.sendComboBox.setOptions(optionList));
+      }
     });
   }
 
@@ -62,15 +77,15 @@ class EventNetwork extends BaseComponent {
 
   addNode(event) {
     const coords = getCoordinatesFromEvent(event.clientX, event.clientY, this.svgContainer);
-    const node = new EventNode(coords.x, coords.y, this.svgContainer, this.getAllInputNodes, this.openNodeMenu.bind(this));
+    const node = new EventNode(coords.x, coords.y, this.svgContainer, this.getAllInputNodes, this.openPropertyMenu.bind(this));
     this.nodes.push(node);
     this.showContainerMenu(false);
-    this.openNodeMenu(false);
+    this.openPropertyMenu(false);
   }
 
   addInput(event) {
     const coords = getCoordinatesFromEvent(event.clientX, event.clientY, this.svgContainer);
-    const node = new InputNode(coords.x, coords.y, this.svgContainer, this.getAllInputNodes, this.openNodeMenu.bind(this));
+    const node = new InputNode(coords.x, coords.y, this.svgContainer, this.getAllInputNodes, this.openPropertyMenu.bind(this));
     this.inputNodes.push(node);
     this.showContainerMenu(false);
   }
@@ -79,7 +94,7 @@ class EventNetwork extends BaseComponent {
     return {
       processTick: (tickNumber, time) => {
         this.nodes.forEach(node => node.onBeforeActivate());
-        this.inputNodes.forEach(node => node.activate(tickNumber))
+        this.inputNodes.forEach(node => node.activate(tickNumber, time))
       },
       render: (tickNumber, lastTickNumber) => {
         this.inputNodes.forEach(node => node.render(tickNumber));
@@ -101,7 +116,7 @@ class EventNetwork extends BaseComponent {
   onRightClick(event) {
     event.preventDefault();
     this.showContainerMenu(true, event.clientX, event.clientY);
-    this.openNodeMenu(false);
+    this.openPropertyMenu(false);
   }
 
   showContainerMenu(isActive, clientX, clientY) {
@@ -116,16 +131,14 @@ class EventNetwork extends BaseComponent {
     }
   }
 
-  openNodeMenu(isActive, event, node) {
+  openPropertyMenu(isActive, event, node) {
     if (isActive) {
       const coords = getCoordinatesFromEvent(event.clientX, event.clientY, this.svgContainer);
-      this.nodeMenu.classList.add('menu-active');
-      this.nodeMenu.style.setProperty('left', `${coords.x * elementScale}px`);
-      this.nodeMenu.style.setProperty('top', `${coords.y  * elementScale}px`);
+      this.nodeMenu.classList.add('property-menu-active');
       this.menuNode = node;
     }
     else {
-      this.nodeMenu.classList.remove('menu-active');
+      this.nodeMenu.classList.remove('property-menu-active');
       this.menuNode = null;
     }
   }
@@ -142,9 +155,24 @@ class EventNetwork extends BaseComponent {
       this.inputNodes = this.inputNodes.filter(node => node !== this.menuNode);
     }
     this.menuNode = null;
-    this.openNodeMenu(false);
+    this.openPropertyMenu(false);
   }
 
+  onSendChange(address) {
+    if (!this.menuNode) { return; }
+    const action = time => audioEventBus.publish({
+      address,
+      time,
+      duration: metronome.getTickLength()
+    });
+    this.menuNode.setAction(action);
+  }
+
+  onThresholdChange(event) {
+    const val = parseInt(event.target.value, 10);
+    const sanatizedVal = Number.isNaN(val) ? 4 : val;
+    this.menuNode.setActivationThreshold(sanatizedVal);
+  }
 }
 
 export default new Component(COMPONENT_NAME, EventNetwork);

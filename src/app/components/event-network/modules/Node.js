@@ -3,7 +3,7 @@ import SvgLine from './SvgLine';
 import { SvgCircleNode, SvgSquareNode } from './SvgNode';
 import Edge from './Edge';
 
-const RADIUS = 6;
+const NODE_RADIUS = 4;
 
 function getSvgCoordinatesFromEvent(event, parentElement) {
   const parentBoundingBox = parentElement.getBoundingClientRect();
@@ -26,7 +26,8 @@ function applyEventListeners() {
 
   this.svgNode.getOutline().addEventListener('mousedown', event => {
     this.outlineIsActive = true;
-    const parentElement = event.target.parentElement.parentElement;
+    // TODO ... ugh
+    const parentElement = event.target.parentElement.parentElement.parentElement;
     const coords = getSvgCoordinatesFromEvent(event, parentElement);
     this.svgLine = new SvgLine(this.x, this.y, coords.x, coords.y, parentElement);
   });
@@ -56,7 +57,6 @@ function applyEventListeners() {
         const event = message.$event;
         const {x, y} = getSvgCoordinatesFromEvent(event, this.parentElement);
         const otherNodes = this.getAllNodes()
-          .filter(node => node !== this)
           .map(node => {
             const distance = Math.sqrt(Math.pow(node.x - x, 2) + Math.pow(node.y - y, 2));
             return { node, distance };
@@ -64,22 +64,25 @@ function applyEventListeners() {
           .sort((a, b) => a.distance - b.distance);
         const nearestNode = otherNodes[0];
 
-        const isInDroppingDistance = nearestNode && nearestNode.distance <= RADIUS;
+        const isInDroppingDistance = nearestNode && nearestNode.distance <= NODE_RADIUS;
         const edgeDoesNotExist = this.edges.every(edge => edge.getEndNode() !== nearestNode.node);
         if (isInDroppingDistance && edgeDoesNotExist) {
           const isInputToNode = this instanceof InputNode && nearestNode.node instanceof EventNode;
           const isNodeToNode = this instanceof EventNode && nearestNode.node instanceof EventNode;
           if (isInputToNode || isNodeToNode) {
-            const edge = new Edge(this, nearestNode.node, this.svgLine, this.removeEdge.bind(this));
-            this.addEdge(edge);
+            if (this === nearestNode.node) {
+              console.log('TODO: self connection')
+            }
+            else {
+              const edge = new Edge(this, nearestNode.node, this.svgLine, this.removeEdge.bind(this));
+              this.addEdge(edge);
+            }
           }
           else {
-            console.log('destroyLine')
             this.svgLine.destroy();
           }
         }
         else {
-          console.log('destroyLine')
           this.svgLine.destroy();
         }
       }
@@ -160,7 +163,6 @@ export default class Node {
   }
 
   remove() {
-    // console.log('remove node', this.edges);
     this.edges.forEach(edge => edge.remove());
     this.svgNode.remove();
   }
@@ -169,7 +171,7 @@ export default class Node {
 export class EventNode extends Node {
   constructor(x, y, parentElement, getAllNodes, openMenu) {
     super(x, y, parentElement, getAllNodes, openMenu);
-    this.svgNode = new SvgCircleNode(RADIUS);
+    this.svgNode = new SvgCircleNode(NODE_RADIUS);
     this.init(x, y);
     this.activationThreshold = 4;
     this.activationCnt = 0;
@@ -188,18 +190,29 @@ export class EventNode extends Node {
       this.edges.map(edge => edge.getEndNode())
         .forEach(outputNode => outputNode.activate(tickNumber, time));
       this.isActivated = true;
+      if (this.action) {
+        this.action(time);
+      }
     }
   }
 
   renderActivationState() {
     this.svgNode.renderActivation(this.isActivated);
   }
+
+  setAction(action) {
+    this.action = action;
+  }
+
+  setActivationThreshold(activationThreshold) {
+    this.activationThreshold = activationThreshold;
+  }
 }
 
 export class InputNode extends Node {
   constructor(x, y, parentElement, getAllNodes, openMenu) {
     super(x, y, parentElement, getAllNodes, openMenu);
-    this.svgNode = new SvgSquareNode(RADIUS);
+    this.svgNode = new SvgSquareNode(NODE_RADIUS);
     this.init(x, y);
   }
 
@@ -212,3 +225,5 @@ export class InputNode extends Node {
     this.svgNode.renderActivation();
   }
 }
+
+export { NODE_RADIUS };

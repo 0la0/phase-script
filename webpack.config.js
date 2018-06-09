@@ -1,7 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
-module.exports = {
+const webpackConfig = {
   context: path.resolve(__dirname, 'src'),
   entry: {
     main: './entrypoints/main.js',
@@ -38,5 +38,9 @@ module.exports = {
   },
   devServer: {
     port: 3001
-  }
+  },
+  mode: process.env.WEBPACK_SERVE ? 'development' : 'production',
 };
+
+console.log('hello', webpackConfig);
+module.exports = webpackConfig;

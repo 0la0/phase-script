@@ -152,6 +152,11 @@ class TriggerBox extends BaseComponent {
     this.onRemoveCallback && this.onRemoveCallback();
   }
 
+  onSendChange(value) {
+    console.log('value', value)
+    this.audioPublishAddress = value;
+  }
+
 }
 
 export default new Component(COMPONENT_NAME, TriggerBox);

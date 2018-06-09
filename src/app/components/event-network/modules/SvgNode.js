@@ -2,6 +2,11 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
 const CIRCLE_ACTIVE = 'circle-active';
 
 export default class SvgNode {
+  constructor() {
+    this.svgContainer = document.createElementNS(SVG_NS, 'g');
+    this.svgContainer.classList.add('node-container');
+  }
+
   getCenter() {
     return this.svgCenter;
   }
@@ -15,21 +20,20 @@ export default class SvgNode {
   }
 
   setActive(isActive, targetElement) {
-    isActive ?
-      this.svgOutline.classList.add(CIRCLE_ACTIVE) :
-      this.svgOutline.classList.remove(CIRCLE_ACTIVE);
+    // isActive ?
+    //   this.svgOutline.classList.add(CIRCLE_ACTIVE) :
+    //   this.svgOutline.classList.remove(CIRCLE_ACTIVE);
   }
 
   addToDom(parentElement) {
-    parentElement.appendChild(this.svgActivation);
-    parentElement.appendChild(this.svgOutline);
-    parentElement.appendChild(this.svgCenter);
+    this.svgContainer.appendChild(this.svgActivation);
+    this.svgContainer.appendChild(this.svgOutline);
+    this.svgContainer.appendChild(this.svgCenter);
+    parentElement.appendChild(this.svgContainer);
   }
 
   remove() {
-    this.svgActivation.parentElement.removeChild(this.svgActivation);
-    this.svgOutline.parentElement.removeChild(this.svgOutline);
-    this.svgCenter.parentElement.removeChild(this.svgCenter);
+    this.svgContainer.parentElement.removeChild(this.svgContainer);
   }
 }
 

@@ -11,14 +11,16 @@
         orient='auto'
         markerWidth='2'
         markerHeight='4'
-        refX='0.1'
-        refY='2'>
-        <path d='M0,0 V4 L2,2 Z' class="arrow" />
+        refX='0'
+        refY='1.5'>
+        <path d='M0,0 V3 L1.5,1.5 Z' class="line-arrow" />
       </marker>
     </defs>
     <g id="edgeGroup"></g>
     <g id="nodeGroup"></g>
   </svg>
+
+  <!-- Canvas Menu -->
   <div id="containerMenu" class="menu">
     <flat-button
       click="addNode"
@@ -33,13 +35,32 @@
       class="menu-option">
     </flat-button>
   </div>
-  <div id="nodeMenu" class="menu">
-    <p>Node Menu</p>
-    <flat-button
-      click="deleteNode"
-      ontext="Delete"
-      offtext="Delete"
-      class="menu-option">
-    </flat-button>
+
+  <!-- Property Menu -->
+  <div id="nodeMenu" class="menu property-menu">
+    <div class="property-menu-contents">
+      <div class="menu-row">
+        <span class="base-note-label">Trigger:</span>
+        <combo-box id="sendComboBox" change="onSendChange"></combo-box>
+      </div>
+      <div class="menu-row">
+        <label for="tresholdInput">Thresh:</label>
+        <input
+          id="tresholdInput"
+          class="numeric-input"
+          type="number"
+          value="4"
+          min="1"
+          max="65"
+        />
+      </div>
+      <div class="menu-row">
+        <flat-button
+          click="deleteNode"
+          ontext="Delete"
+          offtext="Delete">
+        </flat-button>
+      </div>
+    </div>
   </div>
 </div>

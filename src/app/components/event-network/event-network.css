@@ -19,9 +19,6 @@ svg {
   stroke-width: 0;
   transition: fill 0.25s ease-in-out;
 }
-.circle:hover {
-  fill: wheat;
-}
 
 .circle-outline {
   fill: lightcoral;
@@ -30,9 +27,8 @@ svg {
   stroke-opacity: 0.5;
   transition: stroke-width 0.25s ease-in-out;
 }
-.circle-active {
-  stroke-width: 8;
-  stroke: lightcoral;
+.node-container:hover .circle-outline {
+  stroke-width: 9;
 }
 
 .circle-activation {
@@ -46,22 +42,21 @@ svg {
 }
 
 .line {
-  stroke-width: 2;
-  stroke: fuchsia;
+  stroke-width: 1;
+  stroke: var(--color-grey-light);
   transition: stroke-width 0.25s ease-in-out;
 }
 .line:hover {
-  stroke-width: 4;
+  stroke-width: 2.5;
 }
-
-.arrow {
-  fill: fuchsia;
+.line-arrow {
+  fill: var(--color-grey-light);
 }
 
 .menu {
-  background-color: var(--color-grey-dark);
   display: none;
   position: absolute;
+  background-color: var(--color-grey-dark);
 }
 .menu-active {
   display: block;
@@ -69,4 +64,40 @@ svg {
 .menu-option {
   background-color: var(--color-grey-dark);
   color: var(--color-black-light);
+}
+.menu-row {
+  margin: 8px;
+}
+
+.property-menu-active {
+  display: block;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.property-menu-contents {
+  background-color: var(--color-black-light);
+  position: absolute;
+  padding: 10px;
+  border-radius: var(--border-radius);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.numeric-input {
+  height: 25px;
+  font-size: 1em;
+  margin: 0 10px;
+  width: 60px;
+  background-color: var(--color-black-light);
+  border: none;
+  border-bottom: var(--border-default);
+  outline: none;
+  color: var(--border-default);
+}
+.numeric-input:focus {
+  outline: none;
 }

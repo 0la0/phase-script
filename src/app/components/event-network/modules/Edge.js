@@ -1,5 +1,4 @@
-
-const NODE_RADIUS = 10;
+import { NODE_RADIUS } from './Node';
 
 export default class Edge {
   constructor(startNode, endNode, svgLine, onRemove) {
@@ -28,7 +27,7 @@ export default class Edge {
     // const normalY = (y2 - y1) / length;
     // const adjustedX = x1 + normalX * (length - NODE_RADIUS);
     // const adjustedY = y1 + normalY * (length - NODE_RADIUS);
-    const RAD_LENGTH = NODE_RADIUS / length;
+    const RAD_LENGTH = (NODE_RADIUS + 1.5) / length;
     const adjustedX = x2 - (x2 * RAD_LENGTH) + (x1 * RAD_LENGTH);
     const adjustedY = y2 - (y2 * RAD_LENGTH) + (y1 * RAD_LENGTH);
     this.svgLine.setPosition(x1, y1, adjustedX, adjustedY);
