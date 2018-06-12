@@ -24,6 +24,8 @@ import SoundRoot from 'components/sound-root';
 import TriggerBox from 'components/trigger-box';
 import FftVisualizer from 'components/fft-visualizer';
 import EventNetwork from 'components/event-network';
+import CanvasMenu from 'components/event-network/canvas-menu';
+import PropertyMenu from 'components/event-network/property-menu';
 
 const components = [
   app,
@@ -51,7 +53,9 @@ const components = [
   SoundRoot,
   TriggerBox,
   FftVisualizer,
-  EventNetwork
+  EventNetwork,
+  CanvasMenu,
+  PropertyMenu,
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

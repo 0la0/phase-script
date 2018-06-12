@@ -20,47 +20,6 @@
     <g id="nodeGroup"></g>
   </svg>
 
-  <!-- Canvas Menu -->
-  <div id="containerMenu" class="menu">
-    <flat-button
-      click="addNode"
-      ontext="Add Node"
-      offtext="Add Node"
-      class="menu-option">
-    </flat-button>
-    <flat-button
-      click="addInput"
-      ontext="Add Input"
-      offtext="Add Input"
-      class="menu-option">
-    </flat-button>
-  </div>
-
-  <!-- Property Menu -->
-  <div id="nodeMenu" class="menu property-menu">
-    <div class="property-menu-contents">
-      <div class="menu-row">
-        <span class="base-note-label">Trigger:</span>
-        <combo-box id="sendComboBox" change="onSendChange"></combo-box>
-      </div>
-      <div class="menu-row">
-        <label for="tresholdInput">Thresh:</label>
-        <input
-          id="tresholdInput"
-          class="numeric-input"
-          type="number"
-          value="4"
-          min="1"
-          max="65"
-        />
-      </div>
-      <div class="menu-row">
-        <flat-button
-          click="deleteNode"
-          ontext="Delete"
-          offtext="Delete">
-        </flat-button>
-      </div>
-    </div>
-  </div>
+  <canvas-menu id="containerMenu"></canvas-menu>
+  <property-menu id="propertyMenu"></property-menu>
 </div>

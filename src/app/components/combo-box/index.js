@@ -37,6 +37,14 @@ class ComboBox extends BaseComponent {
     this.onValueChange();
   }
 
+  setValue(value) {
+    if (value === undefined || value === null) {
+      this.selectElement.value = this.selectElement.firstChild.value;
+      return;
+    }
+    this.selectElement.value = value;
+  }
+
   setOptions(options) {
     const selectedValue = this.getSelectedValue();
     let selectIndex = 0;
@@ -67,7 +75,6 @@ class ComboBox extends BaseComponent {
     if (this.selectElement.selectedIndex < 0) { return; }
     return this.selectElement[this.selectElement.selectedIndex].value;
   }
-
 }
 
 export default new Component(COMPONENT_NAME, ComboBox);

@@ -42,5 +42,4 @@ const webpackConfig = {
   mode: process.env.WEBPACK_SERVE ? 'development' : 'production',
 };
 
-console.log('hello', webpackConfig);
 module.exports = webpackConfig;

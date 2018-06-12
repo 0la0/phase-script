@@ -1,0 +1,46 @@
+.scrim {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.scrim-active {
+  display: block;
+}
+
+.property-menu-contents {
+  background-color: var(--color-black-light);
+  position: absolute;
+  padding: 10px;
+  border-radius: var(--border-radius);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.menu-row {
+  margin: 8px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.numeric-input {
+  height: 25px;
+  font-size: 1em;
+  margin: 0 10px;
+  width: 60px;
+  background-color: var(--color-black-light);
+  border: none;
+  border-bottom: var(--border-default);
+  outline: none;
+  color: var(--border-default);
+}
+.numeric-input:focus {
+  outline: none;
+}

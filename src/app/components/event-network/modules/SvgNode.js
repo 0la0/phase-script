@@ -19,10 +19,10 @@ export default class SvgNode {
     return targetElement === this.svgCenter || targetElement === this.svgOutline;
   }
 
-  setActive(isActive, targetElement) {
-    // isActive ?
-    //   this.svgOutline.classList.add(CIRCLE_ACTIVE) :
-    //   this.svgOutline.classList.remove(CIRCLE_ACTIVE);
+  setActive(isActive) {
+    isActive ?
+      this.svgCenter.classList.add(CIRCLE_ACTIVE) :
+      this.svgCenter.classList.remove(CIRCLE_ACTIVE);
   }
 
   addToDom(parentElement) {

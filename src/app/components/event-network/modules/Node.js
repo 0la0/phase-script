@@ -18,9 +18,6 @@ function getSvgCoordinatesFromEvent(event, parentElement) {
 function applyEventListeners() {
   this.svgNode.getCenter().addEventListener('mousedown', event => {
     event.preventDefault();
-    if (!this._isActive) {
-      this.setActive(true);
-    }
     this.isDragging = true;
   });
 
@@ -141,16 +138,6 @@ export default class Node {
     this.getAllNodes().forEach(node => node.getEdges().forEach(edge => edge.render()));
   }
 
-  setActive(isActive, targetElement) {
-    if (this.svgNode.isElement(targetElement)) { return; }
-    this._isActive = isActive;
-    this.svgNode.setActive(isActive);
-  }
-
-  isActive() {
-    return this._isActive;
-  }
-
   detachFromNode(node) {
     if (this === node) {
       this.remove();
@@ -175,6 +162,7 @@ export class EventNode extends Node {
     this.init(x, y);
     this.activationThreshold = 4;
     this.activationCnt = 0;
+    this.messageValue = 60;
     this.isActivated = false;
   }
 
@@ -206,6 +194,27 @@ export class EventNode extends Node {
 
   setActivationThreshold(activationThreshold) {
     this.activationThreshold = activationThreshold;
+  }
+
+  getActivationThreshold(activationThreshold) {
+    return this.activationThreshold;
+  }
+
+  setAddress(address) {
+    this.address = address;
+    this.svgNode.setActive(address !== '-');
+  }
+
+  getAddress() {
+    return this.address;
+  }
+
+  setMessageValue(messageValue) {
+    this.messageValue = messageValue;
+  }
+
+  getMessageValue() {
+    return this.messageValue;
   }
 }
 

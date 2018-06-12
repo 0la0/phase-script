@@ -1,0 +1,36 @@
+
+<div id="container" class="scrim">
+  <div class="property-menu-contents">
+    <div class="menu-row">
+      <span class="base-note-label">Trigger:</span>
+      <combo-box id="sendComboBox" change="handleSendAddressChange"></combo-box>
+      <input
+        id="valueInput"
+        class="numeric-input"
+        type="number"
+        value="60"
+        min="0"
+        max="127"
+        step="1"
+      />
+    </div>
+    <div class="menu-row">
+      <label for="tresholdInput">Thresh:</label>
+      <input
+        id="tresholdInput"
+        class="numeric-input"
+        type="number"
+        value="4"
+        min="1"
+        step="1"
+      />
+    </div>
+    <div class="menu-row">
+      <flat-button
+        click="deleteNode"
+        ontext="Delete"
+        offtext="Delete">
+      </flat-button>
+    </div>
+  </div>
+</div>
