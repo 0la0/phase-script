@@ -1,9 +1,16 @@
 import { eventBus } from 'services/EventBus';
 import SvgLine from './SvgLine';
-import { SvgCircleNode, SvgSquareNode } from './SvgNode';
 import Edge from './Edge';
 
 const NODE_RADIUS = 4;
+
+function isEventNode(obj) {
+  return obj.constructor.name === 'EventNode';
+}
+
+function isInputNode(obj) {
+  return obj.constructor.name === 'InputNode';
+}
 
 function getSvgCoordinatesFromEvent(event, parentElement) {
   const parentBoundingBox = parentElement.getBoundingClientRect();
@@ -64,8 +71,8 @@ function applyEventListeners() {
         const isInDroppingDistance = nearestNode && nearestNode.distance <= NODE_RADIUS;
         const edgeDoesNotExist = this.edges.every(edge => edge.getEndNode() !== nearestNode.node);
         if (isInDroppingDistance && edgeDoesNotExist) {
-          const isInputToNode = this instanceof InputNode && nearestNode.node instanceof EventNode;
-          const isNodeToNode = this instanceof EventNode && nearestNode.node instanceof EventNode;
+          const isInputToNode = isInputNode(this) && isEventNode(nearestNode.node);
+          const isNodeToNode = isEventNode(this) && isEventNode(nearestNode.node);
           if (isInputToNode || isNodeToNode) {
             if (this === nearestNode.node) {
               console.log('TODO: self connection')
@@ -95,7 +102,7 @@ function applyEventListeners() {
   });
 }
 
-export default class Node {
+export default class BaseNode {
   constructor(x, y, parentElement, getAllNodes, openMenu) {
     this.x = x;
     this.y = y;
@@ -152,86 +159,6 @@ export default class Node {
   remove() {
     this.edges.forEach(edge => edge.remove());
     this.svgNode.remove();
-  }
-}
-
-export class EventNode extends Node {
-  constructor(x, y, parentElement, getAllNodes, openMenu) {
-    super(x, y, parentElement, getAllNodes, openMenu);
-    this.svgNode = new SvgCircleNode(NODE_RADIUS);
-    this.init(x, y);
-    this.activationThreshold = 4;
-    this.activationCnt = 0;
-    this.messageValue = 60;
-    this.isActivated = false;
-  }
-
-  onBeforeActivate() {
-    if (!this.isActivated) { return; }
-    this.activationCnt = 0;
-    this.isActivated = false;
-  }
-
-  activate(tickNumber, time) {
-    this.activationCnt++;
-    if (this.activationCnt === this.activationThreshold) {
-      this.edges.map(edge => edge.getEndNode())
-        .forEach(outputNode => outputNode.activate(tickNumber, time));
-      this.isActivated = true;
-      if (this.action) {
-        this.action(time);
-      }
-    }
-  }
-
-  renderActivationState() {
-    this.svgNode.renderActivation(this.isActivated);
-  }
-
-  setAction(action) {
-    this.action = action;
-  }
-
-  setActivationThreshold(activationThreshold) {
-    this.activationThreshold = activationThreshold;
-  }
-
-  getActivationThreshold(activationThreshold) {
-    return this.activationThreshold;
-  }
-
-  setAddress(address) {
-    this.address = address;
-    this.svgNode.setActive(address !== '-');
-  }
-
-  getAddress() {
-    return this.address;
-  }
-
-  setMessageValue(messageValue) {
-    this.messageValue = messageValue;
-  }
-
-  getMessageValue() {
-    return this.messageValue;
-  }
-}
-
-export class InputNode extends Node {
-  constructor(x, y, parentElement, getAllNodes, openMenu) {
-    super(x, y, parentElement, getAllNodes, openMenu);
-    this.svgNode = new SvgSquareNode(NODE_RADIUS);
-    this.init(x, y);
-  }
-
-  activate(tickNumber, time) {
-    this.edges.map(edge => edge.getEndNode())
-      .forEach(outputNode => outputNode.activate(tickNumber, time));
-  }
-
-  render(tickNumber, lastTickNumber) {
-    this.svgNode.renderActivation();
   }
 }
 

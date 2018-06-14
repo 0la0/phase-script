@@ -2,14 +2,14 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { audioEventBus, tickEventBus } from 'services/EventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
-import { EventNode, InputNode } from './modules/Node';
+import EventNode from 'components/svg-graph/EventNode';
+import InputNode from 'components/svg-graph/InputNode';
 
 const COMPONENT_NAME = 'event-network';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
 const metronome = metronomeManager.getMetronome();
-const SVG_NS = 'http://www.w3.org/2000/svg';
 const VIEWBOX_SIZE = 100;
 const elementScale = 4;
 

@@ -1,4 +1,4 @@
-import { NODE_RADIUS } from './Node';
+import { NODE_RADIUS } from './BaseNode';
 
 export default class Edge {
   constructor(startNode, endNode, svgLine, onRemove) {

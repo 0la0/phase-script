@@ -1,4 +1,4 @@
-const SVG_NS = 'http://www.w3.org/2000/svg';
+import { SVG_NS } from './constants';
 
 export default class SvgLine {
   constructor(x1, y1, x2, y2, parentElement) {
