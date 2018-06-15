@@ -1,8 +1,7 @@
 import { eventBus } from 'services/EventBus';
 import SvgLine from './SvgLine';
 import Edge from './Edge';
-
-const NODE_RADIUS = 4;
+import { NODE_RADIUS, SVG_GROUP } from './Constants';
 
 function isEventNode(obj) {
   return obj.constructor.name === 'EventNode';
@@ -71,6 +70,7 @@ function applyEventListeners() {
         const isInDroppingDistance = nearestNode && nearestNode.distance <= NODE_RADIUS;
         const edgeDoesNotExist = this.edges.every(edge => edge.getEndNode() !== nearestNode.node);
         if (isInDroppingDistance && edgeDoesNotExist) {
+          // TODO: put in subclass
           const isInputToNode = isInputNode(this) && isEventNode(nearestNode.node);
           const isNodeToNode = isEventNode(this) && isEventNode(nearestNode.node);
           if (isInputToNode || isNodeToNode) {
@@ -118,7 +118,7 @@ export default class BaseNode {
   init(x, y) {
     this.setPosition(x, y);
     applyEventListeners.call(this);
-    this.svgNode.addToDom(this.parentElement.getElementById('nodeGroup'));
+    this.svgNode.addToDom(this.parentElement.getElementById(SVG_GROUP.NODE));
   }
 
   setPosition(x, y) {
@@ -161,5 +161,3 @@ export default class BaseNode {
     this.svgNode.remove();
   }
 }
-
-export { NODE_RADIUS };

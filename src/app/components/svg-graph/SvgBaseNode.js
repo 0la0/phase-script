@@ -1,8 +1,8 @@
-import { SVG_NS, CSS } from './constants';
+import { SVG_NS, CSS, SVG_ELEMENT } from './Constants';
 
 export default class SvgBaseNode {
   constructor() {
-    this.svgContainer = document.createElementNS(SVG_NS, 'g');
+    this.svgContainer = document.createElementNS(SVG_NS, SVG_ELEMENT.GROUP);
     this.svgContainer.classList.add(CSS.NODE_CONTAINER);
   }
 

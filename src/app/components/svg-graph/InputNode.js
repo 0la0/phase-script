@@ -1,6 +1,8 @@
-import BaseNode, { NODE_RADIUS } from './BaseNode';
+import BaseNode from './BaseNode';
 import SvgSquareNode from './SvgSquareNode';
+import { NODE_RADIUS } from './Constants';
 
+// TODO: MOVE TO EVENT NETWORK
 export default class InputNode extends BaseNode {
   constructor(x, y, parentElement, getAllNodes, openMenu) {
     super(x, y, parentElement, getAllNodes, openMenu);
