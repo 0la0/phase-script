@@ -2,6 +2,14 @@ import { eventBus } from 'services/EventBus';
 import SvgLine from './SvgLine';
 import Edge from './Edge';
 import { NODE_RADIUS, SVG_GROUP } from './Constants';
+import SvgCircleNode from './SvgCircleNode';
+import SvgSquareNode from './SvgSquareNode';
+
+function getSvgNodeFromShape(nodeShape) {
+  return nodeShape === 'SQUARE' ?
+    new SvgSquareNode(NODE_RADIUS) :
+    new SvgCircleNode(NODE_RADIUS);
+}
 
 function isEventNode(obj) {
   return obj.constructor.name === 'EventNode';
@@ -103,9 +111,10 @@ function applyEventListeners() {
 }
 
 export default class BaseNode {
-  constructor(x, y, parentElement, getAllNodes, openMenu) {
+  constructor(x, y, nodeShape, parentElement, getAllNodes, openMenu) {
     this.x = x;
     this.y = y;
+    this.svgNode = getSvgNodeFromShape(nodeShape);
     this.parentElement = parentElement;
     this.getAllNodes = getAllNodes;
     this.openMenu = openMenu;
@@ -113,9 +122,6 @@ export default class BaseNode {
     this._isActive = false;
     this.isDragging = false;
     this.outlineIsActive = false;
-  }
-
-  init(x, y) {
     this.setPosition(x, y);
     applyEventListeners.call(this);
     this.svgNode.addToDom(this.parentElement.getElementById(SVG_GROUP.NODE));

@@ -1,18 +1,18 @@
-import BaseComponent from 'components/_util/base-component';
-import Component from 'components/_util/component';
-import { audioEventBus, tickEventBus } from 'services/EventBus';
-import metronomeManager from 'services/metronome/metronomeManager';
+// import BaseComponent from 'components/_util/base-component';
+// import Component from 'components/_util/component';
+// import { audioEventBus, tickEventBus } from 'services/EventBus';
+// import metronomeManager from 'services/metronome/metronomeManager';
 import EventNode from 'components/svg-graph/EventNode';
 import InputNode from 'components/svg-graph/InputNode';
 
-const COMPONENT_NAME = 'event-network';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+// const COMPONENT_NAME = 'event-network';
+// const style = require(`./${COMPONENT_NAME}.css`);
+// const markup = require(`./${COMPONENT_NAME}.html`);
 
 // TODO: put in component super
-const graphStyles = require('components/svg-graph/styles.css');
+// const graphStyles = require('components/svg-graph/styles.css');
 
-const metronome = metronomeManager.getMetronome();
+// const metronome = metronomeManager.getMetronome();
 const VIEWBOX_SIZE = 100;
 const elementScale = 4;
 
@@ -28,16 +28,16 @@ function getCoordinatesFromEvent(clientX, clientY, parentElement) {
   };
 }
 
-const domMap = {
-  svgContainer: 'svgContainer',
-  containerMenu: 'containerMenu',
-  nodeMenu: 'propertyMenu'
-};
+// const domMap = {
+//   svgContainer: 'svgContainer',
+//   containerMenu: 'containerMenu',
+//   nodeMenu: 'propertyMenu'
+// };
 
-class EventNetwork extends BaseComponent {
+class AbstractGraph extends BaseComponent {
 
-  constructor() {
-    super(`${style}${graphStyles}`, markup, domMap);
+  constructor(style, markup, domMap) {
+    super(style, markup, domMap);
     this.nodes = [];
     this.inputNodes = [];
     this.getAllNodes = () => this.nodes;
@@ -46,9 +46,9 @@ class EventNetwork extends BaseComponent {
   }
 
   connectedCallback() {
-    this.id = `EventNetwork${instanceCnt++}`;
-    this.metronomeSchedulable = this.buildMetronomeSchedulable();
-    metronomeManager.getScheduler().register(this.metronomeSchedulable);
+    // this.id = `EventNetwork${instanceCnt++}`;
+    // this.metronomeSchedulable = this.buildMetronomeSchedulable();
+    // metronomeManager.getScheduler().register(this.metronomeSchedulable);
 
     this.dom.svgContainer.addEventListener('contextmenu', this.onRightClick.bind(this));
     this.dom.svgContainer.addEventListener('mousedown', event => {
@@ -67,10 +67,10 @@ class EventNetwork extends BaseComponent {
     });
   }
 
-  disconnectedCallback() {
-    metronomeManager.getScheduler().deregister(this.metronomeSchedulable);
-    tickEventBus.unsubscribe(this.tickEventSubscription);
-  }
+  // disconnectedCallback() {
+  //   metronomeManager.getScheduler().deregister(this.metronomeSchedulable);
+  //   tickEventBus.unsubscribe(this.tickEventSubscription);
+  // }
 
   addNode(event) {
     const coords = getCoordinatesFromEvent(event.clientX, event.clientY, this.dom.svgContainer);
@@ -88,19 +88,19 @@ class EventNetwork extends BaseComponent {
     this.showContainerMenu(false);
   }
 
-  buildMetronomeSchedulable() {
-    return {
-      processTick: (tickNumber, time) => {
-        this.nodes.forEach(node => node.onBeforeActivate());
-        this.inputNodes.forEach(node => node.activate(tickNumber, time))
-      },
-      render: (tickNumber, lastTickNumber) => {
-        this.nodes.forEach(node => node.renderActivationState());
-      },
-      start: () => {},
-      stop: () => {}
-    };
-  }
+  // buildMetronomeSchedulable() {
+  //   return {
+  //     processTick: (tickNumber, time) => {
+  //       this.nodes.forEach(node => node.onBeforeActivate());
+  //       this.inputNodes.forEach(node => node.activate(tickNumber, time))
+  //     },
+  //     render: (tickNumber, lastTickNumber) => {
+  //       this.nodes.forEach(node => node.renderActivationState());
+  //     },
+  //     start: () => {},
+  //     stop: () => {}
+  //   };
+  // }
 
   setOnRemoveCallback(onRemoveCallback) {
     this.onRemoveCallback = onRemoveCallback;

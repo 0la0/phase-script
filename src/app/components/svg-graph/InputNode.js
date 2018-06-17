@@ -1,13 +1,9 @@
 import BaseNode from './BaseNode';
-import SvgSquareNode from './SvgSquareNode';
-import { NODE_RADIUS } from './Constants';
 
 // TODO: MOVE TO EVENT NETWORK
 export default class InputNode extends BaseNode {
   constructor(x, y, parentElement, getAllNodes, openMenu) {
-    super(x, y, parentElement, getAllNodes, openMenu);
-    this.svgNode = new SvgSquareNode(NODE_RADIUS);
-    this.init(x, y);
+    super(x, y, 'SQUARE', parentElement, getAllNodes, openMenu);
   }
 
   activate(tickNumber, time) {
