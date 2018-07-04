@@ -110,12 +110,12 @@ function applyEventListeners() {
 }
 
 export default class BaseNode {
-  constructor(x, y, nodeShape, parentElement, getAllNodes, openMenu) {
+  constructor(x, y, nodeShape, parentElement, getAllNodes, onDelete) {
     this.x = x;
     this.y = y;
     this.parentElement = parentElement;
     this.getAllNodes = getAllNodes;
-    this.openMenu = openMenu; // TODO: remove
+    this.onDelete = onDelete;
     this.svgNode = getSvgNodeFromShape(nodeShape);
     this.edges = [];
     this._isActive = false;

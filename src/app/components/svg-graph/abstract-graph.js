@@ -1,4 +1,5 @@
 import BaseComponent from 'components/_util/base-component';
+const graphStyles = require('components/svg-graph/styles.css');
 
 const VIEWBOX_SIZE = 100;
 const elementScale = 4;
@@ -16,12 +17,11 @@ function getCoordinatesFromEvent(clientX, clientY, parentElement) {
 export default class AbstractGraph extends BaseComponent {
 
   constructor(style, markup, domMap) {
-    super(style, markup, domMap);
+    super(`${graphStyles}${style}`, markup, domMap);
     this.nodes = [];
     this.inputNodes = [];
     this.getAllNodes = () => this.nodes;
     this.getAllInputNodes = () => [...this.inputNodes, ...this.nodes];
-    this.menuNode = null;
   }
 
   connectedCallback() {
@@ -38,17 +38,15 @@ export default class AbstractGraph extends BaseComponent {
 
   addNode(event, NodeClass) {
     const coords = getCoordinatesFromEvent(event.clientX, event.clientY, this.dom.svgContainer);
-    const node = new NodeClass(coords.x, coords.y, this.dom.svgContainer, this.getAllInputNodes, this.openPropertyMenu.bind(this));
+    const node = new NodeClass(coords.x, coords.y, this.dom.svgContainer, this.getAllInputNodes, this.deleteNode.bind(this));
     this.nodes.push(node);
     this.showContainerMenu(false);
-    this.openPropertyMenu(false);
   }
 
   addInput(event, NodeClass) {
     const coords = getCoordinatesFromEvent(event.clientX, event.clientY, this.dom.svgContainer);
-    const node = new NodeClass(coords.x, coords.y, this.dom.svgContainer, this.getAllInputNodes, this.openPropertyMenu.bind(this));
+    const node = new NodeClass(coords.x, coords.y, this.dom.svgContainer, this.getAllInputNodes, this.deleteNode.bind(this));
     this.inputNodes.push(node);
-    this.showContainerMenu(false);
     this.showContainerMenu(false);
   }
 
@@ -63,12 +61,10 @@ export default class AbstractGraph extends BaseComponent {
   onRightClick(event) {
     event.preventDefault();
     this.showContainerMenu(true, event.clientX, event.clientY);
-    this.openPropertyMenu(false);
   }
 
   onMouseDown(event) {
     this.showContainerMenu(false);
-    this.openPropertyMenu(false);
   }
 
   showContainerMenu(isActive, clientX, clientY) {
@@ -83,17 +79,11 @@ export default class AbstractGraph extends BaseComponent {
     }
   }
 
-  openPropertyMenu(isActive, event, node) {
-    console.log('Deprecate: AbstractGraph.openPropertyMenu')
-  }
-
   deleteNode(node) {
     if (!node) { return; }
     this.nodes.forEach(_node => _node.detachFromNode(node));
     this.inputNodes.forEach(_node => _node.detachFromNode(node));
     this.nodes = this.nodes.filter(_node => _node !== node);
     this.inputNodes = this.inputNodes.filter(_node => _node !== node);
-    this.menuNode = null;
-    this.openPropertyMenu(false);
   }
 }

@@ -1,8 +1,8 @@
 import BaseNode from 'components/svg-graph/BaseNode';
 
 export default class InputNode extends BaseNode {
-  constructor(x, y, parentElement, getAllNodes, openMenu) {
-    super(x, y, 'SQUARE', parentElement, getAllNodes, openMenu);
+  constructor(x, y, parentElement, getAllNodes, onDelete) {
+    super(x, y, 'SQUARE', parentElement, getAllNodes, onDelete);
   }
 
   activate(tickNumber, time) {
@@ -17,5 +17,6 @@ export default class InputNode extends BaseNode {
   onRightClick(event) {
     event.preventDefault();
     event.stopPropagation();
+    this.onDelete(this);
   }
 }

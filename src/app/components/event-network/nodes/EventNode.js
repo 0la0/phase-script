@@ -2,8 +2,8 @@ import BaseNode from 'components/svg-graph/BaseNode';
 import PropertyMenu from 'components/event-network/property-menu';
 
 export default class EventNode extends BaseNode {
-  constructor(x, y, parentElement, getAllNodes, openMenu) {
-    super(x, y, 'CIRCLE', parentElement, getAllNodes, openMenu);
+  constructor(x, y, parentElement, getAllNodes, onDelete) {
+    super(x, y, 'CIRCLE', parentElement, getAllNodes, onDelete);
     this.activationThreshold = 4;
     this.activationCnt = 0;
     this.messageValue = 60;

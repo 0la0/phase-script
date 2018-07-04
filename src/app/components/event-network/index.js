@@ -3,18 +3,11 @@ import { audioEventBus, tickEventBus } from 'services/EventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
 import EventNode from 'components/event-network/nodes/EventNode';
 import InputNode from 'components/event-network/nodes/InputNode';
-import AbstractGraph from './abstract-graph';
+import AbstractGraph from 'components/svg-graph/abstract-graph';
 
 const COMPONENT_NAME = 'event-network';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
-
-// TODO: put in component super
-const graphStyles = require('components/svg-graph/styles.css');
-
-const metronome = metronomeManager.getMetronome();
-const VIEWBOX_SIZE = 100;
-const elementScale = 4;
 
 let instanceCnt = 0;
 
@@ -25,7 +18,7 @@ const domMap = {
 
 class EventNetwork extends AbstractGraph {
   constructor() {
-    super(`${style}${graphStyles}`, markup, domMap);
+    super(style, markup, domMap);
   }
 
   connectedCallback() {

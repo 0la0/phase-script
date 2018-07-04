@@ -90,8 +90,8 @@ class PropertyMenu extends BaseComponent {
   }
 
   deleteNode() {
-    console.log('TODO: delete', this);
     this.hide();
+    this.node.onDelete(this.node);
   }
 }
 
