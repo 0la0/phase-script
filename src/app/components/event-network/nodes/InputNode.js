@@ -1,6 +1,5 @@
-import BaseNode from './BaseNode';
+import BaseNode from 'components/svg-graph/BaseNode';
 
-// TODO: MOVE TO EVENT NETWORK
 export default class InputNode extends BaseNode {
   constructor(x, y, parentElement, getAllNodes, openMenu) {
     super(x, y, 'SQUARE', parentElement, getAllNodes, openMenu);
@@ -13,5 +12,10 @@ export default class InputNode extends BaseNode {
 
   render(tickNumber, lastTickNumber) {
     this.svgNode.renderActivation();
+  }
+
+  onRightClick(event) {
+    event.preventDefault();
+    event.stopPropagation();
   }
 }

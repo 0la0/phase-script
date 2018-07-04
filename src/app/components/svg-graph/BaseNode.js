@@ -104,9 +104,8 @@ function applyEventListeners() {
   });
 
   this.svgNode.getCenter().addEventListener('contextmenu', event => {
-    event.preventDefault();
-    event.stopPropagation();
-    this.openMenu(true, event, this);
+    if (!this.onRightClick) { return; }
+    this.onRightClick(event);
   });
 }
 
@@ -114,10 +113,10 @@ export default class BaseNode {
   constructor(x, y, nodeShape, parentElement, getAllNodes, openMenu) {
     this.x = x;
     this.y = y;
-    this.svgNode = getSvgNodeFromShape(nodeShape);
     this.parentElement = parentElement;
     this.getAllNodes = getAllNodes;
-    this.openMenu = openMenu;
+    this.openMenu = openMenu; // TODO: remove
+    this.svgNode = getSvgNodeFromShape(nodeShape);
     this.edges = [];
     this._isActive = false;
     this.isDragging = false;

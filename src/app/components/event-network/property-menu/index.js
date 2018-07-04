@@ -16,9 +16,9 @@ const domMap = {
 };
 
 class PropertyMenu extends BaseComponent {
-
-  constructor() {
+  constructor(node) {
     super(style, markup, domMap);
+    this.node = node;
   }
 
   connectedCallback() {
@@ -29,31 +29,32 @@ class PropertyMenu extends BaseComponent {
       this.hide();
     });
 
-    audioEventBus.subscribe({
+    this.onNewAddress = {
       onNewSubscription: addresses => {
         const optionList = addresses.map(address => ({
           label: address, value: address
         }));
         setTimeout(() => this.dom.sendComboBox.setOptions(optionList));
       }
-    });
+    };
+    audioEventBus.subscribe(this.onNewAddress);
+    setTimeout(() => this.show());
   }
 
-  show(node) {
-    this.node = node;
-    this.dom.thresholdInput.value = node.getActivationThreshold();
-    this.dom.valueInput.value = node.getMessageValue();
-    this.dom.sendComboBox.setValue(node.getAddress());
+  disconnectedCallback() {
+    audioEventBus.unsubscribe(this.onNewAddress);
+  };
+
+  show() {
+    this.dom.thresholdInput.value = this.node.getActivationThreshold();
+    this.dom.valueInput.value = this.node.getMessageValue();
+    this.dom.sendComboBox.setValue(this.node.getAddress());
     this.dom.container.classList.add('scrim-active');
   }
 
   hide() {
-    this.node = null;
     this.dom.container.classList.remove('scrim-active');
-  }
-
-  setEventDelegate(eventDelegate) {
-    this.eventDelegate = eventDelegate;
+    setTimeout(() => this.parentElement.removeChild(this), 300);
   }
 
   handleThresholdChange(event) {
@@ -62,12 +63,6 @@ class PropertyMenu extends BaseComponent {
     const sanatizedVal = Number.isNaN(val) ? 4 : val;
     this.node.setActivationThreshold(sanatizedVal);
   }
-
-  // handleValueChange(event) {
-  //   const val = parseInt(event.target.value, 10);
-  //   if (!this.node || Number.isNaN(val)) { return; }
-  //   this.node.setEventValue(val);
-  // }
 
   getAddress() {
     return this.dom.sendComboBox.getSelectedValue();
@@ -79,7 +74,6 @@ class PropertyMenu extends BaseComponent {
   }
 
   handleSendAddressChange() {
-    // console.log(this.getAddress(), this.getMessageValue());
     if (!this.node) { return; }
     const address = this.getAddress();
     const note = this.getMessageValue();
@@ -96,10 +90,8 @@ class PropertyMenu extends BaseComponent {
   }
 
   deleteNode() {
-    if (!this.eventDelegate || !this.eventDelegate.deleteNode) {
-      return;
-    }
-    this.eventDelegate.deleteNode(this.node);
+    console.log('TODO: delete', this);
+    this.hide();
   }
 }
 

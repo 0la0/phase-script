@@ -1,6 +1,6 @@
-import BaseNode from './BaseNode';
+import BaseNode from 'components/svg-graph/BaseNode';
+import PropertyMenu from 'components/event-network/property-menu';
 
-// TODO: MOVE TO EVENT NETWORK
 export default class EventNode extends BaseNode {
   constructor(x, y, parentElement, getAllNodes, openMenu) {
     super(x, y, 'CIRCLE', parentElement, getAllNodes, openMenu);
@@ -19,7 +19,8 @@ export default class EventNode extends BaseNode {
   activate(tickNumber, time) {
     this.activationCnt++;
     if (this.activationCnt === this.activationThreshold) {
-      this.edges.map(edge => edge.getEndNode())
+      this.edges
+        .map(edge => edge.getEndNode())
         .forEach(outputNode => outputNode.activate(tickNumber, time));
       this.isActivated = true;
       if (this.action) {
@@ -59,5 +60,13 @@ export default class EventNode extends BaseNode {
 
   getMessageValue() {
     return this.messageValue;
+  }
+
+  onRightClick(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const container = this.parentElement.parentElement;
+    const propertyMenu = new PropertyMenu.element(this);
+    container.appendChild(propertyMenu);
   }
 }
