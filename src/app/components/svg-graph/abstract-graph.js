@@ -50,14 +50,6 @@ export default class AbstractGraph extends BaseComponent {
     this.showContainerMenu(false);
   }
 
-  setOnRemoveCallback(onRemoveCallback) {
-    this.onRemoveCallback = onRemoveCallback;
-  }
-
-  onRemove() {
-    this.onRemoveCallback && this.onRemoveCallback();
-  }
-
   onRightClick(event) {
     event.preventDefault();
     this.showContainerMenu(true, event.clientX, event.clientY);

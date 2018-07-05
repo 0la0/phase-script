@@ -51,6 +51,10 @@ class OscSynth extends BaseComponent {
     this.noiseContainer = this.root.getElementById('noiseContainer');
   }
 
+  disconnectedCallback() {
+    audioEventBus.unsubscribe(this.audioEventSubscription);
+  }
+
   onAttackUpdate(value) {
     this.synth.setAttack(value);
     this.whiteNoise.setAttack(value);
@@ -72,15 +76,6 @@ class OscSynth extends BaseComponent {
     return [...this.voiceContainer.children].map(ele => ele.getOsc());
   }
 
-  setOnRemoveCallback(onRemoveCallback) {
-    this.onRemoveCallback = onRemoveCallback;
-  }
-
-  onRemove() {
-    this.onRemoveCallback && this.onRemoveCallback();
-    audioEventBus.unsubscribe(this.audioEventSubscription);
-  }
-
   getNoiseNode() {
     return [...this.noiseContainer.children].map(ele => ele.getOsc());
   }
@@ -95,7 +90,6 @@ class OscSynth extends BaseComponent {
       this.noiseContainer.appendChild(ele);
     }
   }
-
 }
 
 export default new Component(COMPONENT_NAME, OscSynth);

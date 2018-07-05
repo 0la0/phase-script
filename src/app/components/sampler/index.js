@@ -64,6 +64,10 @@ class Sampler extends BaseComponent {
     });
   }
 
+  disconnectedCallback() {
+    audioEventBus.unsubscribe(this.audioEventSubscription);
+  }
+
   onSampleChange(value) {
     const audioBuffer = getAudioBuffer(value);
     const bufferLength = (audioBuffer.duration * 1000).toFixed(2);
@@ -97,16 +101,6 @@ class Sampler extends BaseComponent {
     this.output.release.innerText = value.toFixed(2);
     this.sampleVisualizer.setAsr(this.asr);
   }
-
-  setOnRemoveCallback(onRemoveCallback) {
-    this.onRemoveCallback = onRemoveCallback;
-  }
-
-  onRemove() {
-    this.onRemoveCallback && this.onRemoveCallback();
-    audioEventBus.unsubscribe(this.audioEventSubscription);
-  }
-
 }
 
 export default new Component(COMPONENT_NAME, Sampler);

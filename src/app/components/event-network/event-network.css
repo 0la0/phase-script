@@ -7,3 +7,14 @@
   position: relative;
   display: block;
 }
+
+.remove-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  opacity: 0;
+  transition: 0.2s opacity ease-out;
+}
+.remove-button:hover {
+  opacity: 1;
+}

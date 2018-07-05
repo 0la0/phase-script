@@ -82,6 +82,7 @@ class GrainMaker extends BaseComponent {
 
   disconnectedCallback() {
     metronomeManager.getScheduler().deregister(this.schedulable);
+    audioEventBus.unsubscribe(this.audioEventSubscription);
   }
 
   scheduleAudio(message) {
@@ -166,16 +167,6 @@ class GrainMaker extends BaseComponent {
       stop: () => console.log('grain schedule stop')
     };
   }
-
-  setOnRemoveCallback(onRemoveCallback) {
-    this.onRemoveCallback = onRemoveCallback;
-  }
-
-  onRemove() {
-    this.onRemoveCallback && this.onRemoveCallback();
-    audioEventBus.unsubscribe(this.audioEventSubscription);
-  }
-
 }
 
 export default new Component(COMPONENT_NAME, GrainMaker);

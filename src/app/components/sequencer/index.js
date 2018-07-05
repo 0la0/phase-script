@@ -192,14 +192,6 @@ class Sequencer extends BaseComponent {
     this.publishAddress = value;
   }
 
-  setOnRemoveCallback(onRemoveCallback) {
-    this.onRemoveCallback = onRemoveCallback;
-  }
-
-  onRemove() {
-    this.onRemoveCallback && this.onRemoveCallback();
-  }
-
   onNoteChange() {
     if (this.arpIsOn) {
       this.buildArpSequence();

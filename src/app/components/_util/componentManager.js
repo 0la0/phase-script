@@ -26,6 +26,7 @@ import FftVisualizer from 'components/fft-visualizer';
 import EventNetwork from 'components/event-network';
 import CanvasMenu from 'components/event-network/canvas-menu';
 import PropertyMenu from 'components/event-network/property-menu';
+import EventCycle from 'components/event-cycle';
 
 const components = [
   app,
@@ -56,6 +57,7 @@ const components = [
   EventNetwork,
   CanvasMenu,
   PropertyMenu,
+  EventCycle
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

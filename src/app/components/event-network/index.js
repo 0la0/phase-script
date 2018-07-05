@@ -28,7 +28,6 @@ class EventNetwork extends AbstractGraph {
   }
 
   disconnectedCallback() {
-    super.disconnectedCallback();
     metronomeManager.getScheduler().deregister(this.metronomeSchedulable);
     tickEventBus.unsubscribe(this.tickEventSubscription);
   }

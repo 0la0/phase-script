@@ -28,4 +28,12 @@ export default class BaseComponent extends HTMLElement {
     this.dom = domMap ? buildDomMap(this.root, domMap) : {};
   }
 
+  setOnRemoveCallback(onRemoveCallback) {
+    this.onRemoveCallback = onRemoveCallback;
+  }
+
+  onRemove() {
+    this.onRemoveCallback && this.onRemoveCallback();
+  }
+
 }

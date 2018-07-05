@@ -1,61 +1,67 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 
+import Sequencer from 'components/sequencer';
+import Synth from 'components/osc-synth';
+import GrainMaker from 'components/grain-maker';
+import Sampler from 'components/sampler';
+import TriggerBox from 'components/trigger-box';
+import EventNetwork from 'components/event-network';
+import EventCycle from 'components/event-cycle';
+
 const COMPONENT_NAME = 'sound-root';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
+const domMap = {
+  sequencerContainer: 'sequencer-container',
+  synthContainer: 'synth-container',
+  grainContainer: 'grain-container',
+  samplerContainer: 'sampler-container',
+  triggerContainer: 'trigger-box-container',
+  eventNetworkContainer: 'event-network-container',
+  eventCycleContainer: 'event-cycle-container'
+};
+
 class SoundRoot extends BaseComponent {
 
   constructor(note) {
-    super(style, markup);
+    super(style, markup, domMap);
   }
 
-  connectedCallback() {
-    this.sequencerContainer = this.root.getElementById('sequencer-container');
-    this.synthContainer = this.root.getElementById('synth-container');
-    this.grainContainer = this.root.getElementById('grain-container');
-    this.samplerContainer = this.root.getElementById('sampler-container');
-    this.triggerContainer = this.root.getElementById('trigger-box-container');
-    this.eventNetworkContainer = this.root.getElementById('event-network-container');
+  addElement(parentElement, ComponentClass) {
+    const component = new ComponentClass();
+    component.setOnRemoveCallback(() => parentElement.removeChild(component));
+    parentElement.appendChild(component);
   }
 
   onAddSequencer() {
-    const sequencer = document.createElement('sequence-driver');
-    sequencer.setOnRemoveCallback(() => this.sequencerContainer.removeChild(sequencer));
-    this.sequencerContainer.appendChild(sequencer);
+    this.addElement(this.dom.sequencerContainer, Sequencer.element);
   }
 
   onAddSynth() {
-    const synth = document.createElement('osc-synth');
-    synth.setOnRemoveCallback(() => this.synthContainer.removeChild(synth));
-    this.synthContainer.appendChild(synth);
+    this.addElement(this.dom.synthContainer, Synth.element);
   }
 
   onAddGrain() {
-    const grainularSampler = document.createElement('grain-maker');
-    grainularSampler.setOnRemoveCallback(() => this.grainContainer.removeChild(grainularSampler));
-    this.grainContainer.appendChild(grainularSampler);
+    this.addElement(this.dom.grainContainer, GrainMaker.element);
   }
 
   onAddSampler() {
-    const sampler = document.createElement('simple-sampler');
-    sampler.setOnRemoveCallback(() => this.samplerContainer.removeChild(sampler));
-    this.samplerContainer.appendChild(sampler);
+    this.addElement(this.dom.samplerContainer, Sampler.element);
   }
 
   onAddTrigger() {
-    const trigger = document.createElement('trigger-box');
-    trigger.setOnRemoveCallback(() => this.triggerContainer.removeChild(trigger));
-    this.triggerContainer.appendChild(trigger);
+    this.addElement(this.dom.triggerContainer, TriggerBox.element);
   }
 
   onAddEventNetwork() {
-    const eventNetwork = document.createElement('event-network');
-    eventNetwork.setOnRemoveCallback(() => this.eventNetworkContainer.removeChild(eventNetwork));
-    this.eventNetworkContainer.appendChild(eventNetwork);
+    this.addElement(this.dom.eventNetworkContainer, EventNetwork.element);
   }
 
+  onAddCycle() {
+    this.addElement(this.dom.eventCycleContainer, EventCycle.element);
+  }
 }
 
 export default new Component(COMPONENT_NAME, SoundRoot);
