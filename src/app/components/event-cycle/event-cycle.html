@@ -1,2 +1,24 @@
+<div class="event-cycle">
+  <div class="top-bar">
+    <div>
+      <label for="cycleLength">Cycle Length:</label>
+      <input
+        id="cycleLength"
+        class="numeric-input"
+        type="number"
+        value="4"
+        min="1"
+        step="1"
+      />
+    </div>
+    <flat-button
+      class="remove-button"
+      click="onRemove"
+      offtext="X">
+    </flat-button>
+  </div>
+  <div class="cycle-container">
+    <div id="cycleElement" class="cycle-element"></div>
+  </div>
 
-<p>Cycle</p>
+</div>
