@@ -1,6 +1,5 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import { IntArray } from 'components/_util/math';
 import { audioEventBus } from 'services/EventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
 import { parser } from './modules/CycleEvaluator';
@@ -71,7 +70,7 @@ class EventCycle extends BaseComponent {
     })
   }
 
-  evalCycle(tickNumber, time, tickLength, cycle, cycleDuration) {
+  evaluateCycle(tickNumber, time, tickLength, cycle, cycleDuration) {
     const elementDuration = cycleDuration / cycle.length;
     cycle.forEach((element, index, arr) => {
       const timeObj = {
@@ -79,7 +78,7 @@ class EventCycle extends BaseComponent {
         midi: time.midi + (index * cycleDuration), // TODO: incorporate midi time?
       };
       if (Array.isArray(element)) {
-        this.evalCycle(tickNumber, timeObj, tickLength, element, elementDuration);
+        this.evaluateCycle(tickNumber, timeObj, tickLength, element, elementDuration);
       }
       else {
         this.scheduleCycleElement(element, timeObj, tickLength)
@@ -101,7 +100,7 @@ class EventCycle extends BaseComponent {
     if (!this.parentCycle || !this.parentCycle.length) { return; }
     const tickLength = metronome.getTickLength();
     const cycleDuration = (tickLength * this.cycleLength) / this.parentCycle.length;
-    this.evalCycle(tickNumber, time, tickLength, this.parentCycle, cycleDuration);
+    this.evaluateCycle(tickNumber, time, tickLength, this.parentCycle, cycleDuration);
   }
 
   buildMetronomeSchedulable() {
