@@ -43,3 +43,19 @@
 .cycle-element--active {
   border-color: green;
 }
+
+.cycle-input {
+  font-size: 2.3em;
+  margin: 10px;
+  background-color: var(--color-black-light);
+  border: var(--border-default);
+  border-radius: var(--border-radius);
+  outline: none;
+  color: var(--border-default);
+}
+.cycle-input:focus {
+  outline: none;
+}
+.cycle-input--invalid {
+  border-color: red;
+}
