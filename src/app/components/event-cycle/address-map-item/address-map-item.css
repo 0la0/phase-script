@@ -1,0 +1,15 @@
+
+.key-input {
+  height: 25px;
+  font-size: 1em;
+  margin: 0 2px;
+  width: 36px;
+  background-color: var(--color-black-light);
+  border: none;
+  border-bottom: var(--border-default);
+  outline: none;
+  color: var(--border-default);
+}
+.key-input:focus {
+  outline: none;
+}

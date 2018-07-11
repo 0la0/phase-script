@@ -2,7 +2,7 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { audioEventBus } from 'services/EventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
-import { parser } from './modules/CycleEvaluator';
+import { parser } from './CycleEvaluator';
 
 const COMPONENT_NAME = 'event-cycle';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -15,15 +15,15 @@ const metronome = metronomeManager.getMetronome();
 const domMap = {
   cycleLength: 'cycleLength',
   cycleElement: 'cycleElement',
-  sendComboBox: 'sendComboBox',
   cycleInput: 'cycleInput',
+  cycleIndicator: 'cycleIndicator',
+  addressMapper: 'addressMapper',
 };
 
 class EventCycle extends BaseComponent {
   constructor(node) {
     super(style, markup, domMap);
     this.cycleLength = 16;
-    this.address = '-';
     this.parentCycle = [];
   }
 
@@ -32,38 +32,29 @@ class EventCycle extends BaseComponent {
     this.dom.cycleLength.addEventListener('blur', this.handleCycleLengthChange.bind(this));
     this.dom.cycleInput.addEventListener('keydown', event => event.stopPropagation());
     this.dom.cycleInput.addEventListener('keyup', event => this.handleCycleChange(event.target.value));
-
     this.metronomeSchedulable = this.buildMetronomeSchedulable();
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
-
-    this.onNewAddress = {
-      onNewSubscription: addresses => {
-        const optionList = addresses.map(address => ({
-          label: address, value: address
-        }));
-        setTimeout(() => this.dom.sendComboBox.setOptions(optionList));
-      }
-    };
-    audioEventBus.subscribe(this.onNewAddress);
+    setTimeout(() =>
+      this.dom.addressMapper.setChangeCallback(this.handleAddressMapChange.bind(this))
+    );
   }
 
   disconnectedCallback() {
     metronomeManager.getScheduler().deregister(this.metronomeSchedulable);
-    audioEventBus.unsubscribe(this.onNewAddress);
   }
 
   handleCycleLengthChange(event) {
     this.cycleLength = parseInt(event.target.value, 10);
   }
 
-  handleSendAddressChange(address) {
-    this.address = address;
+  handleAddressMapChange(addressMap) {
+    this.addressMap = addressMap;
   }
 
   scheduleCycleElement(cycleElement, time, tickLength) {
-    if (cycleElement === REST) { return; }
+    if (!this.addressMap[cycleElement]) { return; }
     audioEventBus.publish({
-      address: this.address,
+      address: this.addressMap[cycleElement],
       time,
       duration: tickLength,
       note: 60,
@@ -110,7 +101,14 @@ class EventCycle extends BaseComponent {
           this.triggerCycle(tickNumber, time);
         }
       },
-      render: (tickNumber, lastTickNumber) => {},
+      render: (tickNumber, lastTickNumber) => {
+        const cycleModulo = tickNumber % this.cycleLength;
+        if (cycleModulo === 0) {
+          this.dom.cycleIndicator.classList.add('cycle-inicator--active');
+        } else if (cycleModulo === 1) {
+          this.dom.cycleIndicator.classList.remove('cycle-inicator--active');
+        }
+      },
       start: () => {},
       stop: () => {}
     };

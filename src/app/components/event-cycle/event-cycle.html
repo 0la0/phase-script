@@ -1,6 +1,7 @@
 <div class="event-cycle">
   <div class="top-bar">
     <div>
+      <div id="cycleIndicator" class="cycle-indicator"></div>
       <label for="cycleLength">Cycle Length:</label>
       <input
         id="cycleLength"
@@ -9,7 +10,7 @@
         min="1"
         step="1"
       />
-      <combo-box id="sendComboBox" change="handleSendAddressChange"></combo-box>
+      <address-mapper id="addressMapper"></address-mapper>
     </div>
     <flat-button
       class="remove-button"

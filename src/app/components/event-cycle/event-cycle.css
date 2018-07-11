@@ -13,11 +13,21 @@
   justify-content: space-between;
 }
 
+.cycle-indicator {
+  display: inline-block;
+  height: 10px;;
+  width: 10px;
+  background-color: none;
+}
+.cycle-inicator--active {
+  background-color: var(--color-grey-light);
+}
+
 .numeric-input {
   height: 25px;
   font-size: 1em;
   margin: 0 2px;
-  width: 25px;
+  width: 28px;
   background-color: var(--color-black-light);
   border: none;
   border-bottom: var(--border-default);

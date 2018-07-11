@@ -27,6 +27,8 @@ import EventNetwork from 'components/event-network';
 import CanvasMenu from 'components/event-network/canvas-menu';
 import PropertyMenu from 'components/event-network/property-menu';
 import EventCycle from 'components/event-cycle';
+import AddressMapper from 'components/event-cycle/address-mapper';
+import AddressMapItem from 'components/event-cycle/address-map-item';
 
 const components = [
   app,
@@ -57,7 +59,9 @@ const components = [
   EventNetwork,
   CanvasMenu,
   PropertyMenu,
-  EventCycle
+  EventCycle,
+  AddressMapper,
+  AddressMapItem
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));
