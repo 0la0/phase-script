@@ -8,6 +8,7 @@ import Sampler from 'components/sampler';
 import TriggerBox from 'components/trigger-box';
 import EventNetwork from 'components/event-network';
 import EventCycle from 'components/event-cycle';
+import PatchSpace from 'components/patch-space';
 
 const COMPONENT_NAME = 'sound-root';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -20,7 +21,8 @@ const domMap = {
   samplerContainer: 'sampler-container',
   triggerContainer: 'trigger-box-container',
   eventNetworkContainer: 'event-network-container',
-  eventCycleContainer: 'event-cycle-container'
+  eventCycleContainer: 'event-cycle-container',
+  patchContainer: 'patch-container',
 };
 
 class SoundRoot extends BaseComponent {
@@ -61,6 +63,10 @@ class SoundRoot extends BaseComponent {
 
   onAddCycle() {
     this.addElement(this.dom.eventCycleContainer, EventCycle.element);
+  }
+
+  onAddPatchSpace() {
+    this.addElement(this.dom.patchContainer, PatchSpace.element);
   }
 }
 

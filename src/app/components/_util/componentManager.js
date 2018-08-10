@@ -29,6 +29,8 @@ import PropertyMenu from 'components/event-network/property-menu';
 import EventCycle from 'components/event-cycle';
 import AddressMapper from 'components/event-cycle/address-mapper';
 import AddressMapItem from 'components/event-cycle/address-map-item';
+import PatchSpace from 'components/patch-space';
+import DraggableWrapper from 'components/patch-space/draggable';
 
 const components = [
   app,
@@ -61,7 +63,9 @@ const components = [
   PropertyMenu,
   EventCycle,
   AddressMapper,
-  AddressMapItem
+  AddressMapItem,
+  PatchSpace,
+  DraggableWrapper
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

@@ -9,6 +9,8 @@ const markup = require(`./${COMPONENT_NAME}.html`);
 
 const metronome = metronomeManager.getMetronome();
 
+const titleSymbols = [ '\\', '|', '/', '-', ];
+
 class Metronome extends BaseComponent {
 
   constructor() {
@@ -21,9 +23,12 @@ class Metronome extends BaseComponent {
       const value = parseInt(this.input.value);
       metronome.setTempo(value);
     });
+    this.titleIndex = 0;
   }
 
   connectedCallback() {
+    this.titleElement = document.getElementsByTagName('title')[0];
+    // console.log('titleElement', titleElement);
 
     window.addEventListener('keydown', $event => {
       if ($event.key !== ' ') {
@@ -42,6 +47,9 @@ class Metronome extends BaseComponent {
           beatNumber,
           lastBeatNumber
         });
+        if (beatNumber % 8 !== 0) { return; }
+        const symbol = titleSymbols[ this.titleIndex++ % titleSymbols.length ];
+        this.titleElement.innerText = `${symbol} ${symbol} ${symbol}`;
       },
       start: () => {},
       stop: () => {}
@@ -57,6 +65,7 @@ class Metronome extends BaseComponent {
     }
     else {
       metronome.stop();
+      this.titleElement.innerText = 'Audio Stopped';
     }
   }
 
