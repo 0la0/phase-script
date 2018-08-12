@@ -1,6 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { eventBus } from 'services/EventBus';
+import SvgLine from '../modules/SvgLine';
 
 const COMPONENT_NAME = 'draggable-wrapper';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -18,44 +19,32 @@ const MOUSE_STATE = {
 };
 
 class DraggableWrapper extends BaseComponent {
-  constructor({ id, onConnectionStart, onConnectionEnd, onConnectionMove }) {
+  constructor({ id, svgContainer, onRender }) {
     super(style, markup, domMap);
     this.id = id;
-    this.onConnectionStart = onConnectionStart;
-    this.onConnectionEnd = onConnectionEnd;
-    this.onConnectionMove = onConnectionMove;
-    // this.isDragging = false;
+    this.svgContainer = svgContainer;
+    this.onRender = onRender;
+    this.edges = [];
     this.mouseState = {
       active: undefined,
       xBuffer: 0,
       yBuffer: 0,
     };
+    this.svgLine;
   }
 
   connectedCallback() {
     this.dom.topBar.addEventListener('mousedown', this.handleDragStart.bind(this));
-    // this.dom.inlet.addEventListener('mousedown', event => {
-    //   console.log('inlet')
-    // });
-
-    this.dom.outlet.addEventListener('mousedown', event => {
-      event.preventDefault();
-      event.stopPropagation();
-      const boundingBox = this.dom.outlet.getBoundingClientRect();
-      const centerX = boundingBox.left + (boundingBox.width / 2);
-      const centerY = boundingBox.top + (boundingBox.height / 2);
-      this.mouseState.active = MOUSE_STATE.OUTLET;
-      this.onConnectionStart(centerX, centerY);
-    });
+    this.dom.outlet.addEventListener('mousedown', this.handleConnectionStart.bind(this));
 
     eventBus.subscribe({
       address: 'MOUSE_UP',
       onNext: message => {
         if (this.mouseState.active === MOUSE_STATE.OUTLET) {
-          this.onConnectionEnd(message.$event);
+          this.handleConnectionEnd(message.$event);
         }
         this.mouseState.active = undefined;
-      },
+      }
     });
     eventBus.subscribe({
       address: 'MOUSE_MOVE',
@@ -64,14 +53,59 @@ class DraggableWrapper extends BaseComponent {
           this.handleDrag(message.$event);
         }
         else if (this.mouseState.active === MOUSE_STATE.OUTLET) {
-          this.onConnectionMove(message.$event);
+          this.handleConnectionMove(message.$event);
         }
       }
     });
   }
 
-  disconnectedCallback() {
-    // metronomeManager.getScheduler().deregister(this.metronomeSchedulable);
+  handleConnectionStart(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const outletCenter = this.getOutletCenter();
+    const boundingBox = this.parentElement.getBoundingClientRect();
+    const x = ((outletCenter.x - boundingBox.left) / boundingBox.width) * 100;
+    const y = ((outletCenter.y - boundingBox.top) / boundingBox.height) * 100;
+    this.svgLine = new SvgLine(0, 0, 0, 0, this.handleRemoveConnection.bind(this));
+    this.svgLine.setPosition(x, y, x, y);
+    this.svgLine.connect(this.svgContainer);
+    this.mouseState.active = MOUSE_STATE.OUTLET;
+  }
+
+  handleConnectionMove(event) {
+    const boundingBox = this.parentElement.getBoundingClientRect();
+    const x = ((event.clientX - boundingBox.left) / boundingBox.width) * 100;
+    const y = ((event.clientY - boundingBox.top) / boundingBox.height) * 100;
+    this.svgLine.setEndPosition(x, y);
+  }
+
+  handleConnectionEnd(event) {
+    const element = event.path[0];
+    if (!element || element.id !== 'inlet') {
+      this.svgLine.remove();
+      this.svgLine = undefined;
+      return;
+    }
+    const outgoingNode = element.parentNode.parentNode.host;
+    if (outgoingNode === this) {
+      this.svgLine.remove();
+      this.svgLine = undefined;
+      return;
+    }
+    if (this.edges.some(edge => edge.node === outgoingNode)) {
+      this.svgLine.remove();
+      this.svgLine = undefined;
+      return;
+    }
+    const inletCenter = outgoingNode.getInletCenter();
+    const boundingBox = this.parentElement.getBoundingClientRect();
+    const x = ((inletCenter.x - boundingBox.left) / boundingBox.width) * 100;
+    const y = ((inletCenter.y - boundingBox.top) / boundingBox.height) * 100;
+    this.svgLine.setEndPosition(x, y);
+    this.edges.push({
+      svgLine: this.svgLine,
+      node: outgoingNode,
+    });
   }
 
   handleDragStart(event) {
@@ -93,6 +127,52 @@ class DraggableWrapper extends BaseComponent {
     const mouseY = event.clientY - parentDims.top - this.mouseState.yBuffer;
     this.dom.container.style.setProperty('left', `${mouseX}px`);
     this.dom.container.style.setProperty('top', `${mouseY}px`);
+    this.onRender();
+  }
+
+  getInletCenter() {
+    const boundingBox = this.dom.inlet.getBoundingClientRect();
+    return {
+      x: boundingBox.left + (boundingBox.width / 2),
+      y: boundingBox.top + (boundingBox.height / 2),
+    };
+  }
+
+  handleRemoveConnection(svgLine) {
+    this.edges = this.edges.filter(edge => edge.svgLine !== svgLine);
+  }
+
+  getOutletCenter() {
+    const boundingBox = this.dom.outlet.getBoundingClientRect();
+    return {
+      x: boundingBox.left + (boundingBox.width / 2),
+      y: boundingBox.top + (boundingBox.height / 2),
+    };
+  }
+
+  render() {
+    if (!this.edges.length) { return; }
+    const boundingBox = this.parentElement.getBoundingClientRect();
+    const outletCenter = this.getOutletCenter();
+    const startX = ((outletCenter.x - boundingBox.left) / boundingBox.width) * 100;
+    const startY = ((outletCenter.y - boundingBox.top) / boundingBox.height) * 100;
+    this.edges.forEach(({ svgLine, node }) => {
+      const inletCenter = node.getInletCenter();
+      const endX = ((inletCenter.x - boundingBox.left) / boundingBox.width) * 100;
+      const endY = ((inletCenter.y - boundingBox.top) / boundingBox.height) * 100;
+      svgLine.setPosition(startX, startY, endX, endY);
+    });
+  }
+
+  detach(node) {
+    if (node === this) {
+      this.edges.forEach(edge => edge.svgLine.remove());
+      return;
+    }
+    const edge = this.edges.find(edge => edge.node === node);
+    if (!edge) { return; }
+    edge.svgLine.remove();
+    this.edges = this.edges.filter(_edge => _edge !== edge);
   }
 }
 

@@ -33,6 +33,7 @@
 .line {
   stroke-width: 1;
   stroke: var(--color-grey-light);
+  stroke-linecap: round;
   transition: stroke-width 0.25s ease-in-out;
 }
 .line:hover {
