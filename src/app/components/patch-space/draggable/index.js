@@ -11,7 +11,8 @@ const domMap = {
   container: 'container',
   topBar: 'topBar',
   inlet: 'inlet',
-  outlet: 'outlet'
+  outlet: 'outlet',
+  body: 'body'
 };
 const MOUSE_STATE = {
   DRAGGING: 'DRAGGING',
@@ -19,7 +20,7 @@ const MOUSE_STATE = {
 };
 
 class DraggableWrapper extends BaseComponent {
-  constructor({ id, svgContainer, onRender }) {
+  constructor({ id, svgContainer, onRender, component }) {
     super(style, markup, domMap);
     this.id = id;
     this.svgContainer = svgContainer;
@@ -31,6 +32,7 @@ class DraggableWrapper extends BaseComponent {
       yBuffer: 0,
     };
     this.svgLine;
+    this.dom.body.appendChild(component);
   }
 
   connectedCallback() {
@@ -57,6 +59,12 @@ class DraggableWrapper extends BaseComponent {
         }
       }
     });
+
+    const parentDims = this.parentElement.getBoundingClientRect();
+    this.setPosition(
+      parentDims.width / 4 + Math.floor((parentDims.width / 2) * Math.random()),
+      parentDims.height / 4 + Math.floor((parentDims.height / 2) * Math.random()),
+    );
   }
 
   handleConnectionStart(event) {
@@ -123,10 +131,9 @@ class DraggableWrapper extends BaseComponent {
     event.preventDefault();
     event.stopPropagation();
     const parentDims = this.parentElement.getBoundingClientRect();
-    const mouseX = event.clientX - parentDims.left - this.mouseState.xBuffer;
-    const mouseY = event.clientY - parentDims.top - this.mouseState.yBuffer;
-    this.dom.container.style.setProperty('left', `${mouseX}px`);
-    this.dom.container.style.setProperty('top', `${mouseY}px`);
+    const x = event.clientX - parentDims.left - this.mouseState.xBuffer;
+    const y = event.clientY - parentDims.top - this.mouseState.yBuffer;
+    this.setPosition(x, y)
     this.onRender();
   }
 
@@ -173,6 +180,11 @@ class DraggableWrapper extends BaseComponent {
     if (!edge) { return; }
     edge.svgLine.remove();
     this.edges = this.edges.filter(_edge => _edge !== edge);
+  }
+
+  setPosition(x, y) {
+    this.dom.container.style.setProperty('left', `${x}px`);
+    this.dom.container.style.setProperty('top', `${y}px`);
   }
 }
 

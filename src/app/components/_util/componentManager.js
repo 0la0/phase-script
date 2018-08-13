@@ -31,6 +31,7 @@ import AddressMapper from 'components/event-cycle/address-mapper';
 import AddressMapItem from 'components/event-cycle/address-map-item';
 import PatchSpace from 'components/patch-space';
 import DraggableWrapper from 'components/patch-space/draggable';
+import AdsrEnvelope from 'components/adsr';
 
 const components = [
   app,
@@ -65,7 +66,8 @@ const components = [
   AddressMapper,
   AddressMapItem,
   PatchSpace,
-  DraggableWrapper
+  DraggableWrapper,
+  AdsrEnvelope
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));
