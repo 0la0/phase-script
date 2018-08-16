@@ -23,6 +23,10 @@ class AdsrEnvelope extends BaseComponent {
       sustain: 0.1,
       release: 0.01
     };
+    this.audioModel = {
+      type: 'ADSR_ENVELOPE',
+      connectTo: model => console.log('connect', this, 'to', model),
+    };
   }
 
   connectedCallback() {

@@ -31,6 +31,7 @@ class DraggableWrapper extends BaseComponent {
       xBuffer: 0,
       yBuffer: 0,
     };
+    this.component = component;
     this.svgLine;
     this.connectionFeatures = component.getConnectionFeatures();
     this.dom.body.appendChild(component);
@@ -67,10 +68,10 @@ class DraggableWrapper extends BaseComponent {
       parentDims.height / 4 + Math.floor((parentDims.height / 2) * Math.random()),
     );
 
-    if (!this.connectionFeatures.hasInput) {
+    if (!this.getComponent().getConnectionFeatures().hasInput) {
       this.dom.container.removeChild(this.dom.inlet);
     }
-    if (!this.connectionFeatures.hasOutput) {
+    if (!this.getComponent().getConnectionFeatures().hasOutput) {
       this.dom.container.removeChild(this.dom.outlet);
     }
   }
@@ -122,6 +123,8 @@ class DraggableWrapper extends BaseComponent {
       svgLine: this.svgLine,
       node: outgoingNode,
     });
+    //TODO:
+    this.getComponent().audioModel.connectTo(outgoingNode.getComponent().audioModel)
   }
 
   handleDragStart(event) {
@@ -193,6 +196,10 @@ class DraggableWrapper extends BaseComponent {
   setPosition(x, y) {
     this.dom.container.style.setProperty('left', `${x}px`);
     this.dom.container.style.setProperty('top', `${y}px`);
+  }
+
+  getComponent() {
+    return this.component;
   }
 }
 

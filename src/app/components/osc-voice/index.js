@@ -13,6 +13,11 @@ class OscVoice extends BaseComponent {
       type: 'SINE',
       gain: 0.2
     };
+    this.audioModel = {
+      type: 'OSC',
+      connectTo: model => console.log('connect', this, 'to', model),
+      schedule: message => console.log('schedule osc', message),
+    };
   }
 
   connectedCallback() {

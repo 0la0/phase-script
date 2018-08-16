@@ -36,9 +36,13 @@
   stroke-linecap: round;
   transition: stroke-width 0.25s ease-in-out;
 }
-.line:hover {
-  stroke-width: 2.5;
-}
-.line-arrow {
+
+.circle {
   fill: var(--color-grey-light);
+  stroke: var(--color-grey-light);
+  stroke-width: 0;
+  transition: stroke-width 0.2s ease;
+}
+.circle:hover {
+  stroke-width: 3;
 }

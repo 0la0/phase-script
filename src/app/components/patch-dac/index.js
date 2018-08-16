@@ -13,6 +13,10 @@ class PatchDac extends BaseComponent {
 
   constructor() {
     super(style, markup, domMap);
+    this.audioModel = {
+      type: 'DAC',
+      connectTo: model => console.log('connect', this, 'to', model),
+    };
   }
 
   connectedCallback() {}

@@ -15,6 +15,11 @@ let instanceCnt = 0;
 class EventAddress extends BaseComponent {
   constructor() {
     super(style, markup, domMap);
+    this.outlets = new Set([]);
+    this.audioModel = {
+      type: 'ADDRESS',
+      connectTo: model => this.outlets.add(model),
+    };
   }
 
   connectedCallback() {
@@ -23,7 +28,7 @@ class EventAddress extends BaseComponent {
     this.dom.addressInput.value = initialAddress;
     this.audioEventSubscription = {
       address: initialAddress,
-      onNext: message => console.log(message)
+      onNext: message => this.outlets.forEach(outlet => outlet.schedule(message)),
     };
     audioEventBus.subscribe(this.audioEventSubscription);
   }

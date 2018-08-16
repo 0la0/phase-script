@@ -27,6 +27,11 @@ class Sampler extends BaseComponent {
       release: 0.01
     };
     this.startOffset = 0;
+    this.audioModel = {
+      type: 'SAMPLER',
+      connectTo: model => console.log('connect', this, 'to', model),
+      schedule: message => play(this.sampleKey, message.time.audio, this.startOffset, this.asr),
+    };
   }
 
   connectedCallback() {
