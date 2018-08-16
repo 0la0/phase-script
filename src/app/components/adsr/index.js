@@ -5,12 +5,6 @@ const COMPONENT_NAME = 'adsr-envelope';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const PARAMS = {
-  attack: 'attack',
-  sustain: 'sustain',
-  release: 'release'
-};
-
 const domMap = {
   attackSlider: 'attackSlider',
   sustainSlider: 'sustainSlider',
@@ -37,6 +31,13 @@ class AdsrEnvelope extends BaseComponent {
       this.dom.sustainSlider.setValue(this.asr.sustain, true);
       this.dom.releaseSlider.setValue(this.asr.release, true);
     });
+  }
+
+  getConnectionFeatures() {
+    return {
+      hasInput: true,
+      hasOutput: true,
+    };
   }
 
   onAttackUpdate(value) {

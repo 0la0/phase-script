@@ -43,6 +43,10 @@ class EventBus {
     return [...this.subscribers]
       .some(subscriber => subscriber.address === address && subscriber.onNext === onNext);
   }
+
+  hasAddress(address) {
+    return [...this.subscribers].some(subscriber => subscriber.address === address);
+  }
 }
 
 const eventBus = new EventBus();

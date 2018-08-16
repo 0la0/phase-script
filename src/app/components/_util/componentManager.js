@@ -27,11 +27,11 @@ import EventNetwork from 'components/event-network';
 import CanvasMenu from 'components/event-network/canvas-menu';
 import PropertyMenu from 'components/event-network/property-menu';
 import EventCycle from 'components/event-cycle';
-import AddressMapper from 'components/event-cycle/address-mapper';
-import AddressMapItem from 'components/event-cycle/address-map-item';
 import PatchSpace from 'components/patch-space';
 import DraggableWrapper from 'components/patch-space/draggable';
 import AdsrEnvelope from 'components/adsr';
+import EventAddress from 'components/event-address';
+import PatchDac from 'components/patch-dac';
 
 const components = [
   app,
@@ -63,11 +63,11 @@ const components = [
   CanvasMenu,
   PropertyMenu,
   EventCycle,
-  AddressMapper,
-  AddressMapItem,
   PatchSpace,
   DraggableWrapper,
-  AdsrEnvelope
+  AdsrEnvelope,
+  EventAddress,
+  PatchDac,
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

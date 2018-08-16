@@ -101,6 +101,13 @@ class Sampler extends BaseComponent {
     this.output.release.innerText = value.toFixed(2);
     this.sampleVisualizer.setAsr(this.asr);
   }
+
+  getConnectionFeatures() {
+    return {
+      hasInput: true,
+      hasOutput: true,
+    };
+  }
 }
 
 export default new Component(COMPONENT_NAME, Sampler);

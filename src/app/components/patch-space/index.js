@@ -5,6 +5,8 @@ import { uuid } from 'components/_util/math';
 import OscVoice from 'components/osc-voice';
 import Sampler from 'components/sampler';
 import AdsrEnvelope from 'components/adsr';
+import EventAddress from 'components/event-address';
+import PatchDac from 'components/patch-dac';
 
 const COMPONENT_NAME = 'patch-space';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -54,6 +56,14 @@ class PatchSpace extends BaseComponent {
 
   handleAddSampler() {
     this.addNode(new Sampler.element());
+  }
+
+  handleAddEventAddress() {
+    this.addNode(new EventAddress.element());
+  }
+
+  handleAddDac() {
+    this.addNode(new PatchDac.element());
   }
 }
 

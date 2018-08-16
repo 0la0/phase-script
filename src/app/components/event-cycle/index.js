@@ -17,7 +17,6 @@ const domMap = {
   cycleElement: 'cycleElement',
   cycleInput: 'cycleInput',
   cycleIndicator: 'cycleIndicator',
-  addressMapper: 'addressMapper',
 };
 
 class EventCycle extends BaseComponent {
@@ -34,9 +33,6 @@ class EventCycle extends BaseComponent {
     this.dom.cycleInput.addEventListener('keyup', event => this.handleCycleChange(event.target.value));
     this.metronomeSchedulable = this.buildMetronomeSchedulable();
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
-    setTimeout(() =>
-      this.dom.addressMapper.setChangeCallback(this.handleAddressMapChange.bind(this))
-    );
   }
 
   disconnectedCallback() {
@@ -47,14 +43,11 @@ class EventCycle extends BaseComponent {
     this.cycleLength = parseInt(event.target.value, 10);
   }
 
-  handleAddressMapChange(addressMap) {
-    this.addressMap = addressMap;
-  }
-
   scheduleCycleElement(cycleElement, time, tickLength) {
-    if (!this.addressMap[cycleElement]) { return; }
+    // TODO: parse address and value
+    const address = cycleElement.split(':')[0];
     audioEventBus.publish({
-      address: this.addressMap[cycleElement],
+      address,
       time,
       duration: tickLength,
       note: 60,

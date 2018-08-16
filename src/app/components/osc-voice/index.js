@@ -44,6 +44,12 @@ class OscVoice extends BaseComponent {
     this.parentNode.removeChild(this);
   }
 
+  getConnectionFeatures() {
+    return {
+      hasInput: true,
+      hasOutput: true,
+    };
+  }
 }
 
 export default new Component(COMPONENT_NAME, OscVoice);

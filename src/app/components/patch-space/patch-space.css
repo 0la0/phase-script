@@ -2,8 +2,8 @@
 .container {
   border: var(--border-default);
   border-radius: var(--border-radius);
-  width: 400px;
-  height: 400px;
+  width: 600px;
+  height: 600px;
   position: relative;
   display: block;
 }
@@ -31,7 +31,7 @@
 }
 
 .line {
-  stroke-width: 1;
+  stroke-width: 0.2;
   stroke: var(--color-grey-light);
   stroke-linecap: round;
   transition: stroke-width 0.25s ease-in-out;

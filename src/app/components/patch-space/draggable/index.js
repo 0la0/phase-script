@@ -32,6 +32,7 @@ class DraggableWrapper extends BaseComponent {
       yBuffer: 0,
     };
     this.svgLine;
+    this.connectionFeatures = component.getConnectionFeatures();
     this.dom.body.appendChild(component);
   }
 
@@ -65,6 +66,13 @@ class DraggableWrapper extends BaseComponent {
       parentDims.width / 4 + Math.floor((parentDims.width / 2) * Math.random()),
       parentDims.height / 4 + Math.floor((parentDims.height / 2) * Math.random()),
     );
+
+    if (!this.connectionFeatures.hasInput) {
+      this.dom.container.removeChild(this.dom.inlet);
+    }
+    if (!this.connectionFeatures.hasOutput) {
+      this.dom.container.removeChild(this.dom.outlet);
+    }
   }
 
   handleConnectionStart(event) {
