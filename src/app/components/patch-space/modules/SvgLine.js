@@ -9,11 +9,15 @@ export default class SvgLine {
     const group = document.createElementNS(SVG_NS, SVG_ELEMENT.GROUP);
     const line = document.createElementNS(SVG_NS, SVG_ELEMENT.LINE);
     const circle = document.createElementNS(SVG_NS, SVG_ELEMENT.CIRCLE);
-    circle.setAttribute(SVG_ATTRIBUTE.R, '0.5');
+    const hoverCircle = document.createElementNS(SVG_NS, SVG_ELEMENT.CIRCLE);
+    circle.setAttribute(SVG_ATTRIBUTE.R, '0.1');
+    hoverCircle.setAttribute(SVG_ATTRIBUTE.R, '5');
     group.appendChild(line);
+    group.appendChild(hoverCircle);
     group.appendChild(circle);
     line.classList.add('line');
     circle.classList.add('circle');
+    hoverCircle.classList.add('hover-circle');
     circle.addEventListener('dblclick', event => {
       event.preventDefault();
       event.stopPropagation();
@@ -22,6 +26,7 @@ export default class SvgLine {
     this.group = group;
     this.line = line;
     this.circle = circle;
+    this.hoverCircle = hoverCircle;
     this.onRemoveCallback = onRemoveCallback;
     this.position = { x1: 0, y1: 0, x2: 0, y2: 0 };
     this.setPosition(x1, y1, x2, y2);
@@ -46,6 +51,8 @@ export default class SvgLine {
     this.line.setAttribute(SVG_ATTRIBUTE.Y2, y2);
     this.circle.setAttribute(SVG_ATTRIBUTE.CX, midX);
     this.circle.setAttribute(SVG_ATTRIBUTE.CY, midY);
+    this.hoverCircle.setAttribute(SVG_ATTRIBUTE.CX, midX);
+    this.hoverCircle.setAttribute(SVG_ATTRIBUTE.CY, midY);
     return this;
   }
 
@@ -58,6 +65,8 @@ export default class SvgLine {
     this.line.setAttribute(SVG_ATTRIBUTE.Y2, y);
     this.circle.setAttribute(SVG_ATTRIBUTE.CX, midX);
     this.circle.setAttribute(SVG_ATTRIBUTE.CY, midY);
+    this.hoverCircle.setAttribute(SVG_ATTRIBUTE.CX, midX);
+    this.hoverCircle.setAttribute(SVG_ATTRIBUTE.CY, midY);
     return this;
   }
 

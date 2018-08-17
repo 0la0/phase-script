@@ -30,7 +30,6 @@ function play(sampleKey, scheduledTime, startOffset, asr) {
 
 // TODO: remove ... regristration should happen in instrument components
 function registerEvents() {
-  console.log('----subscribe???')
   audioEventBus.subscribe({
     address: 'SAMPLER',
     onNext: message => {

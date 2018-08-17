@@ -1,5 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
+import Osc, { OSCILATORS } from 'services/audio/synth/Osc';
 
 const COMPONENT_NAME = 'osc-voice';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -13,10 +14,19 @@ class OscVoice extends BaseComponent {
       type: 'SINE',
       gain: 0.2
     };
+    this.outlets = new Set([]);
     this.audioModel = {
-      type: 'OSC',
-      connectTo: model => console.log('connect', this, 'to', model),
-      schedule: message => console.log('schedule osc', message),
+      type: 'OSC', // TODO: class and type: event, receiver, audio
+      connectTo: model => this.outlets.add(model),
+      schedule: message => {
+        console.log('schedule osc', message);
+        const startTime = message.time.audio;
+        const endTime = message.time.audio + message.duration;
+        const osc = new Osc(OSCILATORS.SINE);
+        const outputs = [...this.outlets].map(outlet => outlet.provideModel());
+        console.log(outputs);
+        osc.playNote(60, startTime, endTime, outputs);
+      },
     };
   }
 

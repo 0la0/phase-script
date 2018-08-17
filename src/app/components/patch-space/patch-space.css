@@ -46,3 +46,10 @@
 .circle:hover {
   stroke-width: 3;
 }
+
+.hover-circle {
+  fill: transparent;
+}
+.hover-circle:hover ~ .circle {
+  stroke-width: 3;
+}
