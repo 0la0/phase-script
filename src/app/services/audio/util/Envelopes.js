@@ -7,11 +7,12 @@ class AsrEnvelope {
     this.release = release === undefined ? 0 : release;
   }
 
-  build(onTime) {
+  build(onTime, gain) {
+    const gainValue = gain === undefined ? 1 : gain;
     const envelope = audioGraph.getAudioContext().createGain();
     envelope.gain.setValueAtTime(0, onTime);
-    envelope.gain.linearRampToValueAtTime(1, onTime + this.attack);
-    envelope.gain.linearRampToValueAtTime(1, onTime + this.attack + this.sustain);
+    envelope.gain.linearRampToValueAtTime(gainValue, onTime + this.attack);
+    envelope.gain.linearRampToValueAtTime(gainValue, onTime + this.attack + this.sustain);
     envelope.gain.linearRampToValueAtTime(0, onTime + this.attack + this.sustain + this.release);
     return envelope;
   }

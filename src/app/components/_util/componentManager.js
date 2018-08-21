@@ -29,7 +29,6 @@ import PropertyMenu from 'components/event-network/property-menu';
 import EventCycle from 'components/event-cycle';
 import PatchSpace from 'components/patch-space';
 import DraggableWrapper from 'components/patch-space/draggable';
-import AdsrEnvelope from 'components/adsr';
 import EventAddress from 'components/event-address';
 import PatchDac from 'components/patch-dac';
 
@@ -65,7 +64,6 @@ const components = [
   EventCycle,
   PatchSpace,
   DraggableWrapper,
-  AdsrEnvelope,
   EventAddress,
   PatchDac,
 ];

@@ -1,4 +1,4 @@
-import {OSCILATORS, Osc} from './Osc';
+import Osc, { OSCILATORS } from './Osc';
 import audioGraph from 'services/audio/graph';
 import {ArEnvelope} from 'services/audio/util/Envelopes';
 import {mtof} from 'services/midi/util';

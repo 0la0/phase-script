@@ -10,16 +10,12 @@
 
   <p>Gain</p>
   <slider-horizontal
-    id="gain-slider"
+    id="gainSlider"
     onchange="onGainUpdate"
     class="slider">
   </slider-horizontal>
   <p id="gainOutput" class="output"></p>
 
-  <flat-button
-    click="onRemove"
-    ontext="Remove"
-    offtext="Remove">
-  </flat-button>
-
+  <adsr-envelope id="adsrEnvelope">
+  </adsr-envelope>
 </div>

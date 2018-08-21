@@ -1,17 +1,18 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { getSampleKeys, getAudioBuffer } from 'services/audio/sampleBank';
-import { play } from 'services/audio/sampler';
+import { play, playTemp } from 'services/audio/sampler';
 import { audioEventBus } from 'services/EventBus';
 
 const COMPONENT_NAME = 'simple-sampler';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const PARAMS = {
-  attack: 'attack',
-  sustain: 'sustain',
-  release: 'release'
+const domMap = {
+  sampleSelect: 'sampleSelect',
+  samplerLabel: 'samplerLabel',
+  sampleVisualizer: 'sampleVisualizer',
+  adsrEnvelope: 'adsrEnvelope',
 };
 
 let instanceCnt = 0;
@@ -19,7 +20,7 @@ let instanceCnt = 0;
 class Sampler extends BaseComponent {
 
   constructor() {
-    super(style, markup);
+    super(style, markup, domMap);
     this.sampleKey;
     this.asr = {
       attack: 0.01,
@@ -27,19 +28,19 @@ class Sampler extends BaseComponent {
       release: 0.01
     };
     this.startOffset = 0;
+    this.outlets = new Set([]);
     this.audioModel = {
       type: 'SAMPLER',
-      connectTo: model => console.log('connect', this, 'to', model),
-      schedule: message => play(this.sampleKey, message.time.audio, this.startOffset, this.asr),
+      connectTo: model => this.outlets.add(model),
+      schedule: message => {
+        const outputs = [...this.outlets].map(outlet => outlet.provideModel());
+        playTemp(this.sampleKey, message.time.audio, this.startOffset, this.asr, outputs);
+      },
     };
   }
 
   connectedCallback() {
-    const sampleSelect = this.root.getElementById('sampleSelect');
-    const samples = getSampleKeys().map(sampleName => ({
-      label: sampleName, value: sampleName
-    }));
-
+    const samples = getSampleKeys().map(sampleName => ({ label: sampleName, value: sampleName }));
     this.audioEventSubscription = {
       address: `SAMPLE_${instanceCnt++}`,
       onNext: message => {
@@ -47,25 +48,13 @@ class Sampler extends BaseComponent {
       }
     };
     audioEventBus.subscribe(this.audioEventSubscription);
-
-    this.samplerLabel = this.root.getElementById('samplerLabel');
-    this.sampleVisualizer = this.root.getElementById('sampleVisualizer');
-
-    // --- SLIDERS --- //
-    this.output = Object.keys(PARAMS).reduce((output, param) => {
-      const element = this.root.getElementById(`${param}Output`);
-      return Object.assign(output, { [param]: element });
-    }, {});
-
     setTimeout(() => {
-      sampleSelect.setOptions(samples);
-      this.sampleVisualizer.setStartOffsetCallback(startOffset => this.startOffset = startOffset);
-
-      this.sliders = Object.keys(PARAMS).reduce((output, param) => {
-        const element = this.root.getElementById(`${param}-slider`);
-        element.setValue(this.asr[param], true);
-        return Object.assign(output, { [param]: element });
-      }, {});
+      this.dom.sampleSelect.setOptions(samples);
+      this.dom.sampleVisualizer.setStartOffsetCallback(startOffset => this.startOffset = startOffset);
+      this.dom.adsrEnvelope.setChangeCallback((param, value) => {
+        this.asr[param] = value;
+        this.dom.sampleVisualizer.setAsr(this.asr);
+      });
     });
   }
 
@@ -77,8 +66,8 @@ class Sampler extends BaseComponent {
     const audioBuffer = getAudioBuffer(value);
     const bufferLength = (audioBuffer.duration * 1000).toFixed(2);
     this.sampleKey = value;
-    this.samplerLabel.innerText = `Sample: ${value}, ${bufferLength}ms`;
-    this.sampleVisualizer.setAudioBuffer(audioBuffer, this.asr);
+    this.dom.samplerLabel.innerText = `Sample: ${value}, ${bufferLength}ms`;
+    this.dom.sampleVisualizer.setAudioBuffer(audioBuffer, this.asr);
   }
 
   onPlayerClick() {
@@ -87,24 +76,6 @@ class Sampler extends BaseComponent {
 
   schedule(onTime) {
     play(this.sampleKey, onTime, this.startOffset, this.asr);
-  }
-
-  onAttackUpdate(value) {
-    this.asr.attack = value;
-    this.output.attack.innerText = value.toFixed(2);
-    this.sampleVisualizer.setAsr(this.asr);
-  }
-
-  onSustainUpdate(value) {
-    this.asr.sustain = value;
-    this.output.sustain.innerText = value.toFixed(2);
-    this.sampleVisualizer.setAsr(this.asr);
-  }
-
-  onReleaseUpdate(value) {
-    this.asr.release = value;
-    this.output.release.innerText = value.toFixed(2);
-    this.sampleVisualizer.setAsr(this.asr);
   }
 
   getConnectionFeatures() {

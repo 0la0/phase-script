@@ -6,45 +6,49 @@ const COMPONENT_NAME = 'osc-voice';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
+const domMap = {
+  adsrEnvelope: 'adsrEnvelope',
+  gainOutput: 'gainOutput',
+  oscTypeComboBox: 'oscTypeComboBox',
+  gainSlider: 'gainSlider',
+};
+
 class OscVoice extends BaseComponent {
 
   constructor() {
-    super(style, markup);
+    super(style, markup, domMap);
     this.osc = {
-      type: 'SINE',
+      type: OSCILATORS.SINE,
       gain: 0.2
+    };
+    this.asr = {
+      attack: 0.01,
+      sustain: 0.1,
+      release: 0.01,
     };
     this.outlets = new Set([]);
     this.audioModel = {
       type: 'OSC', // TODO: class and type: event, receiver, audio
       connectTo: model => this.outlets.add(model),
       schedule: message => {
-        console.log('schedule osc', message);
         const startTime = message.time.audio;
-        const endTime = message.time.audio + message.duration;
-        const osc = new Osc(OSCILATORS.SINE);
+        const osc = new Osc(this.osc.type);
         const outputs = [...this.outlets].map(outlet => outlet.provideModel());
-        console.log(outputs);
-        osc.playNote(60, startTime, endTime, outputs);
+        osc.playNote(60, startTime, this.asr, this.osc.gain, outputs);
       },
     };
   }
 
   connectedCallback() {
-    this.output = {
-      gain: this.root.getElementById('gainOutput')
-    };
-    this.gainSlider = this.root.getElementById('gain-slider');
-    this.typeSelector = this.root.getElementById('oscTypeComboBox');
-
     setTimeout(() => {
-      this.gainSlider.setValue(this.osc.gain);
+      this.dom.gainSlider.setValue(this.osc.gain);
+      this.dom.adsrEnvelope.setChangeCallback((param, value) => this.asr[param] = value);
     });
   }
 
   onGainUpdate(value) {
     this.osc.gain = value;
-    this.output.gain.innerText = value.toFixed(2);
+    this.dom.gainOutput.innerText = value.toFixed(2);
   }
 
   getOsc() {

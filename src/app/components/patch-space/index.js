@@ -46,10 +46,6 @@ class PatchSpace extends BaseComponent {
     this.dom.container.removeChild(node);
   }
 
-  handleAddAsr() {
-    this.addNode(new AdsrEnvelope.element());
-  }
-
   handleAddSynth() {
     this.addNode(new OscVoice.element());
   }
