@@ -12,7 +12,9 @@ const domMap = {
   topBar: 'topBar',
   inlet: 'inlet',
   outlet: 'outlet',
-  body: 'body'
+  body: 'body',
+  closeButton: 'closeButton',
+  minimizeButton: 'minimizeButton',
 };
 const MOUSE_STATE = {
   DRAGGING: 'DRAGGING',
@@ -31,6 +33,7 @@ class DraggableWrapper extends BaseComponent {
       xBuffer: 0,
       yBuffer: 0,
     };
+    this.isMinimized = false;
     this.component = component;
     this.svgLine;
     this.connectionFeatures = component.getConnectionFeatures();
@@ -40,7 +43,8 @@ class DraggableWrapper extends BaseComponent {
   connectedCallback() {
     this.dom.topBar.addEventListener('mousedown', this.handleDragStart.bind(this));
     this.dom.outlet.addEventListener('mousedown', this.handleConnectionStart.bind(this));
-
+    this.dom.closeButton.addEventListener('click', this.handleRemove.bind(this));
+    this.dom.minimizeButton.addEventListener('click', this.handleMinimize.bind(this));
     eventBus.subscribe({
       address: 'MOUSE_UP',
       onNext: message => {
@@ -200,6 +204,19 @@ class DraggableWrapper extends BaseComponent {
 
   getComponent() {
     return this.component;
+  }
+
+  handleRemove(event) {
+    console.log('TODO: resource cleanup');
+    this.onRemove();
+  }
+
+  handleMinimize(event) {
+    this.isMinimized = !this.isMinimized;
+    this.isMinimized ?
+      this.dom.body.classList.add('body-minimized') :
+      this.dom.body.classList.remove('body-minimized');
+    this.onRender();
   }
 }
 

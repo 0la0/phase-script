@@ -4,7 +4,6 @@ import DraggableWrapper from './draggable';
 import { uuid } from 'components/_util/math';
 import OscVoice from 'components/osc-voice';
 import Sampler from 'components/sampler';
-import AdsrEnvelope from 'components/adsr';
 import EventAddress from 'components/event-address';
 import PatchDac from 'components/patch-dac';
 

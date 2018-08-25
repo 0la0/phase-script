@@ -31,6 +31,7 @@ import PatchSpace from 'components/patch-space';
 import DraggableWrapper from 'components/patch-space/draggable';
 import EventAddress from 'components/event-address';
 import PatchDac from 'components/patch-dac';
+import AdsrEnvelope from 'components/adsr-envelope';
 
 const components = [
   app,
@@ -66,6 +67,7 @@ const components = [
   DraggableWrapper,
   EventAddress,
   PatchDac,
+  AdsrEnvelope,
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

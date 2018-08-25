@@ -5,6 +5,8 @@ import { getAudioBuffer } from 'services/audio/sampleBank';
 
 // flow: sampler -> adsr -> gain -> abstractOutput
 
+const semitoneRatio = Math.pow(2, 1 / 12);
+
 function playSample(audioContext, audioBuffer, scheduledTime, startOffset, asr) {
   const sampler = audioContext.createBufferSource();
   const gain = audioContext.createGain();
@@ -23,7 +25,7 @@ function playSample(audioContext, audioBuffer, scheduledTime, startOffset, asr) 
   sampler.start(scheduledTime, startOffset);
 }
 
-function playTemp(sampleKey, scheduledTime, startOffset, asr, outputs) {
+function playTemp(sampleKey, scheduledTime, startOffset, note, asr, outputs) {
   const audioBuffer = getAudioBuffer(sampleKey);
   const sampler = audioGraph.getAudioContext().createBufferSource();
   if (!scheduledTime) {
@@ -34,6 +36,10 @@ function playTemp(sampleKey, scheduledTime, startOffset, asr, outputs) {
   sampler.connect(envelope);
   outputs.forEach(output => envelope.connect(output));
   sampler.buffer = audioBuffer;
+  // pitch += Math.round(this.baseNote);
+  sampler.playbackRate.value = Math.pow(semitoneRatio, note - 60);
+
+  // TODO: add playback length as last arg
   sampler.start(scheduledTime, startOffset);
 }
 

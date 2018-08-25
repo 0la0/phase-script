@@ -31,10 +31,11 @@ class OscVoice extends BaseComponent {
       type: 'OSC', // TODO: class and type: event, receiver, audio
       connectTo: model => this.outlets.add(model),
       schedule: message => {
+        const note = message.note !== undefined ? message.note : 60;
         const startTime = message.time.audio;
         const osc = new Osc(this.osc.type);
         const outputs = [...this.outlets].map(outlet => outlet.provideModel());
-        osc.playNote(60, startTime, this.asr, this.osc.gain, outputs);
+        osc.playNote(note, startTime, this.asr, this.osc.gain, outputs);
       },
     };
   }

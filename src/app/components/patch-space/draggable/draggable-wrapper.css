@@ -6,21 +6,40 @@
   display: block;
 }
 
-.top-bar {
+.topbar {
   background-color: var(--color-grey-light);
   width: 100%;
   height: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
 }
 
-.remove-button {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  opacity: 0;
-  transition: 0.2s opacity ease-out;
+.topbar-button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  margin: 0 4px;
 }
-.remove-button:hover {
-  opacity: 1;
+
+.topbar-button-remove {
+  background-color: red;
+}
+
+.topbar-button-minimize {
+  background-color: green;
+}
+
+.body {
+  transform-origin: top;
+  transition: transform 0.2s ease;
+}
+.body-minimized {
+  transform: scaleY(0);
+  height: 0;
 }
 
 .connector {

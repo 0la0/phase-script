@@ -34,7 +34,8 @@ class Sampler extends BaseComponent {
       connectTo: model => this.outlets.add(model),
       schedule: message => {
         const outputs = [...this.outlets].map(outlet => outlet.provideModel());
-        playTemp(this.sampleKey, message.time.audio, this.startOffset, this.asr, outputs);
+        const note = message.note !== undefined ? message.note : 60;
+        playTemp(this.sampleKey, message.time.audio, this.startOffset, note, this.asr, outputs);
       },
     };
   }
