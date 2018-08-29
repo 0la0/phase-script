@@ -26,16 +26,18 @@
 }
 
 .topbar-button-remove {
-  background-color: red;
+  background-color: #9A6161;
 }
 
 .topbar-button-minimize {
-  background-color: green;
+  background-color: #619A61;
 }
 
 .body {
+  min-width: 80px;
+  background-color: var(--color-black-light);
   transform-origin: top;
-  transition: transform 0.2s ease;
+  transition: transform 0.1s ease, height 0.1s ease;
 }
 .body-minimized {
   transform: scaleY(0);

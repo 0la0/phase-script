@@ -43,6 +43,7 @@ class OscVoice extends BaseComponent {
   connectedCallback() {
     setTimeout(() => {
       this.dom.gainSlider.setValue(this.osc.gain);
+      this.onGainUpdate(this.osc.gain);
       this.dom.adsrEnvelope.setChangeCallback((param, value) => this.asr[param] = value);
     });
   }
