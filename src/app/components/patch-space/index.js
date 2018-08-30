@@ -6,6 +6,7 @@ import OscVoice from 'components/osc-voice';
 import Sampler from 'components/sampler';
 import EventAddress from 'components/event-address';
 import PatchDac from 'components/patch-dac';
+import EqualizerThree from 'components/equalizer-three';
 
 const COMPONENT_NAME = 'patch-space';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -59,6 +60,10 @@ class PatchSpace extends BaseComponent {
 
   handleAddDac() {
     this.addNode(new PatchDac.element());
+  }
+
+  handleAddEqualizer() {
+    this.addNode(new EqualizerThree.element());
   }
 }
 

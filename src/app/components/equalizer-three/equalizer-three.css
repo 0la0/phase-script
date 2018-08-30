@@ -1,0 +1,18 @@
+.container {
+  border: var(--border-default);
+  border-radius: var(--border-radius);
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+  border-bottom: var(--border-default);
+}
+
+.slider {
+  margin: 5px;
+  width: 100px;
+  height: 20px;
+}

@@ -32,6 +32,7 @@ import DraggableWrapper from 'components/patch-space/draggable';
 import EventAddress from 'components/event-address';
 import PatchDac from 'components/patch-dac';
 import AdsrEnvelope from 'components/adsr-envelope';
+import EqualizerThree from 'components/equalizer-three';
 
 const components = [
   app,
@@ -68,6 +69,7 @@ const components = [
   EventAddress,
   PatchDac,
   AdsrEnvelope,
+  EqualizerThree,
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));
