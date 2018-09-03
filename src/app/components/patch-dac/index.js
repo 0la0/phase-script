@@ -6,12 +6,9 @@ const COMPONENT_NAME = 'patch-dac';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const domMap = {
-
-};
+const domMap = {};
 
 class PatchDac extends BaseComponent {
-
   constructor() {
     super(style, markup, domMap);
     this.dac = new Dac();

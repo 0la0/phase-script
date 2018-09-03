@@ -24,6 +24,15 @@ class PatchSpace extends BaseComponent {
     this.nodes = [];
   }
 
+  connectedCallback() {
+    setTimeout(() => {
+      this.handleAddEventAddress();
+      this.handleAddSynth();
+      this.handleAddEqualizer();
+      this.handleAddDac();
+    }, 1000);
+  }
+
   render() {
     this.nodes.forEach(node => node.render());
   }

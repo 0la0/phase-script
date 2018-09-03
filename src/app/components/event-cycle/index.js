@@ -33,6 +33,11 @@ class EventCycle extends BaseComponent {
     this.dom.cycleInput.addEventListener('keyup', event => this.handleCycleChange(event.target.value));
     this.metronomeSchedulable = this.buildMetronomeSchedulable();
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
+
+    // for testing
+    const testCycleValue = 'a:48 a:60 , a:72';
+    this.dom.cycleInput.value = testCycleValue;
+    this.handleCycleChange(testCycleValue);
   }
 
   disconnectedCallback() {
@@ -43,15 +48,9 @@ class EventCycle extends BaseComponent {
     this.cycleLength = parseInt(event.target.value, 10);
   }
 
-  scheduleCycleElement(cycleElement, time, tickLength) {
-    // TODO: parse address and value
-    const address = cycleElement.split(':')[0];
-    audioEventBus.publish({
-      address,
-      time,
-      duration: tickLength,
-      note: 60,
-    })
+  scheduleCycleElement(cycleElement, time, duration) {
+    const [ address, note ] = cycleElement.split(':');
+    audioEventBus.publish({ address, time, duration, note, });
   }
 
   evaluateCycle(tickNumber, time, tickLength, cycle, cycleDuration) {
