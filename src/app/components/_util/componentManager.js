@@ -33,6 +33,7 @@ import EventAddress from 'components/event-address';
 import PatchDac from 'components/patch-dac';
 import AdsrEnvelope from 'components/adsr-envelope';
 import EqualizerThree from 'components/equalizer-three';
+import PatchChorus from 'components/patch-chorus';
 
 const components = [
   app,
@@ -70,6 +71,7 @@ const components = [
   PatchDac,
   AdsrEnvelope,
   EqualizerThree,
+  PatchChorus,
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

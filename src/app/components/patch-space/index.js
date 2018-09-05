@@ -7,10 +7,20 @@ import Sampler from 'components/sampler';
 import EventAddress from 'components/event-address';
 import PatchDac from 'components/patch-dac';
 import EqualizerThree from 'components/equalizer-three';
+import PatchChorus from 'components/patch-chorus';
 
 const COMPONENT_NAME = 'patch-space';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
+
+const nodeMap = {
+  osc: OscVoice,
+  sampler: Sampler,
+  address: EventAddress,
+  dac: PatchDac,
+  eq: EqualizerThree,
+  chorus: PatchChorus,
+};
 
 const domMap = {
   container: 'container',
@@ -26,10 +36,13 @@ class PatchSpace extends BaseComponent {
 
   connectedCallback() {
     setTimeout(() => {
-      this.handleAddEventAddress();
-      this.handleAddSynth();
-      this.handleAddEqualizer();
-      this.handleAddDac();
+      const testNodes = [
+        { target: { getAttribute: () => 'address' } },
+        { target: { getAttribute: () => 'osc' } },
+        { target: { getAttribute: () => 'chorus' } },
+        { target: { getAttribute: () => 'dac' } },
+      ];
+      testNodes.forEach(e => this.addPatchElement(e));
     }, 1000);
   }
 
@@ -55,24 +68,11 @@ class PatchSpace extends BaseComponent {
     this.dom.container.removeChild(node);
   }
 
-  handleAddSynth() {
-    this.addNode(new OscVoice.element());
-  }
-
-  handleAddSampler() {
-    this.addNode(new Sampler.element());
-  }
-
-  handleAddEventAddress() {
-    this.addNode(new EventAddress.element());
-  }
-
-  handleAddDac() {
-    this.addNode(new PatchDac.element());
-  }
-
-  handleAddEqualizer() {
-    this.addNode(new EqualizerThree.element());
+  addPatchElement(event) {
+    const nodeType = event && event.target && event.target.getAttribute('node-type');
+    if (!nodeType) { return; }
+    const clazz = nodeMap[nodeType].element;
+    this.addNode(new clazz());
   }
 }
 
