@@ -8,6 +8,8 @@ import EventAddress from 'components/event-address';
 import PatchDac from 'components/patch-dac';
 import EqualizerThree from 'components/equalizer-three';
 import PatchChorus from 'components/patch-chorus';
+import PatchDelay from 'components/patch-delay';
+import PatchWaveshaper from 'components/patch-waveshaper';
 
 const COMPONENT_NAME = 'patch-space';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -20,11 +22,14 @@ const nodeMap = {
   dac: PatchDac,
   eq: EqualizerThree,
   chorus: PatchChorus,
+  delay: PatchDelay,
+  waveshaper: PatchWaveshaper,
 };
 
 const domMap = {
   container: 'container',
-  svgContainer: 'svgContainer'
+  svgContainer: 'svgContainer',
+  buttonContainer: 'buttonContainer',
 };
 
 class PatchSpace extends BaseComponent {
@@ -35,15 +40,25 @@ class PatchSpace extends BaseComponent {
   }
 
   connectedCallback() {
+    Object.entries(nodeMap)
+      .map(([ name, component ]) => {
+        const button = document.createElement('flat-button');
+        button.setAttribute('click', 'addPatchElement');
+        button.setAttribute('offtext', name);
+        button.setAttribute('node-type', name);
+        return button;
+      })
+      .forEach(element => this.dom.buttonContainer.appendChild(element));
+
     setTimeout(() => {
       const testNodes = [
         { target: { getAttribute: () => 'address' } },
         { target: { getAttribute: () => 'osc' } },
-        { target: { getAttribute: () => 'chorus' } },
+        { target: { getAttribute: () => 'waveshaper' } },
         { target: { getAttribute: () => 'dac' } },
       ];
       testNodes.forEach(e => this.addPatchElement(e));
-    }, 1000);
+    }, 100);
   }
 
   render() {

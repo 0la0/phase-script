@@ -34,6 +34,8 @@ import PatchDac from 'components/patch-dac';
 import AdsrEnvelope from 'components/adsr-envelope';
 import EqualizerThree from 'components/equalizer-three';
 import PatchChorus from 'components/patch-chorus';
+import PatchDelay from 'components/patch-delay';
+import PatchWaveshaper from 'components/patch-waveshaper';
 
 const components = [
   app,
@@ -72,6 +74,8 @@ const components = [
   AdsrEnvelope,
   EqualizerThree,
   PatchChorus,
+  PatchDelay,
+  PatchWaveshaper,
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));
