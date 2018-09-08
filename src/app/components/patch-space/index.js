@@ -10,6 +10,7 @@ import EqualizerThree from 'components/equalizer-three';
 import PatchChorus from 'components/patch-chorus';
 import PatchDelay from 'components/patch-delay';
 import PatchWaveshaper from 'components/patch-waveshaper';
+import PatchReverb from 'components/patch-reverb';
 
 const COMPONENT_NAME = 'patch-space';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -24,6 +25,7 @@ const nodeMap = {
   chorus: PatchChorus,
   delay: PatchDelay,
   waveshaper: PatchWaveshaper,
+  reverb: PatchReverb,
 };
 
 const domMap = {
@@ -54,7 +56,7 @@ class PatchSpace extends BaseComponent {
       const testNodes = [
         { target: { getAttribute: () => 'address' } },
         { target: { getAttribute: () => 'osc' } },
-        { target: { getAttribute: () => 'waveshaper' } },
+        { target: { getAttribute: () => 'reverb' } },
         { target: { getAttribute: () => 'dac' } },
       ];
       testNodes.forEach(e => this.addPatchElement(e));

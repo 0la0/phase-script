@@ -36,6 +36,7 @@ import EqualizerThree from 'components/equalizer-three';
 import PatchChorus from 'components/patch-chorus';
 import PatchDelay from 'components/patch-delay';
 import PatchWaveshaper from 'components/patch-waveshaper';
+import PatchReverb from 'components/patch-reverb';
 
 const components = [
   app,
@@ -76,6 +77,7 @@ const components = [
   PatchChorus,
   PatchDelay,
   PatchWaveshaper,
+  PatchReverb,
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));
