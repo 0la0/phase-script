@@ -1,6 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { audioEventBus } from 'services/EventBus';
+import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 
 const COMPONENT_NAME = 'event-address';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -12,6 +13,7 @@ const domMap = {
 const ADDRESS_INVALID = 'address-invalid';
 let instanceCnt = 0;
 
+// TODO: rename to PathAddress
 class EventAddress extends BaseComponent {
   constructor() {
     super(style, markup, domMap);
@@ -19,6 +21,7 @@ class EventAddress extends BaseComponent {
     this.audioModel = {
       type: 'ADDRESS',
       connectTo: model => this.outlets.add(model),
+      disconnect: model => this.outlets.delete(model),
     };
   }
 
@@ -50,8 +53,8 @@ class EventAddress extends BaseComponent {
 
   getConnectionFeatures() {
     return {
-      hasInput: false,
-      hasOutput: true,
+      input: PATCH_EVENT.EMPTY,
+      output: PATCH_EVENT.MESSAGE
     };
   }
 }

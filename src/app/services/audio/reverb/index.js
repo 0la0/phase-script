@@ -49,7 +49,6 @@ export default class Reverb  {
   setWetLevel(normalValue) {
     this.wetGain.gain.setValueAtTime(normalValue, 0);
     this.dryGain.gain.setValueAtTime(1 - normalValue, 0);
-    this.generateBuffer();
   }
 
   // domain: [-24, 0]

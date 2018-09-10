@@ -2,6 +2,7 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { getSampleKeys, getAudioBuffer } from 'services/audio/sampleBank';
 import { play, playTemp } from 'services/audio/sampler';
+import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import { audioEventBus } from 'services/EventBus';
 
 const COMPONENT_NAME = 'simple-sampler';
@@ -81,8 +82,8 @@ class Sampler extends BaseComponent {
 
   getConnectionFeatures() {
     return {
-      hasInput: true,
-      hasOutput: true,
+      input: PATCH_EVENT.MESSAGE,
+      output: PATCH_EVENT.SISNAL,
     };
   }
 }

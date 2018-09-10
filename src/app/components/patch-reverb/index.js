@@ -1,6 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import Reverb from 'services/audio/reverb';
+import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 
 const COMPONENT_NAME = 'patch-reverb';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -37,8 +38,8 @@ class PatchReverb extends BaseComponent {
 
   getConnectionFeatures() {
     return {
-      hasInput: true,
-      hasOutput: true,
+      input: PATCH_EVENT.SIGNAL,
+      output: PATCH_EVENT.SIGNAL,
     };
   }
 }

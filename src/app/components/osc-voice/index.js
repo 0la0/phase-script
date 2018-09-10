@@ -1,6 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import Osc, { OSCILATORS } from 'services/audio/synth/Osc';
+import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 
 const COMPONENT_NAME = 'osc-voice';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -67,8 +68,8 @@ class OscVoice extends BaseComponent {
 
   getConnectionFeatures() {
     return {
-      hasInput: true,
-      hasOutput: true,
+      input: PATCH_EVENT.MESSAGE,
+      output: PATCH_EVENT.SIGNAL,
     };
   }
 }

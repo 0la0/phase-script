@@ -1,6 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import Waveshaper from 'services/audio/waveshaper';
+import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 
 const COMPONENT_NAME = 'patch-waveshaper';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -43,8 +44,8 @@ class PatchWaveshaper extends BaseComponent {
 
   getConnectionFeatures() {
     return {
-      hasInput: true,
-      hasOutput: true,
+      input: PATCH_EVENT.SIGNAL,
+      output: PATCH_EVENT.SIGNAL,
     };
   }
 }

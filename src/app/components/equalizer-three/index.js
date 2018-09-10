@@ -1,6 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import EqThree from 'services/audio/eqThree';
+import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 
 const COMPONENT_NAME = 'equalizer-three';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -63,13 +64,6 @@ class EqualizerThree extends BaseComponent {
     this.eq.disconnect();
   }
 
-  getConnectionFeatures() {
-    return {
-      hasInput: true,
-      hasOutput: true,
-    };
-  }
-
   onHiUpdate(value) {
     this.params.hi = value;
     this.eq.setHiGain(mapNormalToGain(value));
@@ -105,7 +99,7 @@ class EqualizerThree extends BaseComponent {
     this.eq.setLowGain(mapNormalToGain(value));
     this.dom.loOutput.innerText = value.toFixed(2);
   }
-  
+
   onLoFreqUpdate(value) {
     this.params.loFreq = value;
     this.eq.setLowFrequency(mapNormalToFrequency(value));
@@ -114,8 +108,8 @@ class EqualizerThree extends BaseComponent {
 
   getConnectionFeatures() {
     return {
-      hasInput: true,
-      hasOutput: true,
+      input: PATCH_EVENT.SIGNAL,
+      output: PATCH_EVENT.SIGNAL,
     };
   }
 }

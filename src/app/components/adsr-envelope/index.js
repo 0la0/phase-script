@@ -14,6 +14,7 @@ const domMap = {
   releaseOutput: 'releaseOutput'
 };
 
+// TODO: DELETE OR RETHINK COMPONENT
 class AdsrEnvelope extends BaseComponent {
 
   constructor() {
@@ -48,8 +49,8 @@ class AdsrEnvelope extends BaseComponent {
 
   getConnectionFeatures() {
     return {
-      hasInput: true,
-      hasOutput: true,
+      input: true,
+      output: true,
     };
   }
 

@@ -1,6 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import Dac from 'services/audio/dac';
+import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 
 const COMPONENT_NAME = 'patch-dac';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -25,8 +26,8 @@ class PatchDac extends BaseComponent {
 
   getConnectionFeatures() {
     return {
-      hasInput: true,
-      hasOutput: false,
+      input: PATCH_EVENT.SIGNAL,
+      output: PATCH_EVENT.EMPTY,
     };
   }
 }

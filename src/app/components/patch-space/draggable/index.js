@@ -72,10 +72,10 @@ class DraggableWrapper extends BaseComponent {
       parentDims.height / 4 + Math.floor((parentDims.height / 2) * Math.random()),
     );
 
-    if (!this.getComponent().getConnectionFeatures().hasInput) {
+    if (!this.getComponent().getConnectionFeatures().input) {
       this.dom.container.removeChild(this.dom.inlet);
     }
-    if (!this.getComponent().getConnectionFeatures().hasOutput) {
+    if (!this.getComponent().getConnectionFeatures().output) {
       this.dom.container.removeChild(this.dom.outlet);
     }
   }
@@ -118,17 +118,20 @@ class DraggableWrapper extends BaseComponent {
       this.svgLine = undefined;
       return;
     }
+    if (this.getComponent().getConnectionFeatures().output !== outgoingNode.getComponent().getConnectionFeatures().input) {
+      this.svgLine.remove();
+      return;
+    }
     const inletCenter = outgoingNode.getInletCenter();
     const boundingBox = this.parentElement.getBoundingClientRect();
     const x = ((inletCenter.x - boundingBox.left) / boundingBox.width) * 100;
     const y = ((inletCenter.y - boundingBox.top) / boundingBox.height) * 100;
     this.svgLine.setEndPosition(x, y);
+    this.getComponent().audioModel.connectTo(outgoingNode.getComponent().audioModel);
     this.edges.push({
       svgLine: this.svgLine,
       node: outgoingNode,
     });
-    //TODO:
-    this.getComponent().audioModel.connectTo(outgoingNode.getComponent().audioModel)
   }
 
   handleDragStart(event) {
@@ -161,7 +164,11 @@ class DraggableWrapper extends BaseComponent {
   }
 
   handleRemoveConnection(svgLine) {
+    const lineNodePair = this.edges.find(edge => edge.svgLine === svgLine);
     this.edges = this.edges.filter(edge => edge.svgLine !== svgLine);
+    if (lineNodePair) {
+      this.getComponent().audioModel.disconnect(lineNodePair.node.getComponent().audioModel);
+    }
   }
 
   getOutletCenter() {

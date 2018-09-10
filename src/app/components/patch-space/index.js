@@ -12,6 +12,8 @@ import PatchDelay from 'components/patch-delay';
 import PatchWaveshaper from 'components/patch-waveshaper';
 import PatchReverb from 'components/patch-reverb';
 
+console.log('oscVoice?', OscVoice)
+
 const COMPONENT_NAME = 'patch-space';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
@@ -87,6 +89,7 @@ class PatchSpace extends BaseComponent {
 
   addPatchElement(event) {
     const nodeType = event && event.target && event.target.getAttribute('node-type');
+    console.log('nodeType', nodeType)
     if (!nodeType) { return; }
     const clazz = nodeMap[nodeType].element;
     this.addNode(new clazz());
