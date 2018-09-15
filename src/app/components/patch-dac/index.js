@@ -2,6 +2,8 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import Dac from 'services/audio/dac';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
+import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
+import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
 
 const COMPONENT_NAME = 'patch-dac';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -13,22 +15,11 @@ class PatchDac extends BaseComponent {
   constructor() {
     super(style, markup, domMap);
     this.dac = new Dac();
-    this.audioModel = {
-      type: 'DAC',
-      connectTo: model => console.log('connect', this, 'to', model),
-      provideModel: () => this.dac.gain,
-    };
+    this.audioModel = new PatchAudioModel('DAC', this.dac, PATCH_EVENT.SIGNAL, PATCH_EVENT.EMPTY);
   }
 
   disconnectedCallback() {
     this.dac.disconnect();
-  }
-
-  getConnectionFeatures() {
-    return {
-      input: PATCH_EVENT.SIGNAL,
-      output: PATCH_EVENT.EMPTY,
-    };
   }
 }
 

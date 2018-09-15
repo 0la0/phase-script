@@ -2,6 +2,8 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import Reverb from 'services/audio/reverb';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
+import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
+import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
 
 const COMPONENT_NAME = 'patch-reverb';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -13,11 +15,7 @@ class PatchReverb extends BaseComponent {
   constructor() {
     super(style, markup, domMap);
     this.reverb = new Reverb();
-    this.audioModel = {
-      type: 'DELAY',
-      connectTo: model => this.reverb.connect(model.provideModel()),
-      provideModel: () => this.reverb.getInput(),
-    };
+    this.audioModel = new PatchAudioModel('REVERB', this.reverb, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
   }
 
   onAttackUpdate(value) {
@@ -34,13 +32,6 @@ class PatchReverb extends BaseComponent {
 
   onRemove() {
     this.parentNode.removeChild(this);
-  }
-
-  getConnectionFeatures() {
-    return {
-      input: PATCH_EVENT.SIGNAL,
-      output: PATCH_EVENT.SIGNAL,
-    };
   }
 }
 

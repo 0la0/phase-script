@@ -2,6 +2,8 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import Osc, { OSCILATORS } from 'services/audio/synth/Osc';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
+import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
+import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
 
 const COMPONENT_NAME = 'osc-voice';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -27,18 +29,8 @@ class OscVoice extends BaseComponent {
       sustain: 0.1,
       release: 0.01,
     };
-    this.outlets = new Set([]);
-    this.audioModel = {
-      type: 'OSC', // TODO: class and type: event, receiver, audio
-      connectTo: model => this.outlets.add(model),
-      schedule: message => {
-        const note = message.note !== undefined ? message.note : 60;
-        const startTime = message.time.audio;
-        const osc = new Osc(this.osc.type);
-        const outputs = [...this.outlets].map(outlet => outlet.provideModel());
-        osc.playNote(note, startTime, this.asr, this.osc.gain, outputs);
-      },
-    };
+    this.eventModel = new PatchEventModel(this.schedule.bind(this));
+    this.audioModel = new PatchAudioModel('OSC', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);
   }
 
   connectedCallback() {
@@ -47,6 +39,14 @@ class OscVoice extends BaseComponent {
       this.onGainUpdate(this.osc.gain);
       this.dom.adsrEnvelope.setChangeCallback((param, value) => this.asr[param] = value);
     });
+  }
+
+  schedule(message) {
+    const note = message.note !== undefined ? message.note : 60;
+    const startTime = message.time.audio;
+    const osc = new Osc(this.osc.type);
+    const outputs = [...this.eventModel.getOutlets()]
+    osc.playNote(note, startTime, this.asr, this.osc.gain, outputs);
   }
 
   onGainUpdate(value) {
@@ -64,13 +64,6 @@ class OscVoice extends BaseComponent {
 
   onRemove() {
     this.parentNode.removeChild(this);
-  }
-
-  getConnectionFeatures() {
-    return {
-      input: PATCH_EVENT.MESSAGE,
-      output: PATCH_EVENT.SIGNAL,
-    };
   }
 }
 

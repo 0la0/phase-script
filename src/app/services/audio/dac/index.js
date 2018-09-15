@@ -9,4 +9,8 @@ export default class Dac {
   disconnect() {
     this.gain.disconnect();
   }
+
+  getInput() {
+    return this.gain;
+  }
 }

@@ -34,6 +34,10 @@ class PatchWaveshaper extends BaseComponent {
       .forEach(ele => this.dom.waveSelector.appendChild(ele));
   }
 
+  connectTo(node) {
+    this.waveshaper.connect(node);
+  }
+
   onTypeChange(waveType) {
     this.waveshaper.setCarrierFunction(waveType);
   }

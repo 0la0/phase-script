@@ -2,6 +2,8 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { audioEventBus } from 'services/EventBus';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
+import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
+import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
 
 const COMPONENT_NAME = 'event-address';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -13,16 +15,12 @@ const domMap = {
 const ADDRESS_INVALID = 'address-invalid';
 let instanceCnt = 0;
 
-// TODO: rename to PathAddress
+// TODO: rename to PatchAddress
 class EventAddress extends BaseComponent {
   constructor() {
     super(style, markup, domMap);
-    this.outlets = new Set([]);
-    this.audioModel = {
-      type: 'ADDRESS',
-      connectTo: model => this.outlets.add(model),
-      disconnect: model => this.outlets.delete(model),
-    };
+    this.eventModel = new PatchEventModel();
+    this.audioModel = new PatchAudioModel('ADDRESS', this.eventModel, PATCH_EVENT.EMPTY, PATCH_EVENT.MESSAGE);
   }
 
   connectedCallback() {
@@ -31,7 +29,7 @@ class EventAddress extends BaseComponent {
     this.dom.addressInput.value = initialAddress;
     this.audioEventSubscription = {
       address: initialAddress,
-      onNext: message => this.outlets.forEach(outlet => outlet.schedule(message)),
+      onNext: message => this.eventModel.getOutlets().forEach(outlet => outlet.schedule(message)),
     };
     audioEventBus.subscribe(this.audioEventSubscription);
   }
@@ -49,13 +47,6 @@ class EventAddress extends BaseComponent {
     }
     this.dom.addressInput.classList.remove(ADDRESS_INVALID);
     this.audioEventSubscription.address = address;
-  }
-
-  getConnectionFeatures() {
-    return {
-      input: PATCH_EVENT.EMPTY,
-      output: PATCH_EVENT.MESSAGE
-    };
   }
 }
 

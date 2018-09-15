@@ -36,7 +36,6 @@ class DraggableWrapper extends BaseComponent {
     this.isMinimized = false;
     this.component = component;
     this.svgLine;
-    this.connectionFeatures = component.getConnectionFeatures();
     this.dom.body.appendChild(component);
   }
 
@@ -72,10 +71,10 @@ class DraggableWrapper extends BaseComponent {
       parentDims.height / 4 + Math.floor((parentDims.height / 2) * Math.random()),
     );
 
-    if (!this.getComponent().getConnectionFeatures().input) {
+    if (!this.getComponent().audioModel.getInputType()) {
       this.dom.container.removeChild(this.dom.inlet);
     }
-    if (!this.getComponent().getConnectionFeatures().output) {
+    if (!this.getComponent().audioModel.getOutputType()) {
       this.dom.container.removeChild(this.dom.outlet);
     }
   }
@@ -118,7 +117,7 @@ class DraggableWrapper extends BaseComponent {
       this.svgLine = undefined;
       return;
     }
-    if (this.getComponent().getConnectionFeatures().output !== outgoingNode.getComponent().getConnectionFeatures().input) {
+    if (this.getComponent().audioModel.getOutputType() !== outgoingNode.getComponent().audioModel.getInputType()) {
       this.svgLine.remove();
       return;
     }
