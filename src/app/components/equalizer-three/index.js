@@ -2,6 +2,7 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import EqThree from 'services/audio/eqThree';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
+import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 
 const COMPONENT_NAME = 'equalizer-three';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -42,11 +43,7 @@ class EqualizerThree extends BaseComponent {
       lo: 0.5
     };
     this.eq = new EqThree();
-    this.audioModel = {
-      type: 'EQ_THREE',
-      connectTo: model => this.eq.connect(model.provideModel()),
-      provideModel: () => this.eq.getInput(),
-    };
+    this.audioModel = new PatchAudioModel('EQ_THREE', this.eq, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
   }
 
   connectedCallback() {
@@ -104,13 +101,6 @@ class EqualizerThree extends BaseComponent {
     this.params.loFreq = value;
     this.eq.setLowFrequency(mapNormalToFrequency(value));
     this.dom.loFreqOutput.innerText = value.toFixed(2);
-  }
-
-  getConnectionFeatures() {
-    return {
-      input: PATCH_EVENT.SIGNAL,
-      output: PATCH_EVENT.SIGNAL,
-    };
   }
 }
 

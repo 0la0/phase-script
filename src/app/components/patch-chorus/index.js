@@ -2,6 +2,7 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import Chorus from 'services/audio/chorus';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
+import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 
 const COMPONENT_NAME = 'patch-chorus';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -19,11 +20,7 @@ class PatchChorus extends BaseComponent {
       lo: 0.5
     };
     this.chorus = new Chorus();
-    this.audioModel = {
-      type: 'CHORUS',
-      connectTo: model => this.chorus.connect(model.provideModel()),
-      provideModel: () => this.chorus.getInput(),
-    };
+    this.audioModel = new PatchAudioModel('CHORUS', this.chorus, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
   }
 
   onFeedbackUpdate(value) {
@@ -43,13 +40,6 @@ class PatchChorus extends BaseComponent {
 
   onRemove() {
     this.parentNode.removeChild(this);
-  }
-
-  getConnectionFeatures() {
-    return {
-      input: PATCH_EVENT.SIGNAL,
-      output: PATCH_EVENT.SIGNAL,
-    };
   }
 }
 

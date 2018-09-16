@@ -3,7 +3,6 @@ import Component from 'components/_util/component';
 import Dac from 'services/audio/dac';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
-import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
 
 const COMPONENT_NAME = 'patch-dac';
 const style = require(`./${COMPONENT_NAME}.css`);

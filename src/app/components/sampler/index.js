@@ -3,6 +3,9 @@ import Component from 'components/_util/component';
 import { getSampleKeys, getAudioBuffer } from 'services/audio/sampleBank';
 import { play, playTemp } from 'services/audio/sampler';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
+import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
+import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
+// TODO: remove
 import { audioEventBus } from 'services/EventBus';
 
 const COMPONENT_NAME = 'simple-sampler';
@@ -29,16 +32,8 @@ class Sampler extends BaseComponent {
       release: 0.01
     };
     this.startOffset = 0;
-    this.outlets = new Set([]);
-    this.audioModel = {
-      type: 'SAMPLER',
-      connectTo: model => this.outlets.add(model),
-      schedule: message => {
-        const outputs = [...this.outlets].map(outlet => outlet.provideModel());
-        const note = message.note !== undefined ? message.note : 60;
-        playTemp(this.sampleKey, message.time.audio, this.startOffset, note, this.asr, outputs);
-      },
-    };
+    this.eventModel = new PatchEventModel(this._schedule.bind(this));
+    this.audioModel = new PatchAudioModel('SAMPLER', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);
   }
 
   connectedCallback() {
@@ -76,15 +71,14 @@ class Sampler extends BaseComponent {
     play(this.sampleKey, 0, this.startOffset, this.asr);
   }
 
-  schedule(onTime) {
-    play(this.sampleKey, onTime, this.startOffset, this.asr);
+  _schedule(message) {
+    const outputs = [...this.eventModel.getOutlets()];
+    const note = message.note !== undefined ? message.note : 60;
+    playTemp(this.sampleKey, message.time.audio, this.startOffset, note, this.asr, outputs);
   }
 
-  getConnectionFeatures() {
-    return {
-      input: PATCH_EVENT.MESSAGE,
-      output: PATCH_EVENT.SISNAL,
-    };
+  schedule(onTime) {
+    play(this.sampleKey, onTime, this.startOffset, this.asr);
   }
 }
 

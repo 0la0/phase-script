@@ -2,6 +2,7 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import Waveshaper from 'services/audio/waveshaper';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
+import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 
 const COMPONENT_NAME = 'patch-waveshaper';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -15,11 +16,7 @@ class PatchWaveshaper extends BaseComponent {
   constructor() {
     super(style, markup, domMap);
     this.waveshaper = new Waveshaper();
-    this.audioModel = {
-      type: 'WAVESHAPER',
-      connectTo: model => this.waveshaper.connect(model.provideModel()),
-      provideModel: () => this.waveshaper.getInput(),
-    };
+    this.audioModel = new PatchAudioModel('WAVESHAPER', this.waveshaper, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
   }
 
   connectedCallback() {
@@ -44,13 +41,6 @@ class PatchWaveshaper extends BaseComponent {
 
   onRemove() {
     this.parentNode.removeChild(this);
-  }
-
-  getConnectionFeatures() {
-    return {
-      input: PATCH_EVENT.SIGNAL,
-      output: PATCH_EVENT.SIGNAL,
-    };
   }
 }
 
