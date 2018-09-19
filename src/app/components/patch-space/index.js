@@ -11,8 +11,7 @@ import PatchChorus from 'components/patch-chorus';
 import PatchDelay from 'components/patch-delay';
 import PatchWaveshaper from 'components/patch-waveshaper';
 import PatchReverb from 'components/patch-reverb';
-
-console.log('oscVoice?', OscVoice)
+import PatchPulse from 'components/patch-pulse';
 
 const COMPONENT_NAME = 'patch-space';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -28,6 +27,7 @@ const nodeMap = {
   delay: PatchDelay,
   waveshaper: PatchWaveshaper,
   reverb: PatchReverb,
+  pulse: PatchPulse,
 };
 
 const domMap = {
@@ -57,8 +57,7 @@ class PatchSpace extends BaseComponent {
     setTimeout(() => {
       const testNodes = [
         { target: { getAttribute: () => 'address' } },
-        { target: { getAttribute: () => 'osc' } },
-        { target: { getAttribute: () => 'reverb' } },
+        { target: { getAttribute: () => 'pulse' } },
         { target: { getAttribute: () => 'dac' } },
       ];
       testNodes.forEach(e => this.addPatchElement(e));

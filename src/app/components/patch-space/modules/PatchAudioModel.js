@@ -11,6 +11,10 @@ export default class PatchAudioModel {
     this.audioModel.connect(audioModel.getAudioModelInput());
   }
 
+  disconnect(audioModel) {
+    this.audioModel.disconnect(audioModel.getAudioModelInput());
+  }
+
   getAudioModelInput() {
     return this.audioModel.getInput();
   }

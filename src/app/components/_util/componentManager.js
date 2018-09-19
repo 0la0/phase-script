@@ -37,6 +37,7 @@ import PatchChorus from 'components/patch-chorus';
 import PatchDelay from 'components/patch-delay';
 import PatchWaveshaper from 'components/patch-waveshaper';
 import PatchReverb from 'components/patch-reverb';
+import PatchPulse from 'components/patch-pulse';
 
 const components = [
   app,
@@ -78,6 +79,7 @@ const components = [
   PatchDelay,
   PatchWaveshaper,
   PatchReverb,
+  PatchPulse,
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

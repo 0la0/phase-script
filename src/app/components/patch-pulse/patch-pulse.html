@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="synth-row">
+    <p>Type</p>
+    <combo-box id="oscTypeComboBox" change="onOscTypeChange">
+      <option value="SINE">sin</option>
+      <option value="SQUARE">squ</option>
+      <option value="SAWTOOTH">saw</option>
+      <option value="TRIANGLE">tri</option>
+    </combo-box>
+  </div>
+
+  <div class="synth-row">
+    <p>Gain</p>
+    <slider-horizontal
+      id="gainSlider"
+      onchange="onGainUpdate"
+      class="slider">
+    </slider-horizontal>
+    <p id="gainOutput" class="output"></p>
+  </div>
+
+  <div class="synth-row">
+    <p>Cycles</p>
+    <slider-horizontal
+      id="cycleLengthSlider"
+      onchange="onCycleLengthUpdate"
+      class="slider">
+    </slider-horizontal>
+    <p id="cycleLengthOutput" class="output"></p>
+  </div>
+</div>
