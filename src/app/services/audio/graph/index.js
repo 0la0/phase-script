@@ -14,6 +14,10 @@ class AudioGraph {
     return this.audioContext;
   }
 
+  getSampleRate() {
+    return this.audioContext.sampleRate;
+  }
+
   getOutput() {
     return this.masterCompressor;
   }

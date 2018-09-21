@@ -1,0 +1,19 @@
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+  border-bottom: var(--border-default);
+}
+
+.slider {
+  margin: 5px;
+  width: 100px;
+  height: 20px;
+}
+
+.canvas {
+  display: block;
+  margin: 0 auto;
+  border: var(--border-default);
+}
