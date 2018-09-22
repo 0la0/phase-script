@@ -39,6 +39,7 @@ import PatchWaveshaper from 'components/patch-waveshaper';
 import PatchReverb from 'components/patch-reverb';
 import PatchPulse from 'components/patch-pulse';
 import PatchFilter from 'components/patch-filter';
+import PatchGain from 'components/patch-gain';
 
 const components = [
   app,
@@ -82,6 +83,7 @@ const components = [
   PatchReverb,
   PatchPulse,
   PatchFilter,
+  PatchGain,
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

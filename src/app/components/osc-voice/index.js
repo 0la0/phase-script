@@ -15,13 +15,14 @@ const domMap = {
   oscTypeComboBox: 'oscTypeComboBox',
   gainSlider: 'gainSlider',
 };
+const GAIN_VALUE = 1;
 
 class OscVoice extends BaseComponent {
   constructor() {
     super(style, markup, domMap);
     this.osc = {
       type: OSCILATORS.SINE,
-      gain: 0.2
+      // gain: 0.2
     };
     this.asr = {
       attack: 0.01,
@@ -34,8 +35,6 @@ class OscVoice extends BaseComponent {
 
   connectedCallback() {
     setTimeout(() => {
-      this.dom.gainSlider.setValue(this.osc.gain);
-      this.onGainUpdate(this.osc.gain);
       this.dom.adsrEnvelope.setChangeCallback((param, value) => this.asr[param] = value);
     });
   }
@@ -45,12 +44,7 @@ class OscVoice extends BaseComponent {
     const startTime = message.time.audio;
     const osc = new Osc(this.osc.type);
     const outputs = [...this.eventModel.getOutlets()]
-    osc.playNote(note, startTime, this.asr, this.osc.gain, outputs);
-  }
-
-  onGainUpdate(value) {
-    this.osc.gain = value;
-    this.dom.gainOutput.innerText = value.toFixed(2);
+    osc.playNote(note, startTime, this.asr, GAIN_VALUE, outputs);
   }
 
   getOsc() {

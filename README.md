@@ -18,3 +18,4 @@ This project uses
 * safari support / FF 63 when it comes out
 * remove all old and unused components
 * create second event network that is not based on threshold events
+* convert DOM maps to sets

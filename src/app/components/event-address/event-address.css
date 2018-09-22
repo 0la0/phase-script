@@ -1,13 +1,15 @@
 
 .container {
   border: 1px solid green;
+  width: 100px;
 }
 
 .address-input {
+  display: block;
   height: 25px;
   font-size: 1em;
-  margin: 0 2px;
-  /* width: 36px; */
+  margin: 0;
+  width: 98%;
   background-color: var(--color-black-light);
   border: none;
   border-bottom: var(--border-default);

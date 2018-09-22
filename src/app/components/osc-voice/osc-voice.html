@@ -1,5 +1,4 @@
 <div class="container">
-
   <div class="synth-row">
     <p>Type</p>
     <combo-box id="oscTypeComboBox" change="onOscTypeChange">
@@ -9,17 +8,5 @@
       <option value="TRIANGLE">tri</option>
     </combo-box>
   </div>
-
-  <div class="synth-row">
-    <p>Gain</p>
-    <slider-horizontal
-      id="gainSlider"
-      onchange="onGainUpdate"
-      class="slider">
-    </slider-horizontal>
-    <p id="gainOutput" class="output"></p>
-  </div>
-
-  <adsr-envelope id="adsrEnvelope">
-  </adsr-envelope>
+  <adsr-envelope id="adsrEnvelope"></adsr-envelope>
 </div>
