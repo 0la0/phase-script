@@ -13,7 +13,8 @@ function playSample(audioContext, audioBuffer, scheduledTime, startOffset, asr) 
   const output = audioGraph.getOutput();
 
   if (!scheduledTime) {
-    scheduledTime = audioGraph.getAudioContext().getOutputTimestamp().contextTime;
+    scheduledTime = audioGraph.getAudioContext().getOutputTimestamp ?
+      audioGraph.getAudioContext().getOutputTimestamp().contextTime : 0;
   }
 
   const envelope = new AsrEnvelope(asr.attack, asr.sustain, asr.release)
@@ -29,7 +30,8 @@ function playTemp(sampleKey, scheduledTime, startOffset, note, asr, outputs) {
   const audioBuffer = getAudioBuffer(sampleKey);
   const sampler = audioGraph.getAudioContext().createBufferSource();
   if (!scheduledTime) {
-    scheduledTime = audioGraph.getAudioContext().getOutputTimestamp().contextTime;
+    scheduledTime = audioGraph.getAudioContext().getOutputTimestamp ?
+      audioGraph.getAudioContext().getOutputTimestamp().contextTime : 0;
   }
   const envelope = new AsrEnvelope(asr.attack, asr.sustain, asr.release)
     .build(scheduledTime);

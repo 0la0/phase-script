@@ -1,7 +1,8 @@
 
 class AudioGraph {
   constructor () {
-    this.audioContext = new AudioContext();
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    this.audioContext = new AudioCtx();
     this.masterCompressor = this.audioContext.createDynamicsCompressor();
     this.masterCompressor.connect(this.audioContext.destination);
   }

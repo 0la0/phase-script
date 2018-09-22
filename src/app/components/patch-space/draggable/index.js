@@ -15,6 +15,7 @@ const domMap = {
   body: 'body',
   closeButton: 'closeButton',
   minimizeButton: 'minimizeButton',
+  label: 'label'
 };
 const MOUSE_STATE = {
   DRAGGING: 'DRAGGING',
@@ -40,6 +41,7 @@ class DraggableWrapper extends BaseComponent {
   }
 
   connectedCallback() {
+    this.dom.label.innerText = this.component.audioModel.name;
     this.dom.topBar.addEventListener('mousedown', this.handleDragStart.bind(this));
     this.dom.outlet.addEventListener('mousedown', this.handleConnectionStart.bind(this));
     this.dom.closeButton.addEventListener('click', this.handleRemove.bind(this));
@@ -100,7 +102,8 @@ class DraggableWrapper extends BaseComponent {
   }
 
   handleConnectionEnd(event) {
-    const element = event.path[0];
+    const path = event.path || (event.composedPath && event.composedPath());
+    const element = path[0];
     if (!element || element.id !== 'inlet') {
       this.svgLine.remove();
       this.svgLine = undefined;

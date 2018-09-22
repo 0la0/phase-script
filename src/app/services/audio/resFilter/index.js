@@ -27,7 +27,7 @@ export default class ResFilter {
     this.filter.type = type;
   }
 
-  setLowpassFrequency(frequency) {
+  setFrequency(frequency) {
     this.filter.frequency.value = frequency;
   }
 

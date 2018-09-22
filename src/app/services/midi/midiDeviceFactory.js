@@ -1,7 +1,4 @@
-let instance;
-
-class MidiDeviceFactory {
-
+export default class MidiDeviceFactory {
   constructor(midiAccess) {
     this.midiAccess = midiAccess;
   }
@@ -20,30 +17,5 @@ class MidiDeviceFactory {
 
   getOutputByName(deviceName) {
     return this.getOutputList().find(outputDevice => outputDevice.name === deviceName);
-  }
-
-}
-
-function buildMidiFactory () {
-  if (!navigator.requestMIDIAccess) {
-    console.error('WebMidiApi not supported in this browser');
-    return;
-  }
-  return navigator.requestMIDIAccess().then(
-    midiAccess => new MidiDeviceFactory(midiAccess),
-    error => console.error(error)
-  );
-}
-
-export default function provideMidiFactory() {
-  if (!instance) {
-    return buildMidiFactory()
-      .then(midiDeviceFactory => {
-        instance = midiDeviceFactory;
-        return instance;
-      });
-  }
-  else {
-    return Promise.resolve(instance);
   }
 }

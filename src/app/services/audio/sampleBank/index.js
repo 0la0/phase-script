@@ -19,11 +19,30 @@ const fileMap = {
   'drake': `${BASE_PATH}drakeVoice.wav`
 };
 
+function decodeAudioData(compressedBuffer) {
+  try {
+    return audioGraph.getAudioContext().decodeAudioData(compressedBuffer)
+  } catch(error) {
+    if (error instanceof TypeError && error.message === 'Not enough arguments') {
+      // use safari syntax
+      return new Promise((resolve, reject) => {
+        audioGraph.getAudioContext().decodeAudioData(
+          compressedBuffer,
+          compressedBuffer => resolve(compressedBuffer),
+          error => reject(error)
+        );
+      });
+    } else {
+      throw error;
+    }
+  }
+}
+
 function loadSample(sampleKey, sampleUrl) {
   return Http.getAudioBuffer(sampleUrl)
-    .then(compressedBuffer => audioGraph.getAudioContext().decodeAudioData(compressedBuffer))
+    .then(decodeAudioData)
     .then(sampleBuffer => samples[sampleKey] = sampleBuffer)
-    .catch(error => console.log('error', error));
+    .catch(error => console.log('error...', error));
 }
 
 function getSampleKeys() {

@@ -1,5 +1,7 @@
 
 .container {
+  --connector-size: 16px;
+  --connector-buffer: -18px;
   border: var(--border-default);
   border-radius: var(--border-radius);
   position: absolute;
@@ -14,6 +16,8 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+  color: var(--color-grey-dark);
+  cursor: default;
 }
 
 .topbar-button {
@@ -46,17 +50,17 @@
 
 .connector {
   border: var(--border-default);
-  width: 20px;
-  height: 20px;
+  width: var(--connector-size);
+  height: var(--connector-size);
   position: absolute;
 }
 
 .connector-inlet {
-  top: -22px;
-  left: 0;
+  top: var(--connector-buffer);
+  right: 0;
 }
 
 .connector-outlet {
-  bottom: -22px;
+  bottom: var(--connector-buffer);
   right: 0;
 }

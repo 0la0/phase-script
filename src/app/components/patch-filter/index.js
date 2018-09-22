@@ -53,7 +53,7 @@ class PatchFilter extends BaseComponent {
     const val = Math.pow(2.0, numOctaves * (value - 1.0));
     const cutoff = val * nyquist;
     this.filter.cutoff = cutoff;
-    this.resFilter.setLowpassFrequency(cutoff);
+    this.resFilter.setFrequency(cutoff);
     this.renderCurve();
   }
 

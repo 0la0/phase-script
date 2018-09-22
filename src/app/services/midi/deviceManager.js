@@ -1,4 +1,4 @@
-import provideMidiFactory from 'services/midi/midiDeviceFactory';
+import provideMidiFactory from 'services/midi/midiDeviceFactoryProvider';
 import Tb03 from 'services/midi/mappings/tb03';
 import Tr09 from 'services/midi/mappings/tr09';
 
