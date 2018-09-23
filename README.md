@@ -19,3 +19,4 @@ This project uses
 * remove all old and unused components
 * create second event network that is not based on threshold events
 * convert DOM maps to sets
+* necessity of multiple `onRemove`s

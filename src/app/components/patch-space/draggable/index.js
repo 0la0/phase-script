@@ -81,6 +81,7 @@ class DraggableWrapper extends BaseComponent {
     }
   }
 
+  // TODO: highlight all valid inlets
   handleConnectionStart(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -104,11 +105,20 @@ class DraggableWrapper extends BaseComponent {
   handleConnectionEnd(event) {
     const path = event.path || (event.composedPath && event.composedPath());
     const element = path[0];
-    if (!element || element.id !== 'inlet') {
-      this.svgLine.remove();
-      this.svgLine = undefined;
+    if (!element) { return; }
+    if (element.id === 'inlet') {
+      this.requestInletConnection(element);
       return;
     }
+    if (element.id === 'paramInlet') {
+      this.requestParamConnection(element);
+      return;
+    }
+    this.svgLine.remove();
+    this.svgLine = undefined;
+  }
+
+  requestInletConnection(element) {
     const outgoingNode = element.parentNode.parentNode.host;
     if (outgoingNode === this) {
       this.svgLine.remove();
@@ -130,6 +140,34 @@ class DraggableWrapper extends BaseComponent {
     const y = ((inletCenter.y - boundingBox.top) / boundingBox.height) * 100;
     this.svgLine.setEndPosition(x, y);
     this.getComponent().audioModel.connectTo(outgoingNode.getComponent().audioModel);
+    this.edges.push({
+      svgLine: this.svgLine,
+      node: outgoingNode,
+    });
+  }
+
+  requestParamConnection(element) {
+    const outgoingNode = element.parentNode.parentNode.host;
+    if (outgoingNode === this) {
+      this.svgLine.remove();
+      this.svgLine = undefined;
+      return;
+    }
+    if (this.edges.some(edge => edge.node === outgoingNode)) {
+      this.svgLine.remove();
+      this.svgLine = undefined;
+      return;
+    }
+    // if (this.getComponent().audioModel.getOutputType() !== outgoingNode.getComponent().audioModel.getInputType()) {
+    //   this.svgLine.remove();
+    //   return;
+    // }
+    const inletCenter = outgoingNode.getInletCenter();
+    const boundingBox = this.parentElement.getBoundingClientRect();
+    const x = ((inletCenter.x - boundingBox.left) / boundingBox.width) * 100;
+    const y = ((inletCenter.y - boundingBox.top) / boundingBox.height) * 100;
+    this.svgLine.setEndPosition(x, y);
+    this.getComponent().audioModel.connectTo(outgoingNode); // connect to patch-param component...
     this.edges.push({
       svgLine: this.svgLine,
       node: outgoingNode,

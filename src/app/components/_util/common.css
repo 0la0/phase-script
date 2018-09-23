@@ -21,7 +21,9 @@ p {
   justify-content: space-between;
 }
 
+/* Remove after patch-param is implemented */
 .param-row {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
