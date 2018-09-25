@@ -29,6 +29,9 @@ class PatchGain extends BaseComponent {
         const normalValue = message.note / 127;
         this.gain.setValueAtTime(normalValue, message.time.audio);
       },
+      getSignalModel: {
+        getAudioModelInput: () => this.gain.gain.gain
+      }
     };
     this.gainParam = new PatchParam.element(gainModel);
     this.root.appendChild(this.gainParam);

@@ -37,6 +37,10 @@ class PatchParam extends BaseComponent {
     };
   }
 
+  getSignalModel() {
+    return this.model.getSignalModel;
+  }
+
   schedule(message) {
     this.model.setValueFromMessage(message);
   }

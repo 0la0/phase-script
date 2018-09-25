@@ -2,6 +2,7 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { eventBus } from 'services/EventBus';
 import SvgLine from '../modules/SvgLine';
+import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 
 const COMPONENT_NAME = 'draggable-wrapper';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -158,20 +159,21 @@ class DraggableWrapper extends BaseComponent {
       this.svgLine = undefined;
       return;
     }
-    // if (this.getComponent().audioModel.getOutputType() !== outgoingNode.getComponent().audioModel.getInputType()) {
-    //   this.svgLine.remove();
-    //   return;
-    // }
     const inletCenter = outgoingNode.getInletCenter();
     const boundingBox = this.parentElement.getBoundingClientRect();
     const x = ((inletCenter.x - boundingBox.left) / boundingBox.width) * 100;
     const y = ((inletCenter.y - boundingBox.top) / boundingBox.height) * 100;
     this.svgLine.setEndPosition(x, y);
-    this.getComponent().audioModel.connectTo(outgoingNode); // connect to patch-param component...
     this.edges.push({
       svgLine: this.svgLine,
       node: outgoingNode,
     });
+    if (this.getComponent().audioModel.getOutputType() === PATCH_EVENT.MESSAGE) {
+      this.getComponent().audioModel.connectTo(outgoingNode);
+    }
+    else if (this.getComponent().audioModel.getOutputType() === PATCH_EVENT.SIGNAL) {
+      this.getComponent().audioModel.connectTo(outgoingNode.getSignalModel());
+    }
   }
 
   handleDragStart(event) {
