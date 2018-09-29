@@ -22,6 +22,11 @@ const MOUSE_STATE = {
   DRAGGING: 'DRAGGING',
   OUTLET: 'OUTLET',
 };
+const INLETS = {
+  inlet: 'inlet',
+  paramInlet: 'paramInlet',
+  frequencyInlet: 'frequencyInlet',
+};
 
 class DraggableWrapper extends BaseComponent {
   constructor({ id, svgContainer, onRender, component }) {
@@ -107,73 +112,65 @@ class DraggableWrapper extends BaseComponent {
     const path = event.path || (event.composedPath && event.composedPath());
     const element = path[0];
     if (!element) { return; }
-    if (element.id === 'inlet') {
-      this.requestInletConnection(element);
+    const elementId = element.id;
+    if (!Object.keys(INLETS).some(inletType => inletType === elementId)) {
+      this.removeCurrentLine();
       return;
     }
-    if (element.id === 'paramInlet') {
-      this.requestParamConnection(element);
+    const outgoingNode = element.parentNode.parentNode.host;
+    if (outgoingNode === this) {
+      this.removeCurrentLine();
       return;
     }
+    if (this.edges.some(edge => edge.node === outgoingNode)) {
+      this.removeCurrentLine();
+      return;
+    }
+    const inletCenter = outgoingNode.getInletCenter();
+    const boundingBox = this.parentElement.getBoundingClientRect();
+    const x = ((inletCenter.x - boundingBox.left) / boundingBox.width) * 100;
+    const y = ((inletCenter.y - boundingBox.top) / boundingBox.height) * 100;
+    this.svgLine.setEndPosition(x, y);
+
+    if (elementId === INLETS.inlet) {
+      if (this.getComponent().audioModel.getOutputType() !== outgoingNode.getComponent().audioModel.getInputType()) {
+        this.removeCurrentLine();
+        return;
+      }
+      this.getComponent().audioModel.connectTo(outgoingNode.getComponent().audioModel);
+      this.edges.push({
+        svgLine: this.svgLine,
+        node: outgoingNode,
+      });
+    }
+    if (elementId === INLETS.paramInlet) {
+      if (this.getComponent().audioModel.getOutputType() !== PATCH_EVENT.MESSAGE) {
+        this.removeCurrentLine();
+        return;
+      }
+      this.getComponent().audioModel.connectTo(outgoingNode);
+      this.edges.push({
+        svgLine: this.svgLine,
+        node: outgoingNode,
+      });
+      // else if (this.getComponent().audioModel.getOutputType() === PATCH_EVENT.SIGNAL) {
+      //   this.getComponent().audioModel.connectTo(outgoingNode.getSignalModel());
+      // }
+    }
+    if (elementId === INLETS.frequencyInlet) {
+      console.log('todo: FREQ INLET')
+      // if (this.getComponent().audioModel.getOutputType() !== PATCH_EVENT.SIGNAL) {
+      //   console.log('Incompatible types');
+      //   this.removeCurrentLine();
+      //   return;
+      // }
+      // this.getComponent().audioModel.connectTo(outgoingNode.getFrequencyModel());
+    }
+  }
+
+  removeCurrentLine() {
     this.svgLine.remove();
     this.svgLine = undefined;
-  }
-
-  requestInletConnection(element) {
-    const outgoingNode = element.parentNode.parentNode.host;
-    if (outgoingNode === this) {
-      this.svgLine.remove();
-      this.svgLine = undefined;
-      return;
-    }
-    if (this.edges.some(edge => edge.node === outgoingNode)) {
-      this.svgLine.remove();
-      this.svgLine = undefined;
-      return;
-    }
-    if (this.getComponent().audioModel.getOutputType() !== outgoingNode.getComponent().audioModel.getInputType()) {
-      this.svgLine.remove();
-      return;
-    }
-    const inletCenter = outgoingNode.getInletCenter();
-    const boundingBox = this.parentElement.getBoundingClientRect();
-    const x = ((inletCenter.x - boundingBox.left) / boundingBox.width) * 100;
-    const y = ((inletCenter.y - boundingBox.top) / boundingBox.height) * 100;
-    this.svgLine.setEndPosition(x, y);
-    this.getComponent().audioModel.connectTo(outgoingNode.getComponent().audioModel);
-    this.edges.push({
-      svgLine: this.svgLine,
-      node: outgoingNode,
-    });
-  }
-
-  requestParamConnection(element) {
-    const outgoingNode = element.parentNode.parentNode.host;
-    if (outgoingNode === this) {
-      this.svgLine.remove();
-      this.svgLine = undefined;
-      return;
-    }
-    if (this.edges.some(edge => edge.node === outgoingNode)) {
-      this.svgLine.remove();
-      this.svgLine = undefined;
-      return;
-    }
-    const inletCenter = outgoingNode.getInletCenter();
-    const boundingBox = this.parentElement.getBoundingClientRect();
-    const x = ((inletCenter.x - boundingBox.left) / boundingBox.width) * 100;
-    const y = ((inletCenter.y - boundingBox.top) / boundingBox.height) * 100;
-    this.svgLine.setEndPosition(x, y);
-    this.edges.push({
-      svgLine: this.svgLine,
-      node: outgoingNode,
-    });
-    if (this.getComponent().audioModel.getOutputType() === PATCH_EVENT.MESSAGE) {
-      this.getComponent().audioModel.connectTo(outgoingNode);
-    }
-    else if (this.getComponent().audioModel.getOutputType() === PATCH_EVENT.SIGNAL) {
-      this.getComponent().audioModel.connectTo(outgoingNode.getSignalModel());
-    }
   }
 
   handleDragStart(event) {

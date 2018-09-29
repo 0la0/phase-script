@@ -14,6 +14,7 @@ const domMap = {
   gainOutput: 'gainOutput',
   oscTypeComboBox: 'oscTypeComboBox',
   gainSlider: 'gainSlider',
+  frequencyInlet: 'frequencyInlet',
 };
 const GAIN_VALUE = 1;
 
@@ -53,6 +54,23 @@ class OscVoice extends BaseComponent {
 
   onOscTypeChange(value) {
     this.osc.type = value
+  }
+
+  getInletCenter() {
+    const boundingBox = this.dom.frequencyInlet.getBoundingClientRect();
+    return {
+      x: boundingBox.left + (boundingBox.width / 2),
+      y: boundingBox.top + (boundingBox.height / 2),
+    };
+  }
+
+  getFrequencyModel() {
+    console.log('TODO: return frequency model...');
+    return {
+      getAudioModelInput: () => {
+        
+      },
+    };
   }
 
   onRemove() {

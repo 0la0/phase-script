@@ -26,8 +26,9 @@ class PatchParam extends BaseComponent {
   connectedCallback() {
     setTimeout(() => {
       this.dom.slider.setValue(this.model.defaultValue, true);
-      // this.dom.slider.setValue(this.model.defaultValue, true);
-      // this.dom.slider.setValue(this.model.defaultValue, true);
+      if (this.model.label) {
+        this.dom.label.innerText = this.model.label;
+      }
     });
   }
 
@@ -37,9 +38,10 @@ class PatchParam extends BaseComponent {
     };
   }
 
-  getSignalModel() {
-    return this.model.getSignalModel;
-  }
+  // TODO: accept signal input
+  // getSignalModel() {
+  //   return this.model.getSignalModel;
+  // }
 
   schedule(message) {
     this.model.setValueFromMessage(message);

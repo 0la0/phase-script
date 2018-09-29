@@ -27,12 +27,20 @@ export default class ResFilter {
     this.filter.type = type;
   }
 
-  setFrequency(frequency) {
-    this.filter.frequency.value = frequency;
+  setFrequency(frequency, time) {
+    if (time) {
+      this.filter.frequency.linearRampToValueAtTime(frequency, time);
+    } else {
+      this.filter.frequency.value = frequency;
+    }
   }
 
-  setResonance(resonance) {
-    this.filter.Q.value = resonance;
+  setResonance(resonance, time) {
+    if (time) {
+      this.filter.Q.linearRampToValueAtTime(resonance, time);
+    } else {
+      this.filter.Q.value = resonance;
+    }
   }
 
   getFrequencyResponse(frequencyHz, magResponse, phaseResponse) {
