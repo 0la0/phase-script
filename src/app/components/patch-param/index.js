@@ -49,6 +49,9 @@ class PatchParam extends BaseComponent {
 
   onSliderUpdate(value) {
     this.model.setValue(value);
+    if (this.model.showValue) {
+      this.dom.output.innerText = value.toFixed(2);
+    }
   }
 
   // TODO: move to common DOM_UTIL service or something
