@@ -47,7 +47,7 @@ class PatchFilter extends BaseComponent {
   buildParams() {
     const cutoffModel = {
       label: 'Cutoff',
-      defaultValue: 0,
+      defaultValue: 0.5,
       setValue: this.onCutoffUpdate.bind(this),
       setValueFromMessage: message => {
         const normalValue = message.note / 127;
@@ -56,7 +56,7 @@ class PatchFilter extends BaseComponent {
     };
     const resonanceModel = {
       label: 'Resonance',
-      defaultValue: 0,
+      defaultValue: 0.1,
       setValue: this.onResonanceUpdate.bind(this),
       setValueFromMessage: message => {
         const normalValue = message.note / 127;

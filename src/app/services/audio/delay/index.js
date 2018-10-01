@@ -25,15 +25,27 @@ export default class Delay  {
     return this.input;
   }
 
-  setDelayTime(delayTime) {
-    this.input.delayTime.value = delayTime;
+  setDelayTime(delayTime, scheduledTime) {
+    if (scheduledTime) {
+      this.input.delayTime.linearRampToValueAtTime(delayTime, scheduledTime);
+    } else {
+      this.input.delayTime.value = delayTime;
+    }
   }
 
-  setFeedback(feedback) {
-    this.feedback.gain.setValueAtTime(feedback, 0);
+  setFeedback(feedback, scheduledTime) {
+    if (scheduledTime) {
+      this.feedback.gain.linearRampToValueAtTime(feedback, scheduledTime);
+    } else {
+      this.feedback.gain.setValueAtTime(feedback, 0);
+    }
   }
 
-  setWetLevel(frequency) {
-    this.wetLevel.gain.setValueAtTime(frequency, 0);
+  setWetLevel(frequency, scheduledTime) {
+    if (scheduledTime) {
+      this.wetLevel.gain.linearRampToValueAtTime(frequency, scheduledTime);
+    } else {
+      this.wetLevel.gain.setValueAtTime(frequency, 0);
+    }
   }
 }

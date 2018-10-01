@@ -44,15 +44,27 @@ export default class Chorus  {
     return this.input;
   }
 
-  setFeedback(feedback) {
-    this.feedbackGain.gain.setValueAtTime(feedback, 0);
+  setFeedback(feedback, scheduledTime) {
+    if (scheduledTime) {
+      this.feedbackGain.gain.linearRampToValueAtTime(feedback, scheduledTime);
+    } else {
+      this.feedbackGain.gain.setValueAtTime(feedback, 0);
+    }
   }
 
-  setFrequency(frequency) {
-    this.lfo.frequency.setValueAtTime(frequency, 0);
+  setFrequency(frequency, scheduledTime) {
+    if (scheduledTime) {
+      this.lfo.frequency.linearRampToValueAtTime(frequency, scheduledTime);
+    } else {
+      this.lfo.frequency.setValueAtTime(frequency, 0);
+    }
   }
 
-  setDepth(depth) {
-    this.lfoGain.gain.setValueAtTime(depth, 0);
+  setDepth(depth, scheduledTime) {
+    if (scheduledTime) {
+      this.lfoGain.gain.linearRampToValueAtTime(depth, scheduledTime);
+    } else {
+      this.lfoGain.gain.setValueAtTime(depth, 0);
+    }
   }
 }

@@ -15,7 +15,7 @@ export default class Reverb  {
     this.attack = 0.1;
     this.decay = 0.5;
     this.generateBuffer();
-    this.setWetLevel(0.5);
+    this.setWetLevel(0.5, 0);
   }
 
   connect(node) {
@@ -46,9 +46,9 @@ export default class Reverb  {
     this.generateBuffer();
   }
 
-  setWetLevel(normalValue) {
-    this.wetGain.gain.setValueAtTime(normalValue, 0);
-    this.dryGain.gain.setValueAtTime(1 - normalValue, 0);
+  setWetLevel(normalValue, scheduledTime) {
+    this.wetGain.gain.linearRampToValueAtTime(normalValue, scheduledTime);
+    this.dryGain.gain.linearRampToValueAtTime(1 - normalValue, scheduledTime);
   }
 
   // domain: [-24, 0]

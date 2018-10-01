@@ -3,32 +3,65 @@ import Component from 'components/_util/component';
 import Delay from 'services/audio/delay';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
+import PatchParam from 'components/patch-param';
 
 const COMPONENT_NAME = 'patch-delay';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
-
-const domMap = {};
 
 class PatchDelay extends BaseComponent {
 
   constructor() {
-    super(style, markup, domMap);
+    super('', '', {});
     this.delay = new Delay();
     this.audioModel = new PatchAudioModel('DELAY', this.delay, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
   }
 
+  connectedCallback() {
+    const delayModel = {
+      label: 'Delay',
+      defaultValue: 0.5,
+      setValue: this.onDelayUpdate.bind(this),
+      setValueFromMessage: message => {
+        const normalValue = message.note / 127;
+        this.onDelayUpdate(normalValue, message.time.audio);
+      },
+    };
+    const feedbackModel = {
+      label: 'Fdbck',
+      defaultValue: 0.5,
+      setValue: this.onFeedbackUpdate.bind(this),
+      setValueFromMessage: message => {
+        const normalValue = message.note / 127;
+        this.onFeedbackUpdate(normalValue, message.time.audio);
+      },
+    };
+    const wetModel = {
+      label: 'Wet',
+      defaultValue: 0.5,
+      setValue: this.onWetUpdate.bind(this),
+      setValueFromMessage: message => {
+        const normalValue = message.note / 127;
+        this.onWetUpdate(normalValue, message.time.audio);
+      },
+    };
+    const delayParam = new PatchParam.element(delayModel);
+    const feedbackParam = new PatchParam.element(feedbackModel);
+    const wetParam = new PatchParam.element(wetModel);
+    this.root.appendChild(delayParam);
+    this.root.appendChild(feedbackParam);
+    this.root.appendChild(wetParam);
+  }
+
   // TODO: Quatization
-  onDelayUpdate(value) {
-    this.delay.setDelayTime(value * 0.25);
+  onDelayUpdate(value, scheduledTime = 0) {
+    this.delay.setDelayTime(value * 0.25, scheduledTime);
   }
 
-  onFeedbackUpdate(value) {
-    this.delay.setFeedback(value);
+  onFeedbackUpdate(value, scheduledTime = 0) {
+    this.delay.setFeedback(value, scheduledTime);
   }
 
-  onWetUpdate(value) {
-    this.delay.setWetLevel(value);
+  onWetUpdate(value, scheduledTime = 0) {
+    this.delay.setWetLevel(value, scheduledTime);
   }
 
   onRemove() {

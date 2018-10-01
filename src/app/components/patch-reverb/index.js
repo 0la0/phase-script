@@ -3,30 +3,63 @@ import Component from 'components/_util/component';
 import Reverb from 'services/audio/reverb';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
+import PatchParam from 'components/patch-param';
 
 const COMPONENT_NAME = 'patch-reverb';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
-
-const domMap = {};
 
 class PatchReverb extends BaseComponent {
   constructor() {
-    super(style, markup, domMap);
+    super('', '', {});
     this.reverb = new Reverb();
     this.audioModel = new PatchAudioModel('REVERB', this.reverb, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
   }
 
-  onAttackUpdate(value) {
-    this.reverb.setAttack(value);
+  connectedCallback() {
+    const attackModel = {
+      label: 'Attack',
+      defaultValue: 0.5,
+      setValue: this.onAttackUpdate.bind(this),
+      setValueFromMessage: message => {
+        const normalValue = message.note / 127;
+        this.onAttackUpdate(normalValue, message.time.audio);
+      },
+    };
+    const decayModel = {
+      label: 'Decay',
+      defaultValue: 0.5,
+      setValue: this.onDecayUpdate.bind(this),
+      setValueFromMessage: message => {
+        const normalValue = message.note / 127;
+        this.onDecayUpdate(normalValue, message.time.audio);
+      },
+    };
+    const wetModel = {
+      label: 'Wet',
+      defaultValue: 0.5,
+      setValue: this.onWetUpdate.bind(this),
+      setValueFromMessage: message => {
+        const normalValue = message.note / 127;
+        this.onWetUpdate(normalValue, message.time.audio);
+      },
+    };
+    const attackParam = new PatchParam.element(attackModel);
+    const decayParam = new PatchParam.element(decayModel);
+    const wetParam = new PatchParam.element(wetModel);
+    this.root.appendChild(attackParam);
+    this.root.appendChild(decayParam);
+    this.root.appendChild(wetParam);
   }
 
-  onDecayUpdate(value) {
-    this.reverb.setDecay(value);
+  onAttackUpdate(value, scheduledTime = 0) {
+    this.reverb.setAttack(value, scheduledTime);
   }
 
-  onWetUpdate(value) {
-    this.reverb.setWetLevel(value);
+  onDecayUpdate(value, scheduledTime = 0) {
+    this.reverb.setDecay(value, scheduledTime);
+  }
+
+  onWetUpdate(value, scheduledTime = 0) {
+    this.reverb.setWetLevel(value, scheduledTime);
   }
 
   onRemove() {

@@ -64,9 +64,7 @@ class PatchSpace extends BaseComponent {
       const testNodes = [
         { target: { getAttribute: () => 'address' } },
         { target: { getAttribute: () => 'osc' } },
-        { target: { getAttribute: () => 'gain' } },
         { target: { getAttribute: () => 'dac' } },
-        { target: { getAttribute: () => 'lfo' } },
       ];
       testNodes.forEach(e => this.addPatchElement(e));
     }, 100);
@@ -96,7 +94,6 @@ class PatchSpace extends BaseComponent {
 
   addPatchElement(event) {
     const nodeType = event && event.target && event.target.getAttribute('node-type');
-    console.log('nodeType', nodeType)
     if (!nodeType) { return; }
     const clazz = nodeMap[nodeType].element;
     this.addNode(new clazz());
