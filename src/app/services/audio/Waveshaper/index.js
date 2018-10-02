@@ -35,20 +35,31 @@ export default class Waveshaper {
     this.sampleRate = audioContext.sampleRate;
     this.input = audioContext.createGain();
     this.waveshaperNode = audioContext.createWaveShaper();
+    this.dryGain = audioContext.createGain();
+    this.wetGain = audioContext.createGain();
+    this.input.connect(this.dryGain);
     this.input.connect(this.waveshaperNode);
+    this.waveshaperNode.connect(this.wetGain);
     this.setCarrierFunction(Object.keys(CARRIER_FUNCTIONS)[0]);
   }
 
   connect(node) {
-    this.waveshaperNode.connect(node);
+    this.dryGain.connect(node);
+    this.wetGain.connect(node);
   }
 
   disconnect(node) {
-    this.waveshaperNode.disconnect(node);
+    this.dryGain.disconnect(node);
+    this.wetGain.disconnect(node);
   }
 
   getInput() {
     return this.input;
+  }
+
+  setWetLevel(normalValue, scheduledTime) {
+    this.wetGain.gain.linearRampToValueAtTime(normalValue, scheduledTime);
+    this.dryGain.gain.linearRampToValueAtTime(1 - normalValue, scheduledTime);
   }
 
   getCarrierFunctions() {

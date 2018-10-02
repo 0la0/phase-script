@@ -5,7 +5,6 @@ import PatchParam from 'components/patch-param';
 const COMPONENT_NAME = 'adsr-envelope';
 
 class AdsrEnvelope extends BaseComponent {
-
   constructor() {
     super('', '', {});
   }

@@ -3,6 +3,7 @@ import Component from 'components/_util/component';
 import Waveshaper from 'services/audio/waveshaper';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
+import PatchParam from 'components/patch-param';
 
 const COMPONENT_NAME = 'patch-waveshaper';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -20,6 +21,11 @@ class PatchWaveshaper extends BaseComponent {
   }
 
   connectedCallback() {
+    this.initFunctionSelector();
+    this.initParams();
+  }
+
+  initFunctionSelector() {
     this.waveshaper.getCarrierFunctions()
       .map((waveType) => {
         // <option value="SINE">sin</option>
@@ -31,12 +37,30 @@ class PatchWaveshaper extends BaseComponent {
       .forEach(ele => this.dom.waveSelector.appendChild(ele));
   }
 
+  initParams() {
+    const wetModel = {
+      label: 'Wet',
+      defaultValue: 0.5,
+      setValue: this.onWetUpdate.bind(this),
+      setValueFromMessage: message => {
+        const normalValue = message.note / 127;
+        this.onWetUpdate(normalValue, message.time.audio);
+      },
+    };
+    const wetParam = new PatchParam.element(wetModel);
+    this.root.appendChild(wetParam);
+  }
+
   connectTo(node) {
     this.waveshaper.connect(node);
   }
 
   onTypeChange(waveType) {
     this.waveshaper.setCarrierFunction(waveType);
+  }
+
+  onWetUpdate(value, scheduledTime = 0) {
+    this.waveshaper.setWetLevel(value, scheduledTime);
   }
 
   onRemove() {
