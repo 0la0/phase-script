@@ -10,11 +10,13 @@ class AdsrEnvelope extends BaseComponent {
   }
 
   connectedCallback() {
+    // TODO: move these to parent
     const attackModel = {
       label: 'A',
       defaultValue: 0.01,
       setValue: this.onAttackUpdate.bind(this),
       setValueFromMessage: message => {
+        // TODO: put into param table, then let parent consume
         console.log('TODO: implement ADSR param');
       },
       showValue: true,

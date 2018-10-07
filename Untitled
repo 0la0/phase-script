@@ -1,0 +1,18 @@
+
+const context = new AudioContext();
+const osc = context.createOscillator();
+const oscGain = context.createGain();
+const lfo = context.createOscillator();
+
+// oscGain.gain.value = 0.2;
+oscGain.gain.setValueAtTime(0.2, 0);
+osc.frequency = 440;
+lfo.frequency = 20;
+
+
+osc.connect(oscGain);
+oscGain.connect(context.destination);
+lfo.connect(oscGain.gain);
+
+lfo.start();
+osc.start();

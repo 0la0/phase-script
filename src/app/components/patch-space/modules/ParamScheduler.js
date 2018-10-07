@@ -4,7 +4,7 @@ function defaultParamTransform(message) {
   return message.note / 127;
 }
 
-export default class PatchParamModel {
+export default class ParamScheduler {
   constructor(paramTransform) {
     this.paramTransform = paramTransform || defaultParamTransform;
     this.paramTable = new ParamTable();
