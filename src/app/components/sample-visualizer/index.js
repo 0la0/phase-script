@@ -27,7 +27,6 @@ function getWaveform(audioBuffer, canvasWidth) {
 }
 
 class SampleVisualizer extends BaseComponent {
-
   constructor() {
     super(style, markup);
     this.audioBuffer = { duration: 0 };
@@ -135,7 +134,6 @@ class SampleVisualizer extends BaseComponent {
     this.g2d.lineTo(WIDTH, 0);
     this.g2d.fill();
   }
-
 }
 
 export default new Component(COMPONENT_NAME, SampleVisualizer);

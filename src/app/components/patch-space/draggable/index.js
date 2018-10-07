@@ -79,15 +79,20 @@ class DraggableWrapper extends BaseComponent {
       parentDims.height / 4 + Math.floor((parentDims.height / 2) * Math.random()),
     );
 
-    if (!this.getComponent().audioModel.getInputType()) {
+    const inputType = this.getComponent().audioModel.getInputType();
+    const outputType = this.getComponent().audioModel.getOutputType();
+    if (!inputType) {
       this.dom.container.removeChild(this.dom.inlet);
+    } else if (inputType === PATCH_EVENT.SIGNAL) {
+      this.dom.inlet.classList.add('connector-signal');
     }
-    if (!this.getComponent().audioModel.getOutputType()) {
+    if (!outputType) {
       this.dom.container.removeChild(this.dom.outlet);
+    } else if (outputType === PATCH_EVENT.SIGNAL) {
+      this.dom.outlet.classList.add('connector-signal');
     }
   }
 
-  // TODO: highlight all valid inlets
   handleConnectionStart(event) {
     event.preventDefault();
     event.stopPropagation();

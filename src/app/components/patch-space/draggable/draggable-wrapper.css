@@ -55,6 +55,10 @@
   position: absolute;
 }
 
+.connector-signal {
+  border-radius: 50%;
+}
+
 .connector-inlet {
   top: var(--connector-buffer);
   right: 0;

@@ -1,5 +1,4 @@
 import audioGraph from 'services/audio/graph';
-import { audioEventBus } from 'services/EventBus';
 import { AsrEnvelope } from 'services/audio/util/Envelopes';
 import { getAudioBuffer } from 'services/audio/sampleBank';
 
@@ -7,24 +6,24 @@ import { getAudioBuffer } from 'services/audio/sampleBank';
 
 const semitoneRatio = Math.pow(2, 1 / 12);
 
-function playSample(audioContext, audioBuffer, scheduledTime, startOffset, asr) {
-  const sampler = audioContext.createBufferSource();
-  const gain = audioContext.createGain();
-  const output = audioGraph.getOutput();
-
-  if (!scheduledTime) {
-    scheduledTime = audioGraph.getAudioContext().getOutputTimestamp ?
-      audioGraph.getAudioContext().getOutputTimestamp().contextTime : 0;
-  }
-
-  const envelope = new AsrEnvelope(asr.attack, asr.sustain, asr.release)
-    .build(scheduledTime);
-  gain.connect(output);
-  envelope.connect(gain);
-  sampler.connect(envelope);
-  sampler.buffer = audioBuffer;
-  sampler.start(scheduledTime, startOffset);
-}
+// function playSample(audioContext, audioBuffer, scheduledTime, startOffset, asr) {
+//   const sampler = audioContext.createBufferSource();
+//   const gain = audioContext.createGain();
+//   const output = audioGraph.getOutput();
+//
+//   if (!scheduledTime) {
+//     scheduledTime = audioGraph.getAudioContext().getOutputTimestamp ?
+//       audioGraph.getAudioContext().getOutputTimestamp().contextTime : 0;
+//   }
+//
+//   const envelope = new AsrEnvelope(asr.attack, asr.sustain, asr.release)
+//     .build(scheduledTime);
+//   gain.connect(output);
+//   envelope.connect(gain);
+//   sampler.connect(envelope);
+//   sampler.buffer = audioBuffer;
+//   sampler.start(scheduledTime, startOffset);
+// }
 
 function playTemp(sampleKey, scheduledTime, startOffset, note, asr, outputs) {
   const audioBuffer = getAudioBuffer(sampleKey);
@@ -45,19 +44,12 @@ function playTemp(sampleKey, scheduledTime, startOffset, note, asr, outputs) {
   sampler.start(scheduledTime, startOffset);
 }
 
-function play(sampleKey, scheduledTime, startOffset, asr) {
-  const audioBuffer = getAudioBuffer(sampleKey);
-  playSample(audioGraph.getAudioContext(), audioBuffer, scheduledTime, startOffset, asr);
-}
+// function play(sampleKey, scheduledTime, startOffset, asr) {
+//   const audioBuffer = getAudioBuffer(sampleKey);
+//   playSample(audioGraph.getAudioContext(), audioBuffer, scheduledTime, startOffset, asr);
+// }
 
-// TODO: remove ... regristration should happen in instrument components
-function registerEvents() {
-  audioEventBus.subscribe({
-    address: 'SAMPLER',
-    onNext: message => {
-      play(message.note, message.time);
-    }
-  });
-}
-
-export { play, playTemp };
+export {
+  // play,
+  playTemp
+};

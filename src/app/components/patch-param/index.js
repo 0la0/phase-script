@@ -33,9 +33,7 @@ class PatchParam extends BaseComponent {
   }
 
   getAudioModelInput() {
-    return {
-      schedule: this.schedule.bind(this),
-    };
+    return this;
   }
 
   // TODO: accept signal input
@@ -43,6 +41,7 @@ class PatchParam extends BaseComponent {
   //   return this.model.getSignalModel;
   // }
 
+  // TODO: use param table...
   schedule(message) {
     this.model.setValueFromMessage(message);
   }
