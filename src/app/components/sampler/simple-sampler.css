@@ -1,11 +1,3 @@
-.sampler {
-  border: 1px solid white;
-}
-
-.sampler-label {
-  margin: 0;
-}
-
 .position-inlet {
   border: var(--border-default);
   width: 16px;

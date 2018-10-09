@@ -23,7 +23,6 @@ class Sampler extends BaseComponent {
   constructor() {
     super(style, markup, domMap);
     this.sampleKey;
-    // TODO: rename to this.params
     this.params = {
       startOffset: 0,
       attack: 0.01,
@@ -95,11 +94,14 @@ class Sampler extends BaseComponent {
   }
 
   schedule(message) {
-    const params = this.getParametersForTime(message.time.audio);
-    console.log('params', params);
-    const outputs = [...this.eventModel.getOutlets()];
-    const note = message.note !== undefined ? message.note : 60;
-    playTemp(this.sampleKey, message.time.audio, params.startOffset, note, params, outputs);
+    // this is problematic because it could miss a schedule
+    // TODO: schedule all message parameters before scheduling ugens
+    setTimeout(() => {
+      const params = this.getParametersForTime(message.time.audio);
+      const outputs = [...this.eventModel.getOutlets()];
+      const note = message.note !== undefined ? message.note : 60;
+      playTemp(this.sampleKey, message.time.audio, params.startOffset, note, params, outputs);
+    });
   }
 
   onAttackUpdate(value) {

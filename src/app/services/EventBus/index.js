@@ -1,6 +1,7 @@
 
 const EMPTY_SUBSCRIPTION = { address: '-', onNext: () => {} };
 
+// TODO: change subscribers from set to list
 class EventBus {
   constructor() {
     this.subscribers = new Set([ EMPTY_SUBSCRIPTION ]);

@@ -4,6 +4,7 @@ import PatchParam from 'components/patch-param';
 
 const COMPONENT_NAME = 'adsr-envelope';
 
+// TOOD: remove
 class AdsrEnvelope extends BaseComponent {
   constructor() {
     super('', '', {});

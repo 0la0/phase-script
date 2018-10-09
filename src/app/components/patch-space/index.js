@@ -69,6 +69,7 @@ class PatchSpace extends BaseComponent {
       ];
       testNodes.forEach(e => this.addPatchElement(e));
     }, 100);
+    // this.root.addEventListener('mousedown', e => e.preventDefault());
   }
 
   render() {

@@ -17,7 +17,7 @@ let instanceCnt = 0;
 
 // TODO: rename to PatchAddress
 class EventAddress extends BaseComponent {
-  constructor() {
+  constructor(options) {
     super(style, markup, domMap);
     this.eventModel = new PatchEventModel();
     this.audioModel = new PatchAudioModel('ADDRESS', this.eventModel, PATCH_EVENT.EMPTY, PATCH_EVENT.MESSAGE);
