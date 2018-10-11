@@ -56,6 +56,8 @@ class PatchPulse extends BaseComponent {
     const outputs = [...this.eventModel.getOutlets()];
     this.asr.sustain = period * this.osc.cycleLength;
     osc.playNote(note, startTime, this.asr, this.osc.gain, outputs);
+    // TODO: make this a standalone service/audio/instrument
+    // then pass necessary params
   }
 
   onGainUpdate(value) {

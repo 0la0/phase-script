@@ -4,13 +4,14 @@ import Osc, { OSCILATORS } from 'services/audio/synth/Osc';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
+import PatchParam from 'components/patch-param';
+import ParamScheduler from 'components/patch-space/modules/ParamScheduler';
 
 const COMPONENT_NAME = 'osc-voice';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
 const domMap = {
-  adsrEnvelope: 'adsrEnvelope',
   gainOutput: 'gainOutput',
   oscTypeComboBox: 'oscTypeComboBox',
   gainSlider: 'gainSlider',
@@ -21,10 +22,7 @@ const GAIN_VALUE = 1;
 class OscVoice extends BaseComponent {
   constructor() {
     super(style, markup, domMap);
-    this.osc = {
-      type: OSCILATORS.SINE,
-      // gain: 0.2
-    };
+    this.oscType = OSCILATORS.SINE;
     this.asr = {
       attack: 0.01,
       sustain: 0.1,
@@ -32,20 +30,53 @@ class OscVoice extends BaseComponent {
     };
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('OSC', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);
+    this.paramScheduler = {
+      attack: new ParamScheduler(message => message.note / 127),
+      sustain: new ParamScheduler(message => message.note / 127),
+      release: new ParamScheduler(message => message.note / 127),
+    };
   }
 
   connectedCallback() {
-    setTimeout(() => {
-      this.dom.adsrEnvelope.setChangeCallback((param, value) => this.asr[param] = value);
-    });
+    const attackModel = {
+      label: 'A',
+      defaultValue: 0.01,
+      setValue: val => this.asr.attack = val,
+      setValueFromMessage: message => this.paramScheduler.attack.schedule(message),
+      showValue: true,
+    };
+    const sustainModel = {
+      label: 'S',
+      defaultValue: 0.1,
+      setValue: val => this.asr.sustain = val,
+      setValueFromMessage: message => this.paramScheduler.sustain.schedule(message),
+      showValue: true,
+    };
+    const releaseModel = {
+      label: 'R',
+      defaultValue: 0.01,
+      setValue: val => this.asr.release = val,
+      setValueFromMessage: message => this.paramScheduler.release.schedule(message),
+      showValue: true,
+    };
+    const attackParam = new PatchParam.element(attackModel);
+    const sustainParam = new PatchParam.element(sustainModel);
+    const releaseParam = new PatchParam.element(releaseModel);
+    this.root.appendChild(attackParam);
+    this.root.appendChild(sustainParam);
+    this.root.appendChild(releaseParam);
   }
 
   schedule(message) {
-    const note = message.note !== undefined ? message.note : 60;
-    const startTime = message.time.audio;
-    const osc = new Osc(this.osc.type);
-    const outputs = [...this.eventModel.getOutlets()]
-    osc.playNote(note, startTime, this.asr, GAIN_VALUE, outputs);
+    // this is problematic because it could miss a schedule
+    // TODO: schedule all message parameters before scheduling ugens
+    setTimeout(() => {
+      const params = this.getParametersForTime(message.time.audio);
+      const note = message.note !== undefined ? message.note : 60;
+      const osc = new Osc(this.oscType);
+      const outputs = [...this.eventModel.getOutlets()]
+      osc.playNote(note, message.time.audio, params, GAIN_VALUE, outputs);
+    });
   }
 
   getOsc() {
@@ -53,9 +84,18 @@ class OscVoice extends BaseComponent {
   }
 
   onOscTypeChange(value) {
-    this.osc.type = value
+    this.oscType = value
   }
 
+  getParametersForTime(time) {
+    return {
+      attack: this.paramScheduler.attack.getValueForTime(time) || this.asr.attack,
+      sustain: this.paramScheduler.sustain.getValueForTime(time) || this.asr.sustain,
+      release: this.paramScheduler.release.getValueForTime(time) || this.asr.release,
+    };
+  }
+
+  // TODO: move inlet properties into a PatchParam
   getInletCenter() {
     const boundingBox = this.dom.frequencyInlet.getBoundingClientRect();
     return {
@@ -68,7 +108,7 @@ class OscVoice extends BaseComponent {
     console.log('TODO: return frequency model...');
     return {
       getAudioModelInput: () => {
-        
+
       },
     };
   }
