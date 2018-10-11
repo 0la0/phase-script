@@ -1,11 +1,1 @@
-.synth-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
 
-.slider {
-  margin: 5px;
-  width: 100px;
-  height: 20px;
-}

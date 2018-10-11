@@ -32,15 +32,14 @@ export default class Osc {
     osc.stop(endTime);
   }
 
-  // TODO: remove
-  play(frequency, adsrEnvelope, startTime, offTime) {
-    const osc = audioGraph.getAudioContext().createOscillator();
-    osc.connect(adsrEnvelope);
-    osc.type = this.type;
-    osc.frequency.setValueAtTime(frequency, 0);
-    osc.start(startTime);
-    osc.stop(offTime);
-  }
+  // play(frequency, adsrEnvelope, startTime, offTime) {
+  //   const osc = audioGraph.getAudioContext().createOscillator();
+  //   osc.connect(adsrEnvelope);
+  //   osc.type = this.type;
+  //   osc.frequency.setValueAtTime(frequency, 0);
+  //   osc.start(startTime);
+  //   osc.stop(offTime);
+  // }
 }
 
 class ContinuousOsc {
