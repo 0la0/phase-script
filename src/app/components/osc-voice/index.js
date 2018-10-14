@@ -4,7 +4,7 @@ import Osc, { OSCILATORS } from 'services/audio/synth/Osc';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
-import PatchParam from 'components/patch-param';
+import PatchParam, { PatchParamModel } from 'components/patch-param';
 import ParamScheduler from 'components/patch-space/modules/ParamScheduler';
 
 const COMPONENT_NAME = 'osc-voice';
@@ -38,30 +38,27 @@ class OscVoice extends BaseComponent {
   }
 
   connectedCallback() {
-    const attackModel = {
+    const attackParam = new PatchParam.element(new PatchParamModel({
       label: 'A',
       defaultValue: 0.01,
       setValue: val => this.asr.attack = val,
       setValueFromMessage: message => this.paramScheduler.attack.schedule(message),
       showValue: true,
-    };
-    const sustainModel = {
+    }));
+    const sustainParam = new PatchParam.element(new PatchParamModel({
       label: 'S',
       defaultValue: 0.1,
       setValue: val => this.asr.sustain = val,
       setValueFromMessage: message => this.paramScheduler.sustain.schedule(message),
       showValue: true,
-    };
-    const releaseModel = {
+    }));
+    const releaseParam = new PatchParam.element(new PatchParamModel({
       label: 'R',
       defaultValue: 0.01,
       setValue: val => this.asr.release = val,
       setValueFromMessage: message => this.paramScheduler.release.schedule(message),
       showValue: true,
-    };
-    const attackParam = new PatchParam.element(attackModel);
-    const sustainParam = new PatchParam.element(sustainModel);
-    const releaseParam = new PatchParam.element(releaseModel);
+    }));
     this.root.appendChild(attackParam);
     this.root.appendChild(sustainParam);
     this.root.appendChild(releaseParam);

@@ -12,6 +12,22 @@ const dom = {
   paramInlet: 'paramInlet'
 };
 
+export class PatchParamModel {
+  constructor({
+    label,
+    defaultValue,
+    setValue,
+    setValueFromMessage,
+    showValue
+  }) {
+    this.label = label;
+    this.defaultValue = defaultValue;
+    this.setValue = setValue;
+    this.setValueFromMessage = setValueFromMessage;
+    this.showValue = showValue;
+  }
+}
+
 // TODO:
 // * disable slider if param has input
 // * accept signal input

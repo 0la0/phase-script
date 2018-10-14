@@ -6,7 +6,7 @@ import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
 import ParamScheduler from 'components/patch-space/modules/ParamScheduler';
-import PatchParam from 'components/patch-param';
+import PatchParam, { PatchParamModel } from 'components/patch-param';
 
 const COMPONENT_NAME = 'simple-sampler';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -32,7 +32,6 @@ class Sampler extends BaseComponent {
     this.bufferDuration;
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('SAMPLER', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);
-
     this.paramScheduler = {
       startOffset: new ParamScheduler(message => (message.note / 127) * this.bufferDuration),
       attack: new ParamScheduler(message => message.note / 127),
@@ -51,30 +50,27 @@ class Sampler extends BaseComponent {
   }
 
   initParams() {
-    const attackModel = {
+    const attackParam = new PatchParam.element(new PatchParamModel({
       label: 'A',
       defaultValue: 0.01,
       setValue: this.onAttackUpdate.bind(this),
       setValueFromMessage: message => this.paramScheduler.attack.schedule(message),
       showValue: true,
-    };
-    const sustainModel = {
+    }));
+    const sustainParam = new PatchParam.element(new PatchParamModel({
       label: 'S',
       defaultValue: 0.1,
       setValue: this.onSustainUpdate.bind(this),
       setValueFromMessage: message => this.paramScheduler.sustain.schedule(message),
       showValue: true,
-    };
-    const releaseModel = {
+    }));
+    const releaseParam = new PatchParam.element(new PatchParamModel({
       label: 'R',
       defaultValue: 0.01,
       setValue: this.onReleaseUpdate.bind(this),
       setValueFromMessage: message => this.paramScheduler.release.schedule(message),
       showValue: true,
-    };
-    const attackParam = new PatchParam.element(attackModel);
-    const sustainParam = new PatchParam.element(sustainModel);
-    const releaseParam = new PatchParam.element(releaseModel);
+    }));
     this.root.appendChild(attackParam);
     this.root.appendChild(sustainParam);
     this.root.appendChild(releaseParam);

@@ -43,6 +43,7 @@ export default class Osc {
   }
 }
 
+// TODO: add noise worklet to LFO
 class ContinuousOsc {
   constructor(type) {
     this.setType(type);

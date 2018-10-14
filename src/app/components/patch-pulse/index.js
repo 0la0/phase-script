@@ -6,7 +6,7 @@ import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
 import ParamScheduler from 'components/patch-space/modules/ParamScheduler';
-import PatchParam from 'components/patch-param';
+import PatchParam, { PatchParamModel } from 'components/patch-param';
 import { mtof } from 'services/midi/util';
 
 const COMPONENT_NAME = 'patch-pulse';
@@ -43,22 +43,20 @@ class PatchPulse extends BaseComponent {
   }
 
   connectedCallback() {
-    const cycleLengthModel = {
+    const cycleLengthParam = new PatchParam.element(new PatchParamModel({
       label: 'Length',
       defaultValue: DEFAULT_VALUES.CYCLE_LENGTH,
       setValue: val => this.params.cycleLength = calculateCycleLength(val),
       setValueFromMessage: message => this.paramScheduler.cycleLength.schedule(message),
       showValue: true,
-    };
-    const resonanceModel = {
+    }));
+    const resonanceParam = new PatchParam.element(new PatchParamModel({
       label: 'Res',
       defaultValue: 0.01,
       setValue: val => this.params.resonance = calculateResonance(val), //...
       setValueFromMessage: message => this.paramScheduler.cycleLength.schedule(message),
       showValue: true,
-    };
-    const cycleLengthParam = new PatchParam.element(cycleLengthModel);
-    const resonanceParam = new PatchParam.element(resonanceModel);
+    }));
     this.root.appendChild(cycleLengthParam);
     this.root.appendChild(resonanceParam);
   }
