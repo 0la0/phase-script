@@ -1,7 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import Synth from 'services/audio/synth';
-import WhiteNoise from 'services/audio/whiteNoise';
 import { audioEventBus } from 'services/EventBus';
 
 const COMPONENT_NAME = 'osc-synth';
@@ -20,7 +19,7 @@ class OscSynth extends BaseComponent {
   constructor() {
     super(style, markup);
     this.synth = new Synth();
-    this.whiteNoise = new WhiteNoise();
+    // this.whiteNoise = new WhiteNoise();
   }
 
   connectedCallback() {
@@ -29,7 +28,7 @@ class OscSynth extends BaseComponent {
       onNext: message => {
         const offTime = message.time.audio + message.duration;
         this.synth.playNote(message.note, this.getOscillators(), message.time.audio, offTime);
-        this.whiteNoise.playNote(message.note, this.getNoiseNode(), message.time.audio, offTime);
+        // this.whiteNoise.playNote(message.note, this.getNoiseNode(), message.time.audio, offTime);
       }
     };
     audioEventBus.subscribe(this.audioEventSubscription);

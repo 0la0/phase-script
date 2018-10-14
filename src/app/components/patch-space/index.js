@@ -63,8 +63,9 @@ class PatchSpace extends BaseComponent {
     setTimeout(() => {
       const testNodes = [
         { target: { getAttribute: () => 'address' } },
-        { target: { getAttribute: () => 'pulse' } },
+        { target: { getAttribute: () => 'osc' } },
         { target: { getAttribute: () => 'dac' } },
+        { target: { getAttribute: () => 'gain' } },
       ];
       testNodes.forEach(e => this.addPatchElement(e));
     }, 100);

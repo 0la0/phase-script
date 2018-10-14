@@ -1,12 +1,14 @@
 import audioGraph from 'services/audio/graph';
 import {mtof} from 'services/midi/util';
 import { AsrEnvelope } from 'services/audio/util/Envelopes';
+import { playNoiseBuffer } from 'services/audio/whiteNoise';
 
 const OSCILATORS = {
   SINE: 'sine',
   SQUARE: 'square',
   SAWTOOTH: 'sawtooth',
-  TRIANGLE: 'triangle'
+  TRIANGLE: 'triangle',
+  NOISE: 'noise',
 };
 
 export default class Osc {
@@ -19,6 +21,14 @@ export default class Osc {
   }
 
   playNote(midiNote, startTime, asr, gain, outputs) {
+    if (this.type === OSCILATORS.NOISE) {
+      playNoiseBuffer(startTime, asr, gain, outputs);
+    } else {
+      this._playNote(midiNote, startTime, asr, gain, outputs);
+    }
+  }
+
+  _playNote(midiNote, startTime, asr, gain, outputs) {
     const frequency = mtof(midiNote);
     const endTime = startTime + asr.attack + asr.sustain + asr.release;
     const osc = audioGraph.getAudioContext().createOscillator();
@@ -31,15 +41,6 @@ export default class Osc {
     osc.start(startTime);
     osc.stop(endTime);
   }
-
-  // play(frequency, adsrEnvelope, startTime, offTime) {
-  //   const osc = audioGraph.getAudioContext().createOscillator();
-  //   osc.connect(adsrEnvelope);
-  //   osc.type = this.type;
-  //   osc.frequency.setValueAtTime(frequency, 0);
-  //   osc.start(startTime);
-  //   osc.stop(offTime);
-  // }
 }
 
 class ContinuousOsc {
