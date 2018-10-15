@@ -6,12 +6,12 @@ import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 import PatchParam from 'components/patch-param';
 
 const COMPONENT_NAME = 'patch-gain';
-const style = '';
-const markup= '';
+const style = require(`./${COMPONENT_NAME}.css`);
+const markup = require(`./${COMPONENT_NAME}.html`);
 
 const dom = {
-  gainSlider: 'gainSlider',
   gainInlet: 'gainInlet',
+  frequencyInlet: 'frequencyInlet',
 };
 
 class PatchGain extends BaseComponent {
@@ -28,10 +28,7 @@ class PatchGain extends BaseComponent {
       setValueFromMessage: message => {
         const normalValue = message.note / 127;
         this.gain.setValueAtTime(normalValue, message.time.audio);
-      },
-      // getSignalModel: {
-      //   getAudioModelInput: () => this.gain.gain.gain
-      // }
+      }
     };
     this.gainParam = new PatchParam.element(gainModel);
     this.root.appendChild(this.gainParam);
@@ -39,6 +36,21 @@ class PatchGain extends BaseComponent {
 
   onRemove() {
     this.parentNode.removeChild(this);
+  }
+
+  // TODO: move inlet properties into a PatchParam
+  getInletCenter() {
+    const boundingBox = this.dom.frequencyInlet.getBoundingClientRect();
+    return {
+      x: boundingBox.left + (boundingBox.width / 2),
+      y: boundingBox.top + (boundingBox.height / 2),
+    };
+  }
+
+  getFrequencyModel() {
+    return {
+      getAudioModelInput: () => this.gain.gain.gain // haha,
+    };
   }
 }
 

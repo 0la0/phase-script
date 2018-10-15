@@ -1,5 +1,5 @@
 
-function getElementWithFunctionName(element, functionName) {
+export function getElementWithFunctionName(element, functionName) {
   if (!element) {
     return false;
   }
@@ -18,4 +18,12 @@ function getElementWithFunctionName(element, functionName) {
   return getElementWithFunctionName(element.parentNode, functionName);
 }
 
-export {getElementWithFunctionName};
+export function getShadowHost(element) {
+  if (!element) {
+    return false;
+  }
+  if (element.host) {
+    return element.host;
+  }
+  return getShadowHost(element.parentNode);
+}

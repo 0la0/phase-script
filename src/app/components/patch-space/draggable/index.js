@@ -1,5 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
+import { getShadowHost } from 'components/_util/dom';
 import { eventBus } from 'services/EventBus';
 import SvgLine from '../modules/SvgLine';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
@@ -122,7 +123,7 @@ class DraggableWrapper extends BaseComponent {
       this.removeCurrentLine();
       return;
     }
-    const outgoingNode = element.parentNode.parentNode.host;
+    const outgoingNode = getShadowHost(element);
     if (outgoingNode === this) {
       this.removeCurrentLine();
       return;
@@ -164,12 +165,16 @@ class DraggableWrapper extends BaseComponent {
     }
     if (elementId === INLETS.frequencyInlet) {
       console.log('todo: FREQ INLET')
-      // if (this.getComponent().audioModel.getOutputType() !== PATCH_EVENT.SIGNAL) {
-      //   console.log('Incompatible types');
-      //   this.removeCurrentLine();
-      //   return;
-      // }
-      // this.getComponent().audioModel.connectTo(outgoingNode.getFrequencyModel());
+      if (this.getComponent().audioModel.getOutputType() !== PATCH_EVENT.SIGNAL) {
+        console.log('Incompatible types');
+        this.removeCurrentLine();
+        return;
+      }
+      this.getComponent().audioModel.connectTo(outgoingNode.getFrequencyModel());
+      this.edges.push({
+        svgLine: this.svgLine,
+        node: outgoingNode,
+      });
     }
   }
 

@@ -1,15 +1,9 @@
-/* .synth-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-} */
-
 .frequency-inlet {
   border: var(--border-default);
   border-radius: 50%;
   width: 16px;
   height: 16px;
   position: absolute;
-  left: -18px;
-  top: 14px;
+  left: 0;
+  top: -18px;
 }

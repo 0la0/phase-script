@@ -102,10 +102,11 @@ class OscVoice extends BaseComponent {
   }
 
   getFrequencyModel() {
-    console.log('TODO: return frequency model...');
+    // Frequency modulation for osc will require a priority event manager
+    // or a child to parent graph traversal
     return {
       getAudioModelInput: () => {
-
+        console.log('osc-voice: set up connection to osc frequency');
       },
     };
   }
