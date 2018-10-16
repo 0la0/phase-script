@@ -20,15 +20,15 @@ export default class Osc {
     this.type = OSCILATORS[type] || OSCILATORS.SINE;
   }
 
-  playNote(midiNote, startTime, asr, gain, outputs) {
+  playNote(midiNote, startTime, asr, gain, outputs, modulator) {
     if (this.type === OSCILATORS.NOISE) {
       playNoiseBuffer(startTime, asr, gain, outputs);
     } else {
-      this._playNote(midiNote, startTime, asr, gain, outputs);
+      this._playNote(midiNote, startTime, asr, gain, outputs, modulator);
     }
   }
 
-  _playNote(midiNote, startTime, asr, gain, outputs) {
+  _playNote(midiNote, startTime, asr, gain, outputs, modulator) {
     const frequency = mtof(midiNote);
     const endTime = startTime + asr.attack + asr.sustain + asr.release;
     const osc = audioGraph.getAudioContext().createOscillator();
@@ -37,7 +37,12 @@ export default class Osc {
     osc.connect(envelope);
     outputs.forEach(output => envelope.connect(output));
     osc.type = this.type;
-    osc.frequency.setValueAtTime(frequency, 0);
+    // osc.frequency.setValueAtTime(frequency, 0);
+    osc.frequency.value = frequency;
+    console.log('modulator', modulator);
+    if (modulator) {
+      modulator.connect(osc.frequency);
+    }
     osc.start(startTime);
     osc.stop(endTime);
   }

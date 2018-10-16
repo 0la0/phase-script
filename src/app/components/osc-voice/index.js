@@ -6,6 +6,7 @@ import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
 import PatchParam, { PatchParamModel } from 'components/patch-param';
 import ParamScheduler from 'components/patch-space/modules/ParamScheduler';
+import Gain from 'services/audio/gain';
 
 const COMPONENT_NAME = 'osc-voice';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -35,6 +36,7 @@ class OscVoice extends BaseComponent {
       sustain: new ParamScheduler(message => message.note / 127),
       release: new ParamScheduler(message => message.note / 127),
     };
+    this.signalCarrier = new Gain();
   }
 
   connectedCallback() {
@@ -72,7 +74,7 @@ class OscVoice extends BaseComponent {
       const note = message.note !== undefined ? message.note : 60;
       const osc = new Osc(this.oscType);
       const outputs = [...this.eventModel.getOutlets()]
-      osc.playNote(note, message.time.audio, params, GAIN_VALUE, outputs);
+      osc.playNote(note, message.time.audio, params, GAIN_VALUE, outputs, this.signalCarrier.getInput());
     });
   }
 
@@ -104,9 +106,11 @@ class OscVoice extends BaseComponent {
   getFrequencyModel() {
     // Frequency modulation for osc will require a priority event manager
     // or a child to parent graph traversal
+    // or create dummy gain node that can be used for connections
     return {
       getAudioModelInput: () => {
         console.log('osc-voice: set up connection to osc frequency');
+        return this.signalCarrier.getInput();
       },
     };
   }

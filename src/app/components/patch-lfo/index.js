@@ -9,7 +9,9 @@ const COMPONENT_NAME = 'patch-lfo';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const domMap = {};
+const domMap = {
+  frequencyInlet: 'frequencyInlet',
+};
 
 class PatchLfo extends BaseComponent {
   constructor() {
@@ -43,6 +45,22 @@ class PatchLfo extends BaseComponent {
 
   onRemove() {
     this.parentNode.removeChild(this);
+  }
+
+  // TODO: move inlet properties into a PatchParam
+  getInletCenter() {
+    const boundingBox = this.dom.frequencyInlet.getBoundingClientRect();
+    return {
+      x: boundingBox.left + (boundingBox.width / 2),
+      y: boundingBox.top + (boundingBox.height / 2),
+    };
+  }
+
+  // TODO: create dummy gain node that can be used for connections
+  getFrequencyModel() {
+    return {
+      getAudioModelInput: () => this.lfo.gain.gain // haha,
+    };
   }
 }
 
