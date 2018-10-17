@@ -20,10 +20,12 @@ export default class Gain  {
 
   setValue(gain) {
     this.gain.gain.setValueAtTime(gain, 0);
+    return this;
   }
 
   setValueAtTime(gain, scheduledTime) {
     const time = (scheduledTime === undefined) ? 0 : scheduledTime;
     this.gain.gain.linearRampToValueAtTime(gain, time);
+    return this;
   }
 }
