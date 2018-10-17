@@ -41,6 +41,7 @@ import PatchFilter from 'components/patch-filter';
 import PatchGain from 'components/patch-gain';
 import PatchParam from 'components/patch-param';
 import PatchLfo from 'components/patch-lfo';
+import PatchGrain from 'components/patch-grain';
 
 const components = [
   app,
@@ -86,6 +87,7 @@ const components = [
   PatchGain,
   PatchParam,
   PatchLfo,
+  PatchGrain,
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

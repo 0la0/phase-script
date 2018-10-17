@@ -13,7 +13,6 @@ This project uses
 * [Broadcast Channel](https://caniuse.com/#feat=broadcastchannel) (to run a graphics window)
 
 ### TODO
-* inlets for parameters
 * organize patcher components
 * safari support / FF 63 when it comes out
 * remove all old and unused components
