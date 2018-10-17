@@ -4,7 +4,7 @@ const path = require('path');
 const webpackConfig = {
   context: path.resolve(__dirname, 'src'),
   entry: {
-    main: './entrypoints/main.js',
+    main: './main.js',
   },
   output: {
     publicPath: '',
