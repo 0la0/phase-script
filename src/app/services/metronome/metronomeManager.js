@@ -2,30 +2,20 @@ import audioGraph from 'services/audio/graph';
 import Metronome from './metronome';
 import Scheduler from './scheduler';
 
-let scheduler;
-let metronome;
-
-function init() {
-  if (scheduler || metronome) {
-    console.error('metronomeManager error', 'cannot init more than once');
-    return;
+class MetronomeManager {
+  constructor() {
+    this.scheduler = new Scheduler(audioGraph.getAudioContext());
+    this.metronome = new Metronome(audioGraph.getAudioContext(), this.scheduler);
   }
-  scheduler = new Scheduler(audioGraph.getAudioContext());
-  metronome = new Metronome(audioGraph.getAudioContext(), scheduler);
+
+  getScheduler() {
+    return this.scheduler;
+  }
+
+  getMetronome() {
+    return this.metronome;
+  }
 }
 
-function getScheduler() {
-  return scheduler;
-}
-
-function getMetronome() {
-  return metronome;
-}
-
-const metronomeManager = {
-  init,
-  getScheduler,
-  getMetronome
-};
-
+const metronomeManager = new MetronomeManager();
 export default metronomeManager;
