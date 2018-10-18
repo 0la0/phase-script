@@ -10,7 +10,7 @@ function registerRouteClicks(element) {
     if (element.hasAttribute('onclicktoroute')) {
       const routeName = element.getAttribute('onclicktoroute');
       const hashPath = `/#${routeName}`;
-      element.addEventListener('click', $event => router.goToPath(hashPath, true));
+      element.addEventListener('click', () => router.goToPath(hashPath, true));
     }
   }
   else {
@@ -19,19 +19,12 @@ function registerRouteClicks(element) {
 }
 
 class RouterOutlet extends BaseComponent {
-
   constructor() {
     super('', '');
     const routeName = this.getAttribute('route');
     router.register(`/#${routeName}`, this);
     this.deactivateRoute();
   }
-
-  connectedCallback() {}
-
-  disconnectedCallback() {};
-
-  attributeChangedCallback(attribute, oldVal, newVal) {}
 
   activateRoute() {
     this.root.innerHTML = this.originalMarkup;
@@ -41,7 +34,6 @@ class RouterOutlet extends BaseComponent {
   deactivateRoute() {
     this.root.innerHTML = '';
   }
-
 }
 
 export default new Component(COMPONENT_NAME, RouterOutlet);

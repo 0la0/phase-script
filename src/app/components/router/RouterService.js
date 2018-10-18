@@ -1,10 +1,7 @@
 class Router {
-
   constructor() {
     this.routes = new Map();
-    window.addEventListener('hashchange', $event => {
-      this.goToPath(`/${location.hash}`);
-  	});
+    window.addEventListener('hashchange', () => this.goToPath(`/${location.hash}`));
     setTimeout(() => {
       const hash = `/${location.hash}`;
       const path = this.routes.has(hash) ? hash : '/#/';
@@ -21,15 +18,14 @@ class Router {
     });
     if (shouldPush) {
       history.pushState({}, '', outgoingPath);
+    } else {
+      history.replaceState({}, '', outgoingPath);
     }
   }
 
   register(path, component) {
     this.routes.set(path, component);
   }
-
 }
 
-const router = new Router();
-
-export default router;
+export default new Router();

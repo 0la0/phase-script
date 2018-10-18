@@ -4,10 +4,11 @@ import Scheduler from './scheduler';
 
 class MetronomeManager {
   constructor() {
-    this.scheduler = new Scheduler(audioGraph.getAudioContext());
+    this.scheduler = new Scheduler();
     this.metronome = new Metronome(audioGraph.getAudioContext(), this.scheduler);
   }
 
+  // TODO: remove this method and instead provide register / deregister methods
   getScheduler() {
     return this.scheduler;
   }

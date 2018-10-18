@@ -18,7 +18,6 @@ function buildDomMap(root, domMap) {
 }
 
 export default class BaseComponent extends HTMLElement {
-
   constructor(style, markup, domMap) {
     super();
     this.originalText = this.innerText;
@@ -35,5 +34,4 @@ export default class BaseComponent extends HTMLElement {
   onRemove() {
     this.onRemoveCallback && this.onRemoveCallback();
   }
-
 }

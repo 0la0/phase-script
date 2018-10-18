@@ -5,8 +5,7 @@ const START = 'start';
 const STOP = 'stop';
 const TICK = 'tick';
 
-onmessage = event => {
-
+onmessage = (event) => {
   if (event.data === START) {
 		timerID = setInterval(() => postMessage(TICK), interval);
 	}
@@ -21,5 +20,4 @@ onmessage = event => {
 		clearInterval(timerID);
 		timerID = null;
 	}
-
 };

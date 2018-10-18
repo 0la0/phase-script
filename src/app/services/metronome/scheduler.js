@@ -1,8 +1,6 @@
 
 export default class Scheduler {
-
-  constructor(audioContext) {
-    this.audioContext = audioContext;
+  constructor() {
     this.schedulables = new Set();
     this.isRunning = false;
     this.resetCounterVariables();
@@ -32,7 +30,7 @@ export default class Scheduler {
   start() {
     this.isRunning = true;
     this.schedulables.forEach(schedulable => schedulable.start());
-    this.render();
+    this.renderLoop();
   }
 
   stop() {
@@ -40,18 +38,17 @@ export default class Scheduler {
     this.resetCounterVariables();
   }
 
-  render() {
+  renderLoop() {
     if (this.nextScheduledTime >= performance.now() && this.tickToRender !== this.lastTickRendered) {
       this.schedulables.forEach(schedulable => schedulable.render(this.tickCounter, this.lastTickRendered));
       this.lastTickRendered = this.tickToRender;
     }
-    if(this.isRunning) {
-      requestAnimationFrame(this.render.bind(this));
+    if (this.isRunning) {
+      requestAnimationFrame(this.renderLoop.bind(this));
     }
     else {
       this.resetCounterVariables();
       this.schedulables.forEach(schedulable => schedulable.stop());
     }
   }
-
 }
