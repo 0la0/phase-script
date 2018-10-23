@@ -1,5 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
+import { getPosNeg } from 'components/_util/math';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 import PatchParam, { PatchParamModel } from 'components/patch-param';
@@ -11,20 +12,9 @@ const COMPONENT_NAME = 'patch-grain';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-// class GrainInstrument {
-//   constructor() {
-//     this.position = 0.5;
-//     this.spread = 0.1;
-//     this.loopDuration = 0.01;
-//     this.timeScatter = 0;
-//     this.numVoices = 0;
-//     this.grainsPerTick = 0;
-//   }
-// }
-
 const DEFAULT_VALUES = {
   GRAIN_DENSITY: 0.2,
-  NUM_VOICES: 1,
+  NUM_VOICES: 0.05,
   TIME_SCATTER: 0.2,
 };
 
@@ -88,19 +78,19 @@ class PatchGrain extends BaseComponent {
     setTimeout(() => {
       const { grainDensity, numVoices, timeScatter } = this.getParametersForTime(message.time.audio);
       const note = message.note !== undefined ? message.note : 60;
-      const tempo = metronomeManager.getMetronome().getTempo();
       const tickLength = metronomeManager.getMetronome().getTickLength();
       const baseTime = message.time.audio;
       const grainsPerTick = getGrainsPerTick(grainDensity);
       const grainFrequency = tickLength / grainsPerTick;
-      const grainSchedules = [];
       for (let i = 0; i < grainsPerTick; i++) {
-        const time = baseTime + i * grainFrequency;
-        grainSchedules.push({ time, });
+        const audioTime = baseTime + i * grainFrequency;
+        for (let j = 0; j < numVoices; j++) {
+          const timeJitter = getPosNeg() * tickLength * 2 * timeScatter * Math.random();
+          const time = { audio: audioTime + timeJitter, midi: undefined }; // TODO: midi
+          const grainMessage = { ...message, time, };
+          this.eventModel.getOutlets().forEach(outlet => outlet.schedule(grainMessage));
+        }
       }
-      console.log(baseTime, grainSchedules)
-      console.log('GrainSchedule:', grainDensity, numVoices, timeScatter)
-      console.log('eventModel outlets', this.eventModel.getOutlets())
     });
   }
 
