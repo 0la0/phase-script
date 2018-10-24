@@ -42,6 +42,7 @@ import PatchGain from 'components/patch-gain';
 import PatchParam from 'components/patch-param';
 import PatchLfo from 'components/patch-lfo';
 import PatchGrain from 'components/patch-grain';
+import PatchMessageSpread from 'components/patch-message-spread';
 
 const components = [
   app,
@@ -88,6 +89,7 @@ const components = [
   PatchParam,
   PatchLfo,
   PatchGrain,
+  PatchMessageSpread,
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

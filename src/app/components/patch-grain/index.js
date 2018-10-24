@@ -18,17 +18,10 @@ const DEFAULT_VALUES = {
   TIME_SCATTER: 0.2,
 };
 
-function calculateNumVoices(normalValue) {
-  return 1 + Math.round(9 * normalValue);
-}
-
 function getGrainsPerTick(grainDensity) {
   const MAX_GRAINS = 20;
   return Math.round(MAX_GRAINS * grainDensity);
 }
-
-// TODO: External Params
-// position spread
 
 class PatchGrain extends BaseComponent {
   constructor() {
@@ -37,12 +30,10 @@ class PatchGrain extends BaseComponent {
     this.audioModel = new PatchAudioModel('GRAIN', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.MESSAGE);
     this.params = {
       grainDensity: DEFAULT_VALUES.GRAIN_DENSITY,
-      numVoices: DEFAULT_VALUES.NUM_VOICES,
       timeScatter: DEFAULT_VALUES.TIME_SCATTER,
     };
     this.paramScheduler = {
       grainDensity: new ParamScheduler(message => message.note / 127),
-      numVoices: new ParamScheduler(message => calculateNumVoices(message.note / 127)),
       timeScatter: new ParamScheduler(message => message.note / 127),
     };
   }
@@ -55,13 +46,6 @@ class PatchGrain extends BaseComponent {
       setValueFromMessage: message => this.paramScheduler.grainDensity.schedule(message),
       showValue: true,
     }));
-    const numVoicesParam = new PatchParam.element(new PatchParamModel({
-      label: 'Voices',
-      defaultValue: DEFAULT_VALUES.NUM_VOICES,
-      setValue: val => this.params.numVoices = calculateNumVoices(val),
-      setValueFromMessage: message => this.paramScheduler.numVoices.schedule(message),
-      showValue: true,
-    }));
     const timeScatterParam = new PatchParam.element(new PatchParamModel({
       label: 'TimeJit',
       defaultValue: DEFAULT_VALUES.TIME_SCATTER,
@@ -70,13 +54,12 @@ class PatchGrain extends BaseComponent {
       showValue: true,
     }));
     this.root.appendChild(grainDensityParam);
-    this.root.appendChild(numVoicesParam);
     this.root.appendChild(timeScatterParam);
   }
 
   schedule(message) {
     setTimeout(() => {
-      const { grainDensity, numVoices, timeScatter } = this.getParametersForTime(message.time.audio);
+      const { grainDensity, timeScatter } = this.getParametersForTime(message.time.audio);
       const note = message.note !== undefined ? message.note : 60;
       const tickLength = metronomeManager.getMetronome().getTickLength();
       const baseTime = message.time.audio;
@@ -84,12 +67,10 @@ class PatchGrain extends BaseComponent {
       const grainFrequency = tickLength / grainsPerTick;
       for (let i = 0; i < grainsPerTick; i++) {
         const audioTime = baseTime + i * grainFrequency;
-        for (let j = 0; j < numVoices; j++) {
-          const timeJitter = getPosNeg() * tickLength * 2 * timeScatter * Math.random();
-          const time = { audio: audioTime + timeJitter, midi: undefined }; // TODO: midi
-          const grainMessage = { ...message, time, };
-          this.eventModel.getOutlets().forEach(outlet => outlet.schedule(grainMessage));
-        }
+        const timeJitter = getPosNeg() * tickLength * 2 * timeScatter * Math.random();
+        const time = { audio: audioTime + timeJitter, midi: undefined }; // TODO: midi
+        const grainMessage = { ...message, time, };
+        this.eventModel.getOutlets().forEach(outlet => outlet.schedule(grainMessage));
       }
     });
   }
@@ -97,7 +78,6 @@ class PatchGrain extends BaseComponent {
   getParametersForTime(time) {
     return {
       grainDensity: this.paramScheduler.grainDensity.getValueForTime(time) || this.params.grainDensity,
-      numVoices: this.paramScheduler.numVoices.getValueForTime(time) || this.params.numVoices,
       timeScatter: this.paramScheduler.timeScatter.getValueForTime(time) || this.params.timeScatter,
     };
   }

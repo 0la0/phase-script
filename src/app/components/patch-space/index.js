@@ -16,6 +16,7 @@ import PatchFilter from 'components/patch-filter';
 import PatchGain from 'components/patch-gain';
 import PatchLfo from 'components/patch-lfo';
 import PatchGrain from 'components/patch-grain';
+import PatchMessageSpread from 'components/patch-message-spread';
 
 const COMPONENT_NAME = 'patch-space';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -36,6 +37,7 @@ const nodeMap = {
   gain: PatchGain,
   lfo: PatchLfo,
   grainulator: PatchGrain,
+  messageSpread: PatchMessageSpread,
 };
 
 const domMap = {
@@ -68,6 +70,7 @@ class PatchSpace extends BaseComponent {
         { target: { getAttribute: () => 'osc' } },
         { target: { getAttribute: () => 'dac' } },
         { target: { getAttribute: () => 'grainulator' } },
+        { target: { getAttribute: () => 'messageSpread' } },
       ];
       testNodes.forEach(e => this.addPatchElement(e));
     }, 100);
