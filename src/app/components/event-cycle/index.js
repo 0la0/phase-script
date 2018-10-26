@@ -49,7 +49,9 @@ class EventCycle extends BaseComponent {
   }
 
   scheduleCycleElement(cycleElement, time, duration) {
-    const [ address, note ] = cycleElement.split(':');
+    const [ address, noteString ] = cycleElement.split(':');
+    const intNote = parseInt(noteString, 10);
+    const note = isNaN(intNote) ? undefined : intNote;
     audioEventBus.publish({ address, time, duration, note, });
   }
 

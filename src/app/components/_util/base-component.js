@@ -1,7 +1,7 @@
 const commonStyles = require('./common.css');
 
 function buildShadowDom(element, innerHTML) {
-  let shadowRoot = element.attachShadow({mode: 'open'});
+  const shadowRoot = element.attachShadow({ mode: 'open' });
   const template = document.createElement('template');
   template.innerHTML = innerHTML;
   const instance = template.content.cloneNode(true);
@@ -12,8 +12,7 @@ function buildShadowDom(element, innerHTML) {
 function buildDomMap(root, domMap) {
   return Object.entries(domMap).reduce((dom, entry) => {
     const [key, value] = entry;
-    dom[key] = root.getElementById(value);
-    return dom;
+    return Object.assign(dom, { [key]: root.getElementById(value) });
   }, {});
 }
 

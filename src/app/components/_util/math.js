@@ -6,11 +6,11 @@ function getPosNeg() {
 }
 
 function IntArray(length) {
-  return new Array(length).fill(null).map((nullVal, index) => index);
+  return new Array(length).fill(null).map((n, i) => i);
 }
 
 function generateRandomChars(input) {
-  const r = Math.random() * 16 | 0
+  const r = Math.random() * 16 | 0;
   const v = input === 'x' ? r : (r & 0x3 | 0x8);
   return v.toString(16);
 }
@@ -19,4 +19,8 @@ function uuid() {
   return UUID_TEMPLATE.replace(XY_REGEX, generateRandomChars);
 }
 
-export { getPosNeg, IntArray, uuid };
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+export { getPosNeg, IntArray, uuid, clamp };
