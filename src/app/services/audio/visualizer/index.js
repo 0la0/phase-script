@@ -1,23 +1,25 @@
 import audioGraph from 'services/audio/graph';
 
-class Visualizer {
-
+export default class Visualizer {
   constructor () {
-    this.source = audioGraph.getOutput();
     this.analyser = audioGraph.getAudioContext().createAnalyser();
     this.analyser.fftSize = Math.pow(2, 11);
-    this.timeDataArray = new Uint8Array(this.getBufferLength());
-    this.freqDataArray = new Uint8Array(this.getBufferLength());
+    const bufferLength = this.analyser.frequencyBinCount;
+    this.timeDataArray = new Uint8Array(bufferLength);
+    this.freqDataArray = new Uint8Array(bufferLength);
     this.sampleRate = audioGraph.getAudioContext().sampleRate;
-    this.connect();
   }
 
-  connect () {
-    this.source.connect(this.analyser);
+  connect(node) {
+    node.connect(this.analyser);
   }
 
-  disconnect () {
-    this.source.disconnect(this.analyser);
+  disconnect(node) {
+    node.disconnect(this.analyser);
+  }
+
+  getInput() {
+    return this.analyser;
   }
 
   getBufferLength () {
@@ -42,8 +44,4 @@ class Visualizer {
     // note that the number of bins is half the fftSize
     return this.sampleRate / this.analyser.fftSize;
   }
-
 }
-
-const visualizer = new Visualizer();
-export default visualizer;

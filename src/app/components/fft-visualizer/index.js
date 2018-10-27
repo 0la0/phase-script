@@ -5,91 +5,67 @@ import metronomeManager from 'services/metronome/metronomeManager';
 import visualizer from 'services/audio/visualizer';
 
 const COMPONENT_NAME = 'fft-visualizer';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+const markup = '<canvas id="canvas"></canvas>';
 
-const WIDTH = 200;
-const HEIGHT = 100;
+const WIDTH = 100;
+const HEIGHT = 50;
 const MAX_BYTE = Math.pow(2, 8) - 1;
 const ACTIVE_CLASS = 'visualizer--active';
+const domMap = { canvas: 'canvas' };
 
-function getGraphicsContext (canvasElement, width, height) {
+function getGraphicsContext(canvasElement, width, height) {
   const g2d = canvasElement.getContext('2d');
   canvasElement.width = width;
   canvasElement.height = height;
-  g2d.strokeStyle = 'black';
+  g2d.clearRect(0, 0, WIDTH, HEIGHT);
+  g2d.strokeStyle = '#FFFFFFBB';
+  g2d.fillStyle = '#FFFFFFBB';
   g2d.lineWidth = 2;
-  g2d.fillStyle = 'black';
   g2d.translate(0, height);
   g2d.scale(1, -1);
   return g2d;
 }
 
 class FftVisualizer extends BaseComponent {
-
   constructor() {
-    super(style, markup);
+    super('', markup, domMap);
   }
 
   connectedCallback() {
-    this.isOn = false;
-    this.metronomeSchedulable = this.buildMetronomeSchedulable();
-    metronomeManager.getScheduler().register(this.metronomeSchedulable);
-    this.visualizerParent = this.root.getElementById('visualizerParent');
-    const timeDomainCanvas = this.root.getElementById('timeDomainCanvas');
-    const frequencyDomainCanvas = this.root.getElementById('frequencyDomainCanvas');
-    this.timeVisualizer = getGraphicsContext(timeDomainCanvas, WIDTH, WIDTH);
-    this.frequencyVisualizer = getGraphicsContext(frequencyDomainCanvas, WIDTH, WIDTH);
+    this.g2d = getGraphicsContext(this.dom.canvas, WIDTH, HEIGHT);
   }
 
-  disconnectedCallback() {
-    metronomeManager.getScheduler().deregister(this.metronomeSchedulable);
-    this.isOn = false;
-    // TODO: CLEANUP
+  fadeCanvas() {
+    this.g2d.fillStyle = '#33333360';
+    this.g2d.fillRect(0, 0, WIDTH, HEIGHT);
+    this.g2d.fillStyle = '#FFFFFF99';
   }
 
-  onToggle(event) {
-    this.isOn = !this.isOn;
-    this.isOn ?
-      this.visualizerParent.classList.add(ACTIVE_CLASS) :
-      this.visualizerParent.classList.remove(ACTIVE_CLASS);
-  }
-
-  render() {
-    const bufferLength = visualizer.getBufferLength();
+  renderTimeData(timeData) {
+    const bufferLength = timeData.length;
     const step = WIDTH / bufferLength;
-
-    // render time domain
-    this.timeVisualizer.clearRect(0, 0, WIDTH, HEIGHT);
-    this.timeVisualizer.beginPath();
-    visualizer.getTimeData().forEach((value, index) => {
-      const normalValue = (value / MAX_BYTE) * 100;
+    this.fadeCanvas();
+    this.g2d.beginPath();
+    timeData.forEach((value, index) => {
+      const normalValue = (value / MAX_BYTE) * HEIGHT;
       const x = step * index;
       const y = (MAX_BYTE / HEIGHT) + normalValue;
-      index === 0 ?
-        this.timeVisualizer.moveTo(x, y) :
-        this.timeVisualizer.lineTo(x, y);
+      index === 0 ? this.g2d.moveTo(x, y) : this.g2d.lineTo(x, y);
     });
-    this.timeVisualizer.stroke();
+    this.g2d.stroke();
+  }
 
-    // render frequency domain
-    this.frequencyVisualizer.clearRect(0, 0, WIDTH, HEIGHT);
-    visualizer.getFrequencyData().forEach((value, index) => {
+  // TODO: copy domain tranform from `onCutoffUpdate`
+  renderFrequencyData(frequencyData) {
+    const bufferLength = frequencyData.length;
+    const step = WIDTH / bufferLength;
+    this.fadeCanvas();
+    frequencyData.forEach((value, index) => {
       const x = step * index;
       const height = (value / MAX_BYTE) * HEIGHT;
-      this.frequencyVisualizer.fillRect(x, 0, step, height);
+      this.g2d.fillRect(x, 0, step, height);
     });
   }
-
-  buildMetronomeSchedulable() {
-    return {
-      processTick: (tickNumber, time) => {},
-      render: (tickNumber, lastTickNumber) => this.render(),
-      start: () => {},
-      stop: () => {}
-    };
-  }
-
 }
 
 export default new Component(COMPONENT_NAME, FftVisualizer);

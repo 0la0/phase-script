@@ -1,13 +1,8 @@
 .select-box {
-  width: 50px;
   background-color: var(--color-black-light);
   color: var(--color-grey-light);
   outline: none;
 }
 .select-box:focus {
   outline: none;
-}
-.select-box option {
-  background-color: var(--color-grey-dark);
-  color: var(--color-black-light);
 }

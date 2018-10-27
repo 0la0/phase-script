@@ -69,8 +69,8 @@ class PatchSpace extends BaseComponent {
         { target: { getAttribute: () => 'address' } },
         { target: { getAttribute: () => 'osc' } },
         { target: { getAttribute: () => 'dac' } },
-        { target: { getAttribute: () => 'grainulator' } },
-        { target: { getAttribute: () => 'messageSpread' } },
+        // { target: { getAttribute: () => 'grainulator' } },
+        // { target: { getAttribute: () => 'messageSpread' } },
       ];
       testNodes.forEach(e => this.addPatchElement(e));
     }, 100);
@@ -82,6 +82,7 @@ class PatchSpace extends BaseComponent {
   }
 
   addNode(component) {
+    component.onRender = this.onRender;
     const draggable = new DraggableWrapper.element({
       id: uuid(),
       onRender: this.onRender,

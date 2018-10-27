@@ -33,8 +33,8 @@ class GraphicsController extends BaseComponent {
   }
 
   render() {
-    const freqDataArray = visualizer.getCachedFrequencyData();
-    graphicsChannel.postMessage({ type: 'FFT', value: freqDataArray });
+    // const freqDataArray = visualizer.getCachedFrequencyData();
+    // graphicsChannel.postMessage({ type: 'FFT', value: freqDataArray });
   }
 
   buildMetronomeSchedulable() {
