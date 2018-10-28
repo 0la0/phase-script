@@ -31,12 +31,10 @@ class Metronome extends BaseComponent {
     // console.log('titleElement', titleElement);
 
     window.addEventListener('keydown', $event => {
-      if ($event.key !== ' ') {
-        return;
-      }
+      if ($event.code !== 'Space') { return; }
       $event.preventDefault();
       $event.stopPropagation();
-      this.metronomeButton.trigger(true);
+      this.metronomeButton.click();
     });
 
     const schedulable = {

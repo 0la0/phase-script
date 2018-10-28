@@ -4,16 +4,18 @@ import { getElementWithFunctionName } from 'components/_util/dom';
 
 const COMPONENT_NAME = 'combo-box';
 const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
 
 class ComboBox extends BaseComponent {
-
   constructor() {
-    super(style, markup);
+    super(style, '');
     this.onChangeCallback = () => {};
+    this.selectBox = document.createElement('select');
+    this.selectBox.setAttribute('class', 'select-box');
   }
 
   connectedCallback() {
+    this.originalChildren.forEach(child => this.selectBox.appendChild(child));
+    this.shadowRoot.appendChild(this.selectBox);
     if (this.hasAttribute('change')) {
       const functionName = this.getAttribute('change');
       const targetElement = getElementWithFunctionName(this.parentNode, functionName);
@@ -24,11 +26,7 @@ class ComboBox extends BaseComponent {
         });
       }
     }
-
-    this.selectElement = this.shadowRoot.getElementById('select-box');
-    this.selectElement.innerHTML = this.originalMarkup;
-    this.selectElement.addEventListener('change', this.onValueChange.bind(this));
-
+    this.selectBox.addEventListener('change', this.onValueChange.bind(this));
     setTimeout(() => this.onValueChange(), 20);
   }
 
@@ -39,18 +37,18 @@ class ComboBox extends BaseComponent {
 
   setValue(value) {
     if (value === undefined || value === null) {
-      this.selectElement.value = this.selectElement.firstChild.value;
+      this.selectBox.value = this.selectBox.firstChild.value;
       return;
     }
-    this.selectElement.value = value;
+    this.selectBox.value = value;
   }
 
   setOptions(options) {
     const selectedValue = this.getSelectedValue();
     let selectIndex = 0;
     // clear dom contents
-    while (this.selectElement.firstChild) {
-      this.selectElement.firstChild.remove();
+    while (this.selectBox.firstChild) {
+      this.selectBox.firstChild.remove();
     }
     options
       .map((option, index) => {
@@ -62,18 +60,18 @@ class ComboBox extends BaseComponent {
         }
         return optionElement;
       })
-      .forEach(option => this.selectElement.appendChild(option));
-    this.selectElement.selectedIndex = selectIndex;
+      .forEach(option => this.selectBox.appendChild(option));
+    this.selectBox.selectedIndex = selectIndex;
   }
 
   onValueChange() {
-    if (this.selectElement.selectedIndex < 0) { return; }
+    if (this.selectBox.selectedIndex < 0) { return; }
     this.onChangeCallback(this.getSelectedValue());
   }
 
   getSelectedValue() {
-    if (this.selectElement.selectedIndex < 0) { return; }
-    return this.selectElement[this.selectElement.selectedIndex].value;
+    if (this.selectBox.selectedIndex < 0) { return; }
+    return this.selectBox[this.selectBox.selectedIndex].value;
   }
 }
 

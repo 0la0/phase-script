@@ -4,23 +4,24 @@ import router from 'services/Router';
 
 const COMPONENT_NAME = 'router-outlet';
 
-class RouterOutlet extends BaseComponent {
+class RouterOutlet extends HTMLElement {
   constructor() {
-    super('', '');
-    const routeName = this.getAttribute('route');
-    router.register(`/#${routeName}`, this);
-    this.deactivateRoute();
+    super();
+    this.template = document.createElement('template');
+    [...this.children].forEach((child) => {
+      this.removeChild(child);
+      this.template.content.appendChild(child);
+    });
+    const routeName = `/#${this.getAttribute('route')}`;
+    router.register(routeName, this);
   }
 
   activateRoute() {
-    this.shadowRoot.innerHTML = this.originalMarkup;
-    // const fragment = this.template.content.cloneNode(true);
-    // this.shadowRoot.appendChild(fragment);
+    this.appendChild(this.template.content.cloneNode(true));
   }
 
   deactivateRoute() {
-    // this.shadowRoot.innerHTML = '';
-    [...this.shadowRoot.children].forEach(child => this.shadowRoot.removeChild(child));
+    [...this.children].forEach(child => this.removeChild(child));
   }
 }
 

@@ -1,8 +1,8 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import graphicsChannel from 'services/BroadcastChannel';
-import {GraphicsManager} from './modules/graphicsManager';
-import {WebGLRenderer} from 'three';
+import { GraphicsManager } from './modules/graphicsManager';
+import { WebGLRenderer } from 'three';
 
 const COMPONENT_NAME = 'graphics-root';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -10,23 +10,18 @@ const markup = require(`./${COMPONENT_NAME}.html`);
 
 const NUM_VERTEX = 50;
 
-class GraphicsRoot extends BaseComponent {
+const domMap = {
+  canvas: 'cvs',
+  fullscreenButton: 'fullscreen-button'
+};
 
+class GraphicsRoot extends BaseComponent {
   constructor() {
-    super(style, markup);
+    super(style, markup, domMap);
   }
 
   connectedCallback() {
-    this.canvasElement = this.shadowRoot.getElementById('cvs');;
-    this.renderer = new WebGLRenderer({canvas: this.canvasElement, alpha: false, antialias: false});
-    this.graphicsManager = new GraphicsManager();
-
-    this.lastRenderTime = performance.now();
-    this.addEventListeners();
-
-    this.isInRenderLoop = true;
-    this.onResize();
-    this.loop();
+    setTimeout(this.init.bind(this)); // let dom update before loading graphics
   }
 
   disconnectedCallback() {
@@ -35,6 +30,16 @@ class GraphicsRoot extends BaseComponent {
     this.graphicsManager.destroy();
     window.removeEventListener('resize', this.onResizeListener);
   };
+
+  init() {
+    this.renderer = new WebGLRenderer({canvas: this.dom.canvas, alpha: false, antialias: false});
+    this.graphicsManager = new GraphicsManager();
+    this.lastRenderTime = performance.now();
+    this.addEventListeners();
+    this.isInRenderLoop = true;
+    this.onResize();
+    this.loop();
+  }
 
   loop() {
     const now = performance.now();
@@ -48,8 +53,8 @@ class GraphicsRoot extends BaseComponent {
   }
 
   addEventListeners() {
-    this.shadowRoot.getElementById('fullscreen-button')
-      .addEventListener('click', $event => this.canvasElement.webkitRequestFullscreen());
+    this.dom.fullscreenButton
+      .addEventListener('click', $event => this.dom.canvas.webkitRequestFullscreen());
     this.shadowRoot.addEventListener('click', $event => this.graphicsManager.onClick($event));
 
     graphicsChannel.addEventListener('message', event => {
@@ -82,7 +87,6 @@ class GraphicsRoot extends BaseComponent {
       this.loop();
     }
   }
-
 }
 
 export default new Component(COMPONENT_NAME, GraphicsRoot);

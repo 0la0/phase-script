@@ -26,11 +26,10 @@ class Router {
   }
 
   replaceRoute(path) {
-    console.log(path)
     const outgoingPath = this._activateRoute(path);
     history.replaceState({}, '', outgoingPath);
   }
 }
-console.log('cool')
+
 const instance = new Router();
 export default instance;

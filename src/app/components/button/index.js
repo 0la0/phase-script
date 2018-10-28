@@ -29,14 +29,14 @@ class FlatButton extends BaseComponent {
     if (this.hasAttribute('isToggle')) {
       this.isToggle = true;
     }
-
-    this.addEventListener('click', event => this.trigger(true, event));
+    this._onClick = this.trigger.bind(this)
+    this.addEventListener('click', this._onClick);
     this.onText = this.getAttribute('ontext') || '';
     this.offText = this.getAttribute('offtext') || '';
     this.render();
   }
 
-  trigger(isFirst, event) {
+  trigger(event) {
     this.onClick(event);
     if (!this.isToggle) { return; }
     this.isOn = !this.isOn;

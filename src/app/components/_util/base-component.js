@@ -1,29 +1,25 @@
 const commonStyles = require('./common.css');
 
-function buildShadowDom(element, innerHTML) {
-  const shadowRoot = element.attachShadow({ mode: 'open' });
-  const template = document.createElement('template');
-  template.innerHTML = innerHTML;
-  return { shadowRoot, template };
-}
-
-function buildDomMap(root, domMap) {
+function buildDomMap(shadowRoot, domMap) {
   return Object.entries(domMap).reduce((dom, entry) => {
     const [key, value] = entry;
-    return Object.assign(dom, { [key]: root.getElementById(value) });
+    return Object.assign(dom, { [key]: shadowRoot.getElementById(value) });
   }, {});
 }
 
 export default class BaseComponent extends HTMLElement {
   constructor(style, markup, domMap) {
     super();
-    this.originalText = this.innerText;
-    this.originalMarkup = this.innerHTML;
-    [...this.children].forEach(child => this.removeChild(child));
-    const { shadowRoot, template } = buildShadowDom(this, `<style>${commonStyles}${style}</style>${markup}`);
-    this.template = template;
-    const fragment = this.template.content.cloneNode(true);
-    this.shadowRoot.appendChild(fragment);
+    this.originalChildren = [...this.children];
+    this.originalChildren.forEach(child => this.removeChild(child));
+
+    const styleElement = document.createElement('style');
+    const markupTemplate = document.createElement('template');
+    const shadowRoot = this.attachShadow({ mode: 'open' });
+    styleElement.textContent = `${commonStyles}${style}`;
+    markupTemplate.innerHTML = markup;
+    this.shadowRoot.appendChild(styleElement);
+    this.shadowRoot.appendChild(markupTemplate.content.cloneNode(true));
     this.dom = domMap ? buildDomMap(this.shadowRoot, domMap) : {};
   }
 
