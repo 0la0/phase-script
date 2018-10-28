@@ -71,9 +71,9 @@ class Sampler extends BaseComponent {
       setValueFromMessage: message => this.paramScheduler.release.schedule(message),
       showValue: true,
     }));
-    this.root.appendChild(attackParam);
-    this.root.appendChild(sustainParam);
-    this.root.appendChild(releaseParam);
+    this.shadowRoot.appendChild(attackParam);
+    this.shadowRoot.appendChild(sustainParam);
+    this.shadowRoot.appendChild(releaseParam);
   }
 
   // disconnectedCallback() {

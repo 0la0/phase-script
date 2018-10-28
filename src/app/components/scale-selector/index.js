@@ -11,7 +11,7 @@ class ScaleSelector extends BaseComponent {
 
   constructor() {
     super(style, markup);
-    this.selector = this.root.getElementById('selector');
+    this.selector = this.shadowRoot.getElementById('selector');
   }
 
   connectedCallback() {

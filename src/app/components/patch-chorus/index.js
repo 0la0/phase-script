@@ -45,9 +45,9 @@ class PatchChorus extends BaseComponent {
     const feedbackParam = new PatchParam.element(feedbackModel);
     const frequencyParam = new PatchParam.element(frequencyModel);
     const depthParam = new PatchParam.element(depthModel);
-    this.root.appendChild(feedbackParam);
-    this.root.appendChild(frequencyParam);
-    this.root.appendChild(depthParam);
+    this.shadowRoot.appendChild(feedbackParam);
+    this.shadowRoot.appendChild(frequencyParam);
+    this.shadowRoot.appendChild(depthParam);
   }
 
   onFeedbackUpdate(value, scheduledTime = 0) {

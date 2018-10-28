@@ -1,10 +1,14 @@
 <router-outlet route="/">
-  <p onclicktoroute="/sound">
-    Sound
-  </p>
-  <p onclicktoroute="/graphics">
-    Graphics
-  </p>
+  <flat-button
+    ontext="Sound"
+    offtext="Sound"
+    click="goToSoundRoute">
+  </flat-button>
+  <flat-button
+    ontext="Graphics"
+    offtext="Graphics"
+    click="goToGraphicsRoute">
+  </flat-button>
 </router-outlet>
 
 <router-outlet route="/sound">

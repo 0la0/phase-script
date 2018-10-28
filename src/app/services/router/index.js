@@ -1,0 +1,36 @@
+class Router {
+  constructor() {
+    this.routes = new Map();
+    window.addEventListener('hashchange', () => this.replaceRoute(`/${location.hash}`));
+    setTimeout(() => {
+      const hash = `/${location.hash}`;
+      const path = this.routes.has(hash) ? hash : '/#/';
+      this.replaceRoute(path);
+    });
+  }
+
+  register(path, component) {
+    this.routes.set(path, component);
+  }
+
+  _activateRoute(path) {
+    const outgoingPath = this.routes.has(path) ? path : '';
+    this.routes.forEach((component, routeName) => routeName === outgoingPath ?
+      component.activateRoute() : component.deactivateRoute());
+    return outgoingPath;
+  }
+
+  pushRoute(path) {
+    const outgoingPath = this._activateRoute(path);
+    history.pushState({}, '', outgoingPath);
+  }
+
+  replaceRoute(path) {
+    console.log(path)
+    const outgoingPath = this._activateRoute(path);
+    history.replaceState({}, '', outgoingPath);
+  }
+}
+console.log('cool')
+const instance = new Router();
+export default instance;

@@ -10,7 +10,7 @@ import PolyBox from 'components/poly-box';
 import MessageFitler from 'components/message-filter';
 import Metronome from 'components/metronome';
 import ScaleSelector from 'components/scale-selector';
-import RouterOutlet from 'components/router';
+import RouterOutlet from 'components/router-outlet';
 import GraphicsRoot from 'components/graphics/graphics-root';
 import OscSynth from 'components/osc-synth';
 import OscVoice from 'components/osc-voice';

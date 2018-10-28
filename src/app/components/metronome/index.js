@@ -16,8 +16,8 @@ class Metronome extends BaseComponent {
   constructor() {
     super(style, markup);
     this.isRunning = false;
-    this.metronomeButton = this.root.getElementById('metronome-button');
-    this.input = this.root.getElementById('metronome-input');
+    this.metronomeButton = this.shadowRoot.getElementById('metronome-button');
+    this.input = this.shadowRoot.getElementById('metronome-input');
     this.input.value = metronome.getTempo();
     this.input.addEventListener('change', $event => {
       const value = parseInt(this.input.value);

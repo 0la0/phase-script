@@ -32,7 +32,7 @@ class PatchMessageSpread extends BaseComponent {
       setValueFromMessage: message => this.paramScheduler.spread.schedule(message),
       showValue: false,
     }));
-    this.root.appendChild(spreadParam);
+    this.shadowRoot.appendChild(spreadParam);
   }
 
   schedule(message) {

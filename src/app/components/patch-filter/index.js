@@ -65,8 +65,8 @@ class PatchFilter extends BaseComponent {
     };
     this.cutoffParam = new PatchParam.element(cutoffModel);
     this.resonanceParam = new PatchParam.element(resonanceModel);
-    this.root.appendChild(this.cutoffParam);
-    this.root.appendChild(this.resonanceParam);
+    this.shadowRoot.appendChild(this.cutoffParam);
+    this.shadowRoot.appendChild(this.resonanceParam);
   }
 
   renderCurve() {

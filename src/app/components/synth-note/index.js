@@ -12,9 +12,9 @@ class SynthNote extends BaseComponent {
   constructor(note) {
     super(style, markup);
 
-    this.ele = this.root.getElementById('synth-note');
-    this.rightAnchor = this.root.getElementById('right-anchor');
-    this.label = this.root.getElementById('label');
+    this.ele = this.shadowRoot.getElementById('synth-note');
+    this.rightAnchor = this.shadowRoot.getElementById('right-anchor');
+    this.label = this.shadowRoot.getElementById('label');
     this.shouldNotifyParent = false;
   }
 

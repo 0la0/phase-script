@@ -57,8 +57,8 @@ class PatchPulse extends BaseComponent {
       setValueFromMessage: message => this.paramScheduler.cycleLength.schedule(message),
       showValue: true,
     }));
-    this.root.appendChild(cycleLengthParam);
-    this.root.appendChild(resonanceParam);
+    this.shadowRoot.appendChild(cycleLengthParam);
+    this.shadowRoot.appendChild(resonanceParam);
   }
 
   schedule(message) {

@@ -30,9 +30,9 @@ class TriggerBox extends BaseComponent {
     this.tickSchedulable = this.buildTickSchedulable();
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
 
-    this.visualizer = this.root.getElementById('visualizer');
-    this.sendComboBox = this.root.getElementById('sendComboBox');
-    this.sendTickComboBox = this.root.getElementById('sendTickComboBox');
+    this.visualizer = this.shadowRoot.getElementById('visualizer');
+    this.sendComboBox = this.shadowRoot.getElementById('sendComboBox');
+    this.sendTickComboBox = this.shadowRoot.getElementById('sendTickComboBox');
 
     audioEventBus.subscribe({
       onNewSubscription: addresses => {

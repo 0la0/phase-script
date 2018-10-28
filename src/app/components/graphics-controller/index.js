@@ -17,7 +17,7 @@ class GraphicsController extends BaseComponent {
   connectedCallback() {
     this.metronomeSchedulable = this.buildMetronomeSchedulable();
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
-    this.selectBox = this.root.getElementById('optionsContainer');
+    this.selectBox = this.shadowRoot.getElementById('optionsContainer');
     this.selectBox.addEventListener('change', event => {
       const value = this.selectBox.value;
       graphicsChannel.postMessage({ type: 'GRAPHICS_MODE', value });

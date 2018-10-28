@@ -53,8 +53,8 @@ class PatchGrain extends BaseComponent {
       setValueFromMessage: message => this.paramScheduler.timeScatter.schedule(message),
       showValue: true,
     }));
-    this.root.appendChild(grainDensityParam);
-    this.root.appendChild(timeScatterParam);
+    this.shadowRoot.appendChild(grainDensityParam);
+    this.shadowRoot.appendChild(timeScatterParam);
   }
 
   schedule(message) {

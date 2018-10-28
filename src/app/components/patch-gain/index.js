@@ -31,7 +31,7 @@ class PatchGain extends BaseComponent {
       }
     };
     this.gainParam = new PatchParam.element(gainModel);
-    this.root.appendChild(this.gainParam);
+    this.shadowRoot.appendChild(this.gainParam);
   }
 
   onRemove() {

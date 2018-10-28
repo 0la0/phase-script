@@ -11,7 +11,7 @@ class SliderHorizontal extends BaseComponent {
   constructor(note) {
     super(style, markup);
     this.isActive = false;
-    this.tracker = this.root.getElementById('tracker');
+    this.tracker = this.shadowRoot.getElementById('tracker');
   }
 
   connectedCallback() {

@@ -48,7 +48,7 @@ class PatchWaveshaper extends BaseComponent {
       },
     };
     const wetParam = new PatchParam.element(wetModel);
-    this.root.appendChild(wetParam);
+    this.shadowRoot.appendChild(wetParam);
   }
 
   connectTo(node) {

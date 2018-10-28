@@ -65,19 +65,19 @@ class GrainMaker extends BaseComponent {
     audioEventBus.subscribe(this.audioEventSubscription);
 
     this.output = Object.keys(PARAMS).reduce((output, param) => {
-      const element = this.root.getElementById(`${param}Output`);
+      const element = this.shadowRoot.getElementById(`${param}Output`);
       return Object.assign(output, { [param]: element });
     }, {});
 
     setTimeout(() => {
       this.sliders = Object.keys(PARAMS).reduce((output, param) => {
-        const element = this.root.getElementById(`${param}-slider`);
+        const element = this.shadowRoot.getElementById(`${param}-slider`);
         element.setValue(this.grainInstrument[param], true);
         return Object.assign(output, { [param]: element });
       }, {});
     });
 
-    this.sampler = this.root.getElementById('sampler');
+    this.sampler = this.shadowRoot.getElementById('sampler');
   }
 
   disconnectedCallback() {

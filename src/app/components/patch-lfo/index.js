@@ -29,7 +29,7 @@ class PatchLfo extends BaseComponent {
       setValueFromMessage: () => {},
     };
     this.lfoParam = new PatchParam.element(lfoModel);
-    this.root.appendChild(this.lfoParam);
+    this.shadowRoot.appendChild(this.lfoParam);
   }
 
   onFrequencyUpdate(value) {

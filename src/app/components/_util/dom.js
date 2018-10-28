@@ -6,8 +6,8 @@ export function getElementWithFunctionName(element, functionName) {
   if (element[functionName]) {
     return element;
   }
-  if (element.host && !element.host[functionName]) {
-    return false;
+  if (element.host && !element.host[functionName] && element.host.parentNode) {
+    return getElementWithFunctionName(element.host.parentNode, functionName);
   }
   if (element.host && element.host[functionName]) {
     return element.host;

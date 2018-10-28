@@ -46,9 +46,9 @@ class PatchDelay extends BaseComponent {
     const delayParam = new PatchParam.element(delayModel);
     const feedbackParam = new PatchParam.element(feedbackModel);
     const wetParam = new PatchParam.element(wetModel);
-    this.root.appendChild(delayParam);
-    this.root.appendChild(feedbackParam);
-    this.root.appendChild(wetParam);
+    this.shadowRoot.appendChild(delayParam);
+    this.shadowRoot.appendChild(feedbackParam);
+    this.shadowRoot.appendChild(wetParam);
   }
 
   // TODO: Quatization

@@ -45,9 +45,9 @@ class PatchReverb extends BaseComponent {
     const attackParam = new PatchParam.element(attackModel);
     const decayParam = new PatchParam.element(decayModel);
     const wetParam = new PatchParam.element(wetModel);
-    this.root.appendChild(attackParam);
-    this.root.appendChild(decayParam);
-    this.root.appendChild(wetParam);
+    this.shadowRoot.appendChild(attackParam);
+    this.shadowRoot.appendChild(decayParam);
+    this.shadowRoot.appendChild(wetParam);
   }
 
   onAttackUpdate(value, scheduledTime = 0) {

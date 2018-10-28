@@ -25,7 +25,7 @@ class ComboBox extends BaseComponent {
       }
     }
 
-    this.selectElement = this.root.getElementById('select-box');
+    this.selectElement = this.shadowRoot.getElementById('select-box');
     this.selectElement.innerHTML = this.originalMarkup;
     this.selectElement.addEventListener('change', this.onValueChange.bind(this));
 

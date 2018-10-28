@@ -67,14 +67,14 @@ class Sequencer extends BaseComponent {
     this.schedulable = this.buildSchedulable();
     metronomeManager.getScheduler().register(this.schedulable);
 
-    this.synthContainer = this.root.getElementById('visualizer');
-    this.noteContainer = this.root.getElementById('noteContainer');
-    this.playHead = this.root.getElementById('playhead');
-    this.baseNoteInput = this.root.getElementById('base-note-input');
-    this.sendComboBox = this.root.getElementById('sendComboBox');
+    this.synthContainer = this.shadowRoot.getElementById('visualizer');
+    this.noteContainer = this.shadowRoot.getElementById('noteContainer');
+    this.playHead = this.shadowRoot.getElementById('playhead');
+    this.baseNoteInput = this.shadowRoot.getElementById('base-note-input');
+    this.sendComboBox = this.shadowRoot.getElementById('sendComboBox');
     this.buildNotes();
 
-    this.arpLength = this.root.getElementById('arp-length');
+    this.arpLength = this.shadowRoot.getElementById('arp-length');
     this.arpLength.value = ARP.LENGTH;
     this.arpLength.addEventListener('change', event => {
       const value = parseInt(event.target.value);

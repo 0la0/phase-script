@@ -31,12 +31,12 @@ class PolyRythm extends BaseComponent {
     this.nextActiveIndex = this.activeIndex;
     this.previousIndex = this.activeIndex;
     this.upperBound = this.activeIndex;
-    this.outputProcessor = this.root.getElementById('message-filter');
-    this.toggleButton = this.root.getElementById('toggle-button');
+    this.outputProcessor = this.shadowRoot.getElementById('message-filter');
+    this.toggleButton = this.shadowRoot.getElementById('toggle-button');
   }
 
   connectedCallback() {
-    const column = this.root.getElementById('column');
+    const column = this.shadowRoot.getElementById('column');
     this.gridElementList = buildGrid(LENGTH);
 
     this.gridElementList.forEach(ele => column.appendChild(ele));

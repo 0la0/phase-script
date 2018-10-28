@@ -21,7 +21,7 @@ class MarkovBox extends BaseComponent {
 
   connectedCallback() {
     this.grid = buildGrid(this.width, this.height, this);
-    this.root.appendChild(this.grid.root);
+    this.shadowRoot.appendChild(this.grid.root);
 
     this.grid.root.addEventListener('click', event => {
       this.previousIndex = this.activeIndex;

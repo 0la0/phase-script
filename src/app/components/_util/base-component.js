@@ -4,9 +4,7 @@ function buildShadowDom(element, innerHTML) {
   const shadowRoot = element.attachShadow({ mode: 'open' });
   const template = document.createElement('template');
   template.innerHTML = innerHTML;
-  const instance = template.content.cloneNode(true);
-  shadowRoot.appendChild(instance);
-  return shadowRoot;
+  return { shadowRoot, template };
 }
 
 function buildDomMap(root, domMap) {
@@ -21,9 +19,12 @@ export default class BaseComponent extends HTMLElement {
     super();
     this.originalText = this.innerText;
     this.originalMarkup = this.innerHTML;
-    this.innerHTML = '';
-    this.root = buildShadowDom(this, `<style>${commonStyles}${style}</style>${markup}`);
-    this.dom = domMap ? buildDomMap(this.root, domMap) : {};
+    [...this.children].forEach(child => this.removeChild(child));
+    const { shadowRoot, template } = buildShadowDom(this, `<style>${commonStyles}${style}</style>${markup}`);
+    this.template = template;
+    const fragment = this.template.content.cloneNode(true);
+    this.shadowRoot.appendChild(fragment);
+    this.dom = domMap ? buildDomMap(this.shadowRoot, domMap) : {};
   }
 
   setOnRemoveCallback(onRemoveCallback) {

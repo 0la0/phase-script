@@ -42,7 +42,7 @@ class SampleVisualizer extends BaseComponent {
   }
 
   connectedCallback() {
-    this.canvas = this.root.getElementById('canvas');
+    this.canvas = this.shadowRoot.getElementById('canvas');
     this.canvas.width = WIDTH;
     this.canvas.height = HEIGHT;
     this.g2d = this.canvas.getContext('2d');

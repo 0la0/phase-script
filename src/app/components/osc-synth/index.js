@@ -34,20 +34,20 @@ class OscSynth extends BaseComponent {
     audioEventBus.subscribe(this.audioEventSubscription);
 
     this.output = Object.keys(PARAMS).reduce((output, param) => {
-      const element = this.root.getElementById(`${param}Output`);
+      const element = this.shadowRoot.getElementById(`${param}Output`);
       return Object.assign(output, { [param]: element });
     }, {});
 
     setTimeout(() => {
       this.sliders = Object.keys(PARAMS).reduce((output, param) => {
-        const element = this.root.getElementById(`${param}-slider`);
+        const element = this.shadowRoot.getElementById(`${param}-slider`);
         element.setValue(this.synth.asr[param], true);
         return Object.assign(output, { [param]: element });
       }, {});
     });
 
-    this.voiceContainer = this.root.getElementById('voiceContainer');
-    this.noiseContainer = this.root.getElementById('noiseContainer');
+    this.voiceContainer = this.shadowRoot.getElementById('voiceContainer');
+    this.noiseContainer = this.shadowRoot.getElementById('noiseContainer');
   }
 
   disconnectedCallback() {
