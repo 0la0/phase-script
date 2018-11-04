@@ -13,7 +13,7 @@ const DEFAULT_VALUES = { SPREAD: 0 };
 // TODO: rename to PatchAddress
 class PatchMessageSpread extends BaseComponent {
   constructor(options) {
-    super('', '', {});
+    super('', '');
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('Spread', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.MESSAGE);
     this.params = {

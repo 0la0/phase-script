@@ -6,7 +6,7 @@ class Router {
       const hash = `/${location.hash}`;
       const path = this.routes.has(hash) ? hash : '/#/';
       this.replaceRoute(path);
-    });
+    }, 100);
   }
 
   register(path, component) {

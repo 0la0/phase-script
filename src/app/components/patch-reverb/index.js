@@ -9,7 +9,7 @@ const COMPONENT_NAME = 'patch-reverb';
 
 class PatchReverb extends BaseComponent {
   constructor() {
-    super('', '', {});
+    super('', '');
     this.reverb = new Reverb();
     this.audioModel = new PatchAudioModel('REVERB', this.reverb, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
   }

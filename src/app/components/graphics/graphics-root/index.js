@@ -10,14 +10,11 @@ const markup = require(`./${COMPONENT_NAME}.html`);
 
 const NUM_VERTEX = 50;
 
-const domMap = {
-  canvas: 'cvs',
-  fullscreenButton: 'fullscreen-button'
-};
+const dom = [ 'canvas', 'fullscreenButton' ];
 
 class GraphicsRoot extends BaseComponent {
   constructor() {
-    super(style, markup, domMap);
+    super(style, markup, dom);
   }
 
   connectedCallback() {

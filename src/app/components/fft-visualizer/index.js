@@ -11,7 +11,6 @@ const WIDTH = 100;
 const HEIGHT = 50;
 const MAX_BYTE = Math.pow(2, 8) - 1;
 const ACTIVE_CLASS = 'visualizer--active';
-const domMap = { canvas: 'canvas' };
 
 function getGraphicsContext(canvasElement, width, height) {
   const g2d = canvasElement.getContext('2d');
@@ -28,7 +27,7 @@ function getGraphicsContext(canvasElement, width, height) {
 
 class FftVisualizer extends BaseComponent {
   constructor() {
-    super('', markup, domMap);
+    super('', markup, [ 'canvas' ]);
   }
 
   connectedCallback() {

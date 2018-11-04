@@ -10,7 +10,7 @@ const COMPONENT_NAME = 'patch-delay';
 class PatchDelay extends BaseComponent {
 
   constructor() {
-    super('', '', {});
+    super('', '');
     this.delay = new Delay();
     this.audioModel = new PatchAudioModel('DELAY', this.delay, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
   }

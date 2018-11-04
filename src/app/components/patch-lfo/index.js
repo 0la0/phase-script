@@ -9,13 +9,11 @@ const COMPONENT_NAME = 'patch-lfo';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const domMap = {
-  frequencyInlet: 'frequencyInlet',
-};
+const dom = [ 'frequencyInlet' ];
 
 class PatchLfo extends BaseComponent {
   constructor() {
-    super(style, markup, domMap);
+    super(style, markup, dom);
     this.frequency = 10;
     this.isOn = false;
     this.lfo = new ContinuousOsc();

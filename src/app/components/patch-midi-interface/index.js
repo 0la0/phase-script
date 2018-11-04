@@ -13,16 +13,13 @@ const COMPONENT_NAME = 'patch-midi-interface';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const domMap = {
-  deviceSelector: 'deviceSelector',
-  channelSelector: 'channelSelector',
-};
+const dom = [ 'deviceSelector', 'channelSelector', ];
 
 class PatchMidiInterface extends BaseComponent {
   constructor(options) {
-    super(style, markup, domMap);
+    super(style, markup, dom);
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
-    this.audioModel = new PatchAudioModel('MIDI Output', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.EMPTY);
+    this.audioModel = new PatchAudioModel('MIDI Out', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.EMPTY);
     this.outputDevice;
   }
 

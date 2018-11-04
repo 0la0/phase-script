@@ -42,15 +42,11 @@ const nodeMap = {
   midiInterface: PatchMidiInterface,
 };
 
-const domMap = {
-  container: 'container',
-  svgContainer: 'svgContainer',
-  buttonContainer: 'buttonContainer',
-};
+const dom = [ 'container', 'svgContainer', 'buttonContainer', ];
 
 class PatchSpace extends BaseComponent {
   constructor() {
-    super(style, markup, domMap);
+    super(style, markup, dom);
     this.onRender = this.render.bind(this);
     this.nodes = [];
   }

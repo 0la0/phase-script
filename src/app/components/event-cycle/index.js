@@ -13,16 +13,11 @@ const REST = '\'';
 const CYCLE_INVALID = 'cycle-input--invalid';
 
 const metronome = metronomeManager.getMetronome();
-const domMap = {
-  cycleLength: 'cycleLength',
-  cycleElement: 'cycleElement',
-  cycleInput: 'cycleInput',
-  cycleIndicator: 'cycleIndicator',
-};
+const dom = [ 'cycleLength', 'cycleElement', 'cycleInput', 'cycleIndicator', ];
 
 class EventCycle extends BaseComponent {
   constructor(node) {
-    super(style, markup, domMap);
+    super(style, markup, dom);
     this.cycleLength = 16;
     this.parentCycle = [];
   }

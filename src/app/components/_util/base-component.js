@@ -1,10 +1,11 @@
 const commonStyles = require('./common.css');
 
-function buildDomMap(shadowRoot, domMap) {
-  return Object.entries(domMap).reduce((dom, entry) => {
-    const [key, value] = entry;
-    return Object.assign(dom, { [key]: shadowRoot.getElementById(value) });
-  }, {});
+function buildDomMap(shadowRoot, elements) {
+  if (!elements) { return {}; }
+  if (!Array.isArray(elements)) {
+    throw new Error('DOM entry must be an array');
+  }
+  return elements.reduce((dom, id) => Object.assign(dom, { [id]: shadowRoot.getElementById(id) }), {});
 }
 
 export default class BaseComponent extends HTMLElement {
@@ -19,7 +20,7 @@ export default class BaseComponent extends HTMLElement {
     markupTemplate.innerHTML = markup;
     this.shadowRoot.appendChild(styleElement);
     this.shadowRoot.appendChild(markupTemplate.content.cloneNode(true));
-    this.dom = domMap ? buildDomMap(this.shadowRoot, domMap) : {};
+    this.dom = buildDomMap(this.shadowRoot, domMap);
   }
 
   setOnRemoveCallback(onRemoveCallback) {

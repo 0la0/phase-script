@@ -9,7 +9,7 @@ const COMPONENT_NAME = 'patch-chorus';
 
 class PatchChorus extends BaseComponent {
   constructor() {
-    super('', '', {});
+    super('', '');
     this.chorus = new Chorus();
     this.audioModel = new PatchAudioModel('CHORUS', this.chorus, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
   }

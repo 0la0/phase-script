@@ -9,16 +9,16 @@ const COMPONENT_NAME = 'draggable-wrapper';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const domMap = {
-  container: 'container',
-  topBar: 'topBar',
-  inlet: 'inlet',
-  outlet: 'outlet',
-  body: 'body',
-  closeButton: 'closeButton',
-  minimizeButton: 'minimizeButton',
-  label: 'label'
-};
+const dom = [
+  'container',
+  'topBar',
+  'inlet',
+  'outlet',
+  'body',
+  'closeButton',
+  'minimizeButton',
+  'label'
+];
 const MOUSE_STATE = {
   DRAGGING: 'DRAGGING',
   OUTLET: 'OUTLET',
@@ -31,7 +31,7 @@ const INLETS = {
 
 class DraggableWrapper extends BaseComponent {
   constructor({ id, svgContainer, onRender, component }) {
-    super(style, markup, domMap);
+    super(style, markup, dom);
     this.id = id;
     this.svgContainer = svgContainer;
     this.onRender = onRender;

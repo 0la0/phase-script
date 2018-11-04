@@ -25,7 +25,7 @@ function getGrainsPerTick(grainDensity) {
 
 class PatchGrain extends BaseComponent {
   constructor() {
-    super(style, markup, {});
+    super(style, markup);
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('GRAIN', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.MESSAGE);
     this.params = {

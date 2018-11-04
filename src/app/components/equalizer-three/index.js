@@ -36,7 +36,7 @@ function mapNormalToGain(normal) {
 
 class EqualizerThree extends BaseComponent {
   constructor() {
-    super(style, markup, domMap);
+    super(style, markup, []);
     this.params = {
       hi: 0.5,
       mid: 0.5,

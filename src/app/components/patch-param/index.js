@@ -5,12 +5,7 @@ const COMPONENT_NAME = 'patch-param';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const dom = {
-  label: 'label',
-  slider: 'slider',
-  output: 'output',
-  paramInlet: 'paramInlet'
-};
+const dom = [ 'label', 'slider', 'output', 'paramInlet' ];
 
 export class PatchParamModel {
   constructor({

@@ -9,13 +9,11 @@ const COMPONENT_NAME = 'patch-waveshaper';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const domMap = {
-  waveSelector: 'waveSelector',
-};
+const dom = [ 'waveSelector' ];
 
 class PatchWaveshaper extends BaseComponent {
   constructor() {
-    super(style, markup, domMap);
+    super(style, markup, dom);
     this.waveshaper = new Waveshaper();
     this.audioModel = new PatchAudioModel('WAVESHAPER', this.waveshaper, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
   }

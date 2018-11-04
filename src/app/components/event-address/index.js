@@ -9,16 +9,13 @@ const COMPONENT_NAME = 'event-address';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const domMap = {
-  addressInput: 'addressInput',
-};
 const ADDRESS_INVALID = 'address-invalid';
 let instanceCnt = 0;
 
 // TODO: rename to PatchAddress
 class EventAddress extends BaseComponent {
   constructor(options) {
-    super(style, markup, domMap);
+    super(style, markup, [ 'addressInput' ]);
     this.eventModel = new PatchEventModel();
     this.audioModel = new PatchAudioModel('ADDRESS', this.eventModel, PATCH_EVENT.EMPTY, PATCH_EVENT.MESSAGE);
   }

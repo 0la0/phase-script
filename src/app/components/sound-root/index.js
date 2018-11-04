@@ -14,21 +14,12 @@ const COMPONENT_NAME = 'sound-root';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const domMap = {
-  // sequencerContainer: 'sequencer-container',
-  // synthContainer: 'synth-container',
-  // grainContainer: 'grain-container',
-  // samplerContainer: 'sampler-container',
-  // triggerContainer: 'trigger-box-container',
-  eventNetworkContainer: 'event-network-container',
-  eventCycleContainer: 'event-cycle-container',
-  patchContainer: 'patch-container',
-};
+const dom = [ 'eventNetworkContainer', 'eventCycleContainer', 'patchContainer' ];
 
 class SoundRoot extends BaseComponent {
 
   constructor(note) {
-    super(style, markup, domMap);
+    super(style, markup, dom);
   }
 
   addElement(parentElement, ComponentClass) {

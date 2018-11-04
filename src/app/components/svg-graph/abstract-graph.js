@@ -16,8 +16,8 @@ function getCoordinatesFromEvent(clientX, clientY, parentElement) {
 
 export default class AbstractGraph extends BaseComponent {
 
-  constructor(style, markup, domMap) {
-    super(`${graphStyles}${style}`, markup, domMap);
+  constructor(style, markup, dom) {
+    super(`${graphStyles}${style}`, markup, dom);
     this.nodes = [];
     this.inputNodes = [];
     this.getAllNodes = () => this.nodes;

@@ -29,14 +29,11 @@ function getStateManager() {
   };
 }
 
-const domMap = {
-  button: 'button',
-  fftVisualizer: 'fftVisualizer'
-};
+const dom = [ 'button', 'fftVisualizer' ];
 
 class PatchDac extends BaseComponent {
   constructor() {
-    super(style, markup, domMap);
+    super(style, markup, dom);
     this.dac = new Dac();
     this.visualizer = new Visualizer();
     this.audioModel = new PatchAudioModel('DAC', this.dac, PATCH_EVENT.SIGNAL, PATCH_EVENT.EMPTY);

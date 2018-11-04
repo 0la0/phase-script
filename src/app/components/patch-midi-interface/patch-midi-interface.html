@@ -1,7 +1,15 @@
-<flat-button
-  click="populateSelector"
-  ontext="Refresh MIDI Devices"
-  offtext="Refresh MIDI Devices">
-</flat-button>
-<combo-box id="deviceSelector" change="onDeviceChange"></combo-box>
-<combo-box id="channelSelector" change="onChannelChange"></combo-box>
+<div class="row flex-end row-margin">
+  <flat-button
+    click="populateSelector"
+    ontext="&#8635;"
+    offtext="&#8635;">
+  </flat-button>
+</div>
+<div class="row row-margin">
+  <p class="label">Device</p>
+  <combo-box id="deviceSelector" change="onDeviceChange"></combo-box>
+</div>
+<div class="row">
+  <p class="label">Channel</p>
+  <combo-box id="channelSelector" change="onChannelChange"></combo-box>
+</div>

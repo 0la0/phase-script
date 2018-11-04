@@ -5,13 +5,9 @@ const COMPONENT_NAME = 'canvas-menu';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const domMap = {
-  container: 'container'
-};
-
 class CanvasMenu extends BaseComponent {
   constructor() {
-    super(style, markup, domMap);
+    super(style, markup, [ 'container' ]);
   }
 
   setEventDelegate(eventDelegate) {

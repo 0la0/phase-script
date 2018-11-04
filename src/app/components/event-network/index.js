@@ -11,14 +11,11 @@ const markup = require(`./${COMPONENT_NAME}.html`);
 
 let instanceCnt = 0;
 
-const domMap = {
-  svgContainer: 'svgContainer',
-  containerMenu: 'containerMenu'
-};
+const dom = [ 'svgContainer', 'containerMenu' ];
 
 class EventNetwork extends AbstractGraph {
   constructor() {
-    super(style, markup, domMap);
+    super(style, markup, dom);
   }
 
   connectedCallback() {

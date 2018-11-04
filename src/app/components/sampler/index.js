@@ -12,16 +12,11 @@ const COMPONENT_NAME = 'simple-sampler';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const domMap = {
-  sampleSelect: 'sampleSelect',
-  samplerLabel: 'samplerLabel',
-  sampleVisualizer: 'sampleVisualizer',
-  paramInlet: 'paramInlet',
-};
+const dom = [ 'sampleSelect', 'samplerLabel', 'sampleVisualizer', 'paramInlet' ];
 
 class Sampler extends BaseComponent {
   constructor() {
-    super(style, markup, domMap);
+    super(style, markup, dom);
     this.sampleKey;
     this.params = {
       startOffset: 0,

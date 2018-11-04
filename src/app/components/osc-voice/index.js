@@ -12,17 +12,13 @@ const COMPONENT_NAME = 'osc-voice';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const domMap = {
-  gainOutput: 'gainOutput',
-  oscTypeComboBox: 'oscTypeComboBox',
-  gainSlider: 'gainSlider',
-  frequencyInlet: 'frequencyInlet',
-};
+const dom = [ 'gainOutput', 'oscTypeComboBox', 'gainSlider', 'frequencyInlet', ];
+
 const GAIN_VALUE = 1;
 
 class OscVoice extends BaseComponent {
   constructor() {
-    super(style, markup, domMap);
+    super(style, markup, dom);
     this.oscType = OSCILATORS.SINE;
     this.asr = {
       attack: 0.01,

@@ -15,13 +15,11 @@ const MIN_RESONANCE = -3.4;
 const CANVAS_WIDTH = 120;
 const CANVAS_HEIGHT = 40;
 
-const domMap = {
-  canvas: 'canvas',
-};
+const dom = [ 'canvas' ];
 
 class PatchFilter extends BaseComponent {
   constructor() {
-    super(style, markup, domMap);
+    super(style, markup, dom);
     this.filter = {
       cutoff: 0,
       resonance: 0,

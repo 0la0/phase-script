@@ -8,16 +8,11 @@ const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
 const metronome = metronomeManager.getMetronome();
-const domMap = {
-  container: 'container',
-  thresholdInput: 'tresholdInput',
-  sendComboBox: 'sendComboBox',
-  valueInput: 'valueInput'
-};
+const dom = [ 'container', 'tresholdInput', 'sendComboBox', 'valueInput' ];
 
 class PropertyMenu extends BaseComponent {
   constructor(node) {
-    super(style, markup, domMap);
+    super(style, markup, dom);
     this.node = node;
   }
 

@@ -28,7 +28,7 @@ function calculateResonance(normalValue) {
 
 class PatchPulse extends BaseComponent {
   constructor() {
-    super(style, markup, {});
+    super(style, markup);
     this.params = {
       cycleLength: DEFAULT_VALUES.CYCLE_LENGTH,
       resonance: DEFAULT_VALUES.RESONANCE,
