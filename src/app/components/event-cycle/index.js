@@ -2,6 +2,7 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { audioEventBus } from 'services/EventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
+import { AUDIO_TICK_MULTIPLIER } from 'services/midi/util';
 import { parser } from './CycleEvaluator';
 
 const COMPONENT_NAME = 'event-cycle';
@@ -60,7 +61,7 @@ class EventCycle extends BaseComponent {
     cycle.forEach((element, index, arr) => {
       const timeObj = {
         audio: time.audio + (index * cycleDuration),
-        midi: time.midi + (index * cycleDuration), // TODO: incorporate midi time?
+        midi: time.midi + (index * cycleDuration * AUDIO_TICK_MULTIPLIER),
       };
       if (Array.isArray(element)) {
         this.evaluateCycle(tickNumber, timeObj, tickLength, element, elementDuration);

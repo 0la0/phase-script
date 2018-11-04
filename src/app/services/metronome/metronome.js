@@ -1,64 +1,51 @@
+import { AUDIO_TICK_MULTIPLIER } from 'services/midi/util';
 const workerString = require('./metronome.worker');
 const workerUrl = URL.createObjectURL(new Blob([workerString]));
 
 const TICK = 'tick';
 const LOOKAHEAD_TIME = 25;
 const SCHEDULE_AHEAD_TIME = 100;
+const MIDI_TIME_DELAY = 30; // for syncing with audio scheduling
 const BASE_TIME = performance.now();
-
-const MIDI_TIME_DELAY = 30;
 
 export default class Metronome {
 
   constructor(audioContext, noteScheduler) {
     this.audioContext = audioContext;
     this.noteScheduler = noteScheduler;
-
     this.nextTickSchedule = {
       midi: 0.0,
       audio: 0.0
     };
-
     this.lookahead = LOOKAHEAD_TIME;
     this.tempo = 120.0;
     this.isRunning = false;
     this.timerWorker = new Worker(workerUrl);
-
-    this.timerWorker.onmessage = event => {
-      if (event.data === TICK) {
-        this.scheduler();
-      }
-      else {
-        //console.log('timerWorker message:', event.data);
-      }
-    };
-    this.timerWorker.postMessage({'interval': this.lookahead});
+    this.timerWorker.addEventListener('message', this.handleTimerMessage.bind(this));
+    this.timerWorker.postMessage({ interval: this.lookahead });
   }
 
   scheduler() {
-    if (this.nextTickSchedule.midi < performance.now() + SCHEDULE_AHEAD_TIME) {
-      // const nextSchedule = 0.25 * 60.0 / this.tempo;
-      this.noteScheduler.processTick({
-        audio: this.nextTickSchedule.audio,
-        midi: this.nextTickSchedule.midi + MIDI_TIME_DELAY
-      });
-
-      this.nextTickSchedule.midi += this.getTickLength() * 1000;
-      this.nextTickSchedule.audio += this.getTickLength();
-    }
+    if (this.nextTickSchedule.midi > performance.now() + SCHEDULE_AHEAD_TIME) { return; }
+    const tickLength = this.getTickLength();
+    this.noteScheduler.processTick({
+      audio: this.nextTickSchedule.audio,
+      midi: this.nextTickSchedule.midi + MIDI_TIME_DELAY
+    });
+    this.nextTickSchedule.midi += tickLength * AUDIO_TICK_MULTIPLIER;
+    this.nextTickSchedule.audio += tickLength;
   }
 
   start() {
-    if (!this.isRunning) {
-      this.nextTickSchedule.midi = performance.now() + 1;
-      this.nextTickSchedule.audio = this.audioContext.currentTime;
-      this.noteScheduler.start();
-      this.timerWorker.postMessage('start');
-      this.isRunning = true;
-    }
-    else {
+    if (this.isRunning) {
       console.warn('Cannot start a running metronome');
+      return;
     }
+    this.nextTickSchedule.midi = performance.now() + 1; // TOOD: tune this param
+    this.nextTickSchedule.audio = this.audioContext.currentTime;
+    this.noteScheduler.start();
+    this.timerWorker.postMessage('start');
+    this.isRunning = true;
   }
 
   stop() {
@@ -79,4 +66,12 @@ export default class Metronome {
     return 0.125 * 60.0 / this.tempo;
   }
 
+  handleTimerMessage(event) {
+    if (event.data === TICK) {
+      this.scheduler();
+    }
+    // else {
+    //   console.log('timerWorker message:', event.data);
+    // }
+  }
 }

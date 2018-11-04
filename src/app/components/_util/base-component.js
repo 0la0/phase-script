@@ -12,7 +12,6 @@ export default class BaseComponent extends HTMLElement {
     super();
     this.originalChildren = [...this.children];
     this.originalChildren.forEach(child => this.removeChild(child));
-
     const styleElement = document.createElement('style');
     const markupTemplate = document.createElement('template');
     const shadowRoot = this.attachShadow({ mode: 'open' });

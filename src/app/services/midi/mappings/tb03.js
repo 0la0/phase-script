@@ -3,7 +3,7 @@ import BaseMidiMapper from 'services/midi/mappings/baseMapper';
 import {
   getMessageFromObject,
   getObjectFromMessage
-} from 'services/midi/midiEventBus';
+} from 'services/midi/util';
 
 const NAME = 'TB-03';
 
@@ -36,13 +36,13 @@ export default class Tb03 extends BaseMidiMapper {
   onMessage(message) {
     const onMessage = {
       command: 9,
-      status: 1,
+      channel: 1,
       note: message.note,
       value: message.value
     };
     const offMessage = {
       command: 8,
-      status: 1,
+      channel: 1,
       note: message.note,
       value: message.value
     };

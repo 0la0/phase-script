@@ -3,7 +3,7 @@ import BaseMidiMapper from 'services/midi/mappings/baseMapper';
 import {
   getMessageFromObject,
   getObjectFromMessage
-} from 'services/midi/midiEventBus';
+} from 'services/midi/util';
 
 const NAME = 'TR-09';
 
@@ -55,7 +55,7 @@ export default class Tr09 extends BaseMidiMapper {
   buildMessageHandler(note) {
     const midiMessageObj = {
       command: 9,
-      status: 9,
+      channel: 9,
       note,
       value: TR09_VALUES.ON
     };
