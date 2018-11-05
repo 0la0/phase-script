@@ -3,7 +3,7 @@ button {
   background-repeat:no-repeat;
   border: var(--border-default);
   border-radius: var(--border-radius);
-  color: #DDDDDD;
+  color: var(--color-grey-light);
   cursor: pointer;
   outline: none;
   padding: 4px;
@@ -13,6 +13,6 @@ button {
 }
 
 .button--active {
-  background-color: #DDDDDD;
-  color: #333333;
+  background-color: var(--color-grey-light);
+  color: var(--color-black-light);
 }

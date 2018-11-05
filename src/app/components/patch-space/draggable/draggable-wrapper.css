@@ -40,6 +40,7 @@
 .body {
   min-width: 80px;
   background-color: var(--color-black-light);
+  border-radius: var(--border-radius);
   transform-origin: top;
   transition: transform 0.1s ease, height 0.1s ease;
 }

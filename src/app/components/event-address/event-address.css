@@ -1,25 +1,18 @@
-
-.container {
-  border: 1px solid green;
-  width: 100px;
-}
-
 .address-input {
   display: block;
   height: 25px;
   font-size: 1em;
   margin: 0;
-  width: 98%;
+  padding: 0;
   background-color: var(--color-black-light);
   border: none;
   border-bottom: var(--border-default);
   outline: none;
   color: var(--border-default);
+  text-align: center;
+  font-size: 1.2em;
+  max-width: 104px;
 }
 .address-input:focus {
   outline: none;
-}
-
-.address-invalid {
-  border: 1px solid red;
 }

@@ -8,14 +8,13 @@ Navigate to `localhost:3001`
 
 ### Browser Requirements
 This project uses
-* [Web Components V1.](https://caniuse.com/#feat=custom-elementsv1)
+* [Web Components V1](https://caniuse.com/#feat=custom-elementsv1)
 * [Web Midi API](https://caniuse.com/#feat=midi)
 * [Broadcast Channel](https://caniuse.com/#feat=broadcastchannel) (to run a graphics window)
 
 ### TODO
 * organize patcher components
-* safari support / FF 63 when it comes out
+* better styling consistency across chrome / ff / safari
 * remove all old and unused components
 * create second event network that is not based on threshold events
-* convert DOM maps to sets
 * necessity of multiple `onRemove`s

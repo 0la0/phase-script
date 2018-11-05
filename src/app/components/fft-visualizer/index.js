@@ -5,10 +5,11 @@ import metronomeManager from 'services/metronome/metronomeManager';
 import visualizer from 'services/audio/visualizer';
 
 const COMPONENT_NAME = 'fft-visualizer';
-const markup = '<canvas id="canvas"></canvas>';
+const style = require(`./${COMPONENT_NAME}.css`);
 
 const WIDTH = 100;
 const HEIGHT = 50;
+const STROKE_ADJUST = 4;
 const MAX_BYTE = Math.pow(2, 8) - 1;
 const ACTIVE_CLASS = 'visualizer--active';
 
@@ -19,7 +20,7 @@ function getGraphicsContext(canvasElement, width, height) {
   g2d.clearRect(0, 0, WIDTH, HEIGHT);
   g2d.strokeStyle = '#FFFFFFBB';
   g2d.fillStyle = '#FFFFFFBB';
-  g2d.lineWidth = 2;
+  g2d.lineWidth = STROKE_ADJUST / 2;
   g2d.translate(0, height);
   g2d.scale(1, -1);
   return g2d;
@@ -27,7 +28,7 @@ function getGraphicsContext(canvasElement, width, height) {
 
 class FftVisualizer extends BaseComponent {
   constructor() {
-    super('', markup, [ 'canvas' ]);
+    super(style, '<canvas id="canvas"></canvas>', [ 'canvas' ]);
   }
 
   connectedCallback() {
@@ -35,7 +36,7 @@ class FftVisualizer extends BaseComponent {
   }
 
   fadeCanvas() {
-    this.g2d.fillStyle = '#33333360';
+    this.g2d.fillStyle = '#24242460';
     this.g2d.fillRect(0, 0, WIDTH, HEIGHT);
     this.g2d.fillStyle = '#FFFFFF99';
   }
@@ -48,7 +49,7 @@ class FftVisualizer extends BaseComponent {
     timeData.forEach((value, index) => {
       const normalValue = (value / MAX_BYTE) * HEIGHT;
       const x = step * index;
-      const y = (MAX_BYTE / HEIGHT) + normalValue;
+      const y = ( (MAX_BYTE / HEIGHT) + normalValue ) - STROKE_ADJUST;
       index === 0 ? this.g2d.moveTo(x, y) : this.g2d.lineTo(x, y);
     });
     this.g2d.stroke();

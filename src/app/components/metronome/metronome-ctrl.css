@@ -18,11 +18,11 @@
   font-size: 1em;
   margin: 0 10px;
   width: 60px;
-  background-color: #333333;
+  background-color: var(--color-black-light);
   border: none;
-  border-bottom: 1px solid #DDDDDD;
+  border-bottom: 1px solid var(--color-grey-light);
   outline: none;
-  color: #DDDDDD;
+  color: var(--color-grey-light);
 }
 .metronome-input:focus {
   outline: none;

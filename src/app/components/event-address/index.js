@@ -9,7 +9,6 @@ const COMPONENT_NAME = 'event-address';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const ADDRESS_INVALID = 'address-invalid';
 let instanceCnt = 0;
 
 // TODO: rename to PatchAddress
@@ -37,12 +36,6 @@ class EventAddress extends BaseComponent {
 
   handleAddressChange(event) {
     const address = event.target.value;
-    if (!address || audioEventBus.hasAddress(address)) {
-      console.log('invalid address:', address);
-      this.dom.addressInput.classList.add(ADDRESS_INVALID);
-      return;
-    }
-    this.dom.addressInput.classList.remove(ADDRESS_INVALID);
     this.audioEventSubscription.address = address;
   }
 }
