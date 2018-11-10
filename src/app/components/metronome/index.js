@@ -12,15 +12,12 @@ const metronome = metronomeManager.getMetronome();
 const titleSymbols = [ '\\', '|', '/', '-', ];
 
 class Metronome extends BaseComponent {
-
   constructor() {
-    super(style, markup);
+    super(style, markup, ['metronomeButton', 'metronomeInput']);
     this.isRunning = false;
-    this.metronomeButton = this.shadowRoot.getElementById('metronome-button');
-    this.input = this.shadowRoot.getElementById('metronome-input');
-    this.input.value = metronome.getTempo();
-    this.input.addEventListener('change', $event => {
-      const value = parseInt(this.input.value);
+    this.dom.metronomeInput.value = metronome.getTempo();
+    this.dom.metronomeInput.addEventListener('change', $event => {
+      const value = parseInt(this.dom.metronomeInput.value);
       metronome.setTempo(value);
     });
     this.titleIndex = 0;
@@ -28,32 +25,14 @@ class Metronome extends BaseComponent {
 
   connectedCallback() {
     this.titleElement = document.getElementsByTagName('title')[0];
-    // console.log('titleElement', titleElement);
-
     window.addEventListener('keydown', $event => {
       if ($event.code !== 'Space') { return; }
       $event.preventDefault();
       $event.stopPropagation();
-      this.metronomeButton.click();
+      this.dom.metronomeButton.click();
     });
-
-    const schedulable = {
-      processTick: (tickNumber, time) => {},
-      render: (beatNumber, lastBeatNumber) => {
-        graphicsChannel.postMessage({
-          type: 'TICK',
-          beatNumber,
-          lastBeatNumber
-        });
-        if (beatNumber % 8 !== 0) { return; }
-        const symbol = titleSymbols[ this.titleIndex++ % titleSymbols.length ];
-        this.titleElement.innerText = `${symbol} ${symbol} ${symbol}`;
-      },
-      start: () => {},
-      stop: () => {}
-    };
-    const scheduler = metronomeManager.getScheduler();
-    scheduler.register(schedulable);
+    this.schedulable = this.buildSchedulable();
+    metronomeManager.getScheduler().register(this.schedulable);
   }
 
   onMetronomeClick() {
@@ -69,8 +48,26 @@ class Metronome extends BaseComponent {
 
   disconnectedCallback() {
     metronome.stop();
+    metronomeManager.getScheduler().deregister(this.schedulable);
   };
 
+  buildSchedulable() {
+    return {
+      processTick: (tickNumber, time) => {},
+      render: (beatNumber, lastBeatNumber) => {
+        graphicsChannel.postMessage({
+          type: 'TICK',
+          beatNumber,
+          lastBeatNumber
+        });
+        if (beatNumber % 8 !== 0) { return; }
+        const symbol = titleSymbols[ this.titleIndex++ % titleSymbols.length ];
+        this.titleElement.innerText = `${symbol} ${symbol} ${symbol}`;
+      },
+      start: () => {},
+      stop: () => {}
+    };
+  }
 }
 
 export default new Component(COMPONENT_NAME, Metronome);

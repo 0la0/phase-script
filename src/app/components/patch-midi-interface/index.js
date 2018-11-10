@@ -13,7 +13,7 @@ const COMPONENT_NAME = 'patch-midi-interface';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const dom = [ 'deviceSelector', 'channelSelector', ];
+const dom = [ 'deviceSelector', 'channelSelector', 'noteInputContainer', 'noteInput' ];
 
 class PatchMidiInterface extends BaseComponent {
   constructor(options) {
@@ -21,10 +21,20 @@ class PatchMidiInterface extends BaseComponent {
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('MIDI Out', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.EMPTY);
     this.outputDevice;
+    this.isNote = true;
+    this.noteValue = 60;
   }
 
   connectedCallback() {
     this.populateSelector();
+    this.dom.noteInput.addEventListener('change', event => {
+      const noteValue = parseInt(event.target.value, 10);
+      if (isNaN(noteValue)) {
+        this.dom.noteInput.value = 60;
+        return;
+      }
+      this.noteValue = noteValue;
+    });
     setTimeout(() => {
       const channels = IntArray(16).map(i => ({ label: i, value: i}));
       this.dom.channelSelector.setOptions(channels);
@@ -52,17 +62,32 @@ class PatchMidiInterface extends BaseComponent {
       });
   }
 
-  onChannelChange(channel) { this.channel = channel; }
+  onChannelChange(channel) { this.channel = parseInt(channel, 10); }
 
-  // TODO: note / cc toggle
+  onNoteCcToggle() {
+    this.isNote = !this.isNote;
+    this.isNote ?
+      this.dom.noteInputContainer.classList.add('row-hidden') :
+      this.dom.noteInputContainer.classList.remove('row-hidden');
+  }
+
   schedule(message) {
     if (!this.outputDevice) { return; }
+    this.isNote ? this.scheduleNote(message) : this.scheduleCC(message);
+  }
+
+  scheduleNote(message) {
     const offTime = message.time.midi + 100; // TODO: handle note duration
     const msgValue = 64;
     const onMessage = new MidiMessage(COMMAND.ON, this.channel, message.note, msgValue).serialize();
     const offMessage = new MidiMessage(COMMAND.OFF, this.channel, message.note, msgValue).serialize();
     this.outputDevice.send(onMessage, message.time.midi);
     this.outputDevice.send(offMessage, offTime);
+  }
+
+  scheduleCC(message) {
+    const ccMessage = new MidiMessage(COMMAND.CC, this.channel, this.noteValue, message.note).serialize();
+    this.outputDevice.send(ccMessage, message.time.midi);
   }
 }
 

@@ -1,5 +1,5 @@
-.flex-end {
-  justify-content: flex-end;
+.space-between {
+  justify-content: space-between;
 }
 
 .row-margin {
@@ -7,5 +7,40 @@
 }
 
 .label {
-  margin-right: 4px;
+  margin-right: 8px;
+}
+
+.note-toggle-row {
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.note-row {
+  justify-content: flex-end;
+  align-items: baseline;
+  width: 80px;
+  transform: scaleX(1);
+  opacity: 1;
+  transition: 0.2s transform ease, 0.2s opacity ease;
+}
+
+.row-hidden {
+  transform-origin: right;
+  transform: scaleX(0);
+  opacity: 0;
+}
+
+.note-input {
+  height: 25px;
+  font-size: 1em;
+  margin: 0;
+  width: 30px;
+  background-color: var(--color-black-light);
+  border: none;
+  border-bottom: 1px solid var(--color-grey-light);
+  outline: none;
+  color: var(--color-grey-light);
+}
+.note-input:focus {
+  outline: none;
 }

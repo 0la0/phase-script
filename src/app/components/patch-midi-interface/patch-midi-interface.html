@@ -1,4 +1,4 @@
-<div class="row flex-end row-margin">
+<div class="row space-between row-margin">
   <flat-button
     click="populateSelector"
     ontext="&#8635;"
@@ -12,4 +12,21 @@
 <div class="row">
   <p class="label">Channel</p>
   <combo-box id="channelSelector" change="onChannelChange"></combo-box>
+</div>
+<div class="row note-toggle-row">
+  <flat-button
+    id="noteCcToggle"
+    click="onNoteCcToggle"
+    isToggle="true"
+    ontext="CC"
+    offtext="NOTE">
+  </flat-button>
+  <div id="noteInputContainer" class="row note-row row-hidden">
+    <p class="label">Note</p>
+    <input
+      id="noteInput"
+      class="note-input"
+      type="number"
+      value="60" />
+  </div>
 </div>
