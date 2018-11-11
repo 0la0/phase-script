@@ -1,15 +1,4 @@
-
-<div class="message-filter">
-  <p class="label">Pass:</p>
-  <combo-box id="filter-select-box" change="setFilterValue">
-    <option value="1" selected>1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
-    <option value="4">4</option>
-    <option value="6">6</option>
-    <option value="8">8</option>
-  </combo-box>
-
+<div class="row repeater-row">
   <p class="label">Rep freq:</p>
   <combo-box id="repeat-frequency-select-box" change="setRepeatFrequency">
     <option value="1" selected>1</option>
@@ -19,7 +8,9 @@
     <option value="5">5</option>
     <option value="6">6</option>
   </combo-box>
+</div>
 
+<div class="row repeater-row">
   <p class="label">Rep N:</p>
   <combo-box id="repeat-select-box" change="setRepeatValue">
     <option value="1" selected>1</option>
@@ -31,13 +22,15 @@
     <option value="7">7</option>
     <option value="8">8</option>
   </combo-box>
+</div>
 
+<div class="row repeater-row">
   <p class="label">Mode</p>
   <combo-box id="repeat-modifier" change="setRepeatModifierValue">
     <option value="linear" selected>linear</option>
-    <option value="ramp-up">ramp-up</option>
-    <option value="ramp-down">ramp-down</option>
-    <option value="u-shaped">u-shaped</option>
-    <option value="n-shaped">n-shaped</option>
+    <option value="rampUp">ramp-up</option>
+    <option value="rampDown">ramp-down</option>
+    <option value="uShaped">u-shaped</option>
+    <option value="nShaped">n-shaped</option>
   </combo-box>
 </div>

@@ -18,6 +18,7 @@ import PatchLfo from 'components/patch-lfo';
 import PatchGrain from 'components/patch-grain';
 import PatchMessageSpread from 'components/patch-message-spread';
 import PatchMidiInterface from 'components/patch-midi-interface';
+import PatchMessageRepeater from 'components/patch-message-repeater';
 
 const COMPONENT_NAME = 'patch-space';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -40,6 +41,7 @@ const nodeMap = {
   grainulator: PatchGrain,
   messageSpread: PatchMessageSpread,
   midiInterface: PatchMidiInterface,
+  messageRepeater: PatchMessageRepeater,
 };
 
 const dom = [ 'container', 'svgContainer', 'buttonContainer', ];
@@ -67,9 +69,9 @@ class PatchSpace extends BaseComponent {
         { target: { getAttribute: () => 'address' } },
         { target: { getAttribute: () => 'osc' } },
         { target: { getAttribute: () => 'dac' } },
-        { target: { getAttribute: () => 'midiInterface' } },
+        // { target: { getAttribute: () => 'midiInterface' } },
         // { target: { getAttribute: () => 'grainulator' } },
-        // { target: { getAttribute: () => 'messageSpread' } },
+        { target: { getAttribute: () => 'messageRepeater' } },
       ];
       testNodes.forEach(e => this.addPatchElement(e));
     }, 100);

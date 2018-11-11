@@ -5,16 +5,17 @@
   "main": "dist/index.js",
   "scripts": {
     "build:webpack": "webpack --mode=production --inline --colors --progress --content-base src",
-    "build": "npm run clean; npm run build:webpack",
+    "build:assets": "cp -r src/assets dist/assets",
+    "build": "npm run clean; npm run build:webpack; npm run build:assets",
     "clean": "rm -rf dist",
     "start": "webpack-dev-server --mode=development --inline --colors --progress --content-base src"
   },
   "devDependencies": {
     "html-webpack-plugin": "^3.2.0",
     "raw-loader": "^0.5.1",
-    "webpack": "^4.20.2",
+    "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.9"
+    "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {
     "three": "^0.92.0"

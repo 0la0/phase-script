@@ -6,7 +6,6 @@ import SynthNote from 'components/synth-note';
 import button from 'components/button';
 import PolyRythm from 'components/poly-rythm';
 import PolyBox from 'components/poly-box';
-import MessageFitler from 'components/message-filter';
 import Metronome from 'components/metronome';
 import ScaleSelector from 'components/scale-selector';
 import RouterOutlet from 'components/router-outlet';
@@ -43,6 +42,7 @@ import PatchLfo from 'components/patch-lfo';
 import PatchGrain from 'components/patch-grain';
 import PatchMessageSpread from 'components/patch-message-spread';
 import PatchMidiInterface from 'components/patch-midi-interface';
+import PatchMessageRepeater from 'components/patch-message-repeater';
 
 const components = [
   app,
@@ -53,7 +53,6 @@ const components = [
   button,
   PolyRythm,
   PolyBox,
-  MessageFitler,
   Metronome,
   ScaleSelector,
   RouterOutlet,
@@ -90,6 +89,7 @@ const components = [
   PatchGrain,
   PatchMessageSpread,
   PatchMidiInterface,
+  PatchMessageRepeater,
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

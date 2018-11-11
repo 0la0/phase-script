@@ -1,0 +1,10 @@
+.repeater-row {
+  justify-content: space-between;
+  align-items: center;
+  margin: 4px 0;
+  padding: 0 4px;
+}
+
+.label {
+  margin: 0 4px 0 0;
+}
