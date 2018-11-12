@@ -1,30 +1,36 @@
 import App from 'components/app';
-import SynthNote from 'components/synth-note';
-import Button from 'components/button';
+
+// PRIMITIVES
+import Button from 'components/primitives/button';
+import SliderHorizontal from 'components/primitives/slider-horizontal';
+import ComboBox from 'components/primitives/combo-box';
+import RouterOutlet from 'components/primitives/router-outlet';
+
+// PATCH-SPACE
+import PatchSpace from 'components/patch-space';
+import DraggableWrapper from 'components/patch-space/draggable';
+// PATCH-UGENS
+import Sampler from 'components/patch-space/unit-generators/sampler';
+import SampleVisualizer from 'components/patch-space/unit-generators/sampler/sample-visualizer';
+import PatchWaveshaper from 'components/patch-space/unit-generators/waveshaper';
+
+
 import Metronome from 'components/metronome';
 import ScaleSelector from 'components/scale-selector';
-import RouterOutlet from 'components/router-outlet';
 import GraphicsRoot from 'components/graphics/graphics-root';
 import OscVoice from 'components/osc-voice';
 import GraphicsController from 'components/graphics-controller';
-import SliderHorizontal from 'components/slider-horizontal';
-import ComboBox from 'components/combo-box';
-import Sampler from 'components/sampler';
-import SampleVisualizer from 'components/sample-visualizer';
 import SoundRoot from 'components/sound-root';
 import FftVisualizer from 'components/fft-visualizer';
 import EventNetwork from 'components/event-network';
 import CanvasMenu from 'components/event-network/canvas-menu';
 import PropertyMenu from 'components/event-network/property-menu';
 import EventCycle from 'components/event-cycle';
-import PatchSpace from 'components/patch-space';
-import DraggableWrapper from 'components/patch-space/draggable';
+
 import EventAddress from 'components/event-address';
 import PatchDac from 'components/patch-dac';
-import EqualizerThree from 'components/equalizer-three';
 import PatchChorus from 'components/patch-chorus';
 import PatchDelay from 'components/patch-delay';
-import PatchWaveshaper from 'components/patch-waveshaper';
 import PatchReverb from 'components/patch-reverb';
 import PatchPulse from 'components/patch-pulse';
 import PatchFilter from 'components/patch-filter';
@@ -38,32 +44,37 @@ import PatchMessageRepeater from 'components/patch-message-repeater';
 
 const components = [
   App,
-  SynthNote,
+
+  // PRIMITIVES
   Button,
-  Metronome,
-  ScaleSelector,
-  RouterOutlet,
-  GraphicsRoot,
-  GraphicsController,
-  SliderHorizontal,
-  OscVoice,
   ComboBox,
+  SliderHorizontal,
+  RouterOutlet,
+
+  // PATCH-SPACE
+  PatchSpace,
+  DraggableWrapper,
+  // PATCH-UGENS
   Sampler,
   SampleVisualizer,
+  PatchWaveshaper,
+
+  Metronome,
+  ScaleSelector,
+  GraphicsRoot,
+  GraphicsController,
+  OscVoice,
+
   SoundRoot,
   FftVisualizer,
   EventNetwork,
   CanvasMenu,
   PropertyMenu,
   EventCycle,
-  PatchSpace,
-  DraggableWrapper,
   EventAddress,
   PatchDac,
-  EqualizerThree,
   PatchChorus,
   PatchDelay,
-  PatchWaveshaper,
   PatchReverb,
   PatchPulse,
   PatchFilter,

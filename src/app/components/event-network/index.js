@@ -3,7 +3,7 @@ import { audioEventBus, tickEventBus } from 'services/EventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
 import EventNode from 'components/event-network/nodes/EventNode';
 import InputNode from 'components/event-network/nodes/InputNode';
-import AbstractGraph from 'components/svg-graph/abstract-graph';
+import AbstractGraph from 'components/event-network/svg-graph/abstract-graph';
 
 const COMPONENT_NAME = 'event-network';
 const style = require(`./${COMPONENT_NAME}.css`);

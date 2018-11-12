@@ -2,14 +2,15 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import DraggableWrapper from './draggable';
 import { uuid } from 'components/_util/math';
+
+import Sampler from 'components/patch-space/unit-generators/sampler';
+import PatchWaveshaper from 'components/patch-space/unit-generators/waveshaper';
+
 import OscVoice from 'components/osc-voice';
-import Sampler from 'components/sampler';
 import EventAddress from 'components/event-address';
 import PatchDac from 'components/patch-dac';
-import EqualizerThree from 'components/equalizer-three';
 import PatchChorus from 'components/patch-chorus';
 import PatchDelay from 'components/patch-delay';
-import PatchWaveshaper from 'components/patch-waveshaper';
 import PatchReverb from 'components/patch-reverb';
 import PatchPulse from 'components/patch-pulse';
 import PatchFilter from 'components/patch-filter';
@@ -29,7 +30,6 @@ const nodeMap = {
   sampler: Sampler,
   address: EventAddress,
   dac: PatchDac,
-  eq: EqualizerThree,
   chorus: PatchChorus,
   delay: PatchDelay,
   waveshaper: PatchWaveshaper,

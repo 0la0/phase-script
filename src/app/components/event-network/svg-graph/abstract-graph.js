@@ -1,5 +1,5 @@
 import BaseComponent from 'components/_util/base-component';
-const graphStyles = require('components/svg-graph/styles.css');
+const graphStyles = require('components/event-network/svg-graph/styles.css');
 
 const VIEWBOX_SIZE = 100;
 const elementScale = 4;

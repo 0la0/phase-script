@@ -23,3 +23,4 @@ And feature level dependencies on
 * remove all old and unused components
 * create second event network that is not based on threshold events
 * necessity of multiple `onRemove`s
+* split sound and graphics roots into different bundles

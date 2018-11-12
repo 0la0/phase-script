@@ -2,7 +2,7 @@ import {
   SVG_NS,
   SVG_ELEMENT,
   SVG_ATTRIBUTE,
-} from 'components/svg-graph/Constants';
+} from 'components/event-network/svg-graph/Constants';
 
 export default class SvgLine {
   constructor(x1, y1, x2, y2, onRemoveCallback) {

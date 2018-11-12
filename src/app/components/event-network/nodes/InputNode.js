@@ -1,4 +1,4 @@
-import BaseNode from 'components/svg-graph/BaseNode';
+import BaseNode from 'components/event-network/svg-graph/BaseNode';
 
 export default class InputNode extends BaseNode {
   constructor(x, y, parentElement, getAllNodes, onDelete) {

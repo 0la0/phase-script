@@ -1,4 +1,4 @@
-import BaseNode from 'components/svg-graph/BaseNode';
+import BaseNode from 'components/event-network/svg-graph/BaseNode';
 import PropertyMenu from 'components/event-network/property-menu';
 
 export default class EventNode extends BaseNode {
