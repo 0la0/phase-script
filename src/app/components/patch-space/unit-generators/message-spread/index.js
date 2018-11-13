@@ -7,11 +7,11 @@ import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
 import ParamScheduler from 'components/patch-space/modules/ParamScheduler';
 import PatchParam, { PatchParamModel } from 'components/patch-param';
 
-const COMPONENT_NAME = 'patch-message-spread';
+const COMPONENT_NAME = 'message-spread';
 const DEFAULT_VALUES = { SPREAD: 0 };
 
 // TODO: rename to PatchAddress
-class PatchMessageSpread extends BaseComponent {
+class MessageSpread extends BaseComponent {
   constructor(options) {
     super('', '');
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
@@ -45,4 +45,4 @@ class PatchMessageSpread extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, PatchMessageSpread);
+export default new Component(COMPONENT_NAME, MessageSpread);

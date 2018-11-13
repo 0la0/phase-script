@@ -9,13 +9,13 @@ import PatchParam, { PatchParamModel } from 'components/patch-param';
 import provideMidiFactory from 'services/midi/midiDeviceFactory';
 import MidiMessage, { COMMAND } from 'services/midi/MidiMessage';
 
-const COMPONENT_NAME = 'patch-midi-interface';
+const COMPONENT_NAME = 'midi-output';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
 const dom = [ 'deviceSelector', 'channelSelector', 'noteInputContainer', 'noteInput' ];
 
-class PatchMidiInterface extends BaseComponent {
+class MidiOutput extends BaseComponent {
   constructor(options) {
     super(style, markup, dom);
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
@@ -91,4 +91,4 @@ class PatchMidiInterface extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, PatchMidiInterface);
+export default new Component(COMPONENT_NAME, MidiOutput);

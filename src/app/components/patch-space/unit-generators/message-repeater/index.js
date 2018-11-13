@@ -6,11 +6,11 @@ import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
 import metronomeManager from 'services/metronome/metronomeManager';
 import getTimeSchedules from './RepeatStrategy';
 
-const COMPONENT_NAME = 'patch-message-repeater';
+const COMPONENT_NAME = 'message-repeater';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-class PatchMessageRepeater extends BaseComponent {
+class MessageRepeater extends BaseComponent {
   constructor() {
     super(style, markup);
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
@@ -44,4 +44,4 @@ class PatchMessageRepeater extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, PatchMessageRepeater);
+export default new Component(COMPONENT_NAME, MessageRepeater);

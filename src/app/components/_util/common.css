@@ -19,19 +19,3 @@ p {
   flex-direction: row;
   justify-content: space-between;
 }
-
-/* Remove after patch-param is implemented */
-.param-row {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  flex-wrap: nowrap;
-  border-bottom: var(--border-default);
-}
-
-.slider {
-  margin: 5px;
-  width: 100px;
-  height: 20px;
-}

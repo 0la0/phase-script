@@ -5,21 +5,21 @@ import { uuid } from 'components/_util/math';
 
 import Sampler from 'components/patch-space/unit-generators/sampler';
 import PatchWaveshaper from 'components/patch-space/unit-generators/waveshaper';
+import PatchReverb from 'components/patch-space/unit-generators/reverb';
+import PatchPulse from 'components/patch-space/unit-generators/pulse';
+import MidiOutput from 'components/patch-space/unit-generators/midi-output';
+import MessageSpread from 'components/patch-space/unit-generators/message-spread';
+import MessageRepeater from 'components/patch-space/unit-generators/message-repeater';
+import PatchLfo from 'components/patch-space/unit-generators/lfo';
+import PatchGrainulator from 'components/patch-space/unit-generators/grainulator';
+import PatchGain from 'components/patch-space/unit-generators/gain';
+import ResonanceFilter from 'components/patch-space/unit-generators/resonance-filter';
+import PatchDelay from 'components/patch-space/unit-generators/delay';
+import PatchDac from 'components/patch-space/unit-generators/dac';
 
 import OscVoice from 'components/osc-voice';
 import EventAddress from 'components/event-address';
-import PatchDac from 'components/patch-dac';
 import PatchChorus from 'components/patch-chorus';
-import PatchDelay from 'components/patch-delay';
-import PatchReverb from 'components/patch-reverb';
-import PatchPulse from 'components/patch-pulse';
-import PatchFilter from 'components/patch-filter';
-import PatchGain from 'components/patch-gain';
-import PatchLfo from 'components/patch-lfo';
-import PatchGrain from 'components/patch-grain';
-import PatchMessageSpread from 'components/patch-message-spread';
-import PatchMidiInterface from 'components/patch-midi-interface';
-import PatchMessageRepeater from 'components/patch-message-repeater';
 
 const COMPONENT_NAME = 'patch-space';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -35,13 +35,13 @@ const nodeMap = {
   waveshaper: PatchWaveshaper,
   reverb: PatchReverb,
   pulse: PatchPulse,
-  filter: PatchFilter,
+  resFilter: ResonanceFilter,
   gain: PatchGain,
   lfo: PatchLfo,
-  grainulator: PatchGrain,
-  messageSpread: PatchMessageSpread,
-  midiInterface: PatchMidiInterface,
-  messageRepeater: PatchMessageRepeater,
+  grainulator: PatchGrainulator,
+  messageSpread: MessageSpread,
+  midiOut: MidiOutput,
+  messageRepeater: MessageRepeater,
 };
 
 const dom = [ 'container', 'svgContainer', 'buttonContainer', ];

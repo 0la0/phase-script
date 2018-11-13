@@ -7,7 +7,7 @@ import FilterCurveRenderer from './curveRenderer';
 import audioGraph from 'services/audio/graph';
 import PatchParam from 'components/patch-param';
 
-const COMPONENT_NAME = 'patch-filter';
+const COMPONENT_NAME = 'resonance-filter';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
@@ -17,7 +17,7 @@ const CANVAS_HEIGHT = 40;
 
 const dom = [ 'canvas' ];
 
-class PatchFilter extends BaseComponent {
+class ResonanceFilter extends BaseComponent {
   constructor() {
     super(style, markup, dom);
     this.filter = {
@@ -97,4 +97,4 @@ class PatchFilter extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, PatchFilter);
+export default new Component(COMPONENT_NAME, ResonanceFilter);
