@@ -1,7 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { getSampleKeys, getAudioBuffer } from 'services/audio/sampleBank';
-import { playTemp } from 'services/audio/sampler';
+import { playSample } from 'services/audio/sampler';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
@@ -91,7 +91,7 @@ class Sampler extends BaseComponent {
       const params = this.getParametersForTime(message.time.audio);
       const outputs = [...this.eventModel.getOutlets()];
       const note = message.note !== undefined ? message.note : 60;
-      playTemp(this.sampleKey, message.time.audio, params.startOffset, note, params, outputs);
+      playSample(this.sampleKey, message.time.audio, params.startOffset, note, params, outputs);
     });
   }
 

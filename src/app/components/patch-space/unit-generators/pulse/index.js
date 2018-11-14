@@ -1,6 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import { OSCILATORS } from 'services/audio/synth/Osc';
+import OSCILATORS from 'services/audio/synth/Oscilators';
 import triggerPulse from 'services/audio/pulse';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';

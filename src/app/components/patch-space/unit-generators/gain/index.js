@@ -9,10 +9,7 @@ const COMPONENT_NAME = 'patch-gain';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const dom = {
-  gainInlet: 'gainInlet',
-  frequencyInlet: 'frequencyInlet',
-};
+const dom = [ 'gainInlet', 'frequencyInlet' ];
 
 class PatchGain extends BaseComponent {
   constructor() {

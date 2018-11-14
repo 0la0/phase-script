@@ -16,19 +16,18 @@ import PatchGain from 'components/patch-space/unit-generators/gain';
 import ResonanceFilter from 'components/patch-space/unit-generators/resonance-filter';
 import PatchDelay from 'components/patch-space/unit-generators/delay';
 import PatchDac from 'components/patch-space/unit-generators/dac';
-
-import OscVoice from 'components/osc-voice';
-import EventAddress from 'components/event-address';
-import PatchChorus from 'components/patch-chorus';
+import PatchChorus from 'components/patch-space/unit-generators/chorus';
+import MessageAddress from 'components/patch-space/unit-generators/message-address';
+import EnvelopedOsc from 'components/patch-space/unit-generators/enveloped-osc';
 
 const COMPONENT_NAME = 'patch-space';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
 const nodeMap = {
-  osc: OscVoice,
+  osc: EnvelopedOsc,
   sampler: Sampler,
-  address: EventAddress,
+  address: MessageAddress,
   dac: PatchDac,
   chorus: PatchChorus,
   delay: PatchDelay,

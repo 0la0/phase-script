@@ -1,6 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import Osc, { OSCILATORS } from 'services/audio/synth/Osc';
+import OSCILATORS from 'services/audio/synth/Oscilators';
+import envelopedOscilator from 'services/audio/synth/EnvelopedOscilator';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
@@ -8,7 +9,7 @@ import PatchParam, { PatchParamModel } from 'components/patch-param';
 import ParamScheduler from 'components/patch-space/modules/ParamScheduler';
 import Gain from 'services/audio/gain';
 
-const COMPONENT_NAME = 'osc-voice';
+const COMPONENT_NAME = 'enveloped-osc';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
@@ -16,7 +17,7 @@ const dom = [ 'gainOutput', 'oscTypeComboBox', 'gainSlider', 'frequencyInlet', ]
 
 const GAIN_VALUE = 1;
 
-class OscVoice extends BaseComponent {
+class EnvelopedOsc extends BaseComponent {
   constructor() {
     super(style, markup, dom);
     this.oscType = OSCILATORS.SINE;
@@ -68,9 +69,9 @@ class OscVoice extends BaseComponent {
     setTimeout(() => {
       const params = this.getParametersForTime(message.time.audio);
       const note = message.note !== undefined ? message.note : 60;
-      const osc = new Osc(this.oscType);
+      // const osc = new EnvelopedOscilator(this.oscType);
       const outputs = [...this.eventModel.getOutlets()]
-      osc.playNote(note, message.time.audio, params, GAIN_VALUE, outputs, this.signalCarrier.getInput());
+      envelopedOscilator(note, message.time.audio, params, this.oscType, GAIN_VALUE, outputs, this.signalCarrier.getInput());
     });
   }
 
@@ -110,4 +111,4 @@ class OscVoice extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, OscVoice);
+export default new Component(COMPONENT_NAME, EnvelopedOsc);

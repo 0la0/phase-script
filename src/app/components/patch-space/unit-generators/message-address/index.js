@@ -5,14 +5,13 @@ import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
 
-const COMPONENT_NAME = 'event-address';
+const COMPONENT_NAME = 'message-address';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
 let instanceCnt = 0;
 
-// TODO: rename to PatchAddress
-class EventAddress extends BaseComponent {
+class MessageAddress extends BaseComponent {
   constructor(options) {
     super(style, markup, [ 'addressInput' ]);
     this.eventModel = new PatchEventModel();
@@ -20,7 +19,7 @@ class EventAddress extends BaseComponent {
   }
 
   connectedCallback() {
-    const initialAddress = `event-address${instanceCnt++}`;
+    const initialAddress = `address-${instanceCnt++}`;
     this.dom.addressInput.addEventListener('change', this.handleAddressChange.bind(this));
     this.dom.addressInput.value = initialAddress;
     this.audioEventSubscription = {
@@ -40,4 +39,4 @@ class EventAddress extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, EventAddress);
+export default new Component(COMPONENT_NAME, MessageAddress);

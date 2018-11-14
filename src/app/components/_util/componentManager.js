@@ -24,11 +24,13 @@ import PatchGain from 'components/patch-space/unit-generators/gain';
 import ResonanceFilter from 'components/patch-space/unit-generators/resonance-filter';
 import PatchDelay from 'components/patch-space/unit-generators/delay';
 import PatchDac from 'components/patch-space/unit-generators/dac';
+import PatchChorus from 'components/patch-space/unit-generators/chorus';
+import MessageAddress from 'components/patch-space/unit-generators/message-address';
+import EnvelopedOsc from 'components/patch-space/unit-generators/enveloped-osc';
 
 import Metronome from 'components/metronome';
 import ScaleSelector from 'components/scale-selector';
 import GraphicsRoot from 'components/graphics/graphics-root';
-import OscVoice from 'components/osc-voice';
 import GraphicsController from 'components/graphics-controller';
 import SoundRoot from 'components/sound-root';
 import FftVisualizer from 'components/fft-visualizer';
@@ -36,8 +38,6 @@ import EventNetwork from 'components/event-network';
 import CanvasMenu from 'components/event-network/canvas-menu';
 import PropertyMenu from 'components/event-network/property-menu';
 import EventCycle from 'components/event-cycle';
-import EventAddress from 'components/event-address';
-import PatchChorus from 'components/patch-chorus';
 import PatchParam from 'components/patch-param';
 
 const components = [
@@ -67,20 +67,20 @@ const components = [
   ResonanceFilter,
   PatchDelay,
   PatchDac,
+  PatchChorus,
+  MessageAddress,
+  EnvelopedOsc,
 
   Metronome,
   ScaleSelector,
   GraphicsRoot,
   GraphicsController,
-  OscVoice,
   SoundRoot,
   FftVisualizer,
   EventNetwork,
   CanvasMenu,
   PropertyMenu,
   EventCycle,
-  EventAddress,
-  PatchChorus,
   PatchParam,
 ];
 
