@@ -27,6 +27,7 @@ import PatchDac from 'components/patch-space/unit-generators/dac';
 import PatchChorus from 'components/patch-space/unit-generators/chorus';
 import MessageAddress from 'components/patch-space/unit-generators/message-address';
 import EnvelopedOsc from 'components/patch-space/unit-generators/enveloped-osc';
+import MessageScale from 'components/patch-space/unit-generators/message-scale';
 
 import Metronome from 'components/metronome';
 import ScaleSelector from 'components/scale-selector';
@@ -70,6 +71,7 @@ const components = [
   PatchChorus,
   MessageAddress,
   EnvelopedOsc,
+  MessageScale,
 
   Metronome,
   ScaleSelector,

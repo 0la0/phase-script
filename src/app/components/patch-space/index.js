@@ -19,6 +19,7 @@ import PatchDac from 'components/patch-space/unit-generators/dac';
 import PatchChorus from 'components/patch-space/unit-generators/chorus';
 import MessageAddress from 'components/patch-space/unit-generators/message-address';
 import EnvelopedOsc from 'components/patch-space/unit-generators/enveloped-osc';
+import MessageScale from 'components/patch-space/unit-generators/message-scale';
 
 const COMPONENT_NAME = 'patch-space';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -41,6 +42,7 @@ const nodeMap = {
   messageSpread: MessageSpread,
   midiOut: MidiOutput,
   messageRepeater: MessageRepeater,
+  messageScale: MessageScale,
 };
 
 const dom = [ 'container', 'svgContainer', 'buttonContainer', ];
@@ -68,13 +70,10 @@ class PatchSpace extends BaseComponent {
         { target: { getAttribute: () => 'address' } },
         { target: { getAttribute: () => 'osc' } },
         { target: { getAttribute: () => 'dac' } },
-        // { target: { getAttribute: () => 'midiInterface' } },
-        // { target: { getAttribute: () => 'grainulator' } },
-        { target: { getAttribute: () => 'messageRepeater' } },
+        { target: { getAttribute: () => 'messageScale' } },
       ];
       testNodes.forEach(e => this.addPatchElement(e));
     }, 100);
-    // this.shadowRoot.addEventListener('mousedown', e => e.preventDefault());
   }
 
   render() {

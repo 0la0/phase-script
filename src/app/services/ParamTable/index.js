@@ -1,4 +1,3 @@
-
 function binarySearch(arr, time, low, high) {
   while (low < high) {
     const mid = Math.floor((low + high) / 2);
@@ -45,28 +44,3 @@ export default class ParamTable {
     return deltaBottom < deltaTop ? this.table[bottomIndex].value : this.table[topIndex].value;
   }
 }
-
-// (function () {
-//   const param = new ParamTable();
-//   console.log('get anything from empty table:', param.getValueForTime(0), false);
-//   [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ].forEach(val => param.addScheduledValue(val, `${val}`))
-//   console.log('original size:', param.table.length, 16);
-//   console.log('get at 0', param.getValueForTime(0), 0);
-//   console.log('get at 3.3', param.getValueForTime(3.3), 3);
-//   console.log('get at 6', param.getValueForTime(6), 6);
-//   console.log('get at 7', param.getValueForTime(7), 7);
-//   console.log('get at 1.2', param.getValueForTime(1.2), 1);
-//   console.log('get at 1.5', param.getValueForTime(1.5), 2);
-//   [ 10, 11, 12, 13, 14, 15, 16, 17, 18, ].forEach(val => param.addScheduledValue(val, `${val}`))
-//   console.log('get at 14.7', param.getValueForTime(14.7), 15);
-//   console.log('get at 3.3', param.getValueForTime(3.3), 3);
-//   param.addScheduledValue(19, `${19}`)
-//   console.log('get at 3.3', param.getValueForTime(3.3), 4);
-//   [ 20, 21, 22, 23, ].forEach(val => param.addScheduledValue(val, `${val}`))
-//   console.log('get at 0', param.getValueForTime(0), 8);
-//   console.log('get at 25', param.getValueForTime(25), 23);
-//   console.log('get at 16', param.getValueForTime(16), 16);
-//   console.log('get at 22', param.getValueForTime(22), 22);
-//   console.log('get at 23', param.getValueForTime(23), 23);
-//   console.log('get at 27', param.getValueForTime(27), 23);
-// })()
