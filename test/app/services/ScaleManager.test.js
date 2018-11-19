@@ -66,6 +66,29 @@ describe('ScaleManager', () => {
       scaleManager.getNearestNote(testCase.baseNote, testCase.inputNote), testCase.inputNote));
   });
 
+  it('acts as the identity function for single the major scale, with a base note of 1', () => {
+    const scaleManager = new ScaleManager('major');
+    const testCases = [
+      { baseNote: 1, inputNote: 25, },
+      { baseNote: 1, inputNote: 24, },
+      { baseNote: 1, inputNote: 22, },
+      { baseNote: 1, inputNote: 20, },
+      { baseNote: 1, inputNote: 18, },
+      { baseNote: 1, inputNote: 17, },
+      { baseNote: 1, inputNote: 15, },
+      { baseNote: 1, inputNote: 13, },
+      { baseNote: 1, inputNote: 12, },
+      { baseNote: 1, inputNote: 10, },
+      { baseNote: 1, inputNote: 8, },
+      { baseNote: 1, inputNote: 6, },
+      { baseNote: 1, inputNote: 5, },
+      { baseNote: 1, inputNote: 3, },
+      { baseNote: 1, inputNote: 1, },
+    ];
+    testCases.forEach(testCase => assert.equal(
+      scaleManager.getNearestNote(testCase.baseNote, testCase.inputNote), testCase.inputNote));
+  });
+
   it('returns the nearest note', () => {
     const scaleManager = new ScaleManager('major');
     const testCases = [

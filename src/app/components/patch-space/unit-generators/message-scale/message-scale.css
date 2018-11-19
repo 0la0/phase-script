@@ -1,0 +1,15 @@
+.base-note-input {
+  display: block;
+  height: 25px;
+  font-size: 1em;
+  margin: 0 10px;
+  width: 60px;
+  background-color: var(--color-black-light);
+  border: none;
+  border-bottom: 1px solid var(--color-grey-light);
+  outline: none;
+  color: var(--color-grey-light);
+}
+.base-note-input:focus {
+  outline: none;
+}

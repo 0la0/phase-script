@@ -12,11 +12,13 @@ const markup = require(`./${COMPONENT_NAME}.html`);
 
 class MessageScale extends BaseComponent {
   constructor() {
-    super(style, markup, [ 'scaleSelector', ]);
+    super(style, markup, [ 'scaleSelector', 'baseNoteInput' ]);
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('Scale', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.MESSAGE);
     this.params = { baseNote: 0 };
     this.scaleManager = new ScaleManager('major');
+    this.dom.baseNoteInput.addEventListener('change', () =>
+      this.params.baseNote = parseInt(this.dom.baseNoteInput.value));
   }
 
   connectedCallback() {
@@ -32,6 +34,7 @@ class MessageScale extends BaseComponent {
 
   schedule(message) {
     const note = this.scaleManager.getNearestNote(this.params.baseNote, message.note);
+    console.log('baseNote', this.params.baseNote);
     const modifiedMessage = { ...message, note };
     this.eventModel.getOutlets().forEach(outlet => outlet.schedule(modifiedMessage));
   }
