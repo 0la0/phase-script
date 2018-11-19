@@ -14,6 +14,7 @@ export default class ScaleManager {
       throw new Error(`Scale ${scale} is not defined`);
     }
     this.scale = [0].concat(scales[scale]);
+    this.progressiveScale = getProgressiveScale(this.scale);
   }
 
   getNearestNote(baseNote, midiNote) {
@@ -24,8 +25,7 @@ export default class ScaleManager {
     const difference = midiNote - baseNote;
     const octave = Math.floor(difference / 12);
     const scaleBase = 12 * octave + baseNote;
-    const progressiveScale = getProgressiveScale(this.scale);
-    const test = progressiveScale.map(scaleNote => {
+    const test = this.progressiveScale.map(scaleNote => {
       const note = scaleBase + scaleNote;
       return { note, distance: Math.abs(midiNote - note) };
     })

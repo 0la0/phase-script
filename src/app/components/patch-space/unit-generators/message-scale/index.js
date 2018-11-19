@@ -34,9 +34,7 @@ class MessageScale extends BaseComponent {
 
   schedule(message) {
     const note = this.scaleManager.getNearestNote(this.params.baseNote, message.note);
-    console.log('baseNote', this.params.baseNote);
-    const modifiedMessage = { ...message, note };
-    this.eventModel.getOutlets().forEach(outlet => outlet.schedule(modifiedMessage));
+    this.eventModel.getOutlets().forEach(outlet => outlet.schedule({ ...message, note }));
   }
 }
 

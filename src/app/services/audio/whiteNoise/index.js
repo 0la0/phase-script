@@ -1,6 +1,5 @@
 import audioGraph from 'services/audio/graph';
 import { AsrEnvelope } from 'services/audio/util/Envelopes';
-import scaleHelper from 'services/scale/scaleHelper';
 
 const BUFFER = buildNoiseSample(audioGraph.getAudioContext(), 2);
 

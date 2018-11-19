@@ -30,7 +30,6 @@ import EnvelopedOsc from 'components/patch-space/unit-generators/enveloped-osc';
 import MessageScale from 'components/patch-space/unit-generators/message-scale';
 
 import Metronome from 'components/metronome';
-import ScaleSelector from 'components/scale-selector';
 import GraphicsRoot from 'components/graphics/graphics-root';
 import GraphicsController from 'components/graphics-controller';
 import SoundRoot from 'components/sound-root';
@@ -74,7 +73,6 @@ const components = [
   MessageScale,
 
   Metronome,
-  ScaleSelector,
   GraphicsRoot,
   GraphicsController,
   SoundRoot,
