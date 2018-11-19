@@ -4,7 +4,7 @@ import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
 import scales from 'services/scale/scales';
-import scaleHelper from 'services/scale/scaleHelper';
+import ScaleManager from 'services/scale/ScaleManager';
 
 const COMPONENT_NAME = 'message-scale';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -15,7 +15,8 @@ class MessageScale extends BaseComponent {
     super(style, markup, [ 'scaleSelector', ]);
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('Scale', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.MESSAGE);
-    this.params = {};
+    this.params = { baseNote: 0 };
+    this.scaleManager = new ScaleManager('major');
   }
 
   connectedCallback() {
@@ -26,10 +27,12 @@ class MessageScale extends BaseComponent {
   }
 
   onScaleChange(value) {
-    console.log(value, scales[value]);
+    this.scaleManager = new ScaleManager(value);
   }
 
   schedule(message) {
+    const note = this.scaleManager.getNearestNote(this.params.baseNote, message.note);
+    const modifiedMessage = { ...message, note };
     this.eventModel.getOutlets().forEach(outlet => outlet.schedule(modifiedMessage));
   }
 }
