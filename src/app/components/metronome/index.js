@@ -1,6 +1,5 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import graphicsChannel from 'services/BroadcastChannel';
 import metronomeManager from 'services/metronome/metronomeManager';
 
 const COMPONENT_NAME = 'metronome-ctrl';
@@ -31,42 +30,18 @@ class Metronome extends BaseComponent {
       $event.stopPropagation();
       this.dom.metronomeButton.click();
     });
-    this.schedulable = this.buildSchedulable();
-    metronomeManager.getScheduler().register(this.schedulable);
   }
 
   onMetronomeClick() {
     this.isRunning = !this.isRunning;
     if (this.isRunning) {
       metronome.start();
+      this.titleElement.innerText = 'Audio Running';
     }
     else {
       metronome.stop();
       this.titleElement.innerText = 'Audio Stopped';
     }
-  }
-
-  disconnectedCallback() {
-    metronome.stop();
-    metronomeManager.getScheduler().deregister(this.schedulable);
-  };
-
-  buildSchedulable() {
-    return {
-      processTick: (tickNumber, time) => {},
-      render: (beatNumber, lastBeatNumber) => {
-        graphicsChannel.postMessage({
-          type: 'TICK',
-          beatNumber,
-          lastBeatNumber
-        });
-        if (beatNumber % 8 !== 0) { return; }
-        const symbol = titleSymbols[ this.titleIndex++ % titleSymbols.length ];
-        this.titleElement.innerText = `${symbol} ${symbol} ${symbol}`;
-      },
-      start: () => {},
-      stop: () => {}
-    };
   }
 }
 

@@ -20,6 +20,7 @@ import PatchChorus from 'components/patch-space/unit-generators/chorus';
 import MessageAddress from 'components/patch-space/unit-generators/message-address';
 import EnvelopedOsc from 'components/patch-space/unit-generators/enveloped-osc';
 import MessageScale from 'components/patch-space/unit-generators/message-scale';
+import GraphicsController from 'components/patch-space/unit-generators/graphics-controller';
 
 const COMPONENT_NAME = 'patch-space';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -43,6 +44,7 @@ const nodeMap = {
   midiOut: MidiOutput,
   messageRepeater: MessageRepeater,
   messageScale: MessageScale,
+  graphics: GraphicsController,
 };
 
 const dom = [ 'container', 'svgContainer', 'buttonContainer', ];
@@ -70,7 +72,7 @@ class PatchSpace extends BaseComponent {
         { target: { getAttribute: () => 'address' } },
         { target: { getAttribute: () => 'osc' } },
         { target: { getAttribute: () => 'dac' } },
-        { target: { getAttribute: () => 'messageScale' } },
+        { target: { getAttribute: () => 'graphics' } },
       ];
       testNodes.forEach(e => this.addPatchElement(e));
     }, 100);

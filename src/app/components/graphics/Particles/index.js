@@ -99,9 +99,7 @@ export default class Particles {
   }
 
   onTick(tick) {
-    if (tick.beatNumber % 8 === 0) {
-      this.reset();
-    }
+    this.reset();
   }
 
   // TODO: just do this once in graphics manager?

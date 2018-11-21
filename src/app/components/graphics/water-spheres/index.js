@@ -28,9 +28,7 @@ export default class WaterSpheres {
   }
 
   onTick(tick) {
-    if (tick.beatNumber % 8 === 0) {
-      this.activateRandomSphere();
-    }
+    this.activateRandomSphere();
   }
 
   update(elapsedTime) {

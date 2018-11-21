@@ -1,4 +1,5 @@
 .top-row {
+  justify-content: flex-end;
   align-items: center;
   padding: 10px;
   border-bottom: var(--border-default);

@@ -16,9 +16,7 @@ export default class ConnectedGraph {
   }
 
   onTick(tick) {
-    if (tick.beatNumber % 8 === 0) {
-      this.geoContainer.reset();
-    }
+    this.geoContainer.reset();
   }
 
   onClick($event) {

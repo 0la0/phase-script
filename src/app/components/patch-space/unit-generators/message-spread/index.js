@@ -10,7 +10,6 @@ import PatchParam, { PatchParamModel } from 'components/patch-param';
 const COMPONENT_NAME = 'message-spread';
 const DEFAULT_VALUES = { SPREAD: 0 };
 
-// TODO: rename to PatchAddress
 class MessageSpread extends BaseComponent {
   constructor(options) {
     super('', '');

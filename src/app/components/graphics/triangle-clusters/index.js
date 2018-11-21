@@ -43,9 +43,7 @@ export default class TriangleClusters {
   }
 
   onTick(tick) {
-    if (tick.beatNumber % 8 === 0) {
-      this.onClick();
-    }
+    this.onClick();
   }
 
   onClick($event) {

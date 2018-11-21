@@ -28,10 +28,10 @@ import PatchChorus from 'components/patch-space/unit-generators/chorus';
 import MessageAddress from 'components/patch-space/unit-generators/message-address';
 import EnvelopedOsc from 'components/patch-space/unit-generators/enveloped-osc';
 import MessageScale from 'components/patch-space/unit-generators/message-scale';
+import GraphicsController from 'components/patch-space/unit-generators/graphics-controller';
 
 import Metronome from 'components/metronome';
 import GraphicsRoot from 'components/graphics/graphics-root';
-import GraphicsController from 'components/graphics-controller';
 import SoundRoot from 'components/sound-root';
 import FftVisualizer from 'components/fft-visualizer';
 import EventNetwork from 'components/event-network';
@@ -71,10 +71,10 @@ const components = [
   MessageAddress,
   EnvelopedOsc,
   MessageScale,
+  GraphicsController,
 
   Metronome,
   GraphicsRoot,
-  GraphicsController,
   SoundRoot,
   FftVisualizer,
   EventNetwork,
