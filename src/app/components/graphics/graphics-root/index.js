@@ -3,42 +3,45 @@ import Component from 'components/_util/component';
 import { GraphicsManager } from './modules/graphicsManager';
 import { WebGLRenderer } from 'three';
 import graphicsChannel from 'services/GraphicsChannel';
+import AnimationScheduler from 'services/AnimationScheduler';
 
 const COMPONENT_NAME = 'graphics-root';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
 const NUM_VERTEX = 50;
+const LATENCY_MS = 100; // TODO: allow user to adjust latency
 export const MESSAGE = {
   SYNC: 'SYNC',
   GRAPHICS_MODE: 'GRAPHICS_MODE',
+  TICK: 'TICK',
 };
 
 class GraphicsRoot extends BaseComponent {
   constructor() {
     super(style, markup, [ 'canvas', 'fullscreenButton' ]);
     this.graphicsManager = new GraphicsManager();
+    this.animationScheduler = new AnimationScheduler();
     this.windowTimeDelta = 0;
-    this.tickSchedules = [];
 
     graphicsChannel.subscribe({
-      address: 'SYNC',
-      onNext: baseTime => this.windowTimeDelta = performance.now() - baseTime
+      address: MESSAGE.SYNC,
+      onNext: baseTime => this.windowTimeDelta = performance.now() - baseTime - LATENCY_MS
     });
 
     graphicsChannel.subscribe({
-      address: 'GRAPHICS_MODE',
+      address: MESSAGE.GRAPHICS_MODE,
       onNext: mode => this.graphicsManager.setActiveState(mode),
     });
 
     graphicsChannel.subscribe({
-      address: 'TICK',
+      address: MESSAGE.TICK,
       onNext: scheduledTime => {
         if (!scheduledTime) {
           this.graphicsManager.onTick();
           return;
         }
-        this.tickSchedules.push(scheduledTime + this.windowTimeDelta);
+        this.animationScheduler.submit(scheduledTime + this.windowTimeDelta);
       },
     });
   }
@@ -63,33 +66,11 @@ class GraphicsRoot extends BaseComponent {
     this.loop();
   }
 
-  // TODO: move to module
-  getLatestEventSchedule(now) {
-    if (!this.tickSchedules.length) {
-      return false;
-    }
-    if (this.tickSchedules[0] > now) {
-      return false;
-    }
-    if (this.tickSchedules.length === 1) {
-      return this.tickSchedules.pop();
-    }
-    let i = 1;
-    while (i < this.tickSchedules.length) {
-      if (this.tickSchedules[i] > now) {
-        const latestSchedule = this.tickSchedules[i - 1];
-        this.tickSchedules.splice(0, i);
-        return latestSchedule;
-      }
-    }
-    return false;
-  }
-
   loop() {
     const now = performance.now();
     const elapsedTime = (now - this.lastRenderTime) / 1000;
-    const latestEventSchedule = this.getLatestEventSchedule(now);
-    if (latestEventSchedule) {
+    const animationSchedule = this.animationScheduler.getLatestSchedule(now);
+    if (animationSchedule) {
       this.graphicsManager.onTick();
     }
     this.lastRenderTime = now;
