@@ -15,8 +15,8 @@ const markup = require(`./${COMPONENT_NAME}.html`);
 class GraphicsController extends BaseComponent {
   constructor(options) {
     super('', markup, [ 'graphicsSelector', ]);
-    this.eventModel = new PatchEventModel(this.schedule.bind(this));
-    this.audioModel = new PatchAudioModel('Graphics Controller', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.NONE);
+    this.eventModel = new PatchEventModel(() => {});
+    this.audioModel = new PatchAudioModel('Graphics Controller', this.eventModel, PATCH_EVENT.NONE, PATCH_EVENT.NONE);
   }
 
   connectedCallback() {
@@ -28,7 +28,6 @@ class GraphicsController extends BaseComponent {
     this.tickParam = new PatchParam.element(tickModel);
     this.shadowRoot.appendChild(this.tickParam);
 
-
     setTimeout(() => {
       this.dom.graphicsSelector.setOptions(getGraphicsStates());
     });
@@ -37,10 +36,6 @@ class GraphicsController extends BaseComponent {
 
   onGraphicsChange(value) {
     graphicsChannel.setMode(value);
-  }
-
-  schedule(message) {
-    console.log('schedule message', message);
   }
 }
 

@@ -29,11 +29,13 @@ import MessageAddress from 'components/patch-space/unit-generators/message-addre
 import EnvelopedOsc from 'components/patch-space/unit-generators/enveloped-osc';
 import MessageScale from 'components/patch-space/unit-generators/message-scale';
 import GraphicsController from 'components/patch-space/unit-generators/graphics-controller';
+import FftVisualizer from 'components/patch-space/unit-generators/dac/fft-visualizer';
+import MessageThreshold from 'components/patch-space/unit-generators/message-threshold';
+
 
 import Metronome from 'components/metronome';
 import GraphicsRoot from 'components/graphics/graphics-root';
 import SoundRoot from 'components/sound-root';
-import FftVisualizer from 'components/fft-visualizer';
 import EventNetwork from 'components/event-network';
 import CanvasMenu from 'components/event-network/canvas-menu';
 import PropertyMenu from 'components/event-network/property-menu';
@@ -72,11 +74,12 @@ const components = [
   EnvelopedOsc,
   MessageScale,
   GraphicsController,
+  FftVisualizer,
+  MessageThreshold,
 
   Metronome,
   GraphicsRoot,
   SoundRoot,
-  FftVisualizer,
   EventNetwork,
   CanvasMenu,
   PropertyMenu,

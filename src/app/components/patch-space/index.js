@@ -21,6 +21,7 @@ import MessageAddress from 'components/patch-space/unit-generators/message-addre
 import EnvelopedOsc from 'components/patch-space/unit-generators/enveloped-osc';
 import MessageScale from 'components/patch-space/unit-generators/message-scale';
 import GraphicsController from 'components/patch-space/unit-generators/graphics-controller';
+import MessageThreshold from 'components/patch-space/unit-generators/message-threshold';
 
 const COMPONENT_NAME = 'patch-space';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -45,6 +46,7 @@ const nodeMap = {
   messageRepeater: MessageRepeater,
   messageScale: MessageScale,
   graphics: GraphicsController,
+  messageThreshold: MessageThreshold,
 };
 
 const dom = [ 'container', 'svgContainer', 'buttonContainer', ];
@@ -72,7 +74,7 @@ class PatchSpace extends BaseComponent {
         { target: { getAttribute: () => 'address' } },
         { target: { getAttribute: () => 'osc' } },
         { target: { getAttribute: () => 'dac' } },
-        { target: { getAttribute: () => 'graphics' } },
+        { target: { getAttribute: () => 'messageThreshold' } },
       ];
       testNodes.forEach(e => this.addPatchElement(e));
     }, 100);
