@@ -39,7 +39,8 @@ class MidiOutput extends BaseComponent {
       .then(options => this.dom.deviceSelector.setOptions(options))
   }
 
-  onDeviceChange(device) {
+  handleDeviceChange(event) {
+    const device = event.target.value;
     provideMidiFactory()
       .then(midiFactory => {
         this.outputDevice = midiFactory.getOutputByName(device);
@@ -54,9 +55,11 @@ class MidiOutput extends BaseComponent {
       });
   }
 
-  onChannelChange(channel) { this.channel = parseInt(channel, 10); }
+  handleChannelChange(event) {
+    this.channel = parseInt(event.target.value, 10);
+  }
 
-  onNoteCcToggle() {
+  handleNoteCcToggle() {
     this.isNote = !this.isNote;
     this.isNote ?
       this.dom.noteInputContainer.classList.add('row-hidden') :

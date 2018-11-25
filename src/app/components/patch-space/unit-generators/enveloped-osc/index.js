@@ -79,8 +79,8 @@ class EnvelopedOsc extends BaseComponent {
     return this.osc;
   }
 
-  onOscTypeChange(value) {
-    this.oscType = value
+  handleOscTypeChange(event) {
+    this.oscType = event.target.value;
   }
 
   getParametersForTime(time) {

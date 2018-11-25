@@ -71,8 +71,8 @@ class ResonanceFilter extends BaseComponent {
     this.curveRenderer.render();
   }
 
-  onFilterTypeChange(type) {
-    this.resFilter.setType(type);
+  handleFilterTypeChange(event) {
+    this.resFilter.setType(event.target.value);
     this.renderCurve();
   }
 

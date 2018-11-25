@@ -6,16 +6,16 @@
 </div>
 <div class="row row-margin">
   <p class="label">Device</p>
-  <combo-box id="deviceSelector" change="onDeviceChange"></combo-box>
+  <combo-box id="deviceSelector" change="handleDeviceChange"></combo-box>
 </div>
 <div class="row">
   <p class="label">Channel</p>
-  <combo-box id="channelSelector" change="onChannelChange"></combo-box>
+  <combo-box id="channelSelector" change="handleChannelChange"></combo-box>
 </div>
 <div class="row note-toggle-row">
   <toggle-button
     id="noteCcToggle"
-    click="onNoteCcToggle"
+    click="handleNoteCcToggle"
     onlabel="CC"
     offlabel="NOTE">
   </toggle-button>

@@ -75,12 +75,13 @@ class Sampler extends BaseComponent {
   //   audioEventBus.unsubscribe(this.audioEventSubscription);
   // }
 
-  onSampleChange(value) {
-    const audioBuffer = getAudioBuffer(value);
+  handleSampleChange(event) {
+    const sampleName = event.target.value;
+    const audioBuffer = getAudioBuffer(sampleName);
     const bufferLength = (audioBuffer.duration * 1000).toFixed(2);
-    this.sampleKey = value;
+    this.sampleKey = sampleName;
     this.bufferDuration = audioBuffer.duration;
-    this.dom.samplerLabel.innerText = `Sample: ${value}, ${bufferLength}ms`;
+    this.dom.samplerLabel.innerText = `Sample: ${sampleName}, ${bufferLength}ms`;
     this.dom.sampleVisualizer.setAudioBuffer(audioBuffer, this.params);
   }
 

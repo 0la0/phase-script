@@ -25,8 +25,8 @@ class MessageScale extends BaseComponent {
     });
   }
 
-  onScaleChange(value) {
-    this.scaleManager = new ScaleManager(value);
+  handleScaleChange(event) {
+    this.scaleManager = new ScaleManager(event.target.value);
   }
 
   handleBaseNoteChange(event) {

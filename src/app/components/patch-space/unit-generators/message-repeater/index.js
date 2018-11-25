@@ -21,16 +21,17 @@ class MessageRepeater extends BaseComponent {
       repeatModifier: 'linear'
     };
   }
-  setRepeatValue(value) {
-    this.params.numRepeats = parseInt(value, 10);
+
+  handleRepeatValue(event) {
+    this.params.numRepeats = parseInt(event.target.value, 10);
   }
 
-  setRepeatFrequency(value) {
-    this.params.repeatFrequency = parseInt(value, 10);
+  handleRepeatFrequency(event) {
+    this.params.repeatFrequency = parseInt(event.target.value, 10);
   }
 
-  setRepeatModifierValue(value) {
-    this.params.repeatModifier = value;
+  handleRepeatModifierValue(event) {
+    this.params.repeatModifier = event.target.value;
   }
 
   schedule(message) {

@@ -1,6 +1,6 @@
 <div class="row repeater-row">
   <p class="label">Rep freq:</p>
-  <combo-box id="repeat-frequency-select-box" change="setRepeatFrequency">
+  <combo-box id="repeat-frequency-select-box" change="handleRepeatFrequency">
     <option value="1" selected>1</option>
     <option value="2">2</option>
     <option value="3">3</option>
@@ -12,7 +12,7 @@
 
 <div class="row repeater-row">
   <p class="label">Rep N:</p>
-  <combo-box id="repeat-select-box" change="setRepeatValue">
+  <combo-box id="repeat-select-box" change="handleRepeatValue">
     <option value="1" selected>1</option>
     <option value="2">2</option>
     <option value="3">3</option>
@@ -26,7 +26,7 @@
 
 <div class="row repeater-row">
   <p class="label">Mode</p>
-  <combo-box id="repeat-modifier" change="setRepeatModifierValue">
+  <combo-box id="repeat-modifier" change="handleRepeatModifierValue">
     <option value="linear" selected>linear</option>
     <option value="rampUp">ramp-up</option>
     <option value="rampDown">ramp-down</option>

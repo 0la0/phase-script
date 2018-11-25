@@ -33,9 +33,17 @@ export function reflectAttribute(component, attribute, element) {
   element.setAttribute(attribute, component.getAttribute(attribute));
 }
 
-export function reflectCallback(component, attribute, element) {
+export function buildAttributeCallback(component, attribute) {
   if (!component.hasAttribute(attribute)) { return; }
   const functionName = component.getAttribute(attribute);
   const targetElement = getElementWithFunctionName(component.parentNode, functionName);
-  element.addEventListener(attribute, targetElement[functionName].bind(targetElement));
+  if (!targetElement) {
+    throw new Error(`Cannot bind attribute ${attribute} to function ${functionName}`);
+  }
+  return targetElement[functionName].bind(targetElement);
+}
+
+export function reflectCallback(component, attribute, element) {
+  const boundCallback = buildAttributeCallback(component, attribute);
+  element.addEventListener(attribute, boundCallback);
 }

@@ -34,8 +34,8 @@ class GraphicsController extends BaseComponent {
     graphicsChannel.sync();
   }
 
-  onGraphicsChange(value) {
-    graphicsChannel.setMode(value);
+  handleGraphicsChange(event) {
+    graphicsChannel.setMode(event.target.value);
   }
 }
 

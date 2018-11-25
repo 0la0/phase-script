@@ -1,7 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import {
-  getElementWithFunctionName,
   reflectAttribute,
   reflectCallback
 } from 'components/_util/dom';

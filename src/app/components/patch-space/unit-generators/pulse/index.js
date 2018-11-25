@@ -79,8 +79,8 @@ class PatchPulse extends BaseComponent {
     };
   }
 
-  onOscTypeChange(value) {
-    this.params.oscType = value
+  handleOscTypeChange(event) {
+    this.params.oscType = event.target.value;
   }
 
   onRemove() {

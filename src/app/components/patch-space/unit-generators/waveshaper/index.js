@@ -53,8 +53,8 @@ class PatchWaveshaper extends BaseComponent {
     this.waveshaper.connect(node);
   }
 
-  onTypeChange(waveType) {
-    this.waveshaper.setCarrierFunction(waveType);
+  handleTypeChange(event) {
+    this.waveshaper.setCarrierFunction(event.target.value);
   }
 
   onWetUpdate(value, scheduledTime = 0) {

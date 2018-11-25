@@ -1,9 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import {
-  getElementWithFunctionName,
-  reflectCallback
-} from 'components/_util/dom';
+import { buildAttributeCallback } from 'components/_util/dom';
 
 const toggleButtonStyle = `
   .button--active {
@@ -26,16 +23,8 @@ class ToggleButton extends BaseComponent {
   }
 
   connectedCallback() {
-    // TODO: bindAttributeToHigherOrderFunction
-    if (this.hasAttribute('click')) {
-      const functionName = this.getAttribute('click');
-      const targetElement = getElementWithFunctionName(this.parentNode, functionName);
-      if (targetElement) {
-        this.onClick = targetElement[functionName].bind(targetElement);
-      }
-    }
-    this._onClick = this.trigger.bind(this)
-    this.addEventListener('click', this._onClick);
+    this.onClick = buildAttributeCallback(this, 'click');
+    this.addEventListener('click', this.trigger.bind(this));
     this.onText = this.getAttribute('onlabel') || '';
     this.offText = this.getAttribute('offlabel') || '';
     this.render();
