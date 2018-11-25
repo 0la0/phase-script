@@ -28,7 +28,7 @@ function getWaveform(audioBuffer, canvasWidth) {
 
 class SampleVisualizer extends BaseComponent {
   constructor() {
-    super(style, markup);
+    super(style, markup, ['canvas']);
     this.audioBuffer = { duration: 0 };
     this.asr = {
       attack: 0,
@@ -42,17 +42,16 @@ class SampleVisualizer extends BaseComponent {
   }
 
   connectedCallback() {
-    this.canvas = this.shadowRoot.getElementById('canvas');
-    this.canvas.width = WIDTH;
-    this.canvas.height = HEIGHT;
-    this.g2d = this.canvas.getContext('2d');
+    this.dom.canvas.width = WIDTH;
+    this.dom.canvas.height = HEIGHT;
+    this.g2d = this.dom.canvas.getContext('2d');
     this.g2d.strokeStyle = 'rgba(0, 0, 0, 0.4)';
     this.g2d.fillStyle = 'rgba(0, 0, 0, 0.4)';
 
-    this.canvas.addEventListener('mousedown', this.onMouseDown.bind(this));
-    this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
-    this.canvas.addEventListener('mouseup', () => this.mouseIsDown = false);
-    this.canvas.addEventListener('mouseout', () => this.mouseIsDown = false);
+    this.dom.canvas.addEventListener('mousedown', this.onMouseDown.bind(this));
+    this.dom.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
+    this.dom.canvas.addEventListener('mouseup', () => this.mouseIsDown = false);
+    this.dom.canvas.addEventListener('mouseout', () => this.mouseIsDown = false);
   }
 
   onMouseDown(event) {
@@ -66,7 +65,7 @@ class SampleVisualizer extends BaseComponent {
   }
 
   setStart(clientX) {
-    const boundingBox = this.canvas.getBoundingClientRect();
+    const boundingBox = this.dom.canvas.getBoundingClientRect();
     const percentX = (clientX - boundingBox.left) / boundingBox.width;
     const startOffset = percentX * this.bufferDuration;
     this.startOffset = percentX;

@@ -8,17 +8,10 @@ const markup = require(`./${COMPONENT_NAME}.html`);
 
 const metronome = metronomeManager.getMetronome();
 
-const titleSymbols = [ '\\', '|', '/', '-', ];
-
 class Metronome extends BaseComponent {
   constructor() {
-    super(style, markup, ['metronomeButton', 'metronomeInput']);
+    super(style, markup, ['metronomeButton']);
     this.isRunning = false;
-    this.dom.metronomeInput.value = metronome.getTempo();
-    this.dom.metronomeInput.addEventListener('change', $event => {
-      const value = parseInt(this.dom.metronomeInput.value);
-      metronome.setTempo(value);
-    });
     this.titleIndex = 0;
   }
 
@@ -42,6 +35,11 @@ class Metronome extends BaseComponent {
       metronome.stop();
       this.titleElement.innerText = 'Audio Stopped';
     }
+  }
+
+  handleMetronomeChange(event) {
+    const value = parseInt(event.target.value, 10);
+    metronome.setTempo(value);
   }
 }
 

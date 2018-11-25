@@ -7,11 +7,9 @@ const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
 class SliderHorizontal extends BaseComponent {
-
   constructor(note) {
-    super(style, markup);
+    super(style, markup, ['tracker']);
     this.isActive = false;
-    this.tracker = this.shadowRoot.getElementById('tracker');
   }
 
   connectedCallback() {
@@ -30,9 +28,9 @@ class SliderHorizontal extends BaseComponent {
       this.isActive = true;
       this.userEvent($event);
     });
-    this.addEventListener('mouseup', $event => this.isActive = false);
-    this.addEventListener('mouseout', $event => this.isActive = false);
-    this.addEventListener('mousemove', $event => this.userEvent($event));
+    this.addEventListener('mouseup', () => this.isActive = false);
+    this.addEventListener('mouseout', () => this.isActive = false);
+    this.addEventListener('mousemove', event => this.userEvent(event));
   }
 
   userEvent(event) {
@@ -48,9 +46,8 @@ class SliderHorizontal extends BaseComponent {
     if (this.onChange && shouldNotify) {
       this.onChange(value);
     }
-    this.tracker.style.setProperty('width', `${value * 100}%`);
+    this.dom.tracker.style.setProperty('width', `${value * 100}%`);
   }
-
 }
 
 export default new Component(COMPONENT_NAME, SliderHorizontal);

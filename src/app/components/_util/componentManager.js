@@ -5,6 +5,7 @@ import Button from 'components/primitives/button';
 import SliderHorizontal from 'components/primitives/slider-horizontal';
 import ComboBox from 'components/primitives/combo-box';
 import RouterOutlet from 'components/primitives/router-outlet';
+import TextInput from 'components/primitives/text-input';
 
 // PATCH-SPACE
 import PatchSpace from 'components/patch-space';
@@ -50,6 +51,7 @@ const components = [
   ComboBox,
   SliderHorizontal,
   RouterOutlet,
+  TextInput,
 
   // PATCH-SPACE
   PatchSpace,

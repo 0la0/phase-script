@@ -10,12 +10,11 @@ const BUTTON_ACTIVE = 'button--active';
 
 class FlatButton extends BaseComponent {
   constructor() {
-    super(style, markup);
+    super(style, markup, ['button']);
     this.isOn = false;
     this.isToggle = false;
-    this.onClick;
-    this.btnElement = this.shadowRoot.getElementById('button');
-    this.btnElement.innerText = this.originalText;
+    this.onClick = () => {};
+    this.dom.button.innerText = this.originalText;
   }
 
   connectedCallback() {
@@ -45,9 +44,9 @@ class FlatButton extends BaseComponent {
 
   render() {
     this.isOn ?
-      this.btnElement.classList.add(BUTTON_ACTIVE) :
-      this.btnElement.classList.remove(BUTTON_ACTIVE);
-    this.btnElement.innerText = this.isOn ? this.onText : this.offText;
+      this.dom.button.classList.add(BUTTON_ACTIVE) :
+      this.dom.button.classList.remove(BUTTON_ACTIVE);
+    this.dom.button.innerText = this.isOn ? this.onText : this.offText;
   }
 
   turnOff() {
