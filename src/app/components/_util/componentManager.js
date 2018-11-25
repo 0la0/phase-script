@@ -1,7 +1,8 @@
 import App from 'components/app';
 
 // PRIMITIVES
-import Button from 'components/primitives/button';
+import TextButton from 'components/primitives/text-button';
+import ToggleButton from 'components/primitives/toggle-button';
 import SliderHorizontal from 'components/primitives/slider-horizontal';
 import ComboBox from 'components/primitives/combo-box';
 import RouterOutlet from 'components/primitives/router-outlet';
@@ -47,7 +48,8 @@ const components = [
   App,
 
   // PRIMITIVES
-  Button,
+  TextButton,
+  ToggleButton,
   ComboBox,
   SliderHorizontal,
   RouterOutlet,

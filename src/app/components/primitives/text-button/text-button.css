@@ -1,6 +1,6 @@
 button {
-  background-color: Transparent;
-  background-repeat:no-repeat;
+  background-color: transparent;
+  background-repeat: no-repeat;
   border: var(--border-default);
   border-radius: var(--border-radius);
   color: var(--color-grey-light);
@@ -10,9 +10,4 @@ button {
   text-align: center;
   user-select: none;
   width: 100%;
-}
-
-.button--active {
-  background-color: var(--color-grey-light);
-  color: var(--color-black-light);
 }

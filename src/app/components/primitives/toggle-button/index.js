@@ -1,23 +1,32 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import { getElementWithFunctionName } from 'components/_util/dom';
+import {
+  getElementWithFunctionName,
+  reflectCallback
+} from 'components/_util/dom';
 
-const COMPONENT_NAME = 'flat-button';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+const toggleButtonStyle = `
+  .button--active {
+    background-color: var(--color-grey-light);
+    color: var(--color-black-light);
+  }
+`;
+
+const COMPONENT_NAME = 'toggle-button';
+const buttonStyle = require(`../text-button/text-button.css`);
+const style = `${buttonStyle} ${toggleButtonStyle}`;
+const markup = '<button id="button"/>';
 
 const BUTTON_ACTIVE = 'button--active';
 
-class FlatButton extends BaseComponent {
+class ToggleButton extends BaseComponent {
   constructor() {
     super(style, markup, ['button']);
     this.isOn = false;
-    this.isToggle = false;
-    this.onClick = () => {};
-    this.dom.button.innerText = this.originalText;
   }
 
   connectedCallback() {
+    // TODO: bindAttributeToHigherOrderFunction
     if (this.hasAttribute('click')) {
       const functionName = this.getAttribute('click');
       const targetElement = getElementWithFunctionName(this.parentNode, functionName);
@@ -25,19 +34,15 @@ class FlatButton extends BaseComponent {
         this.onClick = targetElement[functionName].bind(targetElement);
       }
     }
-    if (this.hasAttribute('isToggle')) {
-      this.isToggle = true;
-    }
     this._onClick = this.trigger.bind(this)
     this.addEventListener('click', this._onClick);
-    this.onText = this.getAttribute('ontext') || '';
-    this.offText = this.getAttribute('offtext') || '';
+    this.onText = this.getAttribute('onlabel') || '';
+    this.offText = this.getAttribute('offlabel') || '';
     this.render();
   }
 
   trigger(event) {
     this.onClick(event);
-    if (!this.isToggle) { return; }
     this.isOn = !this.isOn;
     this.render();
   }
@@ -48,11 +53,6 @@ class FlatButton extends BaseComponent {
       this.dom.button.classList.remove(BUTTON_ACTIVE);
     this.dom.button.innerText = this.isOn ? this.onText : this.offText;
   }
-
-  turnOff() {
-    this.isOn = false;
-    this.render();
-  }
 }
 
-export default new Component(COMPONENT_NAME, FlatButton);
+export default new Component(COMPONENT_NAME, ToggleButton);

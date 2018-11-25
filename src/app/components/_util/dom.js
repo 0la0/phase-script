@@ -27,3 +27,15 @@ export function getShadowHost(element) {
   }
   return getShadowHost(element.parentNode);
 }
+
+export function reflectAttribute(component, attribute, element) {
+  if (!component.hasAttribute(attribute)) { return; }
+  element.setAttribute(attribute, component.getAttribute(attribute));
+}
+
+export function reflectCallback(component, attribute, element) {
+  if (!component.hasAttribute(attribute)) { return; }
+  const functionName = component.getAttribute(attribute);
+  const targetElement = getElementWithFunctionName(component.parentNode, functionName);
+  element.addEventListener(attribute, targetElement[functionName].bind(targetElement));
+}

@@ -2,6 +2,7 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import DraggableWrapper from './draggable';
 import { uuid } from 'components/_util/math';
+import TextButton from 'components/primitives/text-button';
 
 import Sampler from 'components/patch-space/unit-generators/sampler';
 import PatchWaveshaper from 'components/patch-space/unit-generators/waveshaper';
@@ -61,22 +62,21 @@ class PatchSpace extends BaseComponent {
   connectedCallback() {
     Object.entries(nodeMap)
       .map(([ name, component ]) => {
-        const button = document.createElement('flat-button');
+        const button = new TextButton.element();
         button.setAttribute('click', 'addPatchElement');
-        button.setAttribute('offtext', name);
-        button.setAttribute('node-type', name);
+        button.setAttribute('label', name);
+        button.setAttribute('value', name);
         return button;
       })
       .forEach(element => this.dom.buttonContainer.appendChild(element));
 
     setTimeout(() => {
-      const testNodes = [
+      [
         { target: { getAttribute: () => 'address' } },
         { target: { getAttribute: () => 'osc' } },
         { target: { getAttribute: () => 'dac' } },
-        { target: { getAttribute: () => 'messageThreshold' } },
-      ];
-      testNodes.forEach(e => this.addPatchElement(e));
+        { target: { getAttribute: () => 'midiOut' } },
+      ].forEach(e => this.addPatchElement(e));
     }, 100);
   }
 
@@ -104,7 +104,7 @@ class PatchSpace extends BaseComponent {
   }
 
   addPatchElement(event) {
-    const nodeType = event && event.target && event.target.getAttribute('node-type');
+    const nodeType = event && event.target && event.target.getAttribute('value');
     if (!nodeType) { return; }
     const clazz = nodeMap[nodeType].element;
     this.addNode(new clazz());

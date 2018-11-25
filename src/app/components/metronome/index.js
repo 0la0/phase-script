@@ -17,10 +17,10 @@ class Metronome extends BaseComponent {
 
   connectedCallback() {
     this.titleElement = document.getElementsByTagName('title')[0];
-    window.addEventListener('keydown', $event => {
-      if ($event.code !== 'Space') { return; }
-      $event.preventDefault();
-      $event.stopPropagation();
+    window.addEventListener('keydown', event => {
+      if (event.code !== 'Space') { return; }
+      event.preventDefault();
+      event.stopPropagation();
       this.dom.metronomeButton.click();
     });
   }

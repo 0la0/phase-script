@@ -1,9 +1,8 @@
 <div class="row space-between row-margin">
-  <flat-button
+  <text-button
     click="populateSelector"
-    ontext="&#8635;"
-    offtext="&#8635;">
-  </flat-button>
+    label="&#8635;"
+  </text-button>
 </div>
 <div class="row row-margin">
   <p class="label">Device</p>
@@ -14,13 +13,12 @@
   <combo-box id="channelSelector" change="onChannelChange"></combo-box>
 </div>
 <div class="row note-toggle-row">
-  <flat-button
+  <toggle-button
     id="noteCcToggle"
     click="onNoteCcToggle"
-    isToggle="true"
-    ontext="CC"
-    offtext="NOTE">
-  </flat-button>
+    onlabel="CC"
+    offlabel="NOTE">
+  </toggle-button>
   <div id="noteInputContainer" class="row note-row row-hidden">
     <p class="label">Note</p>
     <input
