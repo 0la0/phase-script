@@ -6,22 +6,20 @@ import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
 
 const COMPONENT_NAME = 'message-address';
-const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
 let instanceCnt = 0;
 
 class MessageAddress extends BaseComponent {
   constructor(options) {
-    super(style, markup, [ 'addressInput' ]);
+    super('', markup, [ 'addressInput' ]);
     this.eventModel = new PatchEventModel();
     this.audioModel = new PatchAudioModel('ADDRESS', this.eventModel, PATCH_EVENT.EMPTY, PATCH_EVENT.MESSAGE);
   }
 
   connectedCallback() {
     const initialAddress = `address-${instanceCnt++}`;
-    this.dom.addressInput.addEventListener('change', this.handleAddressChange.bind(this));
-    this.dom.addressInput.value = initialAddress;
+    this.dom.addressInput.setAttribute('value', initialAddress);
     this.audioEventSubscription = {
       address: initialAddress,
       onNext: message => this.eventModel.getOutlets().forEach(outlet => outlet.schedule(message)),

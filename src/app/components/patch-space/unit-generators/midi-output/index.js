@@ -13,7 +13,7 @@ const COMPONENT_NAME = 'midi-output';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const dom = [ 'deviceSelector', 'channelSelector', 'noteInputContainer', 'noteInput' ];
+const dom = [ 'deviceSelector', 'channelSelector', 'noteInputContainer', ];
 
 class MidiOutput extends BaseComponent {
   constructor(options) {
@@ -27,14 +27,6 @@ class MidiOutput extends BaseComponent {
 
   connectedCallback() {
     this.populateSelector();
-    this.dom.noteInput.addEventListener('change', event => {
-      const noteValue = parseInt(event.target.value, 10);
-      if (isNaN(noteValue)) {
-        this.dom.noteInput.value = 60;
-        return;
-      }
-      this.noteValue = noteValue;
-    });
     setTimeout(() => {
       const channels = IntArray(16).map(i => ({ label: i, value: i}));
       this.dom.channelSelector.setOptions(channels);
@@ -69,6 +61,10 @@ class MidiOutput extends BaseComponent {
     this.isNote ?
       this.dom.noteInputContainer.classList.add('row-hidden') :
       this.dom.noteInputContainer.classList.remove('row-hidden');
+  }
+
+  handleNoteChange(event) {
+    this.noteValue = parseInt(event.target.value, 10);
   }
 
   schedule(message) {

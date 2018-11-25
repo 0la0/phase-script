@@ -21,10 +21,11 @@
   </toggle-button>
   <div id="noteInputContainer" class="row note-row row-hidden">
     <p class="label">Note</p>
-    <input
-      id="noteInput"
-      class="note-input"
+    <text-input
       type="number"
-      value="60" />
+      value="60"
+      change="handleNoteChange"
+      class="note-input">
+    </text-input>
   </div>
 </div>

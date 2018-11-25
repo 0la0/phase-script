@@ -7,18 +7,15 @@ import scales from 'services/scale/scales';
 import ScaleManager from 'services/scale/ScaleManager';
 
 const COMPONENT_NAME = 'message-scale';
-const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
 class MessageScale extends BaseComponent {
   constructor() {
-    super(style, markup, [ 'scaleSelector', 'baseNoteInput' ]);
+    super('style', markup, [ 'scaleSelector' ]);
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('Scale', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.MESSAGE);
     this.params = { baseNote: 0 };
     this.scaleManager = new ScaleManager('major');
-    this.dom.baseNoteInput.addEventListener('change', () =>
-      this.params.baseNote = parseInt(this.dom.baseNoteInput.value));
   }
 
   connectedCallback() {
@@ -30,6 +27,10 @@ class MessageScale extends BaseComponent {
 
   onScaleChange(value) {
     this.scaleManager = new ScaleManager(value);
+  }
+
+  handleBaseNoteChange(event) {
+    this.params.baseNote = parseInt(event.target.value, 10);
   }
 
   schedule(message) {
