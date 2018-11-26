@@ -33,7 +33,8 @@ import MessageScale from 'components/patch-space/unit-generators/message-scale';
 import GraphicsController from 'components/patch-space/unit-generators/graphics-controller';
 import FftVisualizer from 'components/patch-space/unit-generators/dac/fft-visualizer';
 import MessageThreshold from 'components/patch-space/unit-generators/message-threshold';
-
+import MessageMap from 'components/patch-space/unit-generators/message-map';
+import MessageFilter from 'components/patch-space/unit-generators/message-filter';
 
 import Metronome from 'components/metronome';
 import GraphicsRoot from 'components/graphics/graphics-root';
@@ -80,6 +81,8 @@ const components = [
   GraphicsController,
   FftVisualizer,
   MessageThreshold,
+  MessageMap,
+  MessageFilter,
 
   Metronome,
   GraphicsRoot,

@@ -24,13 +24,13 @@ class ToggleButton extends BaseComponent {
 
   connectedCallback() {
     this.onClick = buildAttributeCallback(this, 'click');
-    this.addEventListener('click', this.trigger.bind(this));
+    this.addEventListener('click', this.handleClick.bind(this));
     this.onText = this.getAttribute('onlabel') || '';
     this.offText = this.getAttribute('offlabel') || '';
     this.render();
   }
 
-  trigger(event) {
+  handleClick(event) {
     this.onClick(event);
     this.isOn = !this.isOn;
     this.render();

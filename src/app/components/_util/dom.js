@@ -1,5 +1,5 @@
 
-export function getElementWithFunctionName(element, functionName) {
+function getElementWithFunctionName(element, functionName) {
   if (!element) {
     return false;
   }
