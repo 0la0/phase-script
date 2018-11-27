@@ -44,7 +44,7 @@ class GraphicsChannel {
 
   // TODO: move to producer
   tick(time) {
-    this.channel.postMessage({ type: MESSAGE.TICK, value: time })
+    this.channel.postMessage({ type: MESSAGE.TICK, value: time });
   }
 }
 

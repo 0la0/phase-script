@@ -18,8 +18,6 @@ export default class BaseMidiMapper {
     return true;
   }
 
-  onMessage(message) {}
-
   getName() {
     return this.name;
   }

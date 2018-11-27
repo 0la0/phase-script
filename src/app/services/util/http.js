@@ -10,11 +10,11 @@ function xhrPromise (url, data, method, responseType) {
   xhr.send(data);
 
   if (responseType) {
-    xhr.responseType = responseType
+    xhr.responseType = responseType;
   }
 
   return new Promise((resolve, reject) => {
-    xhr.addEventListener(LOAD, event => {
+    xhr.addEventListener(LOAD, () => {
       try {
         resolve(xhr.response);
       }

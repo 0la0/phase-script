@@ -53,11 +53,12 @@ class DraggableWrapper extends BaseComponent {
     this.dom.outlet.addEventListener('mousedown', this.handleConnectionStart.bind(this));
     this.dom.closeButton.addEventListener('click', this.handleRemove.bind(this));
     this.dom.minimizeButton.addEventListener('click', this.handleMinimize.bind(this));
+
     eventBus.subscribe({
       address: 'MOUSE_UP',
       onNext: message => {
         if (this.mouseState.active === MOUSE_STATE.OUTLET) {
-          this.handleConnectionEnd(message.$event);
+          this.handleConnectionEnd(message.event);
         }
         this.mouseState.active = undefined;
       }
@@ -66,10 +67,10 @@ class DraggableWrapper extends BaseComponent {
       address: 'MOUSE_MOVE',
       onNext: message => {
         if (this.mouseState.active === MOUSE_STATE.DRAGGING) {
-          this.handleDrag(message.$event);
+          this.handleDrag(message.event);
         }
         else if (this.mouseState.active === MOUSE_STATE.OUTLET) {
-          this.handleConnectionMove(message.$event);
+          this.handleConnectionMove(message.event);
         }
       }
     });

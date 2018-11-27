@@ -28,8 +28,7 @@ export default class ScaleManager {
     const test = this.progressiveScale.map(scaleNote => {
       const note = scaleBase + scaleNote;
       return { note, distance: Math.abs(midiNote - note) };
-    })
-    .sort((a, b) => a.distance - b.distance);
+    }).sort((a, b) => a.distance - b.distance);
     return test[0].note;
   }
 }

@@ -1,9 +1,6 @@
 import { audioEventBus } from 'services/EventBus';
 import BaseMidiMapper from 'services/midi/mappings/baseMapper';
-import {
-  getMessageFromObject,
-  getObjectFromMessage
-} from 'services/midi/util';
+import { getMessageFromObject } from 'services/midi/util';
 
 const NAME = 'TR-09';
 

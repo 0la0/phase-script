@@ -1,3 +1,4 @@
+import initGlobalListeners from 'services/EventBus/GlobalListeners';
 
 const EMPTY_SUBSCRIPTION = { address: '-', onNext: () => {} };
 
@@ -53,6 +54,7 @@ class EventBus {
 const eventBus = new EventBus();
 const audioEventBus = new EventBus();
 const tickEventBus = new EventBus();
+initGlobalListeners(eventBus);
 
 export {
   eventBus,

@@ -1,9 +1,6 @@
 import { audioEventBus } from 'services/EventBus';
 import BaseMidiMapper from 'services/midi/mappings/baseMapper';
-import {
-  getMessageFromObject,
-  getObjectFromMessage
-} from 'services/midi/util';
+import { getMessageFromObject } from 'services/midi/util';
 
 const NAME = 'TB-03';
 
@@ -46,7 +43,7 @@ export default class Tb03 extends BaseMidiMapper {
       note: message.note,
       value: message.value
     };
-    const offTime = message.time.midi + duration * 1000;
+    const offTime = message.time.midi + 1000;
     this.deviceOutput && this.deviceOutput.send(getMessageFromObject(onMessage), message.time.midi);
     this.deviceOutput && this.deviceOutput.send(getMessageFromObject(offMessage), offTime);
   }

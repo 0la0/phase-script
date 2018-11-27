@@ -47,12 +47,12 @@ function applyEventListeners() {
     address: 'MOUSE_MOVE',
     onNext: message => {
       if (this.outlineIsActive) {
-        const event = message.$event;
+        const event = message.event;
         const {x, y} = getSvgCoordinatesFromEvent(event, this.parentElement);
         this.svgLine.setPosition(this.x, this.y, x, y);
       }
       else if (this.isDragging) {
-        const event = message.$event;
+        const event = message.event;
         event.preventDefault();
         const parentElement = event.target.parentElement.parentElement;
         const {x, y} = getSvgCoordinatesFromEvent(event, this.parentElement);
@@ -65,7 +65,7 @@ function applyEventListeners() {
     address: 'MOUSE_UP',
     onNext: message => {
       if (this.outlineIsActive) {
-        const event = message.$event;
+        const event = message.event;
         const {x, y} = getSvgCoordinatesFromEvent(event, this.parentElement);
         const otherNodes = this.getAllNodes()
           .map(node => {

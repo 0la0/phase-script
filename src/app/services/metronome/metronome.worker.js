@@ -5,19 +5,21 @@ const START = 'start';
 const STOP = 'stop';
 const TICK = 'tick';
 
-onmessage = (event) => {
+function handleMessage(event) {
   if (event.data === START) {
-		timerID = setInterval(() => postMessage(TICK), interval);
-	}
-	else if (event.data.interval) {
-		interval = event.data.interval;
-		if (timerID) {
-			clearInterval(timerID);
-			timerID = setInterval(() => postMessage(TICK), interval);
-		}
-	}
-	else if (event.data === STOP) {
-		clearInterval(timerID);
-		timerID = null;
-	}
-};
+    timerID = setInterval(() => postMessage(TICK), interval);
+  }
+  else if (event.data.interval) {
+    interval = event.data.interval;
+    if (timerID) {
+      clearInterval(timerID);
+      timerID = setInterval(() => postMessage(TICK), interval);
+    }
+  }
+  else if (event.data === STOP) {
+    clearInterval(timerID);
+    timerID = null;
+  }
+}
+
+onmessage = handleMessage;

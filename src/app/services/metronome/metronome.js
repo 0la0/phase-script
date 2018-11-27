@@ -1,15 +1,13 @@
 import { AUDIO_TICK_MULTIPLIER } from 'services/midi/util';
-const workerString = require('./metronome.worker');
-const workerUrl = URL.createObjectURL(new Blob([workerString]));
+import workerString from './metronome.worker';
 
+const workerUrl = URL.createObjectURL(new Blob([workerString]));
 const TICK = 'tick';
 const LOOKAHEAD_TIME = 25;
 const SCHEDULE_AHEAD_TIME = 100;
 const MIDI_TIME_DELAY = 30; // for syncing with audio scheduling
-const BASE_TIME = performance.now();
 
 export default class Metronome {
-
   constructor(audioContext, noteScheduler) {
     this.audioContext = audioContext;
     this.noteScheduler = noteScheduler;

@@ -1,4 +1,4 @@
-const commonStyles = require('./common.css');
+import commonStyles from './common.css';
 
 function buildDomMap(shadowRoot, elements) {
   if (!elements) { return {}; }
@@ -15,7 +15,7 @@ export default class BaseComponent extends HTMLElement {
     this.originalChildren.forEach(child => this.removeChild(child));
     const styleElement = document.createElement('style');
     const markupTemplate = document.createElement('template');
-    const shadowRoot = this.attachShadow({ mode: 'open' });
+    this.attachShadow({ mode: 'open' });
     styleElement.textContent = `${commonStyles}${style}`;
     markupTemplate.innerHTML = markup;
     this.shadowRoot.appendChild(styleElement);
