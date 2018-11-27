@@ -11,15 +11,12 @@ const COMPONENT_NAME = 'resonance-filter';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const MIN_RESONANCE = -3.4;
 const CANVAS_WIDTH = 120;
 const CANVAS_HEIGHT = 40;
 
-const dom = [ 'canvas' ];
-
 class ResonanceFilter extends BaseComponent {
   constructor() {
-    super(style, markup, dom);
+    super(style, markup, ['canvas']);
     this.filter = {
       cutoff: 0,
       resonance: 0,

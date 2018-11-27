@@ -11,7 +11,7 @@ const COMPONENT_NAME = 'message-spread';
 const DEFAULT_VALUES = { SPREAD: 0 };
 
 class MessageSpread extends BaseComponent {
-  constructor(options) {
+  constructor() {
     super('', '');
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('Spread', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.MESSAGE);

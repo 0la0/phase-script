@@ -17,7 +17,7 @@ class EventBus {
   subscribe(subscriber) {
     const hasSubscription = this.hasSubscription(subscriber.address, subscriber.onNext);
     if (hasSubscription) {
-      console.log('Warning: subscribed multiple times', subscriber)
+      console.warn('Warning: subscribed multiple times', subscriber);
     }
     this.subscribers.add(subscriber);
     this.onNewSubscription();
@@ -56,8 +56,4 @@ const audioEventBus = new EventBus();
 const tickEventBus = new EventBus();
 initGlobalListeners(eventBus);
 
-export {
-  eventBus,
-  audioEventBus,
-  tickEventBus
-}
+export { eventBus, audioEventBus, tickEventBus };

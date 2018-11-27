@@ -1,6 +1,5 @@
 import audioGraph from 'services/audio/graph';
 import OSCILATORS from 'services/audio/synth/Oscilators';
-import {mtof} from 'services/midi/util';
 
 export default function triggerPulse(frequency, waveType, startTime, duration, resonance, outputs) {
   const audioContext = audioGraph.getAudioContext();

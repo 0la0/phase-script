@@ -10,7 +10,7 @@ const toggleButtonStyle = `
 `;
 
 const COMPONENT_NAME = 'toggle-button';
-const buttonStyle = require(`../text-button/text-button.css`);
+const buttonStyle = require('../text-button/text-button.css');
 const style = `${buttonStyle} ${toggleButtonStyle}`;
 const markup = '<button id="button"/>';
 

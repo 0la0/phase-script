@@ -9,8 +9,8 @@ function buildNoiseSample(audioContext, bufferLengthSeconds) {
   const leftChannel = buffer.getChannelData(0);
   const rightChannel = buffer.getChannelData(1);
   for (let i = 0; i < frameCount; i++) {
-   leftChannel[i] = 2 * Math.random() - 1;
-   rightChannel[i] = 2 * Math.random() - 1;
+    leftChannel[i] = 2 * Math.random() - 1;
+    rightChannel[i] = 2 * Math.random() - 1;
   }
   return buffer;
 }

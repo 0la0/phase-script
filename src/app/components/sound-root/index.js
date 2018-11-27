@@ -11,7 +11,7 @@ const markup = require(`./${COMPONENT_NAME}.html`);
 const dom = [ 'eventNetworkContainer', 'eventCycleContainer', 'patchContainer' ];
 
 class SoundRoot extends BaseComponent {
-  constructor(note) {
+  constructor() {
     super(style, markup, dom);
   }
 

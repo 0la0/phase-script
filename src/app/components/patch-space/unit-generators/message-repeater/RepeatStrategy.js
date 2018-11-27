@@ -53,7 +53,6 @@ class RepeatStrategy {
 
   rampUp(baseTime) {
     const baseAudio = baseTime ? baseTime.audio : this.time.audio;
-    const baseMidi = baseTime ? baseTime.midi : this.time.midi;
     const rampDownSchedules = this.rampDown();
     const max = getMaxFromSchedules(rampDownSchedules);
     return rampDownSchedules.map(schedule => ({
@@ -78,6 +77,6 @@ class RepeatStrategy {
 }
 
 export default function getTimeSchedules(numRepeats, repeatFrequency, repeatModifier, tempo, tickLength, time) {
-   const repeatStrategy = new RepeatStrategy(numRepeats, repeatFrequency, tempo, tickLength, time);
-   return repeatStrategy[repeatModifier]();
+  const repeatStrategy = new RepeatStrategy(numRepeats, repeatFrequency, tempo, tickLength, time);
+  return repeatStrategy[repeatModifier]();
 }

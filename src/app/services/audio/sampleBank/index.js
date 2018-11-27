@@ -14,15 +14,14 @@ const fileMap = {
   'click': `${BASE_PATH}spatialized6.wav`,
   'pop': `${BASE_PATH}vinyl9.wav`,
   'metal': `${BASE_PATH}woodClog51.wav`,
-  'metal': `${BASE_PATH}woodClog51.wav`,
   'tom_pop': `${BASE_PATH}woodClog60.wav`,
   'drake': `${BASE_PATH}drakeVoice.wav`
 };
 
 function decodeAudioData(compressedBuffer) {
   try {
-    return audioGraph.getAudioContext().decodeAudioData(compressedBuffer)
-  } catch(error) {
+    return audioGraph.getAudioContext().decodeAudioData(compressedBuffer);
+  } catch (error) {
     if (error instanceof TypeError && error.message === 'Not enough arguments') {
       // use safari syntax
       return new Promise((resolve, reject) => {

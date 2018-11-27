@@ -17,13 +17,13 @@ export default function buildConvolutionBuffer(attackTime, decayTime) {
   // 60dB is a factor of 1 million in power, or 1000 in amplitude.
   const decayBase = Math.pow(1 / 1000, 1 / decaySampleFrames);
   const reverbIR = audioContext.createBuffer(NUM_CHANNELS, numSampleFrames, sampleRate);
-  for (var i = 0; i < NUM_CHANNELS; i++) {
+  for (let i = 0; i < NUM_CHANNELS; i++) {
     const chan = reverbIR.getChannelData(i);
-    for (var j = 0; j < numSampleFrames; j++) {
+    for (let j = 0; j < numSampleFrames; j++) {
       chan[j] = getRandomSample() * Math.pow(decayBase, j);
     }
-    for (var j = 0; j < fadeInSampleFrames; j++) {
-      chan[j] *= (j / fadeInSampleFrames);
+    for (let k = 0; k < fadeInSampleFrames; k++) {
+      chan[k] *= (k / fadeInSampleFrames);
     }
   }
   return reverbIR;

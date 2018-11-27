@@ -15,7 +15,7 @@ const CARRIER_FUNCTIONS = {
   sigmoid: x => 2 / (1 + Math.exp(-4 * x)) - 1,
   sigmoid2: x => 1.5 / (1 + Math.exp(-10 * x)) - 0.75,
   sigmoidLike: (x, multiplier) =>  ( 3 + multiplier ) * x * 20 * (Math.PI / 180) / ( Math.PI + multiplier * Math.abs(x) ),
-  hardClip: (x, multiplier) =>  (1 + 0.4 * x) / (1 + Math.abs(x))
+  hardClip: x =>  (1 + 0.4 * x) / (1 + Math.abs(x))
 };
 
 function createCurve(carrierFunction, sampleRate, multiplier) {

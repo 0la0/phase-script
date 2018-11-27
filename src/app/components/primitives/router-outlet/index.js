@@ -1,4 +1,3 @@
-import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import router from 'services/Router';
 

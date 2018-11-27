@@ -99,7 +99,7 @@ class SampleVisualizer extends BaseComponent {
     const playbackStart = (this.startOffset || 0) * WIDTH;
     const secondMultiplier = (1 / this.audioBuffer.duration) * WIDTH;
     const sustainStart = playbackStart + secondMultiplier * this.asr.attack;
-    const decayStart = sustainStart + secondMultiplier * this.asr.sustain
+    const decayStart = sustainStart + secondMultiplier * this.asr.sustain;
     const decayEnd = decayStart + secondMultiplier * this.asr.release;
 
     //--- DRAW WAVEFORM ---//

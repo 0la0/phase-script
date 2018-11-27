@@ -8,7 +8,7 @@ const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
 class SliderHorizontal extends BaseComponent {
-  constructor(note) {
+  constructor() {
     super(style, markup, ['tracker']);
     this.isActive = false;
   }
