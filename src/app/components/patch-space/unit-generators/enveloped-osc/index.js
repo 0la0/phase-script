@@ -70,7 +70,7 @@ class EnvelopedOsc extends BaseComponent {
       const params = this.getParametersForTime(message.time.audio);
       const note = message.note !== undefined ? message.note : 60;
       // const osc = new EnvelopedOscilator(this.oscType);
-      const outputs = [...this.eventModel.getOutlets()]
+      const outputs = [...this.eventModel.getOutlets()];
       envelopedOscilator(note, message.time.audio, params, this.oscType, GAIN_VALUE, outputs, this.signalCarrier.getInput());
     });
   }

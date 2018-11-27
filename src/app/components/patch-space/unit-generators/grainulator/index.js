@@ -60,7 +60,6 @@ class PatchGrainulator extends BaseComponent {
   schedule(message) {
     setTimeout(() => {
       const { grainDensity, timeScatter } = this.getParametersForTime(message.time.audio);
-      const note = message.note !== undefined ? message.note : 60;
       const tickLength = metronomeManager.getMetronome().getTickLength();
       const baseTime = message.time.audio;
       const grainsPerTick = getGrainsPerTick(grainDensity);

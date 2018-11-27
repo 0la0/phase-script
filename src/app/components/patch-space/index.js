@@ -65,7 +65,7 @@ class PatchSpace extends BaseComponent {
 
   connectedCallback() {
     Object.entries(nodeMap)
-      .map(([ name, component ]) => {
+      .map(([ name ]) => {
         const button = new TextButton.element();
         button.setAttribute('click', 'addPatchElement');
         button.setAttribute('label', name);

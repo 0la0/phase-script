@@ -7,20 +7,13 @@ import {
   Vector3,
   Face3,
   Mesh,
-  Euler,
-  BoxHelper,
   Group,
   LineBasicMaterial,
   Line,
   Color
 } from 'three';
 
-const TWO_PI = 2 * Math.PI;
 const VELOCITY_MULT = 0.1;
-
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
-}
 
 function getColorFromBase(baseColor, spread) {
   const r = baseColor.x + getPosNeg() * spread * Math.random();
@@ -56,11 +49,13 @@ function buildTriangle(size, center, baseColor) {
   lineGeometry3.vertices.push(v1);
 
   const triangleMesh = new Mesh(triangleGeometry, triangleMaterial);
-  const line1 = new Line(lineGeometry1, lineMaterial);
-  const line2 = new Line(lineGeometry2, lineMaterial);
-  const line3 = new Line(lineGeometry3, lineMaterial);
   const group = new Group();
-  // group.add(triangleMesh, line1, line2, line3);
+  group.add(
+    triangleMesh,
+    // new Line(lineGeometry1, lineMaterial),
+    // new Line(lineGeometry2, lineMaterial),
+    // new Line(lineGeometry3, lineMaterial)
+  );
   group.add(triangleMesh);
   return group;
 }

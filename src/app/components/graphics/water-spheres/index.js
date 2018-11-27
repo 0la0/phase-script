@@ -19,7 +19,7 @@ export default class WaterSpheres {
     const defaultScene = buildDefaultScene();
     this.camera = defaultScene.camera;
     this.scene = defaultScene.scene;
-    this.spheres = IntArray(NUM_SPHERES).map(index => new WaterSphere(vertexShader, fragmentShader));
+    this.spheres = IntArray(NUM_SPHERES).map(() => new WaterSphere(vertexShader, fragmentShader));
     this.spheres.forEach(sphere => this.scene.add(sphere.getMesh()));
 
     this.camPositionX = 0;
@@ -27,7 +27,7 @@ export default class WaterSpheres {
     this.totalTime = 0;
   }
 
-  onTick(tick) {
+  onTick() {
     this.activateRandomSphere();
   }
 

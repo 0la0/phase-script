@@ -33,7 +33,6 @@ export default class WaterSphere {
   }
 
   update(elapsedTime, totalTime) {
-    const deltaTime = performance.now() - this.startTime;
     this.uniforms.time.value = this.rate * totalTime * 1000;
 
     if (!this.isActive) { return; }

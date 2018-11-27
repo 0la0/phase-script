@@ -1,8 +1,5 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import { audioEventBus, tickEventBus } from 'services/EventBus';
-import metronomeManager from 'services/metronome/metronomeManager';
-import visualizer from 'services/audio/visualizer';
 
 const COMPONENT_NAME = 'fft-visualizer';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -11,7 +8,6 @@ const WIDTH = 100;
 const HEIGHT = 50;
 const STROKE_ADJUST = 4;
 const MAX_BYTE = Math.pow(2, 8) - 1;
-const ACTIVE_CLASS = 'visualizer--active';
 
 function getGraphicsContext(canvasElement, width, height) {
   const g2d = canvasElement.getContext('2d');

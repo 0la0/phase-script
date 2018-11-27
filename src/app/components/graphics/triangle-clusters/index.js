@@ -14,7 +14,7 @@ export default class TriangleClusters {
     this.cameraManager = new CameraManager(defaultScene.camera);
     this.triangleClusters = new Array(this.numClusters).fill(null)
       .map(() => {
-        const center = getRandomVector(100, true)
+        const center = getRandomVector(100, true);
         return new TriangleCluster(30, center);
       });
 
@@ -42,11 +42,11 @@ export default class TriangleClusters {
     this.scene.add(...allMesh);
   }
 
-  onTick(tick) {
+  onTick() {
     this.onClick();
   }
 
-  onClick($event) {
+  onClick() {
     this.triangleClusters[this.activeIndex].reset();
     this.activeIndex = (this.activeIndex + 1 >= this.numClusters) ? 0 : this.activeIndex + 1;
     this.cameraManager.reset();

@@ -76,8 +76,8 @@ class PatchDac extends BaseComponent {
 
   buildMetronomeSchedulable() {
     return {
-      processTick: (tickNumber, time) => {},
-      render: (tickNumber, lastTickNumber) => this.render(),
+      processTick: () => {},
+      render: () => this.render(),
       start: () => {},
       stop: () => {}
     };

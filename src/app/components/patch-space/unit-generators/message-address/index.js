@@ -11,7 +11,7 @@ const markup = require(`./${COMPONENT_NAME}.html`);
 let instanceCnt = 0;
 
 class MessageAddress extends BaseComponent {
-  constructor(options) {
+  constructor() {
     super('', markup, [ 'addressInput' ]);
     this.eventModel = new PatchEventModel();
     this.audioModel = new PatchAudioModel('ADDRESS', this.eventModel, PATCH_EVENT.EMPTY, PATCH_EVENT.MESSAGE);

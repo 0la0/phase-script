@@ -201,7 +201,7 @@ class DraggableWrapper extends BaseComponent {
     const parentDims = this.parentElement.getBoundingClientRect();
     const x = event.clientX - parentDims.left - this.mouseState.xBuffer;
     const y = event.clientY - parentDims.top - this.mouseState.yBuffer;
-    this.setPosition(x, y)
+    this.setPosition(x, y);
     this.onRender();
   }
 
@@ -263,12 +263,12 @@ class DraggableWrapper extends BaseComponent {
     return this.component;
   }
 
-  handleRemove(event) {
+  handleRemove() {
     console.log('TODO: resource cleanup');
     this.onRemove();
   }
 
-  handleMinimize(event) {
+  handleMinimize() {
     this.isMinimized = !this.isMinimized;
     this.isMinimized ?
       this.dom.body.classList.add('body-minimized') :
