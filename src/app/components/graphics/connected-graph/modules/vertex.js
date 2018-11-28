@@ -19,7 +19,7 @@ export default class Vertex {
     const centroid = this.goal = new Vector3(
       150 * getPosNeg() * Math.random(),
       150 * getPosNeg() * Math.random(),
-     -300 * Math.random()
+      -300 * Math.random()
     );
     this.goal = new Vector3(
       centroid.x * Math.random(),

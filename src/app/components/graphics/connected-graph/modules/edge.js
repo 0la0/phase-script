@@ -1,7 +1,6 @@
 import {
   Geometry,
   LineBasicMaterial,
-  Mesh,
   Line
 } from 'three';
 

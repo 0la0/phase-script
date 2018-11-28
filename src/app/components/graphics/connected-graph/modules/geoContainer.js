@@ -7,7 +7,7 @@ export default class GeoContainer {
     this.vertices = new Array(numVertex).fill(null).map(() => new Vertex());
 
     this.edges = [];
-    this.vertices.forEach((vertex, index, array) => {
+    this.vertices.forEach((vertex, index) => {
       const connectingVertices = this.vertices.slice(index + 1);
       connectingVertices.forEach(nextVertex => {
         if (Math.random() < 0.4) {

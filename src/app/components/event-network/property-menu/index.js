@@ -38,7 +38,7 @@ class PropertyMenu extends BaseComponent {
 
   disconnectedCallback() {
     audioEventBus.unsubscribe(this.onNewAddress);
-  };
+  }
 
   show() {
     this.dom.thresholdInput.value = this.node.getActivationThreshold();

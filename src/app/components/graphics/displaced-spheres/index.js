@@ -1,16 +1,13 @@
-import {buildDefaultScene} from 'components/graphics/util';
+import { buildDefaultScene } from 'components/graphics/util';
 import DisplacedSphere from './DisplacedSphere';
-import {IntArray} from 'components/_util/math';
-import {PointLight, Vector3} from 'three';
+import { IntArray } from 'components/_util/math';
+import { Vector3 } from 'three';
 
 const perlinNoiseLib = require('./shaders/pnoise.vert');
 const vertexShaderRoutine = require('./shaders/displace.vert');
 const fragmentShader = require('./shaders/displace.frag');
 const vertexShader = `${perlinNoiseLib}${vertexShaderRoutine}`;
 
-const CENTER = new Vector3(0, 0, 0);
-const CAMERA_SPEED = 0.3;
-const CAMERA_RADIUS = 70;
 const NUM_SPHERES = 1;
 
 export default class DisplacedSpheres {
@@ -19,7 +16,7 @@ export default class DisplacedSpheres {
     const defaultScene = buildDefaultScene();
     this.camera = defaultScene.camera;
     this.scene = defaultScene.scene;
-    this.spheres = IntArray(NUM_SPHERES).map(index => new DisplacedSphere(vertexShader, fragmentShader));
+    this.spheres = IntArray(NUM_SPHERES).map(() => new DisplacedSphere(vertexShader, fragmentShader));
     this.spheres.forEach(sphere => this.scene.add(sphere.getMesh()));
 
     // const light = new PointLight(0xff0000, 1, 100);
@@ -30,7 +27,7 @@ export default class DisplacedSpheres {
     this.totalTime = 0;
   }
 
-  onTick(tick) {
+  onTick() {
     // if (tick.beatNumber % 8 === 0) {
     //   this.activateRandomSphere();
     // }

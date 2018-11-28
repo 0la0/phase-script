@@ -58,7 +58,7 @@ class GraphicsManager {
     this.map.get(this.activeState).onTick(tick);
   }
 
-  setFftArray(fftArray) {
+  setFftArray() {
     // TODO: send to graphics consumer
   }
 

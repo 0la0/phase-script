@@ -54,7 +54,6 @@ function applyEventListeners() {
       else if (this.isDragging) {
         const event = message.event;
         event.preventDefault();
-        const parentElement = event.target.parentElement.parentElement;
         const {x, y} = getSvgCoordinatesFromEvent(event, this.parentElement);
         this.setPosition(x, y);
       }

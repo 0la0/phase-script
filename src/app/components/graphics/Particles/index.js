@@ -15,7 +15,7 @@ function getJitter(magnitude) {
 function getPointInSpace() {
   return new Vector3(
     -50 + 100 * Math.random(),
-     25 +  50 * Math.random(),
+    25 +  50 * Math.random(),
     -100 + 50 * Math.random(),
   );
 }
@@ -98,7 +98,7 @@ export default class Particles {
     this.reset();
   }
 
-  onTick(tick) {
+  onTick() {
     this.reset();
   }
 

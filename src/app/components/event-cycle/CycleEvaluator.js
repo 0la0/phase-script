@@ -8,7 +8,7 @@ function tokenizeString(str) {
   return JSON.stringify(cycleTokens);
 }
 
-function parser(rawString) {
+export function parser(rawString) {
   const str = `[${rawString}]`;
   const jsonStringArray = str.split(SPLIT_ON_BRACKET)
     .map(chunk => chunk.trim())
@@ -35,5 +35,3 @@ function parser(rawString) {
     return { ok: false, error, };
   }
 }
-
-module.exports = { parser };

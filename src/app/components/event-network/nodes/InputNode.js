@@ -10,7 +10,7 @@ export default class InputNode extends BaseNode {
       .forEach(outputNode => outputNode.activate(tickNumber, time));
   }
 
-  render(tickNumber, lastTickNumber) {
+  render() {
     this.svgNode.renderActivation();
   }
 

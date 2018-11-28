@@ -44,7 +44,6 @@ export default class DisplacedSphere {
   }
 
   update(elapsedTime, totalTime) {
-    const deltaTime = performance.now() - this.startTime;
     this.uniforms.time.value = this.rate * totalTime * 1000;
     this.uniforms.magnitude.value = 2 * Math.abs(Math.sin(totalTime));
   }

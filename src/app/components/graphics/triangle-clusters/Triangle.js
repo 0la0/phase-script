@@ -9,7 +9,6 @@ import {
   Mesh,
   Group,
   LineBasicMaterial,
-  Line,
   Color
 } from 'three';
 
@@ -30,7 +29,7 @@ function buildTriangle(size, center, baseColor) {
   const lineGeometry1 = new Geometry();
   const lineGeometry2 = new Geometry();
   const lineGeometry3 = new Geometry();
-  const lineMaterial = new LineBasicMaterial({color});
+  // const lineMaterial = new LineBasicMaterial({color});
   const v1 = new Vector3(-buffer, -buffer, 0);
   const v2 = new Vector3(-buffer,  buffer, 0);
   const v3 = new Vector3( buffer,  buffer, 0);

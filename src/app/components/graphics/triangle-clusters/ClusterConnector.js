@@ -22,7 +22,7 @@ export default class ClusterConnector {
     this.triangles.forEach(triangle => triangle.reset());
   }
 
-  update(elapsedTime) {}
+  update() {}
 
   getMesh() {
     return this.triangles.map(triangle => triangle.getMesh());

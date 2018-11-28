@@ -10,11 +10,11 @@ class App extends BaseComponent {
     super('', markup);
   }
 
-  goToSoundRoute(event) {
+  goToSoundRoute() {
     router.pushRoute('/#/sound');
   }
 
-  goToGraphicsRoute(event) {
+  goToGraphicsRoute() {
     router.pushRoute('/#/graphics');
   }
 }

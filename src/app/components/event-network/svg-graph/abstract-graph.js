@@ -55,7 +55,7 @@ export default class AbstractGraph extends BaseComponent {
     this.showContainerMenu(true, event.clientX, event.clientY);
   }
 
-  onMouseDown(event) {
+  onMouseDown() {
     this.showContainerMenu(false);
   }
 

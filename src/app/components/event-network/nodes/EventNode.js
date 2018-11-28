@@ -41,7 +41,7 @@ export default class EventNode extends BaseNode {
     this.activationThreshold = activationThreshold;
   }
 
-  getActivationThreshold(activationThreshold) {
+  getActivationThreshold() {
     return this.activationThreshold;
   }
 

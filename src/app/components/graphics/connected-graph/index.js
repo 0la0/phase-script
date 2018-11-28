@@ -15,11 +15,11 @@ export default class ConnectedGraph {
     this.geoContainer.getMeshList().forEach(mesh => this.scene.add(mesh));
   }
 
-  onTick(tick) {
+  onTick() {
     this.geoContainer.reset();
   }
 
-  onClick($event) {
+  onClick() {
     this.geoContainer.reset();
   }
 

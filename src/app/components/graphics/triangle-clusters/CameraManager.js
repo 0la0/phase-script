@@ -2,7 +2,6 @@ import {getRandomVector} from 'components/graphics/util';
 import {getPosNeg} from 'components/_util/math';
 import {Vector3} from 'three';
 
-const TIME_MULTIPLIER = 0.1;
 const DISTANCE_FACTOR = 2;
 const DISTANCE_THRESH = 0.1;
 const CENTER = new Vector3(0, 0, 0);

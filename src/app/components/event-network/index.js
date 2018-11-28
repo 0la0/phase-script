@@ -1,5 +1,5 @@
 import Component from 'components/_util/component';
-import { audioEventBus, tickEventBus } from 'services/EventBus';
+import { tickEventBus } from 'services/EventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
 import EventNode from 'components/event-network/nodes/EventNode';
 import InputNode from 'components/event-network/nodes/InputNode';
@@ -8,8 +8,6 @@ import AbstractGraph from 'components/event-network/svg-graph/abstract-graph';
 const COMPONENT_NAME = 'event-network';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
-
-let instanceCnt = 0;
 
 const dom = [ 'svgContainer', 'containerMenu' ];
 
@@ -41,9 +39,9 @@ class EventNetwork extends AbstractGraph {
     return {
       processTick: (tickNumber, time) => {
         this.nodes.forEach(node => node.onBeforeActivate());
-        this.inputNodes.forEach(node => node.activate(tickNumber, time))
+        this.inputNodes.forEach(node => node.activate(tickNumber, time));
       },
-      render: (tickNumber, lastTickNumber) => {
+      render: () => {
         this.nodes.forEach(node => node.renderActivationState());
       },
       start: () => {},

@@ -9,14 +9,13 @@ const COMPONENT_NAME = 'event-cycle';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const REST = '\'';
 const CYCLE_INVALID = 'cycle-input--invalid';
 
 const metronome = metronomeManager.getMetronome();
 const dom = [ 'cycleLength', 'cycleElement', 'cycleInput', 'cycleIndicator', ];
 
 class EventCycle extends BaseComponent {
-  constructor(node) {
+  constructor() {
     super(style, markup, dom);
     this.cycleLength = 16;
     this.parentCycle = [];
@@ -53,7 +52,7 @@ class EventCycle extends BaseComponent {
 
   evaluateCycle(tickNumber, time, tickLength, cycle, cycleDuration) {
     const elementDuration = cycleDuration / cycle.length;
-    cycle.forEach((element, index, arr) => {
+    cycle.forEach((element, index) => {
       const timeObj = {
         audio: time.audio + (index * cycleDuration),
         midi: time.midi + (index * cycleDuration * AUDIO_TICK_MULTIPLIER),
@@ -62,7 +61,7 @@ class EventCycle extends BaseComponent {
         this.evaluateCycle(tickNumber, timeObj, tickLength, element, elementDuration);
       }
       else {
-        this.scheduleCycleElement(element, timeObj, tickLength)
+        this.scheduleCycleElement(element, timeObj, tickLength);
       }
     });
   }
@@ -91,7 +90,7 @@ class EventCycle extends BaseComponent {
           this.triggerCycle(tickNumber, time);
         }
       },
-      render: (tickNumber, lastTickNumber) => {
+      render: (tickNumber) => {
         const cycleModulo = tickNumber % this.cycleLength;
         if (cycleModulo === 0) {
           this.dom.cycleIndicator.classList.add('cycle-inicator--active');

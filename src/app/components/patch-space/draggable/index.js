@@ -165,9 +165,7 @@ class DraggableWrapper extends BaseComponent {
       // }
     }
     if (elementId === INLETS.frequencyInlet) {
-      console.log('todo: FREQ INLET')
       if (this.getComponent().audioModel.getOutputType() !== PATCH_EVENT.SIGNAL) {
-        console.log('Incompatible types');
         this.removeCurrentLine();
         return;
       }

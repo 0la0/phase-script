@@ -9,7 +9,6 @@ const COMPONENT_NAME = 'graphics-root';
 const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
-const NUM_VERTEX = 50;
 const LATENCY_MS = 100; // TODO: allow user to adjust latency
 export const MESSAGE = {
   SYNC: 'SYNC',
@@ -55,7 +54,7 @@ class GraphicsRoot extends BaseComponent {
     // this.graphicsChannel.close(); // TODO
     this.graphicsManager.destroy();
     window.removeEventListener('resize', this.onResizeListener);
-  };
+  }
 
   init() {
     this.renderer = new WebGLRenderer({canvas: this.dom.canvas, alpha: false, antialias: false});
