@@ -3,7 +3,7 @@ import Component from 'components/_util/component';
 import router from 'services/Router';
 
 const COMPONENT_NAME = 'app-entry';
-const markup = require(`./${COMPONENT_NAME}.html`);
+import markup from './app-entry.html';
 
 class App extends BaseComponent {
   constructor() {

@@ -9,7 +9,7 @@
     "build": "npm run clean; npm run build:webpack; npm run build:assets",
     "clean": "rm -rf dist",
     "start": "webpack-dev-server --mode=development --inline --colors --progress --content-base src",
-    "test": "mocha -r esm test/**/*.js",
+    "test": "mocha -r esm test/**/*.test.js",
     "lint": "eslint src"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
 const WHITESPACE = /(\s+)/;
-const SPLIT_ON_BRACKET = /([\[|\]])/g;
+const SPLIT_ON_BRACKET = /([[|\]])/g; // /([\[|\]])/g
 
 function tokenizeString(str) {
   const cycleTokens = str.split(WHITESPACE)
@@ -8,7 +8,10 @@ function tokenizeString(str) {
   return JSON.stringify(cycleTokens);
 }
 
-export function parser(rawString) {
+export default function cycleParser(rawString) {
+  if (typeof rawString !== 'string') {
+    return { ok: false };
+  }
   const str = `[${rawString}]`;
   const jsonStringArray = str.split(SPLIT_ON_BRACKET)
     .map(chunk => chunk.trim())

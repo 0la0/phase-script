@@ -25,3 +25,4 @@ And feature level dependencies on
 * necessity of multiple `onRemove`s
 * linter
 * velocity event triggers
+* metronome scheduler class

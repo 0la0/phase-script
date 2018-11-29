@@ -3,11 +3,11 @@ import Component from 'components/_util/component';
 import { audioEventBus } from 'services/EventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
 import { AUDIO_TICK_MULTIPLIER } from 'services/midi/util';
-import { parser } from './CycleEvaluator';
+import cycleParser from 'services/EventCycle/cycleParser';
 
 const COMPONENT_NAME = 'event-cycle';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+import style from './event-cycle.css';
+import markup from './event-cycle.html';
 
 const CYCLE_INVALID = 'cycle-input--invalid';
 
@@ -67,7 +67,7 @@ class EventCycle extends BaseComponent {
   }
 
   handleCycleChange(cycleString) {
-    const parsedCycles = parser(cycleString);
+    const parsedCycles = cycleParser(cycleString);
     if (!parsedCycles.ok) {
       this.dom.cycleInput.classList.add(CYCLE_INVALID);
       return;
@@ -87,6 +87,7 @@ class EventCycle extends BaseComponent {
     return {
       processTick: (tickNumber, time) => {
         if (tickNumber % this.cycleLength === 0) {
+          // TODO: cancel current schedule
           this.triggerCycle(tickNumber, time);
         }
       },
