@@ -5,6 +5,7 @@ import Visualizer from 'services/audio/visualizer';
 import metronomeManager from 'services/metronome/metronomeManager';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
+import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
 
 const COMPONENT_NAME = 'patch-dac';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -41,7 +42,10 @@ class PatchDac extends BaseComponent {
   }
 
   connectedCallback() {
-    this.metronomeSchedulable = this.buildMetronomeSchedulable();
+    this.metronomeSchedulable = new MetronomeScheduler({
+      render: this.render.bind(this),
+      stop: () => this.dom.fftVisualizer.clear()
+    });
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
     this.dom.fftVisualizer.addEventListener('click', this.toggle.bind(this));
   }
@@ -72,15 +76,6 @@ class PatchDac extends BaseComponent {
     } else {
       this.dom.fftVisualizer.renderFrequencyData(this.visualizer.getFrequencyData());
     }
-  }
-
-  buildMetronomeSchedulable() {
-    return {
-      processTick: () => {},
-      render: () => this.render(),
-      start: () => {},
-      stop: () => {}
-    };
   }
 }
 

@@ -3,7 +3,8 @@ import Component from 'components/_util/component';
 import { audioEventBus } from 'services/EventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
 import { AUDIO_TICK_MULTIPLIER } from 'services/midi/util';
-import cycleParser from 'services/EventCycle/cycleParser';
+import cycleParser from 'services/EventCycle/Parser';
+import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
 
 const COMPONENT_NAME = 'event-cycle';
 import style from './event-cycle.css';
@@ -26,7 +27,10 @@ class EventCycle extends BaseComponent {
     this.dom.cycleLength.addEventListener('blur', this.handleCycleLengthChange.bind(this));
     this.dom.cycleInput.addEventListener('keydown', event => event.stopPropagation());
     this.dom.cycleInput.addEventListener('keyup', event => this.handleCycleChange(event.target.value));
-    this.metronomeSchedulable = this.buildMetronomeSchedulable();
+    this.metronomeSchedulable = new MetronomeScheduler({
+      processTick: this.handleTick.bind(this),
+      render: this.handleTickRender.bind(this)
+    });
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
 
     // for testing
@@ -83,25 +87,20 @@ class EventCycle extends BaseComponent {
     this.evaluateCycle(tickNumber, time, tickLength, this.parentCycle, cycleDuration);
   }
 
-  buildMetronomeSchedulable() {
-    return {
-      processTick: (tickNumber, time) => {
-        if (tickNumber % this.cycleLength === 0) {
-          // TODO: cancel current schedule
-          this.triggerCycle(tickNumber, time);
-        }
-      },
-      render: (tickNumber) => {
-        const cycleModulo = tickNumber % this.cycleLength;
-        if (cycleModulo === 0) {
-          this.dom.cycleIndicator.classList.add('cycle-inicator--active');
-        } else if (cycleModulo === 1) {
-          this.dom.cycleIndicator.classList.remove('cycle-inicator--active');
-        }
-      },
-      start: () => {},
-      stop: () => {}
-    };
+  handleTick(tickNumber, time) {
+    if (tickNumber % this.cycleLength === 0) {
+      // TODO: cancel current schedule
+      this.triggerCycle(tickNumber, time);
+    }
+  }
+
+  handleTickRender(tickNumber) {
+    const cycleModulo = tickNumber % this.cycleLength;
+    if (cycleModulo === 0) {
+      this.dom.cycleIndicator.classList.add('cycle-inicator--active');
+    } else if (cycleModulo === 1) {
+      this.dom.cycleIndicator.classList.remove('cycle-inicator--active');
+    }
   }
 }
 

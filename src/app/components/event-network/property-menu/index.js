@@ -8,7 +8,7 @@ const style = require(`./${COMPONENT_NAME}.css`);
 const markup = require(`./${COMPONENT_NAME}.html`);
 
 const metronome = metronomeManager.getMetronome();
-const dom = [ 'container', 'tresholdInput', 'sendComboBox', 'valueInput' ];
+const dom = [ 'container', 'thresholdInput', 'sendComboBox', 'valueInput' ];
 
 class PropertyMenu extends BaseComponent {
   constructor(node) {
@@ -43,7 +43,7 @@ class PropertyMenu extends BaseComponent {
   show() {
     this.dom.thresholdInput.value = this.node.getActivationThreshold();
     this.dom.valueInput.value = this.node.getMessageValue();
-    this.dom.sendComboBox.setValue(this.node.getAddress());
+    // this.dom.sendComboBox.setValue(this.node.getAddress());
     this.dom.container.classList.add('scrim-active');
   }
 

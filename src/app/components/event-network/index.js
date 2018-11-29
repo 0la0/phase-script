@@ -4,6 +4,7 @@ import metronomeManager from 'services/metronome/metronomeManager';
 import EventNode from 'components/event-network/nodes/EventNode';
 import InputNode from 'components/event-network/nodes/InputNode';
 import AbstractGraph from 'components/event-network/svg-graph/abstract-graph';
+import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
 
 const COMPONENT_NAME = 'event-network';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -18,7 +19,10 @@ class EventNetwork extends AbstractGraph {
 
   connectedCallback() {
     super.connectedCallback();
-    this.metronomeSchedulable = this.buildMetronomeSchedulable();
+    this.metronomeSchedulable = new MetronomeScheduler({
+      processTick: this.handleTick.bind(this),
+      render: this.handleTickRender.bind(this)
+    });
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
   }
 
@@ -35,18 +39,13 @@ class EventNetwork extends AbstractGraph {
     super.addInput(event, InputNode);
   }
 
-  buildMetronomeSchedulable() {
-    return {
-      processTick: (tickNumber, time) => {
-        this.nodes.forEach(node => node.onBeforeActivate());
-        this.inputNodes.forEach(node => node.activate(tickNumber, time));
-      },
-      render: () => {
-        this.nodes.forEach(node => node.renderActivationState());
-      },
-      start: () => {},
-      stop: () => {}
-    };
+  handleTick(tickNumber, time) {
+    this.nodes.forEach(node => node.onBeforeActivate());
+    this.inputNodes.forEach(node => node.activate(tickNumber, time));
+  }
+
+  handleTickRender() {
+    this.nodes.forEach(node => node.renderActivationState());
   }
 }
 

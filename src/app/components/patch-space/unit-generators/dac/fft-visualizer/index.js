@@ -31,6 +31,10 @@ class FftVisualizer extends BaseComponent {
     this.g2d = getGraphicsContext(this.dom.canvas, WIDTH, HEIGHT);
   }
 
+  clear() {
+    this.g2d.clearRect(0, 0, WIDTH, HEIGHT);
+  }
+
   fadeCanvas() {
     this.g2d.fillStyle = '#24242460';
     this.g2d.fillRect(0, 0, WIDTH, HEIGHT);
