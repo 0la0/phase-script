@@ -2,9 +2,9 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { audioEventBus } from 'services/EventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
-import { AUDIO_TICK_MULTIPLIER } from 'services/midi/util';
-import cycleParser from 'services/EventCycle/Parser';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
+import cycleParser from 'services/EventCycle/Parser';
+import evaluateCycle from 'services/EventCycle/Evaluator';
 
 const COMPONENT_NAME = 'event-cycle';
 import style from './event-cycle.css';
@@ -54,22 +54,6 @@ class EventCycle extends BaseComponent {
     audioEventBus.publish({ address, time, duration, note, });
   }
 
-  evaluateCycle(tickNumber, time, tickLength, cycle, cycleDuration) {
-    const elementDuration = cycleDuration / cycle.length;
-    cycle.forEach((element, index) => {
-      const timeObj = {
-        audio: time.audio + (index * cycleDuration),
-        midi: time.midi + (index * cycleDuration * AUDIO_TICK_MULTIPLIER),
-      };
-      if (Array.isArray(element)) {
-        this.evaluateCycle(tickNumber, timeObj, tickLength, element, elementDuration);
-      }
-      else {
-        this.scheduleCycleElement(element, timeObj, tickLength);
-      }
-    });
-  }
-
   handleCycleChange(cycleString) {
     const parsedCycles = cycleParser(cycleString);
     if (!parsedCycles.ok) {
@@ -84,7 +68,8 @@ class EventCycle extends BaseComponent {
     if (!this.parentCycle || !this.parentCycle.length) { return; }
     const tickLength = metronome.getTickLength();
     const cycleDuration = (tickLength * this.cycleLength) / this.parentCycle.length;
-    this.evaluateCycle(tickNumber, time, tickLength, this.parentCycle, cycleDuration);
+    const schedulables = evaluateCycle(tickNumber, time, tickLength, this.parentCycle, cycleDuration);
+    schedulables.forEach(({ token, time, tickLength }) => this.scheduleCycleElement(token, time, tickLength));
   }
 
   handleTick(tickNumber, time) {
