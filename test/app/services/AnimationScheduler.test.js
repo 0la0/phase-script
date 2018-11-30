@@ -5,7 +5,7 @@ describe('AnimationScheduler', () => {
   it('returns false when empty', () => {
     const animationScheduler = new AnimationScheduler();
     assert.equal(animationScheduler.schedules.length, 0);
-    assert.equal(animationScheduler.getLatestSchedule(), false);
+    assert.ok(!animationScheduler.getLatestSchedule());
   });
 
   it('returns a single item', () => {
@@ -13,7 +13,7 @@ describe('AnimationScheduler', () => {
     animationScheduler.submit(0);
     assert.equal(animationScheduler.getLatestSchedule(0), 0);
     assert.equal(animationScheduler.schedules.length, 0);
-    assert.equal(animationScheduler.getLatestSchedule(1), false);
+    assert.ok(!animationScheduler.getLatestSchedule(1));
   });
 
   it('returns the latest item and clears the queue', () => {
@@ -21,14 +21,14 @@ describe('AnimationScheduler', () => {
     animationScheduler.submit(0);
     assert.equal(animationScheduler.getLatestSchedule(0), 0);
     assert.equal(animationScheduler.schedules.length, 0);
-    assert.equal(animationScheduler.getLatestSchedule(1), false);
+    assert.ok(!animationScheduler.getLatestSchedule(1));
     animationScheduler.submit(1);
     animationScheduler.submit(2);
     assert.equal(animationScheduler.getLatestSchedule(1), 1);
     assert.equal(animationScheduler.schedules.length, 1);
     assert.equal(animationScheduler.getLatestSchedule(2), 2);
     assert.equal(animationScheduler.schedules.length, 0);
-    assert.equal(animationScheduler.getLatestSchedule(3), false);
+    assert.ok(!animationScheduler.getLatestSchedule(3));
   });
 
   it('returns the latest item and clears the queue', () => {
@@ -44,6 +44,6 @@ describe('AnimationScheduler', () => {
     assert.equal(animationScheduler.schedules.length, 1);
     assert.equal(animationScheduler.getLatestSchedule(4), 4);
     assert.equal(animationScheduler.schedules.length, 0);
-    assert.equal(animationScheduler.getLatestSchedule(4.1), false);
+    assert.ok(!animationScheduler.getLatestSchedule(4.1));
   });
 });

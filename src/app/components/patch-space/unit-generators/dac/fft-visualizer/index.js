@@ -25,9 +25,6 @@ function getGraphicsContext(canvasElement, width, height) {
 class FftVisualizer extends BaseComponent {
   constructor() {
     super(style, '<canvas id="canvas"></canvas>', [ 'canvas' ]);
-  }
-
-  connectedCallback() {
     this.g2d = getGraphicsContext(this.dom.canvas, WIDTH, HEIGHT);
   }
 
