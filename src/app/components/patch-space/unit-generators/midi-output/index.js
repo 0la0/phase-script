@@ -4,8 +4,6 @@ import { IntArray } from 'components/_util/math';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
-// import ParamScheduler from 'components/patch-space/modules/ParamScheduler';
-// import PatchParam, { PatchParamModel } from 'components/patch-param';
 import provideMidiFactory from 'services/midi/midiDeviceFactory';
 import MidiMessage, { COMMAND } from 'services/midi/MidiMessage';
 
@@ -23,6 +21,7 @@ class MidiOutput extends BaseComponent {
     this.outputDevice;
     this.isNote = true;
     this.noteValue = 60;
+    this.channel = 0;
   }
 
   connectedCallback() {
@@ -36,7 +35,12 @@ class MidiOutput extends BaseComponent {
   populateSelector() {
     provideMidiFactory()
       .then(midiFactory => midiFactory.getOutputList().map(device => ({ label: device.name, value: device.name })))
-      .then(options => this.dom.deviceSelector.setOptions(options));
+      .then(options => {
+        this.dom.deviceSelector.setOptions(options);
+        if (options[0]) {
+          this.handleDeviceChange({ target: options[0] });
+        }
+      });
   }
 
   handleDeviceChange(event) {
@@ -44,6 +48,7 @@ class MidiOutput extends BaseComponent {
     provideMidiFactory()
       .then(midiFactory => {
         this.outputDevice = midiFactory.getOutputByName(device);
+        // TODO: move midi input to a  different module
         const input = midiFactory.getInputByName(device);
         input.onmidimessage = event => {
           if (event.data.length === 1 && event.data[0] === 248) {
@@ -52,7 +57,8 @@ class MidiOutput extends BaseComponent {
           const msg = MidiMessage.fromSerialized(event.data);
           console.log(this.name, msg);
         };
-      });
+      })
+      .catch(error => console.log('midi output connection error', error));
   }
 
   handleChannelChange(event) {

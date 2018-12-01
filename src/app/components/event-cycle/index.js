@@ -64,19 +64,12 @@ class EventCycle extends BaseComponent {
     this.parentCycle = parsedCycles.content;
   }
 
-  triggerCycle(tickNumber, time) {
-    if (!this.parentCycle || !this.parentCycle.length) { return; }
-    const tickLength = metronome.getTickLength();
-    const cycleDuration = (tickLength * this.cycleLength) / this.parentCycle.length;
-    const schedulables = evaluateCycle(tickNumber, time, tickLength, this.parentCycle, cycleDuration);
-    schedulables.forEach(({ token, time, tickLength }) => this.scheduleCycleElement(token, time, tickLength));
-  }
-
   handleTick(tickNumber, time) {
-    if (tickNumber % this.cycleLength === 0) {
-      // TODO: cancel current schedule
-      this.triggerCycle(tickNumber, time);
-    }
+    if (tickNumber % this.cycleLength !== 0) { return; }
+    const tickLength = metronome.getTickLength();
+    const audioCycleDuration = tickLength * this.cycleLength;
+    const schedulables = evaluateCycle(time, tickLength, this.parentCycle, audioCycleDuration);
+    schedulables.forEach(({ token, time, tickLength }) => this.scheduleCycleElement(token, time, tickLength));
   }
 
   handleTickRender(tickNumber) {
