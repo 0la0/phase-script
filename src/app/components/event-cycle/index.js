@@ -47,10 +47,11 @@ class EventCycle extends BaseComponent {
     this.cycleLength = parseInt(event.target.value, 10);
   }
 
-  scheduleCycleElement(cycleElement, time, duration) {
+  scheduleCycleElement(cycleElement, time) {
     const [ address, noteString ] = cycleElement.split(':');
     const intNote = parseInt(noteString, 10);
     const note = isNaN(intNote) ? undefined : intNote;
+    const duration = metronome.getTickLength();
     audioEventBus.publish({ address, time, duration, note, });
   }
 
@@ -66,10 +67,9 @@ class EventCycle extends BaseComponent {
 
   handleTick(tickNumber, time) {
     if (tickNumber % this.cycleLength !== 0) { return; }
-    const tickLength = metronome.getTickLength();
-    const audioCycleDuration = tickLength * this.cycleLength;
-    const schedulables = evaluateCycle(time, tickLength, this.parentCycle, audioCycleDuration);
-    schedulables.forEach(({ token, time, tickLength }) => this.scheduleCycleElement(token, time, tickLength));
+    const audioCycleDuration = metronome.getTickLength() * this.cycleLength;
+    const schedulables = evaluateCycle(time, this.parentCycle, audioCycleDuration);
+    schedulables.forEach(({ token, time }) => this.scheduleCycleElement(token, time));
   }
 
   handleTickRender(tickNumber) {

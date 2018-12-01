@@ -1,4 +1,5 @@
 import { AUDIO_TICK_MULTIPLIER } from 'services/midi/util';
+import TimeSchedule from 'services/metronome/TimeSchedule';
 import workerString from './metronome.worker';
 
 const workerUrl = URL.createObjectURL(new Blob([workerString]));
@@ -11,10 +12,7 @@ export default class Metronome {
   constructor(audioContext, noteScheduler) {
     this.audioContext = audioContext;
     this.noteScheduler = noteScheduler;
-    this.nextTickSchedule = {
-      midi: 0.0,
-      audio: 0.0
-    };
+    this.nextTickSchedule = new TimeSchedule(0, 0);
     this.lookahead = LOOKAHEAD_TIME;
     this.tempo = 120.0;
     this.isRunning = false;
@@ -26,10 +24,10 @@ export default class Metronome {
   scheduler() {
     if (this.nextTickSchedule.midi > performance.now() + SCHEDULE_AHEAD_TIME) { return; }
     const tickLength = this.getTickLength();
-    this.noteScheduler.processTick({
-      audio: this.nextTickSchedule.audio,
-      midi: this.nextTickSchedule.midi + MIDI_TIME_DELAY
-    });
+    this.noteScheduler.processTick(new TimeSchedule(
+      this.nextTickSchedule.audio,
+      this.nextTickSchedule.midi + MIDI_TIME_DELAY
+    ));
     this.nextTickSchedule.midi += tickLength * AUDIO_TICK_MULTIPLIER;
     this.nextTickSchedule.audio += tickLength;
   }

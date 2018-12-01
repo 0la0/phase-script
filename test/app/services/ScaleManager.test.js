@@ -1,5 +1,5 @@
 import assert from 'assert';
-import ScaleManager from '../../../src/app/services/scale/ScaleManager';
+import ScaleManager from 'services/scale/ScaleManager';
 
 describe('ScaleManager', () => {
   it('throws an error if a scale is not defined', () => {

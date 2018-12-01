@@ -1,5 +1,5 @@
 import assert from 'assert';
-import cycleParser from '../../../src/app/services/EventCycle/Parser';
+import cycleParser from 'services/EventCycle/Parser';
 
 describe('cycleParser', () => {
   it('parses empty strings', () => {
