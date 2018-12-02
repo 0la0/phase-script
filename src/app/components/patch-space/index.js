@@ -79,7 +79,7 @@ class PatchSpace extends BaseComponent {
         { target: { getAttribute: () => 'address' } },
         { target: { getAttribute: () => 'osc' } },
         { target: { getAttribute: () => 'dac' } },
-        { target: { getAttribute: () => 'msgFilter' } },
+        { target: { getAttribute: () => 'messageRepeater' } },
       ].forEach(e => this.addPatchElement(e));
     }, 100);
   }

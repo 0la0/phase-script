@@ -4,7 +4,7 @@ import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
 import metronomeManager from 'services/metronome/metronomeManager';
-import getTimeSchedules from './RepeatStrategy';
+import getTimeSchedules from 'services/MessageRepeat/RepeatStrategy';
 
 const COMPONENT_NAME = 'message-repeater';
 const style = require(`./${COMPONENT_NAME}.css`);
@@ -16,7 +16,7 @@ class MessageRepeater extends BaseComponent {
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('Repeater', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.MESSAGE);
     this.params = {
-      numRepeats: 0,
+      numRepeats: 1,
       repeatFrequency: 1,
       repeatModifier: 'linear'
     };
@@ -35,9 +35,8 @@ class MessageRepeater extends BaseComponent {
   }
 
   schedule(message) {
-    const tempo = metronomeManager.getMetronome().getTempo();
     const tickLength = metronomeManager.getMetronome().getTickLength();
-    const timeSchedules = getTimeSchedules(this.params.numRepeats, this.params.repeatFrequency, this.params.repeatModifier, tempo, tickLength, message.time);
+    const timeSchedules = getTimeSchedules(this.params.numRepeats, this.params.repeatFrequency, this.params.repeatModifier, tickLength, message.time);
     timeSchedules.forEach((timeSchedule) => {
       const modifiedMessage = { ...message, time: { ...timeSchedule } };
       this.eventModel.getOutlets().forEach(outlet => outlet.schedule(modifiedMessage));

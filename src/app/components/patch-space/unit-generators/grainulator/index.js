@@ -57,6 +57,7 @@ class PatchGrainulator extends BaseComponent {
     this.shadowRoot.appendChild(timeScatterParam);
   }
 
+  // TODO: replace with TimeSchedulable
   schedule(message) {
     setTimeout(() => {
       const { grainDensity, timeScatter } = this.getParametersForTime(message.time.audio);
