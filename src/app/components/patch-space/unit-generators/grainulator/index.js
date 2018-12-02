@@ -57,19 +57,19 @@ class PatchGrainulator extends BaseComponent {
     this.shadowRoot.appendChild(timeScatterParam);
   }
 
-  // TODO: replace with TimeSchedulable
   schedule(message) {
     setTimeout(() => {
       const { grainDensity, timeScatter } = this.getParametersForTime(message.time.audio);
       const tickLength = metronomeManager.getMetronome().getTickLength();
-      const baseTime = message.time.audio;
       const grainsPerTick = getGrainsPerTick(grainDensity);
       const grainFrequency = tickLength / grainsPerTick;
       for (let i = 0; i < grainsPerTick; i++) {
-        const audioTime = baseTime + i * grainFrequency;
         const timeJitter = getPosNeg() * tickLength * 2 * timeScatter * Math.random();
-        const time = { audio: audioTime + timeJitter, midi: undefined }; // TODO: midi
-        const grainMessage = { ...message, time, };
+        const grainOffset = i * grainFrequency + timeJitter;
+        const grainMessage = {
+          ...message,
+          time: message.time.clone().add(grainOffset),
+        };
         this.eventModel.getOutlets().forEach(outlet => outlet.schedule(grainMessage));
       }
     });
