@@ -1,10 +1,12 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { audioEventBus } from 'services/EventBus';
+import AudioEvent from 'services/EventBus/AudioEvent';
 import metronomeManager from 'services/metronome/metronomeManager';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
 import cycleParser from 'services/EventCycle/Parser';
 import evaluateCycle from 'services/EventCycle/Evaluator';
+import parseToken from 'services/EventCycle/Tokenizer';
 
 const COMPONENT_NAME = 'event-cycle';
 import style from './event-cycle.css';
@@ -47,14 +49,6 @@ class EventCycle extends BaseComponent {
     this.cycleLength = parseInt(event.target.value, 10);
   }
 
-  scheduleCycleElement(cycleElement, time) {
-    const [ address, noteString ] = cycleElement.split(':');
-    const intNote = parseInt(noteString, 10);
-    const note = isNaN(intNote) ? undefined : intNote;
-    const duration = metronome.getTickLength();
-    audioEventBus.publish({ address, time, duration, note, });
-  }
-
   handleCycleChange(cycleString) {
     const parsedCycles = cycleParser(cycleString);
     if (!parsedCycles.ok) {
@@ -69,7 +63,10 @@ class EventCycle extends BaseComponent {
     if (tickNumber % this.cycleLength !== 0) { return; }
     const audioCycleDuration = metronome.getTickLength() * this.cycleLength;
     const schedulables = evaluateCycle(time, this.parentCycle, audioCycleDuration);
-    schedulables.forEach(({ token, time }) => this.scheduleCycleElement(token, time));
+    schedulables.forEach(({ token, time }) => {
+      const { address, note } = parseToken(token);
+      audioEventBus.publish(new AudioEvent(address, note, time));
+    });
   }
 
   handleTickRender(tickNumber) {

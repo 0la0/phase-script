@@ -37,10 +37,9 @@ class MessageRepeater extends BaseComponent {
   schedule(message) {
     const tickLength = metronomeManager.getMetronome().getTickLength();
     const timeSchedules = getTimeSchedules(this.params.numRepeats, this.params.repeatFrequency, this.params.repeatModifier, tickLength, message.time);
-    timeSchedules.forEach((timeSchedule) => {
-      const modifiedMessage = { ...message, time: { ...timeSchedule } };
-      this.eventModel.getOutlets().forEach(outlet => outlet.schedule(modifiedMessage));
-    });
+    timeSchedules.forEach((timeSchedule) =>
+      this.eventModel.getOutlets().forEach(outlet =>
+        outlet.schedule(message.clone().setTime(timeSchedule))));
   }
 }
 

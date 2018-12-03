@@ -16,11 +16,8 @@ class MessageMap extends BaseComponent {
   }
 
   schedule(message) {
-    const modifiedMessage = {
-      ...message,
-      note: message.note + this.mapValue,
-    };
-    this.eventModel.getOutlets().forEach(outlet => outlet.schedule(modifiedMessage));
+    this.eventModel.getOutlets().forEach(outlet =>
+      outlet.schedule(message.clone().setNote(message.note + this.mapValue)));
   }
 
   handleMapChange(event) {

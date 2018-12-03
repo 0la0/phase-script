@@ -66,10 +66,8 @@ class PatchGrainulator extends BaseComponent {
       for (let i = 0; i < grainsPerTick; i++) {
         const timeJitter = getPosNeg() * tickLength * 2 * timeScatter * Math.random();
         const grainOffset = i * grainFrequency + timeJitter;
-        const grainMessage = {
-          ...message,
-          time: message.time.clone().add(grainOffset),
-        };
+        const grainMessage = message.clone();
+        grainMessage.time.add(grainOffset);
         this.eventModel.getOutlets().forEach(outlet => outlet.schedule(grainMessage));
       }
     });
