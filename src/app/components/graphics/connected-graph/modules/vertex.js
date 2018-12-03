@@ -4,7 +4,7 @@ import {
   LineBasicMaterial,
   Mesh
 } from 'three';
-import {getPosNeg} from 'components/_util/math';
+import {getPosNeg} from 'services/Math';
 
 export default class Vertex {
 

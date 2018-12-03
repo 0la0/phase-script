@@ -1,6 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import { clamp } from 'components/_util/math';
+import { clamp } from 'services/Math';
 import { buildAttributeCallback } from 'components/_util/dom';
 
 const COMPONENT_NAME = 'slider-horizontal';

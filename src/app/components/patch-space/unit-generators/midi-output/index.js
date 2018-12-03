@@ -1,6 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import { IntArray } from 'components/_util/math';
+import { IntArray } from 'services/Math';
 import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
 import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
 import PatchEventModel from 'components/patch-space/modules/PatchEventModel';

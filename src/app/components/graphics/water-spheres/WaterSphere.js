@@ -5,7 +5,7 @@ import {
   ShaderMaterial,
   Vector3
 } from 'three';
-import {getPosNeg} from 'components/_util/math';
+import {getPosNeg} from 'services/Math';
 
 const goalRange = 2;
 

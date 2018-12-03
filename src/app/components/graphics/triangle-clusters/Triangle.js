@@ -1,5 +1,5 @@
 import {getRandomVector} from 'components/graphics/util';
-import {getPosNeg} from 'components/_util/math';
+import {getPosNeg} from 'services/Math';
 import {
   MeshBasicMaterial,
   DoubleSide,

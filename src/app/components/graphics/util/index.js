@@ -1,4 +1,4 @@
-import {getPosNeg} from 'components/_util/math';
+import {getPosNeg} from 'services/Math';
 import {
   PerspectiveCamera,
   Scene,

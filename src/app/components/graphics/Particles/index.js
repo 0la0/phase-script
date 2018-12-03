@@ -1,5 +1,5 @@
 import {buildDefaultScene} from 'components/graphics/util';
-import {getPosNeg, IntArray} from 'components/_util/math';
+import {getPosNeg, IntArray} from 'services/Math';
 import Particle from './Particle';
 import {
   Geometry,

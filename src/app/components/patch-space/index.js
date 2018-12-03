@@ -1,7 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import DraggableWrapper from './draggable';
-import { uuid } from 'components/_util/math';
+import { uuid } from 'services/Math';
 import TextButton from 'components/primitives/text-button';
 
 import Sampler from 'components/patch-space/unit-generators/sampler';

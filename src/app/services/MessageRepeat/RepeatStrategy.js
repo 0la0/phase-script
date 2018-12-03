@@ -1,4 +1,4 @@
-import { IntArray } from 'components/_util/math';
+import { IntArray } from 'services/Math';
 import TimeSchedule from 'services/metronome/TimeSchedule';
 
 function getMaxFromSchedules(schedules) {

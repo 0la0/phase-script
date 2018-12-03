@@ -1,6 +1,6 @@
 import { buildDefaultScene } from 'components/graphics/util';
 import DisplacedSphere from './DisplacedSphere';
-import { IntArray } from 'components/_util/math';
+import { IntArray } from 'services/Math';
 import { Vector3 } from 'three';
 
 const perlinNoiseLib = require('./shaders/pnoise.vert');

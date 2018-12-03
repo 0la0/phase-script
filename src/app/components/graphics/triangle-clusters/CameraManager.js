@@ -1,5 +1,5 @@
 import {getRandomVector} from 'components/graphics/util';
-import {getPosNeg} from 'components/_util/math';
+import {getPosNeg} from 'services/Math';
 import {Vector3} from 'three';
 
 const DISTANCE_FACTOR = 2;
