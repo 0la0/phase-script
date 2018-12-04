@@ -1,5 +1,5 @@
 import assert from 'assert';
-import ParamTable from 'services/ParamTable';
+import ParamTable from 'services/PatchSpace/ParamTable';
 
 describe('ParamTable', () => {
   it('returns false on an empty table', () => {

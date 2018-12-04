@@ -43,7 +43,7 @@ import EventNetwork from 'components/event-network';
 import CanvasMenu from 'components/event-network/canvas-menu';
 import PropertyMenu from 'components/event-network/property-menu';
 import EventCycle from 'components/event-cycle';
-import PatchParam from 'components/patch-param';
+import PatchParam from 'components/patch-space/patch-param';
 
 const components = [
   App,

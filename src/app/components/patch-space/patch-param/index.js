@@ -26,7 +26,7 @@ export class PatchParamModel {
 // TODO:
 // * disable slider if param has input
 // * accept signal input
-// * if param has input, hook into global render cycle and update ui
+// * if param has input, hook into global render cycle to update UI
 
 class PatchParam extends BaseComponent {
   constructor(model) {

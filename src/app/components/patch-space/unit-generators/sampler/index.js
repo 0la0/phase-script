@@ -6,7 +6,7 @@ import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import ParamScheduler from 'services/PatchSpace/ParamScheduler';
-import PatchParam, { PatchParamModel } from 'components/patch-param';
+import PatchParam, { PatchParamModel } from 'components/patch-space/patch-param';
 
 const COMPONENT_NAME = 'simple-sampler';
 const style = require(`./${COMPONENT_NAME}.css`);

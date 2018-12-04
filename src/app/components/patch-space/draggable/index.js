@@ -2,7 +2,7 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { getShadowHost } from 'components/_util/dom';
 import { eventBus } from 'services/EventBus';
-import SvgLine from '../modules/SvgLine';
+import SvgLine from './SvgLine';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 
 const COMPONENT_NAME = 'draggable-wrapper';

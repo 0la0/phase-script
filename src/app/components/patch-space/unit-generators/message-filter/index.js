@@ -3,7 +3,7 @@ import Component from 'components/_util/component';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import ParamScheduler from 'services/PatchSpace/ParamScheduler';
-import PatchParam, { PatchParamModel } from 'components/patch-param';
+import PatchParam, { PatchParamModel } from 'components/patch-space/patch-param';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 
 const COMPONENT_NAME = 'message-filter';

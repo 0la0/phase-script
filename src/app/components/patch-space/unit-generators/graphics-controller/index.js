@@ -3,7 +3,7 @@ import Component from 'components/_util/component';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
-import PatchParam, { PatchParamModel } from 'components/patch-param';
+import PatchParam, { PatchParamModel } from 'components/patch-space/patch-param';
 import { getGraphicsStates } from 'components/graphics/graphics-root/modules/graphicsManager';
 import graphicsChannel from 'services/GraphicsChannel';
 

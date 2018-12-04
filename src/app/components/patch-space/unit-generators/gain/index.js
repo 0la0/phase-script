@@ -3,7 +3,7 @@ import Component from 'components/_util/component';
 import Gain from 'services/audio/gain';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
-import PatchParam from 'components/patch-param';
+import PatchParam from 'components/patch-space/patch-param';
 
 const COMPONENT_NAME = 'patch-gain';
 const style = require(`./${COMPONENT_NAME}.css`);

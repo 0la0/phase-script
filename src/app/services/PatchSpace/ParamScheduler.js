@@ -1,4 +1,4 @@
-import ParamTable from 'services/ParamTable';
+import ParamTable from 'services/PatchSpace/ParamTable';
 
 function defaultParamTransform(message) {
   return message.note / 127;

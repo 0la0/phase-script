@@ -5,7 +5,7 @@ import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import FilterCurveRenderer from './curveRenderer';
 import audioGraph from 'services/audio/graph';
-import PatchParam from 'components/patch-param';
+import PatchParam from 'components/patch-space/patch-param';
 
 const COMPONENT_NAME = 'resonance-filter';
 const style = require(`./${COMPONENT_NAME}.css`);

@@ -3,7 +3,7 @@ import Component from 'components/_util/component';
 import { getPosNeg } from 'services/Math';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
-import PatchParam, { PatchParamModel } from 'components/patch-param';
+import PatchParam, { PatchParamModel } from 'components/patch-space/patch-param';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import ParamScheduler from 'services/PatchSpace/ParamScheduler';
 import metronomeManager from 'services/metronome/metronomeManager';
