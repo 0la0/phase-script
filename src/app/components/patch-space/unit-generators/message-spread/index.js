@@ -1,10 +1,10 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { getPosNeg, clamp } from 'services/Math';
-import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
-import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
-import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
-import ParamScheduler from 'components/patch-space/modules/ParamScheduler';
+import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
+import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
+import PatchEventModel from 'services/PatchSpace/PatchEventModel';
+import ParamScheduler from 'services/PatchSpace/ParamScheduler';
 import PatchParam, { PatchParamModel } from 'components/patch-param';
 
 const COMPONENT_NAME = 'message-spread';

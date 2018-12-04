@@ -1,10 +1,10 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
-import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
-import ParamScheduler from 'components/patch-space/modules/ParamScheduler';
+import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
+import PatchEventModel from 'services/PatchSpace/PatchEventModel';
+import ParamScheduler from 'services/PatchSpace/ParamScheduler';
 import PatchParam, { PatchParamModel } from 'components/patch-param';
-import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
+import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 
 const COMPONENT_NAME = 'message-filter';
 const markup = require(`./${COMPONENT_NAME}.html`);

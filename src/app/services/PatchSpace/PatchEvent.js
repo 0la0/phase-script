@@ -4,4 +4,4 @@ const PATCH_EVENT = {
   EMPTY: false,
 };
 
-export { PATCH_EVENT };
+export default PATCH_EVENT;

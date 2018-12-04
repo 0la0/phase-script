@@ -1,8 +1,8 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import ContinuousOsc from 'services/audio/synth/ContinuousOscilator';
-import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
-import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
+import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
+import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchParam from 'components/patch-param';
 
 const COMPONENT_NAME = 'patch-lfo';

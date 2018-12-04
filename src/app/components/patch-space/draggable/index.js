@@ -3,7 +3,7 @@ import Component from 'components/_util/component';
 import { getShadowHost } from 'components/_util/dom';
 import { eventBus } from 'services/EventBus';
 import SvgLine from '../modules/SvgLine';
-import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
+import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 
 const COMPONENT_NAME = 'draggable-wrapper';
 const style = require(`./${COMPONENT_NAME}.css`);

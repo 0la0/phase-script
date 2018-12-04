@@ -1,8 +1,8 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import ResFilter from 'services/audio/resFilter';
-import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
-import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
+import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
+import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import FilterCurveRenderer from './curveRenderer';
 import audioGraph from 'services/audio/graph';
 import PatchParam from 'components/patch-param';

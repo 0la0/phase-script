@@ -8,7 +8,6 @@ export default class PatchAudioModel {
 
   connectTo(audioModel) {
     // TODO: check compatibility
-    console.log('connecting to:', audioModel);
     this.audioModel.connect(audioModel.getAudioModelInput());
   }
 

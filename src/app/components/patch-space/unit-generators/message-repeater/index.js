@@ -1,8 +1,8 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
-import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
-import PatchEventModel from 'components/patch-space/modules/PatchEventModel';
+import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
+import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
+import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import metronomeManager from 'services/metronome/metronomeManager';
 import getTimeSchedules from 'services/MessageRepeat/RepeatStrategy';
 

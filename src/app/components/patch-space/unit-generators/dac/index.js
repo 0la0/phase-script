@@ -3,8 +3,8 @@ import Component from 'components/_util/component';
 import Dac from 'services/audio/dac';
 import Visualizer from 'services/audio/visualizer';
 import metronomeManager from 'services/metronome/metronomeManager';
-import { PATCH_EVENT } from 'components/patch-space/modules/PatchEvent';
-import PatchAudioModel from 'components/patch-space/modules/PatchAudioModel';
+import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
+import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
 
 const COMPONENT_NAME = 'patch-dac';
