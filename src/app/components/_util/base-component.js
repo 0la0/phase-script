@@ -1,4 +1,13 @@
-import commonStyles from './common.css';
+const commonStyles = `
+  .row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  p {
+    margin: 0;
+  }
+`; // TODO: replace with components
 
 function buildDomMap(shadowRoot, elements) {
   if (!elements) { return {}; }

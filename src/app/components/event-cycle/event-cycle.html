@@ -1,21 +1,19 @@
-<div class="event-cycle">
-  <div class="top-bar">
-    <div>
-      <div id="cycleIndicator" class="cycle-indicator"></div>
-      <label for="cycleLength">Cycle Length:</label>
-      <input
-        id="cycleLength"
-        class="numeric-input"
-        type="number"
-        min="1"
-        step="1"
-      />
-    </div>
-    <text-button
-      class="remove-button"
-      click="onRemove"
-      label="X">
-    </text-button>
+<div class="top-bar">
+  <div>
+    <div id="cycleIndicator" class="cycle-indicator"></div>
+    <label for="cycleLength">Cycle Length:</label>
+    <input
+      id="cycleLength"
+      class="numeric-input"
+      type="number"
+      min="1"
+      step="1"
+    />
   </div>
-  <input type="text" id="cycleInput" class="cycle-input"/>
+  <text-button
+    class="remove-button"
+    click="onRemove"
+    label="X">
+  </text-button>
 </div>
+<input type="text" id="cycleInput" class="cycle-input"/>

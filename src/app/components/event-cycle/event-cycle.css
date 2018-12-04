@@ -1,9 +1,9 @@
-.event-cycle {
+:host {
   border: var(--border-default);
   border-radius: var(--border-radius);
-  width: 300px;
   position: relative;
   display: block;
+  width: 100%;
 }
 
 .top-bar {
@@ -62,6 +62,8 @@
   border-radius: var(--border-radius);
   outline: none;
   color: var(--border-default);
+  width: 100%;
+  width: -webkit-fill-available;
 }
 .cycle-input:focus {
   outline: none;

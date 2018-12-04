@@ -1,13 +1,12 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import router from 'services/Router';
-
-const COMPONENT_NAME = 'app-entry';
 import markup from './app-entry.html';
+import styles from './app-entry.css';
 
 class App extends BaseComponent {
   constructor() {
-    super('', markup);
+    super(styles, markup);
   }
 
   goToSoundRoute() {
@@ -19,4 +18,4 @@ class App extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, App);
+export default new Component('app-entry', App);
