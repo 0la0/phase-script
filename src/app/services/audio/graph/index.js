@@ -1,10 +1,16 @@
-
 class AudioGraph {
   constructor () {
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
     this.audioContext = new AudioCtx();
     this.masterCompressor = this.audioContext.createDynamicsCompressor();
     this.masterCompressor.connect(this.audioContext.destination);
+  }
+
+  startContext() {
+    if (this.audioContext.state === 'running') {
+      return Promise.resolve();
+    }
+    return this.audioContext.resume();
   }
 
   getCurrentTime () {
@@ -24,5 +30,4 @@ class AudioGraph {
   }
 }
 
-const audioGraph = new AudioGraph();
-export default audioGraph;
+export default new AudioGraph();

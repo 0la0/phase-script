@@ -1,4 +1,5 @@
 import TimeSchedule from 'services/metronome/TimeSchedule';
+import audioGraph from 'services/audio/graph';
 import workerString from './metronome.worker';
 
 const workerUrl = URL.createObjectURL(new Blob([workerString]));
@@ -32,11 +33,13 @@ export default class Metronome {
       console.warn('Cannot start a running metronome');
       return;
     }
-    this.nextTickSchedule.midi = performance.now() + 1; // TOOD: tune this param
-    this.nextTickSchedule.audio = this.audioContext.currentTime;
-    this.noteScheduler.start();
-    this.timerWorker.postMessage('start');
-    this.isRunning = true;
+    audioGraph.startContext().then(() => {
+      this.nextTickSchedule.midi = performance.now() + 1; // TOOD: tune this param
+      this.nextTickSchedule.audio = this.audioContext.currentTime;
+      this.noteScheduler.start();
+      this.timerWorker.postMessage('start');
+      this.isRunning = true;
+    });
   }
 
   stop() {
