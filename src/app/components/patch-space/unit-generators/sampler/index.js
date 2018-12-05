@@ -1,6 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import { getSampleKeys, getAudioBuffer } from 'services/audio/sampleBank';
+import sampleBank from 'services/audio/sampleBank';
 import { playSample } from 'services/audio/sampler';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
@@ -36,11 +36,12 @@ class Sampler extends BaseComponent {
   }
 
   connectedCallback() {
-    const samples = getSampleKeys().map(sampleName => ({ label: sampleName, value: sampleName }));
+    const samples = sampleBank.getSampleKeys().map(sampleName => ({ label: sampleName, value: sampleName }));
     this.initParams();
     setTimeout(() => {
       this.dom.sampleSelect.setOptions(samples);
       this.dom.sampleVisualizer.setStartOffsetCallback(startOffset => this.params.startOffset = startOffset);
+      this.handleSampleChange({ target: samples[0] });
     });
   }
 
@@ -77,7 +78,7 @@ class Sampler extends BaseComponent {
 
   handleSampleChange(event) {
     const sampleName = event.target.value;
-    const audioBuffer = getAudioBuffer(sampleName);
+    const audioBuffer = sampleBank.getAudioBuffer(sampleName);
     const bufferLength = (audioBuffer.duration * 1000).toFixed(2);
     this.sampleKey = sampleName;
     this.bufferDuration = audioBuffer.duration;

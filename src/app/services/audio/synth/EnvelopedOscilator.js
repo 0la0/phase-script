@@ -1,6 +1,6 @@
 import audioGraph from 'services/audio/graph';
 import {mtof} from 'services/midi/util';
-import { AsrEnvelope } from 'services/audio/util/Envelopes';
+import { AsrEnvelope } from 'services/audio/Envelope';
 import { playNoiseBuffer } from 'services/audio/whiteNoise';
 import OSCILATORS from 'services/audio/synth/Oscilators';
 
@@ -20,7 +20,6 @@ export default function envelopedOscilator(midiNote, startTime, asr, type, gain,
   osc.type = _type;
   // osc.frequency.setValueAtTime(frequency, 0);
   osc.frequency.value = frequency;
-  console.log('modulator', modulator);
   if (modulator) {
     modulator.connect(osc.frequency);
   }
