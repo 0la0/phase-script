@@ -24,11 +24,10 @@ class GraphicsController extends BaseComponent {
       setValueFromMessage: message => graphicsChannel.tick(message.time.midi)
     }));
     this.shadowRoot.appendChild(this.tickParam);
-
-    setTimeout(() => {
+    graphicsChannel.sync();
+    requestAnimationFrame(() => {
       this.dom.graphicsSelector.setOptions(getGraphicsStates());
     });
-    graphicsChannel.sync();
   }
 
   handleGraphicsChange(event) {

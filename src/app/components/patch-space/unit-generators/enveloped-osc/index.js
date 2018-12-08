@@ -8,10 +8,8 @@ import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import PatchParam, { PatchParamModel } from 'components/patch-space/patch-param';
 import ParamScheduler from 'services/PatchSpace/ParamScheduler';
 import Gain from 'services/audio/gain';
-
-const COMPONENT_NAME = 'enveloped-osc';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+import style from './enveloped-osc.css';
+import markup from './enveloped-osc.html';
 
 const dom = [ 'gainOutput', 'oscTypeComboBox', 'gainSlider', 'frequencyInlet', ];
 
@@ -64,15 +62,13 @@ class EnvelopedOsc extends BaseComponent {
   }
 
   schedule(message) {
-    // this is problematic because it could miss a schedule
-    // TODO: schedule all message parameters before scheduling ugens
-    setTimeout(() => {
+    // schedule in microtask to give all params the chance to evaluate
+    // enqueueMicroTask(() => {
       const params = this.getParametersForTime(message.time.audio);
       const note = message.note !== undefined ? message.note : 60;
-      // const osc = new EnvelopedOscilator(this.oscType);
       const outputs = [...this.eventModel.getOutlets()];
       envelopedOscilator(note, message.time.audio, params, this.oscType, GAIN_VALUE, outputs, this.signalCarrier.getInput());
-    });
+    // });
   }
 
   getOsc() {
@@ -111,4 +107,4 @@ class EnvelopedOsc extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, EnvelopedOsc);
+export default new Component('enveloped-osc', EnvelopedOsc);

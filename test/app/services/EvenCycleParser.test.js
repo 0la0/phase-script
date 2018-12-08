@@ -1,7 +1,7 @@
 import assert from 'assert';
 import cycleParser from 'services/EventCycle/Parser';
 
-describe('cycleParser', () => {
+describe('CycleParser', () => {
   it('parses empty strings', () => {
     const result = cycleParser('');
     assert.ok(result.ok);

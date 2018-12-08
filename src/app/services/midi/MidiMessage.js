@@ -1,7 +1,34 @@
+const COMMANDS = {
+  NOTE_OFF: 'NOTE_OFF',
+  NOTE_ON: 'NOTE_ON',
+  AFTERTOUCH: 'AFTERTOUCH',
+  CONTROL_CHANGE: 'CONTROL_CHANGE',
+  PATCH_CHANGE: 'PATCH_CHANGE',
+  CHANNEL_PRESSURE: 'CHANNEL_PRESSURE',
+  PITCH_BEND: 'PITCH_BEND',
+  SYSTEM_EXCLUSIVE: 'SYSTEM_EXCLUSIVE'
+};
+
+const COMMAND_REVERSE = {
+  8:  COMMANDS.NOTE_OFF,
+  9:  COMMANDS.NOTE_ON,
+  10: COMMANDS.AFTERTOUCH,
+  11: COMMANDS.CONTROL_CHANGE,
+  12: COMMANDS.PATCH_CHANGE,
+  13: COMMANDS.CHANNEL_PRESSURE,
+  14: COMMANDS.PITCH_BEND,
+  15: COMMANDS.SYSTEM_EXCLUSIVE
+};
+
 export const COMMAND = {
-  ON: 9,
-  OFF: 8,
-  CC: 11
+  [COMMANDS.NOTE_OFF]: 8,
+  [COMMANDS.NOTE_ON]: 9,
+  [COMMANDS.AFTERTOUCH]: 10,
+  [COMMANDS.CONTROL_CHANGE]: 11,
+  [COMMANDS.PATCH_CHANGE]: 12,
+  [COMMANDS.CHANNEL_PRESSURE]: 13,
+  [COMMANDS.PITCH_BEND]: 14,
+  [COMMANDS.SYSTEM_EXCLUSIVE]: 15
 };
 
 export default class MidiMessage {
@@ -16,6 +43,10 @@ export default class MidiMessage {
     return new Uint8Array([
       (this.command << 4) | this.channel, this.note, this.value
     ]);
+  }
+
+  toString() {
+    return `{ command: ${COMMAND_REVERSE[this.command]}, channel: ${this.channel}, note: ${this.note}, value: ${this.value} }`;
   }
 
   static fromSerialized(serializedMessage) {

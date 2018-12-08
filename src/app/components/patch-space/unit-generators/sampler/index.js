@@ -7,10 +7,8 @@ import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import ParamScheduler from 'services/PatchSpace/ParamScheduler';
 import PatchParam, { PatchParamModel } from 'components/patch-space/patch-param';
-
-const COMPONENT_NAME = 'simple-sampler';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+import style from './simple-sampler.css';
+import markup from './simple-sampler.html';
 
 const dom = [ 'sampleSelect', 'samplerLabel', 'sampleVisualizer', 'paramInlet' ];
 
@@ -38,7 +36,7 @@ class Sampler extends BaseComponent {
   connectedCallback() {
     const samples = sampleBank.getSampleKeys().map(sampleName => ({ label: sampleName, value: sampleName }));
     this.initParams();
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       this.dom.sampleSelect.setOptions(samples);
       this.dom.sampleVisualizer.setStartOffsetCallback(startOffset => this.params.startOffset = startOffset);
       this.handleSampleChange({ target: samples[0] });
@@ -87,14 +85,13 @@ class Sampler extends BaseComponent {
   }
 
   schedule(message) {
-    // this is problematic because it could miss a schedule
-    // TODO: schedule all message parameters before scheduling ugens
-    setTimeout(() => {
+    // schedule in microtask to give all params the chance to evaluate
+    // enqueueMicroTask(() => {
       const params = this.getParametersForTime(message.time.audio);
       const outputs = [...this.eventModel.getOutlets()];
       const note = message.note !== undefined ? message.note : 60;
       playSample(this.sampleKey, message.time.audio, params.startOffset, note, params, outputs);
-    });
+    // });
   }
 
   onAttackUpdate(value) {
@@ -136,4 +133,4 @@ class Sampler extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, Sampler);
+export default new Component('simple-sampler', Sampler);

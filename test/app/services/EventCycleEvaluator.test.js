@@ -147,7 +147,7 @@ describe('CycleEvaluator', () => {
     ]);
   });
 
-  it('...evenly divides time in nested cycles', () => {
+  it('evenly divides time in nested cycles', () => {
     const parsedCycle = cycleParser('[ a [ b [ c d ] ] ]').content;
     const evaluatedCycle = evaluateCycleWithDefaults(parsedCycle);
     assert.equal(evaluatedCycle.length, 4);

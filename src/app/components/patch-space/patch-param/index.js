@@ -35,7 +35,7 @@ class PatchParam extends BaseComponent {
   }
 
   connectedCallback() {
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       this.dom.slider.setValue(this.model.defaultValue, true);
       if (this.model.label) {
         this.dom.label.innerText = this.model.label;

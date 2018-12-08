@@ -20,7 +20,7 @@ class MessageScale extends BaseComponent {
 
   connectedCallback() {
     const scaleOptions = Object.keys(scales).map(scale => ({ label: scale, value: scale }));
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       this.dom.scaleSelector.setOptions(scaleOptions);
     });
   }

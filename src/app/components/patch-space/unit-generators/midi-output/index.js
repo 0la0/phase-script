@@ -6,10 +6,8 @@ import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import provideMidiFactory from 'services/midi/midiDeviceFactory';
 import MidiMessage, { COMMAND } from 'services/midi/MidiMessage';
-
-const COMPONENT_NAME = 'midi-output';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+import markup from './midi-output.html';
+import style from './midi-output.css';
 
 const dom = [ 'deviceSelector', 'channelSelector', 'noteInputContainer', ];
 
@@ -26,10 +24,8 @@ class MidiOutput extends BaseComponent {
 
   connectedCallback() {
     this.populateSelector();
-    setTimeout(() => {
-      const channels = IntArray(16).map(i => ({ label: i, value: i}));
-      this.dom.channelSelector.setOptions(channels);
-    });
+    const channels = IntArray(16).map(i => ({ label: i, value: i}));
+    requestAnimationFrame(() => this.dom.channelSelector.setOptions(channels));
   }
 
   populateSelector() {
@@ -54,8 +50,7 @@ class MidiOutput extends BaseComponent {
           if (event.data.length === 1 && event.data[0] === 248) {
             return;
           }
-          const msg = MidiMessage.fromSerialized(event.data);
-          console.log(this.name, msg);
+          console.log(MidiMessage.fromSerialized(event.data).toString());
         };
       })
       .catch(error => console.log('midi output connection error', error));
@@ -86,6 +81,7 @@ class MidiOutput extends BaseComponent {
     const msgValue = 64;
     const onMessage = new MidiMessage(COMMAND.ON, this.channel, message.note, msgValue).serialize();
     const offMessage = new MidiMessage(COMMAND.OFF, this.channel, message.note, msgValue).serialize();
+    // TODO: serialize message in output device
     this.outputDevice.send(onMessage, message.time.midi);
     this.outputDevice.send(offMessage, offTime);
   }
@@ -96,4 +92,4 @@ class MidiOutput extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, MidiOutput);
+export default new Component('midi-output', MidiOutput);

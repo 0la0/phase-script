@@ -32,7 +32,7 @@ class MessageMap extends BaseComponent {
   }
 
   schedule(message) {
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       const params = this.getParametersForTime(message.time.audio);
       if (Math.random() > params.threshold) { return; }
       this.eventModel.getOutlets().forEach(outlet => outlet.schedule(message));

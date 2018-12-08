@@ -1,5 +1,5 @@
 // https://pages.mtu.edu/~suits/west_scales.html
-const scales = {
+export default {
   major: [2, 2, 1, 2, 2, 2, 1],
   minor: [2, 1, 2, 2, 1, 1, 1],
   harmonicMinor: [2, 1, 2, 2, 1, 3, 1],
@@ -17,5 +17,3 @@ const scales = {
   wholeHalfDiminished: [2, 1, 2, 1, 2, 1, 2, 1],
   halfWholeDiminished: [1, 2, 1, 2, 1, 2, 1, 2],
 };
-
-export default scales;

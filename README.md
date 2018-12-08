@@ -23,5 +23,8 @@ And feature level dependencies on
 * remove all old and unused components
 * create second event network that is not based on threshold events
 * necessity of multiple `onRemove`s
-* linter
+* linter progress
 * velocity event triggers
+* separate audio / graphics bundles
+* replace component wrapper with a static name property
+* replace instances of `setTimeout` with `TaskScheduler` (also batch all `connectedCallback` dom update timeouts.

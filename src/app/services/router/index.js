@@ -31,5 +31,4 @@ class Router {
   }
 }
 
-const instance = new Router();
-export default instance;
+export default new Router();

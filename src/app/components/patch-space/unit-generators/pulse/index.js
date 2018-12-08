@@ -8,10 +8,8 @@ import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import ParamScheduler from 'services/PatchSpace/ParamScheduler';
 import PatchParam, { PatchParamModel } from 'components/patch-space/patch-param';
 import { mtof } from 'services/midi/util';
-
-const COMPONENT_NAME = 'patch-pulse';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+import style from './patch-pulse.css';
+import markup from './patch-pulse.html';
 
 const DEFAULT_VALUES = {
   CYCLE_LENGTH: 0.2,
@@ -62,14 +60,14 @@ class PatchPulse extends BaseComponent {
   }
 
   schedule(message) {
-    setTimeout(() => {
+    // enqueueMicroTask(() => {
       const { cycleLength, resonance } = this.getParametersForTime(message.time.audio);
       const note = message.note !== undefined ? message.note : 60;
       const frequency = mtof(note);
       const duration = cycleLength * (1 / frequency);
       const outputs = [...this.eventModel.getOutlets()];
       triggerPulse(frequency, this.params.oscType, message.time.audio, duration, resonance, outputs);
-    });
+    // });
   }
 
   getParametersForTime(time) {
@@ -88,4 +86,4 @@ class PatchPulse extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, PatchPulse);
+export default new Component('patch-pulse', PatchPulse);
