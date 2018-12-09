@@ -7,21 +7,23 @@ import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
 import cycleParser from 'services/EventCycle/Parser';
 import evaluateCycle from 'services/EventCycle/Evaluator';
 import parseToken from 'services/EventCycle/Tokenizer';
-
-const COMPONENT_NAME = 'event-cycle';
 import style from './event-cycle.css';
 import markup from './event-cycle.html';
 
 const CYCLE_INVALID = 'cycle-input--invalid';
+const CYCLE_ACTIVE = 'cycle-inicator--active';
 
-const metronome = metronomeManager.getMetronome();
 const dom = [ 'cycleLength', 'cycleElement', 'cycleInput', 'cycleIndicator', ];
 
+// UP NEXT:
+// * BUTTON TO SIGNAL ON / OFF
+// * ONLY SUBMIT ON COMMAND+ENTER (AND / OR BUTTON)
 class EventCycle extends BaseComponent {
   constructor() {
     super(style, markup, dom);
     this.cycleLength = 16;
-    this.parentCycle = [];
+    this.parsedCycles = [];
+    this.cycleCounter = 0;
   }
 
   connectedCallback() {
@@ -51,32 +53,38 @@ class EventCycle extends BaseComponent {
 
   handleCycleChange(cycleString) {
     const parsedCycles = cycleParser(cycleString);
-    if (!parsedCycles.ok) {
+    const isValid = parsedCycles.every(cycle => cycle.ok);
+    // TODO: line level validation / error highlighting
+    if (!isValid) {
       this.dom.cycleInput.classList.add(CYCLE_INVALID);
       return;
     }
     this.dom.cycleInput.classList.remove(CYCLE_INVALID);
-    this.parentCycle = parsedCycles.content;
+    this.parsedCycles = parsedCycles;
   }
 
   handleTick(tickNumber, time) {
     if (tickNumber % this.cycleLength !== 0) { return; }
-    const audioCycleDuration = metronome.getTickLength() * this.cycleLength;
-    const schedulables = evaluateCycle(time, this.parentCycle, audioCycleDuration);
-    schedulables.forEach(({ token, time }) => {
-      const { address, note } = parseToken(token);
-      audioEventBus.publish(new AudioEvent(address, note, time));
-    });
+    const audioCycleDuration = metronomeManager.getMetronome().getTickLength() * this.cycleLength;
+    const cycleIndex = this.cycleCounter % this.parsedCycles.length;
+    if (this.parsedCycles[cycleIndex]) {
+      const schedulables = evaluateCycle(time, this.parsedCycles[cycleIndex].content, audioCycleDuration);
+      schedulables.forEach(({ token, time }) => {
+        const { address, note } = parseToken(token);
+        audioEventBus.publish(new AudioEvent(address, note, time));
+      });
+    }
+    this.cycleCounter++;
   }
 
   handleTickRender(tickNumber) {
     const cycleModulo = tickNumber % this.cycleLength;
     if (cycleModulo === 0) {
-      this.dom.cycleIndicator.classList.add('cycle-inicator--active');
+      this.dom.cycleIndicator.classList.add(CYCLE_ACTIVE);
     } else if (cycleModulo === 1) {
-      this.dom.cycleIndicator.classList.remove('cycle-inicator--active');
+      this.dom.cycleIndicator.classList.remove(CYCLE_ACTIVE);
     }
   }
 }
 
-export default new Component(COMPONENT_NAME, EventCycle);
+export default new Component('event-cycle', EventCycle);

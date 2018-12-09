@@ -4,98 +4,100 @@ import cycleParser from 'services/EventCycle/Parser';
 describe('CycleParser', () => {
   it('parses empty strings', () => {
     const result = cycleParser('');
-    assert.ok(result.ok);
-    assert.deepEqual(result.content, []);
+    assert.deepEqual(result, []);
   });
 
   it('parses single item strings', () => {
     const result = cycleParser('foo');
-    assert.ok(result.ok);
-    assert.deepEqual(result.content, [ 'foo' ]);
+    assert.deepEqual(result, [ { ok: true, content: [ 'foo' ] } ] );
   });
 
   it('parses multi-item strings', () => {
     const result = cycleParser('a b c d');
-    assert.ok(result.ok);
-    assert.deepEqual(result.content, [ 'a', 'b', 'c', 'd' ]);
+    assert.deepEqual(result, [ { ok: true, content: [ 'a', 'b', 'c', 'd' ] } ]);
   });
 
   it('parses multi-item strings with characters', () => {
     const result = cycleParser('a:b , .c d');
-    assert.ok(result.ok);
-    assert.deepEqual(result.content, [ 'a:b', ',', '.c', 'd' ]);
+    assert.deepEqual(result, [ { ok: true, content: [ 'a:b', ',', '.c', 'd' ] } ]);
   });
 
-  it('does not parse non-string inputs', () => {
-    assert.ok(!cycleParser().ok);
-    assert.ok(!cycleParser(null).ok);
-    assert.ok(!cycleParser(true).ok);
-    assert.ok(!cycleParser(false).ok);
-    assert.ok(!cycleParser({}).ok);
-    assert.ok(!cycleParser({ string: 'foo' }).ok);
-    assert.ok(!cycleParser([ 'one', 'two' ]).ok);
-    assert.ok(!cycleParser(String).ok);
-    assert.ok(!cycleParser(String.prototype).ok);
-    assert.ok(!cycleParser(0).ok);
-    assert.ok(!cycleParser(1).ok);
+  it('only accepts strings', () => {
+    assert.throws(() => cycleParser(), Error, 'Input must be string');
+    assert.throws(() => cycleParser(null), Error, 'Input must be string');
+    assert.throws(() => cycleParser(true), Error, 'Input must be string');
+    assert.throws(() => cycleParser(true), Error, 'Input must be string');
+    assert.throws(() => cycleParser(false), Error, 'Input must be string');
+    assert.throws(() => cycleParser({}), Error, 'Input must be string');
+    assert.throws(() => cycleParser({ string: 'foo' }), Error, 'Input must be string');
+    assert.throws(() => cycleParser([ 'one', 'two' ]), Error, 'Input must be string');
+    assert.throws(() => cycleParser(String), Error, 'Input must be string');
+    assert.throws(() => cycleParser(String.prototype.constructor), Error, 'Input must be string');
+    assert.throws(() => cycleParser(0), Error, 'Input must be string');
+    assert.throws(() => cycleParser(1), Error, 'Input must be string');
   });
 
   it('does not parse strings with open ended brackets', () => {
-    assert.ok(!cycleParser('a ]').ok);
-    assert.ok(!cycleParser('[').ok);
-    assert.ok(!cycleParser('[[]').ok);
-    assert.ok(!cycleParser('[][][').ok);
+    [
+      'a ]', '[', '[[]', '[][]['
+    ].forEach(example => {
+      const result = cycleParser(example);
+      assert.equal(result.length, 1);
+      assert.ok(!result[0].ok);
+    });
   });
 
   it('parses strings with closed brackets', () => {
     const one = cycleParser('[a]');
-    assert.ok(one.ok);
-    assert.deepEqual(one.content, [ ['a'] ]);
+    assert.deepEqual(one, [ { ok: true, content: [ ['a'] ] } ] );
 
     const two = cycleParser('[]');
-    assert.ok(two.ok);
-    assert.deepEqual(two.content, [[]]);
+    assert.deepEqual(two, [ { ok: true, content: [[]] } ] );
 
     const three = cycleParser('[[]]');
-    assert.ok(three.ok);
-    assert.deepEqual(three.content, [[[]]]);
+    assert.deepEqual(three, [ { ok: true, content: [[[]]] } ] );
 
     const four = cycleParser('[][][]');
-    assert.ok(four.ok);
-    assert.deepEqual(four.content, [ [], [], [] ]);
+    assert.deepEqual(four, [ { ok: true, content: [ [], [], [] ] } ] );
 
     const five = cycleParser('[[[]][[]][]]');
-    assert.ok(five.ok);
-    assert.deepEqual(five.content, [ [ [ [] ], [ [] ], [] ] ]);
+    assert.deepEqual(five, [ { ok: true, content: [ [ [ [] ], [ [] ], [] ] ] } ] );
 
     const six = cycleParser('[ [[] ][[ ]] [ ]]');
-    assert.ok(six.ok);
-    assert.deepEqual(six.content, [ [ [ [] ], [ [] ], [] ] ]);
+    assert.deepEqual(six, [ { ok: true, content: [ [ [ [] ], [ [] ], [] ] ] } ] );
   });
 
   it('parses strings with closed brackets', () => {
     const one = cycleParser('[a]');
-    assert.ok(one.ok);
-    assert.deepEqual(one.content, [ ['a'] ]);
+    assert.deepEqual(one, [ { ok: true, content: [ ['a'] ] } ] );
 
     const two = cycleParser('[]');
-    assert.ok(two.ok);
-    assert.deepEqual(two.content, [[]]);
+    assert.deepEqual(two, [ { ok: true, content: [[]] } ] );
 
     const three = cycleParser('[[]]');
-    assert.ok(three.ok);
-    assert.deepEqual(three.content, [[[]]]);
+    assert.deepEqual(three, [ { ok: true, content: [[[]]] } ] );
 
     const four = cycleParser('[][][]');
-    assert.ok(four.ok);
-    assert.deepEqual(four.content, [ [], [], [] ]);
+    assert.deepEqual(four, [ { ok: true, content: [ [], [], [] ] } ] );
 
     const five = cycleParser('[[[]][[]][]]');
-    assert.ok(five.ok);
-    assert.deepEqual(five.content, [ [ [ [] ], [ [] ], [] ] ]);
+    assert.deepEqual(five, [ { ok: true, content: [ [ [ [] ], [ [] ], [] ] ] } ] );
 
     const six = cycleParser('[ [[] ][[ ]] [ ]]');
-    assert.ok(six.ok);
-    assert.deepEqual(six.content, [ [ [ [] ], [ [] ], [] ] ]);
+    assert.deepEqual(six, [ { ok: true, content: [ [ [ [] ], [ [] ], [] ] ] } ] );
+  });
+
+  it('handles line breaks', () => {
+    const one = cycleParser('[]\n[]');
+    assert.deepEqual(one, [
+      { ok: true, content: [ [] ] },
+      { ok: true, content: [ [] ] }
+    ]);
+
+    const two = cycleParser('a b [ c d ]\n1 2 [3 4 5]');
+    assert.deepEqual(two, [
+      { ok: true, content: [ 'a', 'b', ['c', 'd'] ] },
+      { ok: true, content: [ '1', '2', ['3', '4', '5'] ] }
+    ]);
   });
 });
