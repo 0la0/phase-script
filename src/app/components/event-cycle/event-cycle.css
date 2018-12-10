@@ -74,3 +74,6 @@
 .cycle-input--invalid {
   border-color: red;
 }
+.cycle-input--queued {
+  border-color: yellow;
+}

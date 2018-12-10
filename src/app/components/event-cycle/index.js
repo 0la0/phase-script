@@ -11,26 +11,32 @@ import style from './event-cycle.css';
 import markup from './event-cycle.html';
 
 const CYCLE_INVALID = 'cycle-input--invalid';
+const CYCLE_QUEUED = 'cycle-input--queued';
 const CYCLE_ACTIVE = 'cycle-inicator--active';
 
 const dom = [ 'cycleLength', 'cycleElement', 'cycleInput', 'cycleIndicator', ];
 
-// UP NEXT:
-// * BUTTON TO SIGNAL ON / OFF
-// * ONLY SUBMIT ON COMMAND+ENTER (AND / OR BUTTON)
 class EventCycle extends BaseComponent {
   constructor() {
     super(style, markup, dom);
     this.cycleLength = 16;
     this.parsedCycles = [];
     this.cycleCounter = 0;
+    this.isOn = true;
   }
 
   connectedCallback() {
     this.dom.cycleLength.value = this.cycleLength;
     this.dom.cycleLength.addEventListener('blur', this.handleCycleLengthChange.bind(this));
-    this.dom.cycleInput.addEventListener('keydown', event => event.stopPropagation());
-    this.dom.cycleInput.addEventListener('keyup', event => this.handleCycleChange(event.target.value));
+    this.dom.cycleInput.addEventListener('keydown', event => {
+      event.stopPropagation();
+      if (event.keyCode == 13 && event.metaKey) {
+        event.preventDefault();
+        this.handleCycleChange(event.target.value);
+      } else {
+        this.dom.cycleInput.classList.add(CYCLE_QUEUED);
+      }
+    });
     this.metronomeSchedulable = new MetronomeScheduler({
       processTick: this.handleTick.bind(this),
       render: this.handleTickRender.bind(this)
@@ -60,10 +66,12 @@ class EventCycle extends BaseComponent {
       return;
     }
     this.dom.cycleInput.classList.remove(CYCLE_INVALID);
+    this.dom.cycleInput.classList.remove(CYCLE_QUEUED);
     this.parsedCycles = parsedCycles;
   }
 
   handleTick(tickNumber, time) {
+    if (!this.isOn) { return; }
     if (tickNumber % this.cycleLength !== 0) { return; }
     const audioCycleDuration = metronomeManager.getMetronome().getTickLength() * this.cycleLength;
     const cycleIndex = this.cycleCounter % this.parsedCycles.length;
@@ -84,6 +92,11 @@ class EventCycle extends BaseComponent {
     } else if (cycleModulo === 1) {
       this.dom.cycleIndicator.classList.remove(CYCLE_ACTIVE);
     }
+  }
+
+  onToggleClick() {
+    this.isOn = !this.isOn;
+    this.cycleCounter = 0;
   }
 }
 
