@@ -10,11 +10,16 @@ import parseToken from 'services/EventCycle/Tokenizer';
 import style from './event-cycle.css';
 import markup from './event-cycle.html';
 
-const CYCLE_INVALID = 'cycle-input--invalid';
-const CYCLE_QUEUED = 'cycle-input--queued';
 const CYCLE_ACTIVE = 'cycle-inicator--active';
+const CYCLE_STATE = {
+  INVALID: 'INVALID',
+  QUEUED: 'QUEUED',
+  WAITING: 'WAITING',
+  PLAYING: 'PLAYING'
+};
+const KEY_CODE_ENTER = 13;
 
-const dom = [ 'cycleLength', 'cycleElement', 'cycleInput', 'cycleIndicator', ];
+const dom = [ 'cycleLength', 'cycleElement', 'cycleInput', 'cycleIndicator', 'cycleState' ];
 
 class EventCycle extends BaseComponent {
   constructor() {
@@ -30,12 +35,12 @@ class EventCycle extends BaseComponent {
     this.dom.cycleLength.addEventListener('blur', this.handleCycleLengthChange.bind(this));
     this.dom.cycleInput.addEventListener('keydown', event => {
       event.stopPropagation();
-      if (event.keyCode == 13 && event.metaKey) {
+      if (event.keyCode === KEY_CODE_ENTER && event.metaKey) {
         event.preventDefault();
         this.handleCycleChange(event.target.value);
-      } else {
-        this.dom.cycleInput.classList.add(CYCLE_QUEUED);
+        return;
       }
+      this.dom.cycleState.innerText = CYCLE_STATE.QUEUED;
     });
     this.metronomeSchedulable = new MetronomeScheduler({
       processTick: this.handleTick.bind(this),
@@ -62,11 +67,10 @@ class EventCycle extends BaseComponent {
     const isValid = parsedCycles.every(cycle => cycle.ok);
     // TODO: line level validation / error highlighting
     if (!isValid) {
-      this.dom.cycleInput.classList.add(CYCLE_INVALID);
+      this.dom.cycleState.innerText = CYCLE_STATE.INVALID;
       return;
     }
-    this.dom.cycleInput.classList.remove(CYCLE_INVALID);
-    this.dom.cycleInput.classList.remove(CYCLE_QUEUED);
+    this.dom.cycleState.innerText = CYCLE_STATE.WAITING;
     this.parsedCycles = parsedCycles;
   }
 
@@ -83,6 +87,9 @@ class EventCycle extends BaseComponent {
       });
     }
     this.cycleCounter++;
+    if (this.dom.cycleState.innerText !== CYCLE_STATE.INVALID && this.dom.cycleState.innerText !== CYCLE_STATE.QUEUED) {
+      this.dom.cycleState.innerText = CYCLE_STATE.PLAYING;
+    }
   }
 
   handleTickRender(tickNumber) {

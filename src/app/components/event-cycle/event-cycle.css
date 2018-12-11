@@ -56,7 +56,6 @@
 
 .cycle-input {
   display: block;
-  height: 2.3em;
   font-size: 2.3em;
   margin: 10px;
   background-color: var(--color-black-light);
@@ -66,7 +65,6 @@
   color: var(--border-default);
   width: 100%;
   width: -webkit-fill-available;
-  resize: none;
 }
 .cycle-input:focus {
   outline: none;
@@ -76,4 +74,7 @@
 }
 .cycle-input--queued {
   border-color: yellow;
+}
+.cycle-input--waiting {
+  border-color: green;
 }
