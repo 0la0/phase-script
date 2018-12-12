@@ -41,8 +41,10 @@ export default function cycleParser(rawString) {
   if (typeof rawString !== 'string') {
     throw new Error('Input must be string');
   }
+  // SPLIT ON @ ... or just assume new line atm
+  // REPEAT 2 ...
   return rawString.split(LINE_BREAK)
     .map(line => line.trim())
-    .filter(line => !!line)
+    .filter(line => !!line) // MIGHT BE USEFUL FOR FUNCIOTN
     .map(line => parseCycle(line));
 }

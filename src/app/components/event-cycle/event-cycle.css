@@ -66,15 +66,24 @@
   width: 100%;
   width: -webkit-fill-available;
 }
+
+.cycle-state {
+  display: inline-block;
+  height: 10px;;
+  width: 10px;
+  background-color: none;
+  border: var(--border-default);
+}
+/*
 .cycle-input:focus {
   outline: none;
-}
-.cycle-input--invalid {
-  border-color: red;
-}
-.cycle-input--queued {
-  border-color: yellow;
-}
-.cycle-input--waiting {
-  border-color: green;
-}
+} */
+/* .cycle-state--invalid {
+  background-color: red;
+} */
+/* .cycle-state--queued {
+  background-color: yellow;
+} */
+/* .cycle-state--queued {
+  background-color: green;
+} */

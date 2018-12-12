@@ -1,21 +1,17 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { audioEventBus } from 'services/EventBus';
-import AudioEvent from 'services/EventBus/AudioEvent';
 import metronomeManager from 'services/metronome/metronomeManager';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
-import cycleParser from 'services/EventCycle/Parser';
-import evaluateCycle from 'services/EventCycle/Evaluator';
-import parseToken from 'services/EventCycle/Tokenizer';
+import CycleManager from 'services/EventCycle/CycleManager';
 import style from './event-cycle.css';
 import markup from './event-cycle.html';
 
 const CYCLE_ACTIVE = 'cycle-inicator--active';
 const CYCLE_STATE = {
-  INVALID: 'INVALID',
-  QUEUED: 'QUEUED',
-  WAITING: 'WAITING',
-  PLAYING: 'PLAYING'
+  INVALID: ['background-color', '#DD7799'],
+  QUEUED: ['background-color', '#7799DD'],
+  PLAYING: ['background-color', 'none']
 };
 const KEY_CODE_ENTER = 13;
 
@@ -25,9 +21,8 @@ class EventCycle extends BaseComponent {
   constructor() {
     super(style, markup, dom);
     this.cycleLength = 16;
-    this.parsedCycles = [];
-    this.cycleCounter = 0;
     this.isOn = true;
+    this.cycleManager = new CycleManager();
   }
 
   connectedCallback() {
@@ -37,10 +32,10 @@ class EventCycle extends BaseComponent {
       event.stopPropagation();
       if (event.keyCode === KEY_CODE_ENTER && event.metaKey) {
         event.preventDefault();
-        this.handleCycleChange(event.target.value);
+        this.handleCycleChange(this.dom.cycleInput.innerText);
         return;
       }
-      this.dom.cycleState.innerText = CYCLE_STATE.QUEUED;
+      this.dom.cycleState.style.setProperty(...CYCLE_STATE.QUEUED);
     });
     this.metronomeSchedulable = new MetronomeScheduler({
       processTick: this.handleTick.bind(this),
@@ -50,7 +45,7 @@ class EventCycle extends BaseComponent {
 
     // for testing
     const testCycleValue = 'a:48 a:60 , a:72';
-    this.dom.cycleInput.value = testCycleValue;
+    this.dom.cycleInput.innerText = testCycleValue;
     this.handleCycleChange(testCycleValue);
   }
 
@@ -63,33 +58,20 @@ class EventCycle extends BaseComponent {
   }
 
   handleCycleChange(cycleString) {
-    const parsedCycles = cycleParser(cycleString);
-    const isValid = parsedCycles.every(cycle => cycle.ok);
-    // TODO: line level validation / error highlighting
-    if (!isValid) {
-      this.dom.cycleState.innerText = CYCLE_STATE.INVALID;
+    this.cycleManager.setCycleString(cycleString);
+    if (!this.cycleManager.isValid()) {
+      this.dom.cycleState.style.setProperty(...CYCLE_STATE.INVALID);
       return;
     }
-    this.dom.cycleState.innerText = CYCLE_STATE.WAITING;
-    this.parsedCycles = parsedCycles;
+    this.dom.cycleState.style.setProperty(...CYCLE_STATE.PLAYING);
   }
 
   handleTick(tickNumber, time) {
     if (!this.isOn) { return; }
     if (tickNumber % this.cycleLength !== 0) { return; }
     const audioCycleDuration = metronomeManager.getMetronome().getTickLength() * this.cycleLength;
-    const cycleIndex = this.cycleCounter % this.parsedCycles.length;
-    if (this.parsedCycles[cycleIndex]) {
-      const schedulables = evaluateCycle(time, this.parsedCycles[cycleIndex].content, audioCycleDuration);
-      schedulables.forEach(({ token, time }) => {
-        const { address, note } = parseToken(token);
-        audioEventBus.publish(new AudioEvent(address, note, time));
-      });
-    }
-    this.cycleCounter++;
-    if (this.dom.cycleState.innerText !== CYCLE_STATE.INVALID && this.dom.cycleState.innerText !== CYCLE_STATE.QUEUED) {
-      this.dom.cycleState.innerText = CYCLE_STATE.PLAYING;
-    }
+    const audioEvents = this.cycleManager.getAudioEventsAndIncrement(audioCycleDuration, time);
+    audioEvents.forEach(audioEvent => audioEventBus.publish(audioEvent));
   }
 
   handleTickRender(tickNumber) {
@@ -103,7 +85,7 @@ class EventCycle extends BaseComponent {
 
   onToggleClick() {
     this.isOn = !this.isOn;
-    this.cycleCounter = 0;
+    this.cycleManager.resetCounter();
   }
 }
 
