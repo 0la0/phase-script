@@ -1,3 +1,5 @@
+import functionManager from './FunctionManager';
+
 const WHITESPACE = /(\s+)/;
 const SPLIT_ON_BRACKET = /([[|\]])/g;
 const LINE_BREAK = /\n/;
@@ -41,10 +43,20 @@ export default function cycleParser(rawString) {
   if (typeof rawString !== 'string') {
     throw new Error('Input must be string');
   }
-  // SPLIT ON @ ... or just assume new line atm
-  // REPEAT 2 ...
+
+
+  rawString.split(LINE_BREAK)
+    .map(line => line.trim())
+    .filter(line => !!line)
+    .forEach(line => {
+      const tokens = line.split(WHITESPACE);
+      if (functionManager.isFunction(tokens[0])) {
+        functionManager.validate(tokens, line);
+      }
+    });
+
   return rawString.split(LINE_BREAK)
     .map(line => line.trim())
-    .filter(line => !!line) // MIGHT BE USEFUL FOR FUNCIOTN
+    .filter(line => !!line)
     .map(line => parseCycle(line));
 }
