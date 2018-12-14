@@ -1,8 +1,6 @@
-import functionManager from './FunctionManager';
-
 const WHITESPACE = /(\s+)/;
 const SPLIT_ON_BRACKET = /([[|\]])/g;
-const LINE_BREAK = /\n/;
+// const LINE_BREAK = /\n/;
 
 function tokenizeString(str) {
   const cycleTokens = str.split(WHITESPACE)
@@ -11,7 +9,7 @@ function tokenizeString(str) {
   return JSON.stringify(cycleTokens);
 }
 
-function parseCycle(rawString) {
+export default function parseCycle(rawString) {
   const str = `[${rawString}]`;
   const jsonStringArray = str.split(SPLIT_ON_BRACKET)
     .map(chunk => chunk.trim())
@@ -35,28 +33,6 @@ function parseCycle(rawString) {
     const cycleContent = JSON.parse(jsonStringArray);
     return { content: cycleContent, ok: true };
   } catch (error) {
-    return { ok: false, error, };
+    return { ok: false, error: error.message, };
   }
-}
-
-export default function cycleParser(rawString) {
-  if (typeof rawString !== 'string') {
-    throw new Error('Input must be string');
-  }
-
-
-  rawString.split(LINE_BREAK)
-    .map(line => line.trim())
-    .filter(line => !!line)
-    .forEach(line => {
-      const tokens = line.split(WHITESPACE);
-      if (functionManager.isFunction(tokens[0])) {
-        functionManager.validate(tokens, line);
-      }
-    });
-
-  return rawString.split(LINE_BREAK)
-    .map(line => line.trim())
-    .filter(line => !!line)
-    .map(line => parseCycle(line));
 }

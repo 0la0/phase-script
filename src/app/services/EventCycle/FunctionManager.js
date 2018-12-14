@@ -9,7 +9,7 @@ class BaseHandler {
   }
 }
 
-class PatternHandler extends BaseHandler {
+export class PatternHandler extends BaseHandler {
   constructor(pattern) {
     super(pattern);
   }

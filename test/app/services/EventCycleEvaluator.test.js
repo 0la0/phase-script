@@ -1,5 +1,5 @@
 import assert from 'assert';
-import cycleParser from 'services/EventCycle/Parser';
+import parseCycle from 'services/EventCycle/Parser';
 import evaluateCycle from 'services/EventCycle/Evaluator';
 import TimeSchedule from 'services/metronome/TimeSchedule';
 
@@ -18,13 +18,13 @@ describe('CycleEvaluator', () => {
   });
 
   it('returns an empty array', () => {
-    const parsedCycle = cycleParser('[]')[0].content;
+    const parsedCycle = parseCycle('[]').content;
     const evaluatedCycle = evaluateCycleWithDefaults(parsedCycle);
     assert.deepEqual(evaluatedCycle, []);
   });
 
   it('returns a singleton', () => {
-    const parsedCycle = cycleParser('[ a ]')[0].content;
+    const parsedCycle = parseCycle('[ a ]').content;
     const evaluatedCycle = evaluateCycleWithDefaults(parsedCycle);
     assert.deepEqual(evaluatedCycle, [
       {
@@ -35,7 +35,7 @@ describe('CycleEvaluator', () => {
   });
 
   it('evenly divides time between two elements', () => {
-    const parsedCycle = cycleParser('[ a b ]')[0].content;
+    const parsedCycle = parseCycle('[ a b ]').content;
     const evaluatedCycle = evaluateCycleWithDefaults(parsedCycle);
     assert.deepEqual(evaluatedCycle, [
       {
@@ -50,7 +50,7 @@ describe('CycleEvaluator', () => {
   });
 
   it('evenly divides time between three elements', () => {
-    const parsedCycle = cycleParser('[ a b c ]')[0].content;
+    const parsedCycle = parseCycle('[ a b c ]').content;
     const evaluatedCycle = evaluateCycle(DEFAULT.TIME, parsedCycle, 3);
     assert.deepEqual(evaluatedCycle, [
       {
@@ -69,7 +69,7 @@ describe('CycleEvaluator', () => {
   });
 
   it('evenly divides time between four elements', () => {
-    const parsedCycle = cycleParser('[ a b c d ]')[0].content;
+    const parsedCycle = parseCycle('[ a b c d ]').content;
     const evaluatedCycle = evaluateCycleWithDefaults(parsedCycle);
     assert.deepEqual(evaluatedCycle, [
       {
@@ -92,7 +92,7 @@ describe('CycleEvaluator', () => {
   });
 
   it('flattens nested cycles', () => {
-    const parsedCycle = cycleParser('[ [ a ] [ b ] ]')[0].content;
+    const parsedCycle = parseCycle('[ [ a ] [ b ] ]').content;
     const evaluatedCycle = evaluateCycleWithDefaults(parsedCycle);
     assert.equal(evaluatedCycle.length, 2);
     assert.deepEqual(evaluatedCycle, [
@@ -108,7 +108,7 @@ describe('CycleEvaluator', () => {
   });
 
   it('evenly divides time in nested cycles', () => {
-    const parsedCycle = cycleParser('[ [ a b c d ] [ 1 2 3 4 ] ]')[0].content;
+    const parsedCycle = parseCycle('[ [ a b c d ] [ 1 2 3 4 ] ]').content;
     const evaluatedCycle = evaluateCycleWithDefaults(parsedCycle);
     assert.equal(evaluatedCycle.length, 8);
     assert.deepEqual(evaluatedCycle, [
@@ -148,7 +148,7 @@ describe('CycleEvaluator', () => {
   });
 
   it('evenly divides time in nested cycles', () => {
-    const parsedCycle = cycleParser('[ a [ b [ c d ] ] ]')[0].content;
+    const parsedCycle = parseCycle('[ a [ b [ c d ] ] ]').content;
     const evaluatedCycle = evaluateCycleWithDefaults(parsedCycle);
     assert.equal(evaluatedCycle.length, 4);
     assert.deepEqual(evaluatedCycle, [

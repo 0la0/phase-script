@@ -1,7 +1,12 @@
-import cycleParser from 'services/EventCycle/Parser';
+import functionManager, { PatternHandler } from './FunctionManager';
+
+import parseCycle from 'services/EventCycle/Parser';
 import evaluateCycle from 'services/EventCycle/Evaluator';
 import parseToken from 'services/EventCycle/Tokenizer';
 import AudioEvent from 'services/EventBus/AudioEvent';
+
+const LINE_BREAK = /\n/;
+const WHITESPACE = /(\s+)/;
 
 export default class CycleManager {
   constructor() {
@@ -11,8 +16,28 @@ export default class CycleManager {
   }
 
   setCycleString(cycleString) {
+    if (typeof cycleString !== 'string') {
+      throw new Error('Input must be string');
+    }
+
+    // cycleString.split(LINE_BREAK)
+    //   .map(line => line.trim())
+    //   .filter(line => !!line)
+    //   .forEach(line => {
+    //     const tokens = line.split(WHITESPACE);
+    //     if (functionManager.isFunction(tokens[0])) {
+    //       functionManager.validate(tokens, line);
+    //     }
+    //   });
+
     this.nextCycleString = cycleString;
-    const parsedCycles = cycleParser(cycleString);
+    const parsedCycles = cycleString.split(LINE_BREAK)
+      .map(line => line.trim())
+      .filter(line => !!line)
+      .map(line => parseCycle(line));
+
+
+    // const parsedCycles = cycleParser(cycleString);
     this._isValid = parsedCycles.every(cycle => cycle.ok);
     if (this._isValid) {
       this.parsedCycles = parsedCycles;
