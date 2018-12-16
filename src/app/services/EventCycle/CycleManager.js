@@ -1,16 +1,13 @@
-import functionManager, { PatternHandler } from './FunctionManager';
-
-import parseCycle from 'services/EventCycle/Parser';
 import evaluateCycle from 'services/EventCycle/Evaluator';
 import parseToken from 'services/EventCycle/Tokenizer';
 import AudioEvent from 'services/EventBus/AudioEvent';
+import functionManager from 'services/EventCycle/Pattern/FunctionManager';
 
 const LINE_BREAK = /\n/;
-const WHITESPACE = /(\s+)/;
 
 export default class CycleManager {
   constructor() {
-    this.parsedCycles = [];
+    this.patternHandlers = [];
     this.cycleCounter = 0;
     this.setCycleString('');
   }
@@ -19,28 +16,14 @@ export default class CycleManager {
     if (typeof cycleString !== 'string') {
       throw new Error('Input must be string');
     }
-
-    // cycleString.split(LINE_BREAK)
-    //   .map(line => line.trim())
-    //   .filter(line => !!line)
-    //   .forEach(line => {
-    //     const tokens = line.split(WHITESPACE);
-    //     if (functionManager.isFunction(tokens[0])) {
-    //       functionManager.validate(tokens, line);
-    //     }
-    //   });
-
-    this.nextCycleString = cycleString;
-    const parsedCycles = cycleString.split(LINE_BREAK)
+    const patternHandlers = cycleString.split(LINE_BREAK)
       .map(line => line.trim())
       .filter(line => !!line)
-      .map(line => parseCycle(line));
+      .map(line => functionManager.classify(line));
 
-
-    // const parsedCycles = cycleParser(cycleString);
-    this._isValid = parsedCycles.every(cycle => cycle.ok);
+    this._isValid = patternHandlers.every(cycle => cycle.isValid());
     if (this._isValid) {
-      this.parsedCycles = parsedCycles;
+      this.patternHandlers = patternHandlers;
     }
   }
 
@@ -49,10 +32,14 @@ export default class CycleManager {
   }
 
   getAudioEventsAndIncrement(audioCycleDuration, time) {
-    const cycleIndex = this.cycleCounter % this.parsedCycles.length;
-    if (this.parsedCycles[cycleIndex]) {
-      this.cycleCounter++;
-      const schedulables = evaluateCycle(time, this.parsedCycles[cycleIndex].content, audioCycleDuration);
+    const cycleIndex = this.cycleCounter % this.patternHandlers.length;
+    if (this.patternHandlers[cycleIndex]) {
+      const pattern = this.patternHandlers[cycleIndex].execute();
+      if (this.patternHandlers[cycleIndex].isDone()) {
+        this.patternHandlers[cycleIndex].reset();
+        this.cycleCounter++;
+      }
+      const schedulables = evaluateCycle(time, pattern.content, audioCycleDuration);
       return schedulables.map(({ token, time}) => {
         const { address, note } = parseToken(token);
         return new AudioEvent(address, note, time);
