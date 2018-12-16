@@ -68,8 +68,7 @@ export default class Waveshaper {
 
   setCarrierFunction(functionKey) {
     if (!CARRIER_FUNCTIONS[functionKey]) {
-      console.warn('Waveshkaper.setCarrierFunction error, invalid function key');
-      return;
+      throw new Error(`Waveshkaper.setCarrierFunction invalid function ${functionKey}`);
     }
     this.waveshaperNode.curve = createCurve(CARRIER_FUNCTIONS[functionKey], this.sampleRate, 50);
   }

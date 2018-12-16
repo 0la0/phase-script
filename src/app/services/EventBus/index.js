@@ -17,7 +17,8 @@ class EventBus {
   subscribe(subscriber) {
     const hasSubscription = this.hasSubscription(subscriber.address, subscriber.onNext);
     if (hasSubscription) {
-      console.warn('Warning: subscribed multiple times', subscriber);
+      // eslint-disable-next-line no-console
+      console.log('Warning: subscribed multiple times', subscriber);
     }
     this.subscribers.add(subscriber);
     this.onNewSubscription();

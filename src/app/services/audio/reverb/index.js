@@ -69,7 +69,6 @@ export default class Reverb  {
     setTimeout(() => {
       const buffer = buildConvolutionBuffer(this.attack, this.decay);
       this.convolver.buffer = buffer;
-      console.log('bufferSet', buffer);
     });
   }
 }

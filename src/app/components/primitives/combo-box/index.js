@@ -1,14 +1,15 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { reflectCallback } from 'components/_util/dom';
-
-const COMPONENT_NAME = 'combo-box';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = '<select id="selectBox" class="select-box"></select>';
+import style from './combo-box.css';
 
 class ComboBox extends BaseComponent {
   constructor() {
-    super(style, markup, ['selectBox']);
+    super(
+      style,
+      '<select id="selectBox" class="select-box"></select>',
+      ['selectBox']
+    );
   }
 
   connectedCallback() {
@@ -35,4 +36,4 @@ class ComboBox extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, ComboBox);
+export default new Component('combo-box', ComboBox);

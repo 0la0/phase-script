@@ -2,14 +2,15 @@ import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { clamp } from 'services/Math';
 import { buildAttributeCallback } from 'components/_util/dom';
-
-const COMPONENT_NAME = 'slider-horizontal';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+import style from './slider-horizontal.css';
 
 class SliderHorizontal extends BaseComponent {
   constructor() {
-    super(style, markup, ['tracker']);
+    super(
+      style,
+      '<div id="tracker" class="tracker"></div>',
+      ['tracker']
+    );
     this.isActive = false;
   }
 
@@ -58,4 +59,4 @@ class SliderHorizontal extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, SliderHorizontal);
+export default new Component('slider-horizontal', SliderHorizontal);

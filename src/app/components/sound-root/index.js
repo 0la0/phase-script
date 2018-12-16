@@ -3,10 +3,8 @@ import Component from 'components/_util/component';
 import EventNetwork from 'components/event-network';
 import EventCycle from 'components/event-cycle';
 import PatchSpace from 'components/patch-space';
-
-const COMPONENT_NAME = 'sound-root';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+import style from './sound-root.css';
+import markup from './sound-root.html';
 
 const dom = [ 'eventNetworkContainer', 'eventCycleContainer', 'patchContainer' ];
 
@@ -34,4 +32,4 @@ class SoundRoot extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, SoundRoot);
+export default new Component('sound-root', SoundRoot);

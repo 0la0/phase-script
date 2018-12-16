@@ -20,6 +20,7 @@ class MidiDeviceFactory {
 
 class MidiDeviceFactoryShim {
   constructor() {
+    // eslint-disable-next-line no-console
     console.log('Midi is not supported in this browser');
   }
   getInputList() {
@@ -54,6 +55,8 @@ export default function provideMidiFactory() {
         instance = midiDeviceFactory;
         return instance;
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        throw new Error(error);
+      });
   }
 }

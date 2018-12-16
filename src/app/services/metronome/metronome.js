@@ -30,7 +30,8 @@ export default class Metronome {
 
   start() {
     if (this.isRunning) {
-      console.warn('Cannot start a running metronome');
+      // eslint-disable-next-line no-console
+      console.log('Cannot start a running metronome');
       return;
     }
     audioGraph.startContext().then(() => {

@@ -1,9 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-
-const COMPONENT_NAME = 'sample-visualizer';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+import style from './sample-visualizer.css';
 
 // TODO: make size dynamic
 const WIDTH = 120;
@@ -28,7 +25,7 @@ function getWaveform(audioBuffer, canvasWidth) {
 
 class SampleVisualizer extends BaseComponent {
   constructor() {
-    super(style, markup, ['canvas']);
+    super(style, '<canvas id="canvas"></canvas>', ['canvas']);
     this.audioBuffer = { duration: 0 };
     this.asr = {
       attack: 0,
@@ -84,7 +81,7 @@ class SampleVisualizer extends BaseComponent {
     getWaveform(audioBuffer, WIDTH)
       .then(frequencyList => this.frequencyList = frequencyList)
       .then(() => this.render())
-      .catch(error => console.log(error));
+      .catch(error => { throw new Error(error); });
   }
 
   setAsr(asr) {
@@ -135,4 +132,4 @@ class SampleVisualizer extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, SampleVisualizer);
+export default new Component('sample-visualizer', SampleVisualizer);

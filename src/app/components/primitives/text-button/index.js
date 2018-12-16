@@ -4,14 +4,15 @@ import {
   reflectCallback,
   reflectAttribute
 } from 'components/_util/dom';
-
-const COMPONENT_NAME = 'text-button';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = '<button id="button"/>';
+import style from './text-button.css';
 
 class TextButton extends BaseComponent {
   constructor() {
-    super(style, markup, ['button']);
+    super(
+      style,
+      '<button id="button"/>',
+      ['button']
+    );
   }
 
   connectedCallback() {
@@ -21,4 +22,4 @@ class TextButton extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, TextButton);
+export default new Component('text-button', TextButton);

@@ -4,16 +4,15 @@ import Waveshaper from 'services/audio/waveshaper';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchParam from 'components/patch-space/patch-param';
-
-const COMPONENT_NAME = 'patch-waveshaper';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
-
-const dom = [ 'waveSelector' ];
+import style from './patch-waveshaper.css';
 
 class PatchWaveshaper extends BaseComponent {
   constructor() {
-    super(style, markup, dom);
+    super(
+      style,
+      '<combo-box id="waveSelector" change="handleTypeChange"></combo-box>',
+      [ 'waveSelector' ]
+    );
     this.waveshaper = new Waveshaper();
     this.audioModel = new PatchAudioModel('WAVESHAPER', this.waveshaper, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
   }
@@ -66,4 +65,4 @@ class PatchWaveshaper extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, PatchWaveshaper);
+export default new Component('patch-waveshaper', PatchWaveshaper);

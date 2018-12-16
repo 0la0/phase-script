@@ -4,14 +4,15 @@ import {
   reflectAttribute,
   reflectCallback
 } from 'components/_util/dom';
-
-const COMPONENT_NAME = 'text-input';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = '<input id="textInput" class="text-input"/>';
+import style from './text-input.css';
 
 class TextInput extends BaseComponent {
   constructor() {
-    super(style, markup, ['textInput']);
+    super(
+      style,
+      '<input id="textInput" class="text-input"/>',
+      ['textInput']
+    );
   }
 
   connectedCallback() {
@@ -21,4 +22,4 @@ class TextInput extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, TextInput);
+export default new Component('text-input', TextInput);

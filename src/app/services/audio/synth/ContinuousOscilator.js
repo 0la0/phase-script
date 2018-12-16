@@ -13,7 +13,6 @@ export default class ContinuousOsc {
   }
 
   connect(node) {
-    console.log('LFO connect to:', node);
     this.outputs.add(node);
     if (this.osc) {
       this.osc.connect(node);

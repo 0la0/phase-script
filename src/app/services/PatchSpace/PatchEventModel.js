@@ -1,4 +1,5 @@
 function defaultSchedulable(message) {
+  // eslint-disable-next-line no-console
   console.log('Schedulable not implemented', message);
 }
 
