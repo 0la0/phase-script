@@ -28,3 +28,4 @@ And feature level dependencies on
 * separate audio / graphics bundles
 * replace component wrapper with a static name property
 * replace instances of `setTimeout` with `TaskScheduler` (also batch all `connectedCallback` dom update timeouts.
+* remove all instances of new Array()

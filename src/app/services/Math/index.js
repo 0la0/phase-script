@@ -6,7 +6,11 @@ function getPosNeg() {
 }
 
 function IntArray(length) {
-  return new Array(length).fill(null).map((_, i) => i);
+  const arr = [];
+  for (let i = 0; i < length; i++) {
+    arr.push(i);
+  }
+  return arr;
 }
 
 function generateRandomChars(input) {

@@ -1,11 +1,11 @@
 import PatternHandler from 'services/EventCycle/Pattern/PatternHandler';
 import RepeatHandler from 'services/EventCycle/Pattern/RepeatHandler';
+import ReverseHandler from 'services/EventCycle/Pattern/ReverseHandler';
 
 const WHITESPACE = /(\s+)/;
 
 class Repeater {
   constructor() {
-    this.arguments = [ 'int', 'pattern' ];
     this.matcher = /(rep)(\s+)(\d+)(\s+)(.+)/; // symbol, int, pattern
   }
 
@@ -19,8 +19,27 @@ class Repeater {
     return new RepeatHandler(numRepeats, pattern);
   }
 
-  static getSymbol() {
+  static getFunctionName() {
     return 'rep';
+  }
+}
+
+class Reverse {
+  constructor() {
+    this.matcher = /(rev)(\s+)(.+)/; // symbol, pattern
+  }
+
+  validate(line) {
+    const result = line.match(this.matcher);
+    if (!result) {
+      return false;
+    }
+    const pattern = result[3];
+    return new ReverseHandler(pattern);
+  }
+
+  static getFunctionName() {
+    return 'rev';
   }
 }
 
@@ -33,7 +52,8 @@ class ErrorHandler {
 class FunctionManager {
   constructor() {
     this.fnMap = new Map();
-    this.fnMap.set(Repeater.getSymbol(), new Repeater());
+    this.fnMap.set(Repeater.getFunctionName(), new Repeater());
+    this.fnMap.set(Reverse.getFunctionName(), new Reverse());
   }
 
   classify(line) {
