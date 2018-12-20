@@ -1,6 +1,9 @@
 import assert from 'assert';
 import parseCycle from 'services/EventCycle/Parser';
-import evaluateCycle from 'services/EventCycle/Evaluator';
+import evaluateCycle, {
+  RelativeCycleElement,
+  getRelativeCycle,
+} from 'services/EventCycle/Evaluator';
 import TimeSchedule from 'services/metronome/TimeSchedule';
 
 const DEFAULT = {
@@ -32,6 +35,8 @@ describe('CycleEvaluator', () => {
         token: 'a'
       }
     ]);
+    const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
+    assert.deepEqual(relativeCycle, [ new RelativeCycleElement('a', 0) ]);
   });
 
   it('evenly divides time between two elements', () => {
@@ -46,6 +51,11 @@ describe('CycleEvaluator', () => {
         time: { audio: 2, midi: 2000},
         token: 'b'
       }
+    ]);
+    const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
+    assert.deepEqual(relativeCycle, [
+      new RelativeCycleElement('a', 0),
+      new RelativeCycleElement('b', 0.5)
     ]);
   });
 
@@ -65,6 +75,12 @@ describe('CycleEvaluator', () => {
         time: { audio: 2, midi: 2000},
         token: 'c'
       }
+    ]);
+    const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
+    assert.deepEqual(relativeCycle, [
+      new RelativeCycleElement('a', 0),
+      new RelativeCycleElement('b', 0.333333),
+      new RelativeCycleElement('c', 0.666667)
     ]);
   });
 
@@ -89,6 +105,13 @@ describe('CycleEvaluator', () => {
         token: 'd'
       }
     ]);
+    const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
+    assert.deepEqual(relativeCycle, [
+      new RelativeCycleElement('a', 0),
+      new RelativeCycleElement('b', 0.25),
+      new RelativeCycleElement('c', 0.5),
+      new RelativeCycleElement('d', 0.75)
+    ]);
   });
 
   it('flattens nested cycles', () => {
@@ -104,6 +127,11 @@ describe('CycleEvaluator', () => {
         time: { audio: 2, midi: 2000},
         token: 'b'
       },
+    ]);
+    const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
+    assert.deepEqual(relativeCycle, [
+      new RelativeCycleElement('a', 0),
+      new RelativeCycleElement('b', 0.5)
     ]);
   });
 
@@ -145,6 +173,17 @@ describe('CycleEvaluator', () => {
         token: '4'
       },
     ]);
+    const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
+    assert.deepEqual(relativeCycle, [
+      new RelativeCycleElement('a', 0),
+      new RelativeCycleElement('b', 0.125),
+      new RelativeCycleElement('c', 0.25),
+      new RelativeCycleElement('d', 0.375),
+      new RelativeCycleElement('1', 0.5),
+      new RelativeCycleElement('2', 0.625),
+      new RelativeCycleElement('3', 0.75),
+      new RelativeCycleElement('4', 0.875)
+    ]);
   });
 
   it('evenly divides time in nested cycles', () => {
@@ -168,6 +207,13 @@ describe('CycleEvaluator', () => {
         time: { audio: 3.5, midi: 3500},
         token: 'd'
       },
+    ]);
+    const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
+    assert.deepEqual(relativeCycle, [
+      new RelativeCycleElement('a', 0),
+      new RelativeCycleElement('b', 0.5),
+      new RelativeCycleElement('c', 0.75),
+      new RelativeCycleElement('d', 0.875)
     ]);
   });
 });
