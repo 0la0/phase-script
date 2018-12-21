@@ -1,4 +1,4 @@
-import evaluateCycle from 'services/EventCycle/Evaluator';
+import { getCycleForTime } from 'services/EventCycle/Evaluator';
 import parseToken from 'services/EventCycle/Tokenizer';
 import AudioEvent from 'services/EventBus/AudioEvent';
 import functionManager from 'services/EventCycle/Pattern/FunctionManager';
@@ -39,10 +39,10 @@ export default class CycleManager {
         this.patternHandlers[cycleIndex].reset();
         this.cycleCounter++;
       }
-      const schedulables = evaluateCycle(time, pattern.content, audioCycleDuration);
-      return schedulables.map(({ token, time}) => {
-        const { address, note } = parseToken(token);
-        return new AudioEvent(address, note, time);
+      const schedulables = getCycleForTime(pattern, time, audioCycleDuration);
+      return schedulables.map(({ element, timeObj}) => {
+        const { address, note } = parseToken(element);
+        return new AudioEvent(address, note, timeObj);
       });
     }
     this.cycleCounter++;
