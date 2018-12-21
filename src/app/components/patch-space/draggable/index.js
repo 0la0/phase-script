@@ -4,10 +4,8 @@ import { getShadowHost } from 'components/_util/dom';
 import { eventBus } from 'services/EventBus';
 import SvgLine from './SvgLine';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
-
-const COMPONENT_NAME = 'draggable-wrapper';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+import style from './draggable-wrapper.css';
+import markup from './draggable-wrapper.html';
 
 const dom = [
   'container',
@@ -182,6 +180,8 @@ class DraggableWrapper extends BaseComponent {
     this.svgLine = undefined;
   }
 
+  // TODO: cache getBoundingClientRect on drag start
+  // so unlikely the bounds will change while user is dragging
   handleDragStart(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -227,6 +227,7 @@ class DraggableWrapper extends BaseComponent {
     };
   }
 
+  // wrap in RAF
   render() {
     if (!this.edges.length) { return; }
     const boundingBox = this.parentElement.getBoundingClientRect();
@@ -252,6 +253,7 @@ class DraggableWrapper extends BaseComponent {
     this.edges = this.edges.filter(_edge => _edge !== edge);
   }
 
+  // TODO: wrap in RAF
   setPosition(x, y) {
     this.dom.container.style.setProperty('left', `${x}px`);
     this.dom.container.style.setProperty('top', `${y}px`);
@@ -275,4 +277,4 @@ class DraggableWrapper extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, DraggableWrapper);
+export default new Component('draggable-wrapper', DraggableWrapper);

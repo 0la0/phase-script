@@ -1,8 +1,9 @@
 import assert from 'assert';
 import parseCycle from 'services/EventCycle/Parser';
 import evaluateCycle, {
-  RelativeCycleElement,
+  CycleElement,
   getRelativeCycle,
+  getCycleForTime,
 } from 'services/EventCycle/Evaluator';
 import TimeSchedule from 'services/metronome/TimeSchedule';
 
@@ -23,7 +24,11 @@ describe('CycleEvaluator', () => {
   it('returns an empty array', () => {
     const parsedCycle = parseCycle('[]').content;
     const evaluatedCycle = evaluateCycleWithDefaults(parsedCycle);
+    const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
+    const cycleForTime = getCycleForTime(relativeCycle, 0, 4);
     assert.deepEqual(evaluatedCycle, []);
+    assert.deepEqual(relativeCycle, []);
+    assert.deepEqual(cycleForTime, []);
   });
 
   it('returns a singleton', () => {
@@ -36,7 +41,9 @@ describe('CycleEvaluator', () => {
       }
     ]);
     const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
-    assert.deepEqual(relativeCycle, [ new RelativeCycleElement('a', 0) ]);
+    const cycleForTime = getCycleForTime(relativeCycle, 2, 4);
+    assert.deepEqual(relativeCycle, [ new CycleElement('a', 0) ]);
+    assert.deepEqual(cycleForTime, [ new CycleElement('a', 2) ]);
   });
 
   it('evenly divides time between two elements', () => {
@@ -53,9 +60,14 @@ describe('CycleEvaluator', () => {
       }
     ]);
     const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
+    const cycleForTime = getCycleForTime(relativeCycle, 2, 4);
     assert.deepEqual(relativeCycle, [
-      new RelativeCycleElement('a', 0),
-      new RelativeCycleElement('b', 0.5)
+      new CycleElement('a', 0),
+      new CycleElement('b', 0.5)
+    ]);
+    assert.deepEqual(cycleForTime, [
+      new CycleElement('a', 2),
+      new CycleElement('b', 4)
     ]);
   });
 
@@ -77,10 +89,16 @@ describe('CycleEvaluator', () => {
       }
     ]);
     const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
+    const cycleForTime = getCycleForTime(relativeCycle, 3, 3);
     assert.deepEqual(relativeCycle, [
-      new RelativeCycleElement('a', 0),
-      new RelativeCycleElement('b', 0.333333),
-      new RelativeCycleElement('c', 0.666667)
+      new CycleElement('a', 0),
+      new CycleElement('b', 0.333333),
+      new CycleElement('c', 0.666667)
+    ]);
+    assert.deepEqual(cycleForTime, [
+      new CycleElement('a', 3),
+      new CycleElement('b', 3.999999),
+      new CycleElement('c', 5.000001)
     ]);
   });
 
@@ -106,11 +124,18 @@ describe('CycleEvaluator', () => {
       }
     ]);
     const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
+    const cycleForTime = getCycleForTime(relativeCycle, 4, 2);
     assert.deepEqual(relativeCycle, [
-      new RelativeCycleElement('a', 0),
-      new RelativeCycleElement('b', 0.25),
-      new RelativeCycleElement('c', 0.5),
-      new RelativeCycleElement('d', 0.75)
+      new CycleElement('a', 0),
+      new CycleElement('b', 0.25),
+      new CycleElement('c', 0.5),
+      new CycleElement('d', 0.75)
+    ]);
+    assert.deepEqual(cycleForTime, [
+      new CycleElement('a', 4),
+      new CycleElement('b', 4.5),
+      new CycleElement('c', 5),
+      new CycleElement('d', 5.5)
     ]);
   });
 
@@ -129,9 +154,14 @@ describe('CycleEvaluator', () => {
       },
     ]);
     const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
+    const cycleForTime = getCycleForTime(relativeCycle, 2, 1);
     assert.deepEqual(relativeCycle, [
-      new RelativeCycleElement('a', 0),
-      new RelativeCycleElement('b', 0.5)
+      new CycleElement('a', 0),
+      new CycleElement('b', 0.5)
+    ]);
+    assert.deepEqual(cycleForTime, [
+      new CycleElement('a', 2),
+      new CycleElement('b', 2.5)
     ]);
   });
 
@@ -174,15 +204,26 @@ describe('CycleEvaluator', () => {
       },
     ]);
     const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
+    const cycleForTime = getCycleForTime(relativeCycle, 0, 8);
     assert.deepEqual(relativeCycle, [
-      new RelativeCycleElement('a', 0),
-      new RelativeCycleElement('b', 0.125),
-      new RelativeCycleElement('c', 0.25),
-      new RelativeCycleElement('d', 0.375),
-      new RelativeCycleElement('1', 0.5),
-      new RelativeCycleElement('2', 0.625),
-      new RelativeCycleElement('3', 0.75),
-      new RelativeCycleElement('4', 0.875)
+      new CycleElement('a', 0),
+      new CycleElement('b', 0.125),
+      new CycleElement('c', 0.25),
+      new CycleElement('d', 0.375),
+      new CycleElement('1', 0.5),
+      new CycleElement('2', 0.625),
+      new CycleElement('3', 0.75),
+      new CycleElement('4', 0.875)
+    ]);
+    assert.deepEqual(cycleForTime, [
+      new CycleElement('a', 0),
+      new CycleElement('b', 1),
+      new CycleElement('c', 2),
+      new CycleElement('d', 3),
+      new CycleElement('1', 4),
+      new CycleElement('2', 5),
+      new CycleElement('3', 6),
+      new CycleElement('4', 7)
     ]);
   });
 
@@ -209,11 +250,18 @@ describe('CycleEvaluator', () => {
       },
     ]);
     const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
+    const cycleForTime = getCycleForTime(relativeCycle, 0, 8);
     assert.deepEqual(relativeCycle, [
-      new RelativeCycleElement('a', 0),
-      new RelativeCycleElement('b', 0.5),
-      new RelativeCycleElement('c', 0.75),
-      new RelativeCycleElement('d', 0.875)
+      new CycleElement('a', 0),
+      new CycleElement('b', 0.5),
+      new CycleElement('c', 0.75),
+      new CycleElement('d', 0.875)
+    ]);
+    assert.deepEqual(cycleForTime, [
+      new CycleElement('a', 0),
+      new CycleElement('b', 4),
+      new CycleElement('c', 6),
+      new CycleElement('d', 7)
     ]);
   });
 });

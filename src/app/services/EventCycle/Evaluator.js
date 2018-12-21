@@ -1,15 +1,15 @@
-export class RelativeCycleElement {
-  constructor(cycleElement, relativeTime) {
-    this.cycleElement = cycleElement;
-    this.relativeTime = relativeTime.toFixed(6);
+export class CycleElement {
+  constructor(element, relativeTime) {
+    this.element = element;
+    this.time = relativeTime.toFixed(6);
   }
 
-  getCycleElement() {
-    return this.cycleElement;
+  getElement() {
+    return this.element;
   }
 
-  getRelativeTime() {
-    return this.relativeTime;
+  getTime() {
+    return this.time;
   }
 }
 
@@ -24,9 +24,19 @@ export function getRelativeCycle(cycle, baseTime = 0, cycleDuration = 1) {
       if (Array.isArray(cycleElement)) {
         return getRelativeCycle(cycleElement, localBaseTime, elementDuration);
       }
-      return new RelativeCycleElement(cycleElement, localBaseTime);
+      return new CycleElement(cycleElement, localBaseTime);
     })
     .flat();
+}
+
+export function getCycleForTime(cycle, baseTime, cycleDuration) {
+  if (!Array.isArray(cycle)) {
+    throw new Error('Cycle must be an array');
+  }
+  return cycle.map(cycleElement => {
+    const preciseTime = baseTime + cycleElement.getTime() * cycleDuration;
+    return new CycleElement(cycleElement.getElement(), preciseTime);
+  });
 }
 
 export default function evaluateCycle(time, cycle, cycleDuration) {
