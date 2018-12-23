@@ -5,9 +5,7 @@ import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 
-const COMPONENT_NAME = 'message-address';
-const markup = require(`./${COMPONENT_NAME}.html`);
-
+const markup = '<text-input id="addressInput" type="text" change="handleAddressChange"></text-input>';
 let instanceCnt = 0;
 
 class MessageAddress extends BaseComponent {
@@ -37,4 +35,4 @@ class MessageAddress extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, MessageAddress);
+export default new Component('message-address', MessageAddress);

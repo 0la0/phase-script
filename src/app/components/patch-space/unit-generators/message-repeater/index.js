@@ -5,10 +5,8 @@ import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import metronomeManager from 'services/metronome/metronomeManager';
 import getTimeSchedules from 'services/MessageRepeat/RepeatStrategy';
-
-const COMPONENT_NAME = 'message-repeater';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+import style from './message-repeater.css';
+import markup from './message-repeater.html';
 
 class MessageRepeater extends BaseComponent {
   constructor() {
@@ -43,4 +41,4 @@ class MessageRepeater extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, MessageRepeater);
+export default new Component('message-repeater', MessageRepeater);

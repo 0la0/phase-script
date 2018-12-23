@@ -4,8 +4,7 @@ import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 
-const COMPONENT_NAME = 'message-map';
-const markup = require(`./${COMPONENT_NAME}.html`);
+const markup = '<text-input id="threshInput" type="number" value="0" change="handleMapChange"></text-input>';
 
 class MessageMap extends BaseComponent {
   constructor() {
@@ -25,4 +24,4 @@ class MessageMap extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, MessageMap);
+export default new Component('message-map', MessageMap);

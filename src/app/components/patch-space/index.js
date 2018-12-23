@@ -85,6 +85,8 @@ class PatchSpace extends BaseComponent {
   }
 
   render() {
+    // TODO: wrap this in RAF ... pass in bounding box
+    console.log('- - - onRender')
     this.nodes.forEach(node => node.render());
   }
 

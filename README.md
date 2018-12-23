@@ -18,15 +18,21 @@ And feature level dependencies on
 * [Broadcast Channel](https://caniuse.com/#feat=broadcastchannel) to interface with a graphics window
 
 ### TODO
-* organize patcher components
-* better styling consistency across chrome / ff / safari
+* feature detection => incompatible browser warning
 * remove all old and unused components
-* create second event network that is not based on threshold events
 * necessity of multiple `onRemove`s
 * linter progress
-* velocity event triggers
-* separate audio / graphics bundles
+* separate core / audio / graphics bundles, dynamic imports
 * replace component wrapper with a static name property
 * replace instances of `setTimeout` with `TaskScheduler` (also batch all `connectedCallback` dom update timeouts.
 * remove all instances of new Array()
-* wrap instances of `getBoundingClientRect` in RAF
+* improve rendering efficiency of patch-space draggables
+* Patcher components to create:
+  - markov events
+  - message macros
+  - noise modulators
+  - arpeggiator
+* Input components:
+  - MIDI
+  - Keypress
+  - particle velocity event (lemur like)

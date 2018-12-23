@@ -6,12 +6,9 @@ import ParamScheduler from 'services/PatchSpace/ParamScheduler';
 import PatchParam, { PatchParamModel } from 'components/patch-space/patch-param';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 
-const COMPONENT_NAME = 'message-filter';
-const markup = require(`./${COMPONENT_NAME}.html`);
-
 class MessageMap extends BaseComponent {
   constructor() {
-    super('', markup, ['filterInput']);
+    super('', '', ['filterInput']);
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('MsgFilter', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.MESSAGE);
     this.params = {
@@ -46,4 +43,4 @@ class MessageMap extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, MessageMap);
+export default new Component('message-filter', MessageMap);

@@ -8,10 +8,6 @@ import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import ParamScheduler from 'services/PatchSpace/ParamScheduler';
 import metronomeManager from 'services/metronome/metronomeManager';
 
-const COMPONENT_NAME = 'patch-grainulator';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
-
 const DEFAULT_VALUES = {
   GRAIN_DENSITY: 0.2,
   NUM_VOICES: 0.05,
@@ -25,7 +21,7 @@ function getGrainsPerTick(grainDensity) {
 
 class PatchGrainulator extends BaseComponent {
   constructor() {
-    super(style, markup);
+    super('', '<p>Patch-Grain</p>');
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('GRAIN', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.MESSAGE);
     this.params = {
@@ -85,4 +81,4 @@ class PatchGrainulator extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, PatchGrainulator);
+export default new Component('patch-grainulator', PatchGrainulator);

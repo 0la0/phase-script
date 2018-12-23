@@ -6,10 +6,8 @@ import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import FilterCurveRenderer from './curveRenderer';
 import audioGraph from 'services/audio/graph';
 import PatchParam from 'components/patch-space/patch-param';
-
-const COMPONENT_NAME = 'resonance-filter';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+import style from './resonance-filter.css';
+import markup from './resonance-filter.html';
 
 const CANVAS_WIDTH = 120;
 const CANVAS_HEIGHT = 40;
@@ -94,4 +92,4 @@ class ResonanceFilter extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, ResonanceFilter);
+export default new Component('resonance-filter', ResonanceFilter);

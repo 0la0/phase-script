@@ -5,9 +5,7 @@ import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import scales from 'services/scale/scales';
 import ScaleManager from 'services/scale/ScaleManager';
-
-const COMPONENT_NAME = 'message-scale';
-const markup = require(`./${COMPONENT_NAME}.html`);
+import markup from './message-scale.html';
 
 class MessageScale extends BaseComponent {
   constructor() {
@@ -40,4 +38,4 @@ class MessageScale extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, MessageScale);
+export default new Component('message-scale', MessageScale);

@@ -5,15 +5,11 @@ import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchParam from 'components/patch-space/patch-param';
 
-const COMPONENT_NAME = 'patch-gain';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
-
-const dom = [ 'gainInlet', 'frequencyInlet' ];
+const markup = '<div id="frequencyInlet" class="frequency-inlet"></div>';
 
 class PatchGain extends BaseComponent {
   constructor() {
-    super(style, markup, dom);
+    super('', markup, [ 'gainInlet', 'frequencyInlet' ]);
     this.gain = new Gain();
     this.audioModel = new PatchAudioModel('GAIN', this.gain, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
   }
@@ -51,4 +47,4 @@ class PatchGain extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, PatchGain);
+export default new Component('patch-gain', PatchGain);

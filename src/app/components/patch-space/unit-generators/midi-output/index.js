@@ -53,7 +53,7 @@ class MidiOutput extends BaseComponent {
           console.log(MidiMessage.fromSerialized(event.data).toString());
         };
       })
-      .catch(error => console.log('midi output connection error', error));
+      .catch(error => { throw new Error(error); });
   }
 
   handleChannelChange(event) {

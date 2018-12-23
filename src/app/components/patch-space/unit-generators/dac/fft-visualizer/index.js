@@ -1,8 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-
-const COMPONENT_NAME = 'fft-visualizer';
-const style = require(`./${COMPONENT_NAME}.css`);
+import style from './fft-visualizer.css';
 
 const WIDTH = 100;
 const HEIGHT = 50;
@@ -65,4 +63,4 @@ class FftVisualizer extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, FftVisualizer);
+export default new Component('fft-visualizer', FftVisualizer);

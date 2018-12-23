@@ -7,8 +7,7 @@ import PatchParam, { PatchParamModel } from 'components/patch-space/patch-param'
 import { getGraphicsStates } from 'components/graphics/graphics-root/modules/graphicsManager';
 import graphicsChannel from 'services/GraphicsChannel';
 
-const COMPONENT_NAME = 'graphics-controller';
-const markup = require(`./${COMPONENT_NAME}.html`);
+const markup = '<combo-box id="graphicsSelector" change="handleGraphicsChange"></combo-box>';
 
 class GraphicsController extends BaseComponent {
   constructor() {
@@ -35,4 +34,4 @@ class GraphicsController extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, GraphicsController);
+export default new Component('graphics-controller', GraphicsController);

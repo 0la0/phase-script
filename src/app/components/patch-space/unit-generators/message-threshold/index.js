@@ -4,8 +4,7 @@ import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 
-const COMPONENT_NAME = 'message-threshold';
-const markup = require(`./${COMPONENT_NAME}.html`);
+const markup = '<text-input id="threshInput" type="number" change="handleThresholdChange"></text-input>';
 const DEFAULT_VALUE = 4;
 
 class MessageThreshold extends BaseComponent {
@@ -33,4 +32,4 @@ class MessageThreshold extends BaseComponent {
   // TODO: clear local values on metronome start / stop
 }
 
-export default new Component(COMPONENT_NAME, MessageThreshold);
+export default new Component('message-threhold', MessageThreshold);

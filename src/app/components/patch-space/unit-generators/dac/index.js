@@ -6,10 +6,8 @@ import metronomeManager from 'services/metronome/metronomeManager';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
-
-const COMPONENT_NAME = 'patch-dac';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+import style from './patch-dac.css';
+import markup from './patch-dac.html';
 
 const STATE = {
   OFF: 'OFF',
@@ -79,4 +77,4 @@ class PatchDac extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, PatchDac);
+export default new Component('patch-dac', PatchDac);

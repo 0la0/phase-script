@@ -66,8 +66,7 @@ class DraggableWrapper extends BaseComponent {
       onNext: message => {
         if (this.mouseState.active === MOUSE_STATE.DRAGGING) {
           this.handleDrag(message.event);
-        }
-        else if (this.mouseState.active === MOUSE_STATE.OUTLET) {
+        } else if (this.mouseState.active === MOUSE_STATE.OUTLET) {
           this.handleConnectionMove(message.event);
         }
       }
@@ -205,6 +204,7 @@ class DraggableWrapper extends BaseComponent {
 
   getInletCenter() {
     const boundingBox = this.dom.inlet.getBoundingClientRect();
+    // TODO: use point object
     return {
       x: boundingBox.left + (boundingBox.width / 2),
       y: boundingBox.top + (boundingBox.height / 2),
@@ -221,6 +221,7 @@ class DraggableWrapper extends BaseComponent {
 
   getOutletCenter() {
     const boundingBox = this.dom.outlet.getBoundingClientRect();
+    // TODO: use Point object
     return {
       x: boundingBox.left + (boundingBox.width / 2),
       y: boundingBox.top + (boundingBox.height / 2),
@@ -228,6 +229,7 @@ class DraggableWrapper extends BaseComponent {
   }
 
   // wrap in RAF
+  // need to know what kind of render this is ... if draggable, short circuit if position is not different
   render() {
     if (!this.edges.length) { return; }
     const boundingBox = this.parentElement.getBoundingClientRect();

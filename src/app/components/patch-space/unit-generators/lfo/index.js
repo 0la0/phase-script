@@ -4,16 +4,12 @@ import ContinuousOsc from 'services/audio/synth/ContinuousOscilator';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchParam from 'components/patch-space/patch-param';
-
-const COMPONENT_NAME = 'patch-lfo';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
-
-const dom = [ 'frequencyInlet' ];
+import style from './patch-lfo.css';
+import markup from './patch-lfo.html';
 
 class PatchLfo extends BaseComponent {
   constructor() {
-    super(style, markup, dom);
+    super(style, markup, [ 'frequencyInlet' ]);
     this.frequency = 10;
     this.isOn = false;
     this.lfo = new ContinuousOsc();
@@ -62,4 +58,4 @@ class PatchLfo extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, PatchLfo);
+export default new Component('patch-lfo', PatchLfo);
