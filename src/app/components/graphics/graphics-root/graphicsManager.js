@@ -44,8 +44,7 @@ class GraphicsManager {
 
   setActiveState(activeState) {
     if (!options[activeState]) {
-      console.warn(`activeState ${activeState} not found`);
-      return;
+      throw new Error(`Graphics state ${activeState} not found`);
     }
     this.activeState = activeState;
   }

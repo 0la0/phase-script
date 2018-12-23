@@ -1,9 +1,7 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-
-const COMPONENT_NAME = 'patch-param';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+import style from './patch-param.css';
+import markup from './patch-param.html';
 
 const dom = [ 'label', 'slider', 'output', 'paramInlet' ];
 
@@ -74,4 +72,4 @@ class PatchParam extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, PatchParam);
+export default new Component('patch-param', PatchParam);

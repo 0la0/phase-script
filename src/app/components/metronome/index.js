@@ -1,12 +1,8 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import metronomeManager from 'services/metronome/metronomeManager';
-
-const COMPONENT_NAME = 'metronome-ctrl';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
-
-const metronome = metronomeManager.getMetronome();
+import style from './metronome-ctrl.css';
+import markup from './metronome-ctrl.html';
 
 class Metronome extends BaseComponent {
   constructor() {
@@ -28,19 +24,19 @@ class Metronome extends BaseComponent {
   onMetronomeClick() {
     this.isRunning = !this.isRunning;
     if (this.isRunning) {
-      metronome.start();
+      metronomeManager.getMetronome().start();
       this.titleElement.innerText = 'Audio Running';
     }
     else {
-      metronome.stop();
+      metronomeManager.getMetronome().stop();
       this.titleElement.innerText = 'Audio Stopped';
     }
   }
 
   handleMetronomeChange(event) {
     const value = parseInt(event.target.value, 10);
-    metronome.setTempo(value);
+    metronomeManager.getMetronome().setTempo(value);
   }
 }
 
-export default new Component(COMPONENT_NAME, Metronome);
+export default new Component('metronome-ctrl', Metronome);

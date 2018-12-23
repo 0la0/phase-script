@@ -1,13 +1,11 @@
 import { buildDefaultScene } from 'components/graphics/util';
 import DisplacedSphere from './DisplacedSphere';
 import { IntArray } from 'services/Math';
-import { Vector3 } from 'three';
+import perlinNoiseLib from './shaders/pnoise.vert';
+import vertexShaderRoutine from './shaders/displace.vert';
+import fragmentShader from './shaders/displace.frag';
 
-const perlinNoiseLib = require('./shaders/pnoise.vert');
-const vertexShaderRoutine = require('./shaders/displace.vert');
-const fragmentShader = require('./shaders/displace.frag');
 const vertexShader = `${perlinNoiseLib}${vertexShaderRoutine}`;
-
 const NUM_SPHERES = 1;
 
 export default class DisplacedSpheres {

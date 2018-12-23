@@ -1,11 +1,11 @@
-import {buildDefaultScene} from 'components/graphics/util';
+import { buildDefaultScene } from 'components/graphics/util';
 import WaterSphere from './WaterSphere';
-import {IntArray} from 'services/Math';
-import {Vector3} from 'three';
+import { IntArray } from 'services/Math';
+import { Vector3 } from 'three';
+import perlinNoiseLib from './shaders/pnoise.vert';
+import vertexShaderRoutine from './shaders/displace.vert';
+import fragmentShader from './shaders/displace.frag';
 
-const perlinNoiseLib = require('./shaders/pnoise.vert');
-const vertexShaderRoutine = require('./shaders/displace.vert');
-const fragmentShader = require('./shaders/displace.frag');
 const vertexShader = `${perlinNoiseLib}${vertexShaderRoutine}`;
 
 const CENTER = new Vector3(0, 0, 0);

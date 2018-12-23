@@ -8,7 +8,7 @@ import {
   Face3,
   Mesh,
   Group,
-  LineBasicMaterial,
+  // LineBasicMaterial,
   Color
 } from 'three';
 

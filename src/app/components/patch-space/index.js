@@ -26,9 +26,8 @@ import MessageThreshold from 'components/patch-space/unit-generators/message-thr
 import MessageMap from 'components/patch-space/unit-generators/message-map';
 import MessageFilter from 'components/patch-space/unit-generators/message-filter';
 
-const COMPONENT_NAME = 'patch-space';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+import style from './patch-space.css';
+import markup from './patch-space.html';
 
 const nodeMap = {
   osc: EnvelopedOsc,
@@ -117,4 +116,4 @@ class PatchSpace extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, PatchSpace);
+export default new Component('patch-space', PatchSpace);

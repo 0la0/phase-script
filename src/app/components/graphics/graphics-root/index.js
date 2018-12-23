@@ -1,13 +1,11 @@
+import { WebGLRenderer } from 'three';
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import { GraphicsManager } from './modules/graphicsManager';
-import { WebGLRenderer } from 'three';
 import graphicsChannel from 'services/GraphicsChannel';
 import AnimationScheduler from 'services/AnimationScheduler';
-
-const COMPONENT_NAME = 'graphics-root';
-const style = require(`./${COMPONENT_NAME}.css`);
-const markup = require(`./${COMPONENT_NAME}.html`);
+import { GraphicsManager } from './graphicsManager';
+import style from './graphics-root.css';
+import markup from './graphics-root.html';
 
 const LATENCY_MS = 100; // TODO: allow user to adjust latency
 export const MESSAGE = {
@@ -102,4 +100,4 @@ class GraphicsRoot extends BaseComponent {
   }
 }
 
-export default new Component(COMPONENT_NAME, GraphicsRoot);
+export default new Component('graphics-root', GraphicsRoot);
