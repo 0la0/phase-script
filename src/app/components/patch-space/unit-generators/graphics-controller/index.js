@@ -4,7 +4,7 @@ import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import PatchParam, { PatchParamModel } from 'components/patch-space/patch-param';
-import { getGraphicsStates } from 'components/graphics/graphics-root/modules/graphicsManager';
+import { getGraphicsStates } from 'components/graphics/graphics-root/graphicsManager';
 import graphicsChannel from 'services/GraphicsChannel';
 
 const markup = '<combo-box id="graphicsSelector" change="handleGraphicsChange"></combo-box>';
@@ -26,6 +26,7 @@ class GraphicsController extends BaseComponent {
     graphicsChannel.sync();
     requestAnimationFrame(() => {
       this.dom.graphicsSelector.setOptions(getGraphicsStates());
+      // TODO: different way of getting graphics options, when we make different bundles this will be problematic
     });
   }
 

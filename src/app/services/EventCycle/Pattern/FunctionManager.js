@@ -1,6 +1,7 @@
 import PatternHandler from 'services/EventCycle/Pattern/PatternHandler';
 import RepeatHandler from 'services/EventCycle/Pattern/RepeatHandler';
 import ReverseHandler from 'services/EventCycle/Pattern/ReverseHandler';
+import OffsetHandler from 'services/EventCycle/Pattern/OffsetHandler';
 
 const WHITESPACE = /(\s+)/;
 
@@ -43,6 +44,26 @@ class Reverse {
   }
 }
 
+class Offset {
+  constructor() {
+    this.matcher = /(offset)(\s+)(\d+.\d+)(\s+)(.+)/; // symbol, float, pattern
+  }
+
+  validate(line) {
+    const result = line.match(this.matcher);
+    if (!result) {
+      return false;
+    }
+    const offset = parseFloat(result[3], 10);
+    const pattern = result[5];
+    return new OffsetHandler(offset, pattern);
+  }
+
+  static getFunctionName() {
+    return 'offset';
+  }
+}
+
 class ErrorHandler {
   isValid() {
     return false;
@@ -54,6 +75,7 @@ class FunctionManager {
     this.fnMap = new Map();
     this.fnMap.set(Repeater.getFunctionName(), new Repeater());
     this.fnMap.set(Reverse.getFunctionName(), new Reverse());
+    this.fnMap.set(Offset.getFunctionName(), new Offset());
   }
 
   classify(line) {
