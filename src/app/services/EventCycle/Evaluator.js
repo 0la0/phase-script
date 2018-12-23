@@ -1,7 +1,9 @@
+import { floatingPrecision } from 'services/Math';
+
 export class RelativeCycleElement {
   constructor(element, relativeTime) {
     this.element = element;
-    this.time = relativeTime.toFixed(6);
+    this.time = floatingPrecision(relativeTime, 6);
   }
 
   getElement() {

@@ -1,20 +1,25 @@
 import BaseHandler from 'services/EventCycle/Pattern/BaseHandler';
-// import PatternHandler from 'services/EventCycle/Pattern/PatternHandler';
-import parseCycle from 'services/EventCycle/Parser';
+import PatternHandler from 'services/EventCycle/Pattern/PatternHandler';
 
 export default class ReverseHandler extends BaseHandler {
   constructor(patternString) {
     super();
-    this.pattern = parseCycle(patternString);
-    console.log('ReverseHandler', this.pattern);
+    this.patternHandler = new PatternHandler(patternString);
+    if (!this.patternHandler.pattern.ok) {
+      return;
+    }
+    this.patternHandler.relativeCycle = this.patternHandler.relativeCycle.map((cycleElement) => {
+      cycleElement.time = 1 - cycleElement.time;
+      return cycleElement;
+    }).reverse();
   }
 
   execute() {
-    return this.pattern;
+    return this.patternHandler.execute();
   }
 
   isValid() {
-    return this.pattern.ok;
+    return this.patternHandler.isValid();
   }
 
   isDone() {

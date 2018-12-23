@@ -1,11 +1,11 @@
 const UUID_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
 const XY_REGEX = /[xy]/g;
 
-function getPosNeg() {
+export function getPosNeg() {
   return Math.random() < 0.5 ? -1 : 1;
 }
 
-function IntArray(length) {
+export function IntArray(length) {
   const arr = [];
   for (let i = 0; i < length; i++) {
     arr.push(i);
@@ -19,12 +19,18 @@ function generateRandomChars(input) {
   return v.toString(16);
 }
 
-function uuid() {
+export function uuid() {
   return UUID_TEMPLATE.replace(XY_REGEX, generateRandomChars);
 }
 
-function clamp(value, min, max) {
+export function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
 }
 
-export { getPosNeg, IntArray, uuid, clamp };
+export function floatingPrecision(num, precision) {
+  if (typeof num !== 'number') {
+    throw new Error('Input must be a number');
+  }
+  const muliplier = 10 ** precision;
+  return Math.round(num * muliplier) / muliplier;
+}
