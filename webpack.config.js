@@ -1,4 +1,4 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 const path = require('path');
 
 const webpackConfig = {
@@ -7,20 +7,19 @@ const webpackConfig = {
     main: './main.js',
   },
   output: {
-    publicPath: '',
-    path: path.resolve(__dirname, './dist'),
+    publicPath: 'scripts',
+    path: path.resolve(__dirname, './dist/scripts'),
     filename: '[name].bundle.js',
     sourceMapFilename: '[name].map',
     chunkFilename: '[id].chunk.js'
   },
   devtool: 'source-map',
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: 'index.html',
-      filename: 'index.html',
-      inject: 'body'
-    }),
-  ],
+  // plugins: [],
+  optimization: {
+    // splitChunks: {
+    //   chunks: 'all'
+    // }
+  },
   module: {
     rules: [
       {

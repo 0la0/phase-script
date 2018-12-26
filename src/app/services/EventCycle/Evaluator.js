@@ -13,6 +13,15 @@ export class RelativeCycleElement {
   getTime() {
     return this.time;
   }
+
+  setTime(time) {
+    this.time = time;
+    return this;
+  }
+
+  clone() {
+    return new RelativeCycleElement(this.element, this.time);
+  }
 }
 
 export class PreciseCycleElement {

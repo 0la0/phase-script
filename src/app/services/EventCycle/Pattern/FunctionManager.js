@@ -2,6 +2,8 @@ import PatternHandler from 'services/EventCycle/Pattern/PatternHandler';
 import RepeatHandler from 'services/EventCycle/Pattern/RepeatHandler';
 import ReverseHandler from 'services/EventCycle/Pattern/ReverseHandler';
 import OffsetHandler from 'services/EventCycle/Pattern/OffsetHandler';
+import RotateHandler from 'services/EventCycle/Pattern/RotateHandler';
+import BreakHandler from 'services/EventCycle/Pattern/BreakHandler';
 
 const WHITESPACE = /(\s+)/;
 
@@ -46,7 +48,7 @@ class Reverse {
 
 class Offset {
   constructor() {
-    this.matcher = /(offset)(\s+)(\d+.\d+)(\s+)(.+)/; // symbol, float, pattern
+    this.matcher = /(offset)(\s+)(\d*\.\d+)(\s+)(.+)/; // symbol, float, pattern
   }
 
   validate(line) {
@@ -64,6 +66,45 @@ class Offset {
   }
 }
 
+class Rotate {
+  constructor() {
+    this.matcher = /(rotate)(\s+)(\d*\.\d+)(\s+)(.+)/; // symbol, float, pattern
+  }
+
+  validate(line) {
+    const result = line.match(this.matcher);
+    if (!result) {
+      return false;
+    }
+    const rotation = parseFloat(result[3], 10);
+    const pattern = result[5];
+    return new RotateHandler(rotation, pattern);
+  }
+
+  static getFunctionName() {
+    return 'rotate';
+  }
+}
+
+class Break {
+  constructor() {
+    this.matcher = /(break)(\s+)(.+)/; // symbol, float, pattern
+  }
+
+  validate(line) {
+    const result = line.match(this.matcher);
+    if (!result) {
+      return false;
+    }
+    const pattern = result[3];
+    return new BreakHandler(pattern);
+  }
+
+  static getFunctionName() {
+    return 'break';
+  }
+}
+
 class ErrorHandler {
   isValid() {
     return false;
@@ -73,9 +114,8 @@ class ErrorHandler {
 class FunctionManager {
   constructor() {
     this.fnMap = new Map();
-    this.fnMap.set(Repeater.getFunctionName(), new Repeater());
-    this.fnMap.set(Reverse.getFunctionName(), new Reverse());
-    this.fnMap.set(Offset.getFunctionName(), new Offset());
+    [ Repeater, Reverse, Offset, Rotate, Break ].forEach(clazz =>
+      this.fnMap.set(clazz.getFunctionName(), new clazz()));
   }
 
   classify(line) {
