@@ -34,3 +34,7 @@ export function floatingPrecision(num, precision) {
   const muliplier = 10 ** precision;
   return Math.round(num * muliplier) / muliplier;
 }
+
+export function mapToRange(inputMin, inputMax, outputMin, outputMax, x) {
+  return (x - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin;
+}

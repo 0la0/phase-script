@@ -12,31 +12,35 @@ import markup from './patch-dac.html';
 const STATE = {
   OFF: 'OFF',
   TIME: 'TIME',
-  FREQUENCY: 'FREQUENCY'
+  FREQUENCY: 'FREQUENCY',
+  SPECTROGRAM: 'SPECTROGRAM'
 };
 
-function getStateManager() {
+function getStateManager(fftVisualizer, visualizer) {
+  const renderMethod = {
+    [STATE.TIME]: () => fftVisualizer.renderTimeData(visualizer.getTimeData()),
+    [STATE.FREQUENCY]: () => fftVisualizer.renderFrequencyData(visualizer.getFrequencyData(256)),
+    [STATE.SPECTROGRAM]: () => fftVisualizer.renderSpectrogram(visualizer.getFrequencyData(256))
+  };
+  const keys = Object.keys(STATE);
   let index = 0;
   return {
     incrementState: () => {
-      index = (index + 1) % Object.keys(STATE).length;
-      return Object.keys(STATE)[index];
+      index = (index + 1) % keys.length;
+      return keys[index];
     },
-    isOff: () => Object.keys(STATE)[index] === STATE.OFF,
-    isFrequencyDomain: () => Object.keys(STATE)[index] === STATE.FREQUENCY,
-    isTimeDomain: () => Object.keys(STATE)[index] === STATE.TIME,
+    isOff: () => keys[index] === STATE.OFF,
+    renderStrategy: () => renderMethod[keys[index]],
   };
 }
 
-const dom = [ 'button', 'fftVisualizer' ];
-
 class PatchDac extends BaseComponent {
   constructor() {
-    super(style, markup, dom);
+    super(style, markup, [ 'button', 'fftVisualizer' ]);
     this.dac = new Dac();
     this.visualizer = new Visualizer();
     this.audioModel = new PatchAudioModel('DAC', this.dac, PATCH_EVENT.SIGNAL, PATCH_EVENT.EMPTY);
-    this.stateManager = getStateManager();
+    this.stateManager = getStateManager(this.dom.fftVisualizer, this.visualizer);
   }
 
   connectedCallback() {
@@ -69,11 +73,7 @@ class PatchDac extends BaseComponent {
 
   render() {
     if (this.stateManager.isOff()) { return; }
-    if (this.stateManager.isTimeDomain()) {
-      this.dom.fftVisualizer.renderTimeData(this.visualizer.getTimeData());
-    } else {
-      this.dom.fftVisualizer.renderFrequencyData(this.visualizer.getFrequencyData());
-    }
+    this.stateManager.renderStrategy()();
   }
 }
 
