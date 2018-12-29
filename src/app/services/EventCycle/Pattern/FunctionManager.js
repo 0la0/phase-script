@@ -4,12 +4,22 @@ import ReverseHandler from 'services/EventCycle/Pattern/ReverseHandler';
 import OffsetHandler from 'services/EventCycle/Pattern/OffsetHandler';
 import RotateHandler from 'services/EventCycle/Pattern/RotateHandler';
 import BreakHandler from 'services/EventCycle/Pattern/BreakHandler';
+import SpeedHandler from 'services/EventCycle/Pattern/SpeedHandler';
 
 const WHITESPACE = /(\s+)/;
 
+const MATCH = {
+  WHITESPACE: '(\\s+)',
+  INT: '(\\d+)',
+  FLOAT: '(\\d*\\.\\d+)',
+  PATTERN: '(.+)'
+};
+
 class Repeater {
   constructor() {
-    this.matcher = /(rep)(\s+)(\d+)(\s+)(.+)/; // symbol, int, pattern
+    this.symbol = 'rep';
+    this.symbolMatch = `(${this.symbol})`;
+    this.matcher = `${this.symbolMatch}${MATCH.WHITESPACE}${MATCH.INT}${MATCH.WHITESPACE}${MATCH.PATTERN}`;
   }
 
   validate(line) {
@@ -21,15 +31,13 @@ class Repeater {
     const pattern = result[5];
     return new RepeatHandler(numRepeats, pattern);
   }
-
-  static getFunctionName() {
-    return 'rep';
-  }
 }
 
 class Reverse {
   constructor() {
-    this.matcher = /(rev)(\s+)(.+)/; // symbol, pattern
+    this.symbol = 'rev';
+    this.symbolMatch = `(${this.symbol})`;
+    this.matcher = `${this.symbolMatch}${MATCH.WHITESPACE}${MATCH.PATTERN}`;
   }
 
   validate(line) {
@@ -40,15 +48,13 @@ class Reverse {
     const pattern = result[3];
     return new ReverseHandler(pattern);
   }
-
-  static getFunctionName() {
-    return 'rev';
-  }
 }
 
 class Offset {
   constructor() {
-    this.matcher = /(offset)(\s+)(\d*\.\d+)(\s+)(.+)/; // symbol, float, pattern
+    this.symbol = 'offset';
+    this.symbolMatch = `(${this.symbol})`;
+    this.matcher = `${this.symbolMatch}${MATCH.WHITESPACE}${MATCH.FLOAT}${MATCH.WHITESPACE}${MATCH.PATTERN}`;
   }
 
   validate(line) {
@@ -60,15 +66,13 @@ class Offset {
     const pattern = result[5];
     return new OffsetHandler(offset, pattern);
   }
-
-  static getFunctionName() {
-    return 'offset';
-  }
 }
 
 class Rotate {
   constructor() {
-    this.matcher = /(rotate)(\s+)(\d*\.\d+)(\s+)(.+)/; // symbol, float, pattern
+    this.symbol = 'rotate';
+    this.symbolMatch = `(${this.symbol})`;
+    this.matcher = `${this.symbolMatch}${MATCH.WHITESPACE}${MATCH.FLOAT}${MATCH.WHITESPACE}${MATCH.PATTERN}`;
   }
 
   validate(line) {
@@ -80,15 +84,13 @@ class Rotate {
     const pattern = result[5];
     return new RotateHandler(rotation, pattern);
   }
-
-  static getFunctionName() {
-    return 'rotate';
-  }
 }
 
 class Break {
   constructor() {
-    this.matcher = /(break)(\s+)(.+)/; // symbol, float, pattern
+    this.symbol = 'break';
+    this.symbolMatch = `(${this.symbol})`;
+    this.matcher = `${this.symbolMatch}${MATCH.WHITESPACE}${MATCH.PATTERN}`;
   }
 
   validate(line) {
@@ -99,9 +101,23 @@ class Break {
     const pattern = result[3];
     return new BreakHandler(pattern);
   }
+}
 
-  static getFunctionName() {
-    return 'break';
+class Speed {
+  constructor() {
+    this.symbol = 'speed';
+    this.symbolMatch = `(${this.symbol})`;
+    this.matcher = `${this.symbolMatch}${MATCH.WHITESPACE}${MATCH.FLOAT}${MATCH.WHITESPACE}${MATCH.PATTERN}`;
+  }
+
+  validate(line) {
+    const result = line.match(this.matcher);
+    if (!result) {
+      return false;
+    }
+    const speed = parseFloat(result[3], 10);
+    const pattern = result[5];
+    return new SpeedHandler(speed, pattern);
   }
 }
 
@@ -113,9 +129,12 @@ class ErrorHandler {
 
 class FunctionManager {
   constructor() {
-    this.fnMap = new Map();
-    [ Repeater, Reverse, Offset, Rotate, Break ].forEach(clazz =>
-      this.fnMap.set(clazz.getFunctionName(), new clazz()));
+    this.fnMap = [ Repeater, Reverse, Offset, Rotate, Break, Speed ]
+      .reduce((fnMap, Clazz) => {
+        const instance = new Clazz();
+        fnMap.set(instance.symbol, instance);
+        return fnMap;
+      }, new Map());
   }
 
   classify(line) {
