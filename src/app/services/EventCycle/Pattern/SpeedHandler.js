@@ -1,5 +1,5 @@
 import BaseHandler from 'services/EventCycle/Pattern/BaseHandler';
-import PatternHandler from 'services/EventCycle/Pattern/PatternHandler';
+// import PatternHandler from 'services/EventCycle/Pattern/PatternHandler';
 
 function isPowerOf2(num) {
   if (num < 1) {
@@ -12,20 +12,26 @@ function isPowerOf2(num) {
 }
 
 export default class SpeedHandler extends BaseHandler {
-  constructor(speed, patternString) {
+  constructor(speed, handler) {
     super();
-    this.patternHandler = new PatternHandler(patternString);
     if (speed !== 2) {
       throw new Error(`${speed} !== 2`);
     }
-    if (!this.patternHandler.pattern.ok) {
+    this.handler = handler;
+    if (!this.handler.isValid()) {
       return;
     }
-    this.patternHandler.relativeCycle
-      .forEach((cycleElement) => {
-        const transformedTime = cycleElement.getTime() * 2;
-        cycleElement.setTime(transformedTime);
-      });
+
+    const { cycle, updateCycle } = this.handler.getRelativeCycle();
+    const transformedCycle = cycle.map((cycleElement) => {
+      const transformedTime = cycleElement.getTime() * 2;
+      return cycleElement.setTime(transformedTime);
+    });
+    updateCycle(transformedCycle);
+  }
+
+  getRelativeCycle() {
+    return this.handler.getRelativeCycle();
   }
 
   execute() {
@@ -33,11 +39,11 @@ export default class SpeedHandler extends BaseHandler {
     if (this.count % 2 === 0) {
       return [];
     }
-    return this.patternHandler.execute();
+    return this.handler.execute();
   }
 
   isValid() {
-    return this.patternHandler.isValid();
+    return this.handler.isValid();
   }
 
   isDone() {

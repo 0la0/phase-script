@@ -2,24 +2,31 @@ import BaseHandler from 'services/EventCycle/Pattern/BaseHandler';
 import PatternHandler from 'services/EventCycle/Pattern/PatternHandler';
 
 export default class RotateHandler extends BaseHandler {
-  constructor(rotation, patternString) {
+  constructor(rotation, handler) {
     super();
-    this.patternHandler = new PatternHandler(patternString);
-    if (!this.patternHandler.pattern.ok) {
+    this.handler = handler;
+    if (!this.handler.isValid()) {
       return;
     }
-    this.patternHandler.relativeCycle = this.patternHandler.relativeCycle.map((cycleElement) => {
-      cycleElement.time = ((cycleElement.time - rotation) + 1) % 1;
-      return cycleElement;
+
+    const { cycle, updateCycle } = this.handler.getRelativeCycle();
+    const transformedCycle = cycle.map((cycleElement) => {
+      const transformedTime = ((cycleElement.time - rotation) + 1) % 1;
+      return cycleElement.setTime(transformedTime);
     });
+    updateCycle(transformedCycle);
+  }
+
+  getRelativeCycle() {
+    return this.handler.getRelativeCycle();
   }
 
   execute() {
-    return this.patternHandler.execute();
+    return this.handler.execute();
   }
 
   isValid() {
-    return this.patternHandler.isValid();
+    return this.handler.isValid();
   }
 
   isDone() {

@@ -19,8 +19,8 @@ const STATE = {
 function getStateManager(fftVisualizer, visualizer) {
   const renderMethod = {
     [STATE.TIME]: () => fftVisualizer.renderTimeData(visualizer.getTimeData()),
-    [STATE.FREQUENCY]: () => fftVisualizer.renderFrequencyData(visualizer.getFrequencyData(256)),
-    [STATE.SPECTROGRAM]: () => fftVisualizer.renderSpectrogram(visualizer.getFrequencyData(256))
+    [STATE.FREQUENCY]: () => fftVisualizer.renderFrequencyData(visualizer.getFrequencyData()),
+    [STATE.SPECTROGRAM]: () => fftVisualizer.renderSpectrogram(visualizer.getFrequencyData())
   };
   const keys = Object.keys(STATE);
   let index = 0;

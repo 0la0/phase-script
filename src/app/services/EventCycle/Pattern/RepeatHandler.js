@@ -1,20 +1,23 @@
 import BaseHandler from 'services/EventCycle/Pattern/BaseHandler';
-import PatternHandler from 'services/EventCycle/Pattern/PatternHandler';
 
 export default class RepeatHandler extends BaseHandler {
-  constructor(numRepeats, patternString) {
+  constructor(numRepeats, handler) {
     super();
-    this.patternHandler = new PatternHandler(patternString);
+    this.handler = handler;
     this.numRepeats = numRepeats;
+  }
+
+  getRelativeCycle() {
+    return this.handler.getRelativeCycle();
   }
 
   execute() {
     this.count++;
-    return this.patternHandler.execute();
+    return this.handler.execute();
   }
 
   isValid() {
-    return this.patternHandler.isValid();
+    return this.handler.isValid();
   }
 
   isDone() {

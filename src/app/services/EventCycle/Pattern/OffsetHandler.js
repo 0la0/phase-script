@@ -1,25 +1,37 @@
 import BaseHandler from 'services/EventCycle/Pattern/BaseHandler';
-import PatternHandler from 'services/EventCycle/Pattern/PatternHandler';
+// import PatternHandler from 'services/EventCycle/Pattern/PatternHandler';
 
 export default class OffsetHandler extends BaseHandler {
-  constructor(offset, patternString) {
+  constructor(offset, handler) {
     super();
-    this.patternHandler = new PatternHandler(patternString);
-    if (!this.patternHandler.pattern.ok) {
+    if (!handler.isValid()) {
       return;
     }
-    this.patternHandler.relativeCycle = this.patternHandler.relativeCycle.map((cycleElement) => {
-      cycleElement.time = cycleElement.time + offset;
-      return cycleElement;
+    this.handler = handler;
+
+    const { cycle, updateCycle } = this.handler.getRelativeCycle();
+    const transformedCycle = cycle.map((cycleElement) => {
+      const transformedTime = cycleElement.time + offset;
+      return cycleElement.setTime(transformedTime);
     });
+    updateCycle(transformedCycle);
+
+    // this.patternHandler.relativeCycle = this.patternHandler.relativeCycle.map((cycleElement) => {
+    //   cycleElement.time = cycleElement.time + offset;
+    //   return cycleElement;
+    // });
+  }
+
+  getRelativeCycle() {
+    return this.handler.getRelativeCycle();
   }
 
   execute() {
-    return this.patternHandler.execute();
+    return this.handler.execute();
   }
 
   isValid() {
-    return this.patternHandler.isValid();
+    return this.handler.isValid();
   }
 
   isDone() {

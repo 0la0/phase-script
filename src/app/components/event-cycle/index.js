@@ -44,7 +44,8 @@ class EventCycle extends BaseComponent {
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
 
     // for testing
-    const testCycleValue = 'a:48 a:60 , a:72';
+    // const testCycleValue = 'a:48 a:60 , a:72\n   \na a a';
+    const testCycleValue = '[\npattern("a:48 a:60 , a:72"),\npattern("a a a")\n]';
     this.dom.cycleInput.innerText = testCycleValue;
     this.handleCycleChange(testCycleValue);
   }

@@ -10,6 +10,13 @@ export default class PatternHandler extends BaseHandler {
       getRelativeCycle(this.pattern.content, 0, 1) : [];
   }
 
+  getRelativeCycle() {
+    return {
+      cycle: this.relativeCycle,
+      updateCycle: updatedCycle => this.relativeCycle = updatedCycle
+    };
+  }
+
   execute() {
     return this.relativeCycle;
   }
