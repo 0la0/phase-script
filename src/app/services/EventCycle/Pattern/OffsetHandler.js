@@ -1,6 +1,19 @@
 import BaseHandler from 'services/EventCycle/Pattern/BaseHandler';
 // import PatternHandler from 'services/EventCycle/Pattern/PatternHandler';
 
+export function offsetHandler(offset) {
+  return function handleOffset(pattern) {
+    console.log('cool offset handler', offset, pattern)
+    const { cycle, updateCycle } = pattern.getRelativeCycle();
+    const transformedCycle = cycle.map((cycleElement) => {
+      const transformedTime = cycleElement.time + offset;
+      return cycleElement.setTime(transformedTime);
+    });
+    updateCycle(transformedCycle);
+    return pattern;
+  };
+}
+
 export default class OffsetHandler extends BaseHandler {
   constructor(offset, handler) {
     super();
@@ -30,11 +43,27 @@ export default class OffsetHandler extends BaseHandler {
     return this.handler.execute();
   }
 
+  tick() {
+    return this.handler.tick();
+  }
+
+  getNumTicks() {
+    return this.handler.getNumTicks();
+  }
+
+  setNumTicks(numTicks) {
+    this.handler.setNumTicks(numTicks);
+  }
+
   isValid() {
     return this.handler.isValid();
   }
 
   isDone() {
-    return true;
+    return this.handler.isDone();
+  }
+
+  reset() {
+    return this.handler.reset();
   }
 }

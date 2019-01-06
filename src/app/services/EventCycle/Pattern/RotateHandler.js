@@ -1,6 +1,18 @@
 import BaseHandler from 'services/EventCycle/Pattern/BaseHandler';
 import PatternHandler from 'services/EventCycle/Pattern/PatternHandler';
 
+export function rotateHandler(rotation) {
+  return function handleRotate(pattern) {
+    const { cycle, updateCycle } = pattern.getRelativeCycle();
+    const transformedCycle = cycle.map((cycleElement) => {
+      const transformedTime = ((cycleElement.time - rotation) + 1) % 1;
+      return cycleElement.setTime(transformedTime);
+    });
+    updateCycle(transformedCycle);
+    return pattern;
+  };
+}
+
 export default class RotateHandler extends BaseHandler {
   constructor(rotation, handler) {
     super();
@@ -21,6 +33,18 @@ export default class RotateHandler extends BaseHandler {
     return this.handler.getRelativeCycle();
   }
 
+  tick() {
+    return this.handler.tick();
+  }
+
+  getNumTicks() {
+    return this.handler.getNumTicks();
+  }
+
+  setNumTicks(numTicks) {
+    this.handler.setNumTicks(numTicks);
+  }
+
   execute() {
     return this.handler.execute();
   }
@@ -30,6 +54,10 @@ export default class RotateHandler extends BaseHandler {
   }
 
   isDone() {
-    return true;
+    return this.handler.isDone();
+  }
+
+  reset() {
+    return this.handler.reset();
   }
 }

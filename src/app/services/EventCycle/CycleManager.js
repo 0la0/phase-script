@@ -1,8 +1,10 @@
 import { getCycleForTime } from 'services/EventCycle/Evaluator';
 import parseToken from 'services/EventCycle/Tokenizer';
+import { audioEventBus } from 'services/EventBus';
 import AudioEvent from 'services/EventBus/AudioEvent';
 // import functionManager from 'services/EventCycle/Pattern/FunctionManager';
 import { evaluate } from 'services/EventCycle/Evaluator2';
+import metronomeManager from 'services/metronome/metronomeManager';
 
 // const LINE_BREAK = /\n/;
 
@@ -48,22 +50,62 @@ import { evaluate } from 'services/EventCycle/Evaluator2';
 //   }
 // }
 
+class CycleHandler {
+  constructor(patternHandlers) {
+    this.patternHandlers = patternHandlers;
+    this.cycleCounter = 0;
+    this.cycleIndex = 0;
+  }
+
+  handleTick(time) {
+    const activeCycle = this.patternHandlers[this.cycleIndex];
+    if (!activeCycle) { return; }
+    const pattern = activeCycle.tick();
+    if (pattern) {
+      const { relativeCycle, numTicks } = pattern;
+      console.log(numTicks, relativeCycle)
+      const audioCycleDuration = metronomeManager.getMetronome().getTickLength() * numTicks;
+      // TODO: return schedulabes so this can be testable
+      const schedulables = getCycleForTime(relativeCycle, time, audioCycleDuration);
+      schedulables.forEach(({ element, timeObj}) => {
+        const { address, note } = parseToken(element);
+        audioEventBus.publish(new AudioEvent(address, note, timeObj));
+      });
+    }
+    if (activeCycle.isDone()) {
+      activeCycle.reset();
+      this.cycleIndex = (this.cycleIndex + 1) % this.patternHandlers.length;
+    }
+  }
+
+  // TODO: remove
+  increment(time) {
+    const cycleIndex = this.cycleCounter % this.patternHandlers.length;
+    if (this.patternHandlers[cycleIndex]) {
+      const pattern = this.patternHandlers[cycleIndex].execute();
+      if (this.patternHandlers[cycleIndex].isDone()) {
+        this.patternHandlers[cycleIndex].reset();
+        this.cycleCounter++;
+      }
+      const cycleLength = 16; // TODO: implement on a per pattern basis
+      const audioCycleDuration = metronomeManager.getMetronome().getTickLength() * cycleLength;
+      const schedulables = getCycleForTime(pattern, time, audioCycleDuration);
+      return schedulables.map(({ element, timeObj}) => {
+        const { address, note } = parseToken(element);
+        return new AudioEvent(address, note, timeObj);
+      });
+    }
+    this.cycleCounter++;
+    return [];
+  }
+}
+
 export default class CycleManager {
   constructor() {
-    this.patternHandlers = [];
+    this.cycleHandlers = [];
     this.cycleCounter = 0;
     this.setCycleString('');
   }
-
-  // empty line means new cycle
-  // option to begin each cycle with an identifier
-  // MAKE THIS WORK
-  /**
-    $ [ a [ a a ] ]
-    every 2 $ [ a a ] $ [ a a a ]
-
-    b b b
-  **/
 
   setCycleString(cycleString) {
     console.log('setCycleString', cycleString)
@@ -77,11 +119,12 @@ export default class CycleManager {
     // const statements = cycleString.split((/;\s/)); // ; followed by whitespace
     // const result = statements.map(statement => evaluate(statement));
 
-    let cycleResult;
+    let cycleResults;
     try {
       const result = evaluate(cycleString);
-      cycleResult = Array.isArray(result) ? result : [ result ];
+      // cycleResult = Array.isArray(result) ? result : [ result ];
       console.log('result:', result);
+      cycleResults = result;
     } catch(error) {
       // TODO: render error message
       console.log('result error', error.message);
@@ -106,9 +149,9 @@ export default class CycleManager {
     //   this.patternHandlers = patternHandlers;
     // }
 
-    this._isValid = cycleResult.every(cycle => cycle.isValid());
+    this._isValid = cycleResults.every(cycleResult => cycleResult.every(cycle => cycle.isValid()));
     if (this._isValid) {
-      this.patternHandlers = cycleResult;
+      this.cycleHandlers = cycleResults.map(cycleResult => new CycleHandler(cycleResult));
     }
   }
 
@@ -116,24 +159,35 @@ export default class CycleManager {
     return this._isValid;
   }
 
-  getAudioEventsAndIncrement(audioCycleDuration, time) {
-    const cycleIndex = this.cycleCounter % this.patternHandlers.length;
-    if (this.patternHandlers[cycleIndex]) {
-      const pattern = this.patternHandlers[cycleIndex].execute();
-      if (this.patternHandlers[cycleIndex].isDone()) {
-        this.patternHandlers[cycleIndex].reset();
-        this.cycleCounter++;
-      }
-      const schedulables = getCycleForTime(pattern, time, audioCycleDuration);
-      return schedulables.map(({ element, timeObj}) => {
-        const { address, note } = parseToken(element);
-        return new AudioEvent(address, note, timeObj);
-      });
-    }
-    this.cycleCounter++;
+  // TODO: set arbitrary [16, 30, 32] cycle lengths (see UNTITLED file)
+  getAudioEventsAndIncrement(time) {
+    // const cycleIndex = this.cycleCounter % this.patternHandlers.length;
+    // if (this.patternHandlers[cycleIndex]) {
+    //   const pattern = this.patternHandlers[cycleIndex].execute();
+    //   if (this.patternHandlers[cycleIndex].isDone()) {
+    //     this.patternHandlers[cycleIndex].reset();
+    //     this.cycleCounter++;
+    //   }
+    //   const schedulables = getCycleForTime(pattern, time, audioCycleDuration);
+    //   return schedulables.map(({ element, timeObj}) => {
+    //     const { address, note } = parseToken(element);
+    //     return new AudioEvent(address, note, timeObj);
+    //   });
+    // }
+    // this.cycleCounter++;
+    // this.cycleHandlers.forEach(cycleHandler => cycleHandler.increment(audioCycleDuration, time));
+
+    // const audioCycleDuration = metronomeManager.getMetronome().getTickLength() * this.cycleLength;
+    // const audioEvents =  this.cycleHandlers.flatMap(cycleHandler => cycleHandler.increment(time));
+    // audioEvents.forEach(audioEvent => audioEventBus.publish(audioEvent));
+    this.cycleHandlers.forEach(cycleHandler => cycleHandler.handleTick(time))
+
+    // return this.cycleHandlers
+    //   .map(cycleHandler => cycleHandler.increment(audioCycleDuration, time))
+    //   .flatMap();
   }
 
-  resetCounter() {
-    this.cycleCounter = 0;
-  }
+  // resetCounter() {
+  //   this.cycleCounter = 0;
+  // }
 }

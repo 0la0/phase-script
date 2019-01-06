@@ -1,6 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import { audioEventBus } from 'services/EventBus';
+// import { audioEventBus } from 'services/EventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
 import CycleManager from 'services/EventCycle/CycleManager';
@@ -45,7 +45,7 @@ class EventCycle extends BaseComponent {
 
     // for testing
     // const testCycleValue = 'a:48 a:60 , a:72\n   \na a a';
-    const testCycleValue = '[\npattern("a:48 a:60 , a:72"),\npattern("a a a")\n]';
+    const testCycleValue = 'seq([\nreverse() (speed(8)) (pattern("a:48 a:60 , a:72")),\npattern("a a a")\n])';
     this.dom.cycleInput.innerText = testCycleValue;
     this.handleCycleChange(testCycleValue);
   }
@@ -69,10 +69,11 @@ class EventCycle extends BaseComponent {
 
   handleTick(tickNumber, time) {
     if (!this.isOn) { return; }
-    if (tickNumber % this.cycleLength !== 0) { return; }
-    const audioCycleDuration = metronomeManager.getMetronome().getTickLength() * this.cycleLength;
-    const audioEvents = this.cycleManager.getAudioEventsAndIncrement(audioCycleDuration, time);
-    audioEvents.forEach(audioEvent => audioEventBus.publish(audioEvent));
+    // if (tickNumber % this.cycleLength !== 0) { return; }
+    // const audioCycleDuration = metronomeManager.getMetronome().getTickLength() * this.cycleLength;
+    this.cycleManager.getAudioEventsAndIncrement(time);
+    // const audioEvents = this.cycleManager.getAudioEventsAndIncrement(audioCycleDuration, time);
+    // audioEvents.forEach(audioEvent => audioEventBus.publish(audioEvent));
   }
 
   handleTickRender(tickNumber) {
