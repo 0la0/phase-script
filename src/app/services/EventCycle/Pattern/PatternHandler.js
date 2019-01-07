@@ -1,8 +1,6 @@
-import BaseHandler from 'services/EventCycle/Pattern/BaseHandler';
 import parseCycle from 'services/EventCycle/Parser';
 import { getRelativeCycle } from 'services/EventCycle/Evaluator';
 
-// PUT ON BASE CLASS?
 class Counter {
   constructor(numTicks) {
     this.numTicks = numTicks;
@@ -25,53 +23,91 @@ class Counter {
     this.numTicks = numTicks;
   }
 
-  // increment() {
-  //   this.cnt++;
-  // }
-
   reset() {
     this.cnt = 0;
   }
 }
 
-export default class PatternHandler extends BaseHandler {
+class EveryHandler {
+  constructor(iteration, pattern) {
+    this.iteration = iteration;
+    this.pattern = pattern;
+  }
+
+  requestPattern(cnt) {
+    if (cnt % this.iteration !== 0) {
+      return false;
+    }
+    return this.pattern.relativeCycle;
+  }
+}
+
+class CycleHandler {
   constructor(patternString) {
-    super();
-    console.log("pattern handler", patternString);
     this.pattern = parseCycle(patternString);
-    this.counter = new Counter(16);
-    this.length = 1;
     this.relativeCycle = this.pattern.ok ?
       getRelativeCycle(this.pattern.content, 0, 1) : [];
   }
 
-  compile() {
-    return this;
+  getRelativeCycle() {
+    return this.relativeCycle;
   }
 
+  setRelativeCycle(relativeCycle) {
+    this.relativeCycle = relativeCycle;
+  }
+
+  isValid() {
+    return this.pattern.ok;
+  }
+}
+
+export default class PatternHandler {
+  constructor(patternString, numTicks) {
+    this.cycleHandlers = [ new CycleHandler(patternString), ];
+    this.counter = new Counter(numTicks || 16);
+    this.cnt = 0;
+    this.transforms = [];
+  }
+
+  // TODO: instead of callback, create an update method like below
   getRelativeCycle() {
     return {
-      cycle: this.relativeCycle,
-      updateCycle: updatedCycle => this.relativeCycle = updatedCycle,
-      length: 1
+      cycle: this.cycleHandlers[0].getRelativeCycle(),
+      updateCycle: updatedCycle => this.cycleHandlers[0].setRelativeCycle(updatedCycle),
     };
   }
 
+  // update(transformer) {
+  //   this.relativeCycle = transformer(this.relativeCycle);
+  //   return this;
+  // }
+
   tick() {
+    // if (this.counter.tick()) {
+    //   const everyModified = this.everyHandler && this.everyHandler.requestPattern(this.cnt);
+    //   return {
+    //     relativeCycle: everyModified ? everyModified : this.relativeCycle,
+    //     numTicks: this.counter.getNumTicks(),
+    //   };
+    // }
     if (this.counter.tick()) {
+      console.log('do real time transforms', this.transforms);
+      const cycle = this.cycleHandlers[0];
       return {
-        relativeCycle: this.relativeCycle,
+        relativeCycle: cycle.getRelativeCycle(),
         numTicks: this.counter.getNumTicks(),
       };
     }
   }
 
-  getNumTicks() {
-    return this.counter.getNumTicks();
+  pushToTransformStack(transform) {
+    this.transforms.push(transform);
+    return this;
   }
 
-  execute() {
-    return this.relativeCycle;
+  getNumTicks() {
+    return this.counter.getNumTicks();
   }
 
   isDone() {
@@ -80,6 +116,11 @@ export default class PatternHandler extends BaseHandler {
 
   reset() {
     this.counter.reset();
+    this.cnt++;
+  }
+
+  addEveryHandler(iteration, pattern) {
+    this.everyHandler = new EveryHandler(iteration, pattern);
   }
 
   setNumTicks(numTicks) {
@@ -87,6 +128,6 @@ export default class PatternHandler extends BaseHandler {
   }
 
   isValid() {
-    return this.pattern.ok;
+    return this.cycleHandlers.every(handler => handler.isValid());
   }
 }

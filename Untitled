@@ -1,0 +1,121 @@
+(function () {
+
+  function buildCoolHof(tag, param) {
+
+    // function hof(param) {
+    //   if (typeof param === 'string') {
+    //     return param;
+    //   }
+    //   if (typeof param === 'function') {
+    //     return param();
+    //   }
+    //   throw new TypeError(`Invalid type: ${param}`);
+    // }
+
+    return function(hofParam) {
+      console.log(`evoking ${tag} hof with ${hofParam}`);
+      if (typeof hofParam === 'function') {
+        return function secondOrder(arg) {
+          if (typeof arg === 'function') {
+            return hof(arg);
+          }
+          const res = hofParam(arg);
+          return ` ${tag}: ${param} ${res}`;
+        }
+      }
+      return ` ${tag}: ${param} ${hofParam}`;
+    }
+  }
+
+  function a(param) {
+    console.log('evoking a with', param);
+    return buildCoolHof('A', param);
+  }
+
+  function b(param) {
+    console.log('evoking b with', param);
+    return buildCoolHof('B', param);
+  }
+
+  function c(str) {
+    console.log('evoking c with param', str)
+    return str;
+  }
+
+  var result = a('a-param') (a('a.2-param')) (b('b-param')) (b('b.2-param')) (c('c-param'))
+  console.log('result', result);
+})()
+
+
+
+(function() {
+
+  function a() {
+    console.log('a executed');
+    return (param) => {
+      console.log('a called with param', typeof param, param);
+      if (typeof param === 'string') {
+        console.log('return fn for a');
+        return param + ' a';
+      }
+      if (typeof param === 'function') {
+        console.log('execute fn for a')
+        return param('a');
+      }
+    };
+    // return str => str + ' a';
+  }
+
+  function b() {
+    return (param) => {
+      console.log('b called with param', typeof param, param);
+      if (typeof param === 'string') {
+        console.log('return fn for b');
+        return param + ' b';
+      }
+      if (typeof param === 'function') {
+        console.log('execute fn for b')
+        return param('b');
+      }
+    };
+  }
+
+  function pattern(str) {
+    return str;
+  }
+
+  // const result = a() (c);
+  const result = a() (b('hi')) (pattern("pat")) ;
+  console.log('result', typeof result, result);
+})()
+
+
+(function() {
+  function run(...args) {
+    if (args.length === 1) {
+
+    }
+    if (args.length === 2) {
+
+    }
+    throw new TypeError(`Illegal Argument: string required for run ...`);
+  }
+
+
+  function floatingPrecision(num, precision) {
+    if (typeof num !== 'number') {
+      throw new Error('Input must be a number');
+    }
+    const muliplier = 10 ** precision;
+    return Math.round(num * muliplier) / muliplier;
+  }
+
+  [ 16, 30, 32 ].forEach(step => {
+    const resolution = new Array(step + 1)
+      .fill(null)
+      .map((_, i) => i)
+      .map(index => index * (1 / step))
+      .map(res => floatingPrecision(res, 5));
+    console.log(`step ${step}`, resolution);
+  });
+})()

@@ -45,7 +45,7 @@ class EventCycle extends BaseComponent {
 
     // for testing
     // const testCycleValue = 'a:48 a:60 , a:72\n   \na a a';
-    const testCycleValue = 'seq([\nreverse() (speed(8)) (pattern("a:48 a:60 , a:72")),\npattern("a a a")\n])';
+    const testCycleValue = 'seq([\nevery(4, reverse()) (pattern("a:48 a:60 , a:72"))\n])';
     this.dom.cycleInput.innerText = testCycleValue;
     this.handleCycleChange(testCycleValue);
   }
