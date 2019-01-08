@@ -45,34 +45,23 @@ class CycleHandler {
     if (!activeCycle) { return; }
 
     if (this.counter.isReady()) {
-      console.log('isReady');
       const pattern = activeCycle.tick();
-      console.log('pattern?', pattern)
-      if (pattern) {
-        const { relativeCycle, numTicks } = pattern;
-        this.counter.setLength(numTicks);
-        console.log('go!', numTicks);
-        const audioCycleDuration = metronomeManager.getMetronome().getTickLength() * numTicks;
-        // TODO: return schedulabes so this can be testable
-        const schedulables = getCycleForTime(relativeCycle, time, audioCycleDuration);
-        schedulables.forEach(({ element, timeObj}) => {
-          const { address, note } = parseToken(element);
-          audioEventBus.publish(new AudioEvent(address, note, timeObj));
-        });
-      }
+      const numTicks = pattern.getNumTicks();
+      this.counter.setLength(numTicks);
+      const audioCycleDuration = metronomeManager.getMetronome().getTickLength() * numTicks;
+      // TODO: return schedulabes so this can be testable
+      const schedulables = getCycleForTime(pattern.getRelativeCycle(), time, audioCycleDuration);
+      schedulables.forEach(({ element, timeObj}) => {
+        const { address, note } = parseToken(element);
+        audioEventBus.publish(new AudioEvent(address, note, timeObj));
+      });
     }
 
     this.counter.increment();
     if (this.counter.isDone()) {
-      console.log('reset');
       this.cycleIndex = (this.cycleIndex + 1) % this.patternHandlers.length;
       this.counter.reset();
     }
-    // if (activeCycle.isDone()) {
-    //
-    //   activeCycle.reset();
-    //   this.cycleIndex = (this.cycleIndex + 1) % this.patternHandlers.length;
-    // }
   }
 }
 

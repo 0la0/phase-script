@@ -62,6 +62,36 @@ class CycleHandler {
   }
 }
 
+export class Pattern {
+  constructor(relativeCycle, numTicks, cnt) {
+    this.relativeCycle = relativeCycle;
+    this.numTicks = numTicks;
+    this.cnt = cnt;
+  }
+
+  setRelativeCycle(relativeCycle) {
+    this.relativeCycle = relativeCycle;
+    return this;
+  }
+
+  getRelativeCycle() {
+    return this.relativeCycle;
+  }
+
+  setNumTicks(numTicks) {
+    this.numTicks = numTicks;
+    return this;
+  }
+
+  getNumTicks() {
+    return this.numTicks;
+  }
+
+  getCnt() {
+    return this.cnt;
+  }
+}
+
 export default class PatternHandler {
   constructor(patternString, numTicks) {
     this.cycleHandlers = [ new CycleHandler(patternString), ];
@@ -78,12 +108,17 @@ export default class PatternHandler {
   }
 
   tick() {
-    const cycle = {
-      relativeCycle: this.getActiveCycle().map(ele => ele.clone()),
-      numTicks: this.counter.getNumTicks(),
-      cnt: this.cnt++
-    };
-    return this.transforms.reduce((acc, transform) => transform(acc), cycle);
+    const cnt = this.cnt++;
+    const relativeCycle = this.getActiveCycle().map(ele => ele.clone());
+    const pattern = new Pattern(relativeCycle, this.counter.getNumTicks(), cnt);
+
+    return this.transforms.reduce((pattern, xform) => {
+      const { transform, predicate } = xform;
+      if (!predicate(cnt)) {
+        return pattern;
+      }
+      return transform(pattern);
+    }, pattern);
   }
 
   getActiveCycle() {
@@ -117,5 +152,11 @@ export default class PatternHandler {
 
   isValid() {
     return this.cycleHandlers.every(handler => handler.isValid());
+  }
+
+  clone() {
+    const instance = new PatternHandler('');
+    instance.cycleHandlers = this.cycleHandlers;
+    return instance;
   }
 }

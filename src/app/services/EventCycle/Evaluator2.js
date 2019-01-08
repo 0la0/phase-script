@@ -1,4 +1,4 @@
-import PatternHandler from 'services/EventCycle/Pattern/PatternHandler';
+import PatternHandler, { Pattern } from 'services/EventCycle/Pattern/PatternHandler';
 import { repeatHandler } from 'services/EventCycle/Pattern/RepeatHandler';
 import { reverseHandler } from 'services/EventCycle/Pattern/ReverseHandler';
 import { offsetHandler } from 'services/EventCycle/Pattern/OffsetHandler';
@@ -33,8 +33,7 @@ function pattern(str) {
 }
 
 function reverse() {
-  const transformer = reverseHandler();
-  return buildHof(transformer);
+  return buildHof(reverseHandler());
 }
 
 function repeat(num) {
@@ -75,6 +74,7 @@ export function evaluate(str) {
   function seq(arg) {
     const sequence = Array.isArray(arg) ? arg : [ arg ];
     sequences.push(sequence);
+    console.log('sequences', sequences)
   }
 
   eval(str);

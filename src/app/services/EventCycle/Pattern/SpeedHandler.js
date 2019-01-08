@@ -1,6 +1,10 @@
+
 export function speedHandler(speed) {
   return function handleSpeed(pattern) {
-    return pattern.pushToTransformStack(({ relativeCycle, cnt }) =>
-      ({ relativeCycle, numTicks: speed, cnt }));
+    const transform = {
+      predicate: () => true,
+      transform: _p => _p.setNumTicks(speed),
+    };
+    return pattern.pushToTransformStack(transform);
   };
 }
