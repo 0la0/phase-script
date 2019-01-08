@@ -5,32 +5,74 @@ import AudioEvent from 'services/EventBus/AudioEvent';
 import { evaluate } from 'services/EventCycle/Evaluator2';
 import metronomeManager from 'services/metronome/metronomeManager';
 
+class Counter {
+  constructor(length) {
+    this.length = length;
+    this.cnt = 0;
+  }
+
+  setLength(length) {
+    this.length = length;
+  }
+
+  isReady() {
+    return this.cnt === 0;
+  }
+
+  increment() {
+    return this.cnt++;
+  }
+
+  isDone() {
+    return this.cnt >= this.length;
+  }
+
+  reset() {
+    this.cnt = 0;
+  }
+}
+
 class CycleHandler {
   constructor(patternHandlers) {
     this.patternHandlers = patternHandlers;
     this.cycleCounter = 0;
     this.cycleIndex = 0;
+    this.counter = new Counter(0);
   }
 
   handleTick(time) {
     const activeCycle = this.patternHandlers[this.cycleIndex];
     if (!activeCycle) { return; }
-    // TODO: need to do on the fly function evaluation
-    const pattern = activeCycle.tick();
-    if (pattern) {
-      const { relativeCycle, numTicks } = pattern;
-      const audioCycleDuration = metronomeManager.getMetronome().getTickLength() * numTicks;
-      // TODO: return schedulabes so this can be testable
-      const schedulables = getCycleForTime(relativeCycle, time, audioCycleDuration);
-      schedulables.forEach(({ element, timeObj}) => {
-        const { address, note } = parseToken(element);
-        audioEventBus.publish(new AudioEvent(address, note, timeObj));
-      });
+
+    if (this.counter.isReady()) {
+      console.log('isReady');
+      const pattern = activeCycle.tick();
+      console.log('pattern?', pattern)
+      if (pattern) {
+        const { relativeCycle, numTicks } = pattern;
+        this.counter.setLength(numTicks);
+        console.log('go!', numTicks);
+        const audioCycleDuration = metronomeManager.getMetronome().getTickLength() * numTicks;
+        // TODO: return schedulabes so this can be testable
+        const schedulables = getCycleForTime(relativeCycle, time, audioCycleDuration);
+        schedulables.forEach(({ element, timeObj}) => {
+          const { address, note } = parseToken(element);
+          audioEventBus.publish(new AudioEvent(address, note, timeObj));
+        });
+      }
     }
-    if (activeCycle.isDone()) {
-      activeCycle.reset();
+
+    this.counter.increment();
+    if (this.counter.isDone()) {
+      console.log('reset');
       this.cycleIndex = (this.cycleIndex + 1) % this.patternHandlers.length;
+      this.counter.reset();
     }
+    // if (activeCycle.isDone()) {
+    //
+    //   activeCycle.reset();
+    //   this.cycleIndex = (this.cycleIndex + 1) % this.patternHandlers.length;
+    // }
   }
 }
 
@@ -72,7 +114,7 @@ export default class CycleManager {
   }
 
   getAudioEventsAndIncrement(time) {
-    this.cycleHandlers.forEach(cycleHandler => cycleHandler.handleTick(time))
+    this.cycleHandlers.forEach(cycleHandler => cycleHandler.handleTick(time));
 
     // return this.cycleHandlers
     //   .map(cycleHandler => cycleHandler.increment(audioCycleDuration, time))

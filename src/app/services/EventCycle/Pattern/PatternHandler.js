@@ -70,7 +70,6 @@ export default class PatternHandler {
     this.transforms = [];
   }
 
-  // TODO: instead of callback, create an update method like below
   getRelativeCycle() {
     return {
       cycle: this.cycleHandlers[0].getRelativeCycle(),
@@ -78,27 +77,17 @@ export default class PatternHandler {
     };
   }
 
-  // update(transformer) {
-  //   this.relativeCycle = transformer(this.relativeCycle);
-  //   return this;
-  // }
-
   tick() {
-    // if (this.counter.tick()) {
-    //   const everyModified = this.everyHandler && this.everyHandler.requestPattern(this.cnt);
-    //   return {
-    //     relativeCycle: everyModified ? everyModified : this.relativeCycle,
-    //     numTicks: this.counter.getNumTicks(),
-    //   };
-    // }
-    if (this.counter.tick()) {
-      console.log('do real time transforms', this.transforms);
-      const cycle = this.cycleHandlers[0];
-      return {
-        relativeCycle: cycle.getRelativeCycle(),
-        numTicks: this.counter.getNumTicks(),
-      };
-    }
+    const cycle = {
+      relativeCycle: this.getActiveCycle().map(ele => ele.clone()),
+      numTicks: this.counter.getNumTicks(),
+      cnt: this.cnt++
+    };
+    return this.transforms.reduce((acc, transform) => transform(acc), cycle);
+  }
+
+  getActiveCycle() {
+    return this.cycleHandlers[0].getRelativeCycle();
   }
 
   pushToTransformStack(transform) {
@@ -116,7 +105,6 @@ export default class PatternHandler {
 
   reset() {
     this.counter.reset();
-    this.cnt++;
   }
 
   addEveryHandler(iteration, pattern) {
