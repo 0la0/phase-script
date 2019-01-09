@@ -1,10 +1,11 @@
-import PatternHandler, { Pattern } from 'services/EventCycle/Pattern/PatternHandler';
+import PatternHandler from 'services/EventCycle/Pattern/PatternHandler';
 import { repeatHandler } from 'services/EventCycle/Pattern/RepeatHandler';
 import { reverseHandler } from 'services/EventCycle/Pattern/ReverseHandler';
 import { offsetHandler } from 'services/EventCycle/Pattern/OffsetHandler';
 import { rotateHandler } from 'services/EventCycle/Pattern/RotateHandler';
 import { speedHandler } from 'services/EventCycle/Pattern/SpeedHandler';
 import { everyHandler } from 'services/EventCycle/Pattern/EveryHandler';
+import { degradeHandler } from 'services/EventCycle/Pattern/DegradeHandler';
 
 function buildHof(transformer) {
   function hof(param) {
@@ -66,6 +67,13 @@ function offset(offset) {
 
 function every(iteration, transform) {
   return buildHof(everyHandler(iteration, transform));
+}
+
+function degrade(threshold) {
+  if (Number.isNaN(threshold) || threshold < 0 || threshold > 1) {
+    throw new TypeError(`Illegal Argument: float [0, 1] required for degrade(${offset})`);
+  }
+  return buildHof(degradeHandler(threshold));
 }
 
 export function evaluate(str) {
