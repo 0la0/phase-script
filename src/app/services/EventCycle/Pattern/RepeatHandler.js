@@ -6,13 +6,14 @@ export function repeatHandler(numRepeats) {
         const allTransformedCycles = [];
         for (let i = 0; i < numRepeats; i++) {
           const transformedCycle = _pattern.getRelativeCycle().map((cycleElement) => {
-            const transformedTime = (i / numRepeats) + (cycleElement.time / numRepeats);
+            const transformedTime = (i / numRepeats) + (cycleElement.getTime() / numRepeats);
             return cycleElement.clone().setTime(transformedTime);
           });
           allTransformedCycles.push(transformedCycle);
         }
-        return _pattern.setRelativeCycle(allTransformedCycles.flat())
-          .setNumTicks(numRepeats * pattern.getNumTicks());
+        return _pattern
+          .setRelativeCycle(allTransformedCycles.flat())
+          .setNumTicks(numRepeats * _pattern.getNumTicks());
       },
     };
     return pattern.pushToTransformStack(transform);

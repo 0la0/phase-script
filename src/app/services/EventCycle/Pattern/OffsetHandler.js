@@ -4,7 +4,7 @@ export function offsetHandler(offset) {
       predicate: () => true,
       transform: (_pattern) => {
         const transformedCycle = _pattern.getRelativeCycle().map((cycleElement) => {
-          const transformedTime = cycleElement.time + offset;
+          const transformedTime = cycleElement.getTime() + offset;
           return cycleElement.setTime(transformedTime);
         });
         return _pattern.setRelativeCycle(transformedCycle);

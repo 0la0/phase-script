@@ -4,7 +4,7 @@ export function rotateHandler(rotation) {
       predicate: () => true,
       transform: (_pattern) => {
         const transformedCycle = _pattern.getRelativeCycle().map((cycleElement) => {
-          const transformedTime = ((cycleElement.time - rotation) + 1) % 1;
+          const transformedTime = ((cycleElement.getTime() - rotation) + 1) % 1;
           return cycleElement.setTime(transformedTime);
         });
         return _pattern.setRelativeCycle(transformedCycle);
