@@ -1,4 +1,4 @@
-import { getCycleForTime } from 'services/EventCycle/Evaluator';
+import { buildAudioEventsFromPattern } from 'services/EventCycle/Pattern/AudioEventBuilder';
 
 export default class Pattern {
   constructor(relativeCycle, numTicks, cnt) {
@@ -30,6 +30,6 @@ export default class Pattern {
   }
 
   getAudioEvents(time, audioCycleDuration) {
-    return getCycleForTime(this.relativeCycle, time, audioCycleDuration);
+    return buildAudioEventsFromPattern(this.relativeCycle, time, audioCycleDuration);
   }
 }

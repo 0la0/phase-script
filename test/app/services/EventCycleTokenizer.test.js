@@ -1,5 +1,5 @@
 import assert from 'assert';
-import parseToken from 'services/EventCycle/Tokenizer';
+import { parseToken } from 'services/EventCycle/Pattern/AudioEventBuilder';
 
 describe('Tokenizer', () => {
   it('throws an error if the cycle is not a string', () => {

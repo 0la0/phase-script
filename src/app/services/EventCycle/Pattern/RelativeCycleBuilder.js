@@ -24,7 +24,6 @@ export class RelativeCycleElement {
   }
 }
 
-// THIS NEEDS TO BE: relativeCycleBuilder ...
 export function getRelativeCycle(cycle, baseTime = 0, cycleDuration = 1) {
   if (!Array.isArray(cycle)) {
     throw new Error('Cycle must be an array');
