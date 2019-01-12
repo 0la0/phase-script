@@ -1,18 +1,9 @@
 import assert from 'assert';
 import parseCycle from 'services/EventCycle/Pattern/PatternStringParser';
-import {
-  getRelativeCycle,
-  RelativeCycleElement
-} from 'services/EventCycle/Pattern/RelativeCycleBuilder';
-import {
-  // RelativeCycleElement,
-  // PreciseCycleElement,
-  // getRelativeCycle,
-  getCycleForTime,
-} from 'services/EventCycle/Evaluator';
+import { getRelativeCycle, RelativeCycleElement } from 'services/EventCycle/Pattern/RelativeCycleBuilder';
+import { getCycleForTime } from 'services/EventCycle/Evaluator';
 import TimeSchedule from 'services/metronome/TimeSchedule';
-
-class PreciseCycleElement {}
+import AudioEvent from 'services/EventBus/AudioEvent';
 
 describe('CycleEvaluator', () => {
   it('throws an error if the cycle is not an array', () => {
@@ -33,7 +24,7 @@ describe('CycleEvaluator', () => {
     const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
     const cycleForTime = getCycleForTime(relativeCycle, new TimeSchedule(2, 2000), 4);
     assert.deepEqual(relativeCycle, [ new RelativeCycleElement('a', 0) ]);
-    assert.deepEqual(cycleForTime, [ new PreciseCycleElement('a', new TimeSchedule(2, 2000)) ]);
+    assert.deepEqual(cycleForTime, [ new AudioEvent('a', undefined, new TimeSchedule(2, 2000)) ]);
   });
 
   it('evenly divides time between two elements', () => {
@@ -45,8 +36,8 @@ describe('CycleEvaluator', () => {
       new RelativeCycleElement('b', 0.5)
     ]);
     assert.deepEqual(cycleForTime, [
-      new PreciseCycleElement('a', new TimeSchedule(2, 2000)),
-      new PreciseCycleElement('b', new TimeSchedule(4, 4000)),
+      new AudioEvent('a', undefined, new TimeSchedule(2, 2000)),
+      new AudioEvent('b', undefined, new TimeSchedule(4, 4000)),
     ]);
   });
 
@@ -60,9 +51,9 @@ describe('CycleEvaluator', () => {
       new RelativeCycleElement('c', 0.666667)
     ]);
     assert.deepEqual(cycleForTime, [
-      new PreciseCycleElement('a', new TimeSchedule(3, 3000)),
-      new PreciseCycleElement('b', new TimeSchedule(3.999999, 3999.999)),
-      new PreciseCycleElement('c', new TimeSchedule(5.000001, 5000.001))
+      new AudioEvent('a', undefined, new TimeSchedule(3, 3000)),
+      new AudioEvent('b', undefined, new TimeSchedule(3.999999, 3999.999)),
+      new AudioEvent('c', undefined, new TimeSchedule(5.000001, 5000.001))
     ]);
   });
 
@@ -77,10 +68,10 @@ describe('CycleEvaluator', () => {
       new RelativeCycleElement('d', 0.75)
     ]);
     assert.deepEqual(cycleForTime, [
-      new PreciseCycleElement('a', new TimeSchedule(4, 4000)),
-      new PreciseCycleElement('b', new TimeSchedule(4.5, 4500)),
-      new PreciseCycleElement('c', new TimeSchedule(5, 5000)),
-      new PreciseCycleElement('d', new TimeSchedule(5.5, 5500))
+      new AudioEvent('a', undefined, new TimeSchedule(4, 4000)),
+      new AudioEvent('b', undefined, new TimeSchedule(4.5, 4500)),
+      new AudioEvent('c', undefined, new TimeSchedule(5, 5000)),
+      new AudioEvent('d', undefined, new TimeSchedule(5.5, 5500))
     ]);
   });
 
@@ -93,8 +84,8 @@ describe('CycleEvaluator', () => {
       new RelativeCycleElement('b', 0.5)
     ]);
     assert.deepEqual(cycleForTime, [
-      new PreciseCycleElement('a', new TimeSchedule(2, 2000)),
-      new PreciseCycleElement('b', new TimeSchedule(2.5, 2500))
+      new AudioEvent('a', undefined, new TimeSchedule(2, 2000)),
+      new AudioEvent('b', undefined, new TimeSchedule(2.5, 2500))
     ]);
   });
 
@@ -113,14 +104,14 @@ describe('CycleEvaluator', () => {
       new RelativeCycleElement('4', 0.875)
     ]);
     assert.deepEqual(cycleForTime, [
-      new PreciseCycleElement('a', new TimeSchedule(0, 0)),
-      new PreciseCycleElement('b', new TimeSchedule(1, 1000)),
-      new PreciseCycleElement('c', new TimeSchedule(2, 2000)),
-      new PreciseCycleElement('d', new TimeSchedule(3, 3000)),
-      new PreciseCycleElement('1', new TimeSchedule(4, 4000)),
-      new PreciseCycleElement('2', new TimeSchedule(5, 5000)),
-      new PreciseCycleElement('3', new TimeSchedule(6, 6000)),
-      new PreciseCycleElement('4', new TimeSchedule(7, 7000))
+      new AudioEvent('a', undefined, new TimeSchedule(0, 0)),
+      new AudioEvent('b', undefined, new TimeSchedule(1, 1000)),
+      new AudioEvent('c', undefined, new TimeSchedule(2, 2000)),
+      new AudioEvent('d', undefined, new TimeSchedule(3, 3000)),
+      new AudioEvent('1', undefined, new TimeSchedule(4, 4000)),
+      new AudioEvent('2', undefined, new TimeSchedule(5, 5000)),
+      new AudioEvent('3', undefined, new TimeSchedule(6, 6000)),
+      new AudioEvent('4', undefined, new TimeSchedule(7, 7000))
     ]);
   });
 
@@ -135,10 +126,10 @@ describe('CycleEvaluator', () => {
       new RelativeCycleElement('d', 0.875)
     ]);
     assert.deepEqual(cycleForTime, [
-      new PreciseCycleElement('a', new TimeSchedule(0, 0)),
-      new PreciseCycleElement('b', new TimeSchedule(4, 4000)),
-      new PreciseCycleElement('c', new TimeSchedule(6, 6000)),
-      new PreciseCycleElement('d', new TimeSchedule(7, 7000)),
+      new AudioEvent('a', undefined, new TimeSchedule(0, 0)),
+      new AudioEvent('b', undefined, new TimeSchedule(4, 4000)),
+      new AudioEvent('c', undefined, new TimeSchedule(6, 6000)),
+      new AudioEvent('d', undefined, new TimeSchedule(7, 7000)),
     ]);
   });
 });
