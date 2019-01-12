@@ -1,6 +1,5 @@
 const WHITESPACE = /(\s+)/;
 const SPLIT_ON_BRACKET = /([[|\]])/g;
-// const LINE_BREAK = /\n/;
 
 function tokenizeString(str) {
   const cycleTokens = str.split(WHITESPACE)

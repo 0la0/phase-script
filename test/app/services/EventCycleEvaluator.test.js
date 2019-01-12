@@ -1,12 +1,18 @@
 import assert from 'assert';
-import parseCycle from 'services/EventCycle/Parser';
+import parseCycle from 'services/EventCycle/Pattern/PatternStringParser';
 import {
-  RelativeCycleElement,
-  PreciseCycleElement,
   getRelativeCycle,
+  RelativeCycleElement
+} from 'services/EventCycle/Pattern/RelativeCycleBuilder';
+import {
+  // RelativeCycleElement,
+  // PreciseCycleElement,
+  // getRelativeCycle,
   getCycleForTime,
 } from 'services/EventCycle/Evaluator';
 import TimeSchedule from 'services/metronome/TimeSchedule';
+
+class PreciseCycleElement {}
 
 describe('CycleEvaluator', () => {
   it('throws an error if the cycle is not an array', () => {

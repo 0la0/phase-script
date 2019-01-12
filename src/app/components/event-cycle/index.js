@@ -1,6 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-// import { audioEventBus } from 'services/EventBus';
+import { audioEventBus } from 'services/EventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
 import CycleManager from 'services/EventCycle/CycleManager';
@@ -71,9 +71,15 @@ class EventCycle extends BaseComponent {
     if (!this.isOn) { return; }
     // if (tickNumber % this.cycleLength !== 0) { return; }
     // const audioCycleDuration = metronomeManager.getMetronome().getTickLength() * this.cycleLength;
-    this.cycleManager.getAudioEventsAndIncrement(time);
-    // const audioEvents = this.cycleManager.getAudioEventsAndIncrement(audioCycleDuration, time);
-    // audioEvents.forEach(audioEvent => audioEventBus.publish(audioEvent));
+    // this.cycleManager.getAudioEventsAndIncrement(time);
+    // const schedulables = this.cycleManager.getAudioEventsAndIncrement(audioCycleDuration, time);
+    // audioEvents
+    this.cycleManager.getAudioEventsAndIncrement(time, metronomeManager.getMetronome().getTickLength())
+      .forEach(audioEvent => audioEventBus.publish(audioEvent));
+      // .forEach(({ element, timeObj}) => {
+      //   const { address, note } = parseToken(element);
+      //   audioEventBus.publish(new AudioEvent(address, note, timeObj));
+      // });
   }
 
   handleTickRender(tickNumber) {

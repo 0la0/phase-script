@@ -1,35 +1,6 @@
-import parseCycle from 'services/EventCycle/Parser';
-import { getRelativeCycle } from 'services/EventCycle/Evaluator';
-
-export class Pattern {
-  constructor(relativeCycle, numTicks, cnt) {
-    this.relativeCycle = relativeCycle;
-    this.numTicks = numTicks;
-    this.cnt = cnt;
-  }
-
-  setRelativeCycle(relativeCycle) {
-    this.relativeCycle = relativeCycle;
-    return this;
-  }
-
-  getRelativeCycle() {
-    return this.relativeCycle;
-  }
-
-  setNumTicks(numTicks) {
-    this.numTicks = numTicks;
-    return this;
-  }
-
-  getNumTicks() {
-    return this.numTicks;
-  }
-
-  getCnt() {
-    return this.cnt;
-  }
-}
+import parseCycle from 'services/EventCycle/Pattern/PatternStringParser';
+import { getRelativeCycle } from 'services/EventCycle/Pattern/RelativeCycleBuilder';
+import Pattern from 'services/EventCycle/Pattern/Pattern';
 
 export default class PatternHandler {
   constructor(patternString, numTicks) {

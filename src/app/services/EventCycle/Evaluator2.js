@@ -1,11 +1,11 @@
 import PatternHandler from 'services/EventCycle/Pattern/PatternHandler';
-import { repeatHandler } from 'services/EventCycle/Pattern/RepeatHandler';
-import { reverseHandler } from 'services/EventCycle/Pattern/ReverseHandler';
-import { offsetHandler } from 'services/EventCycle/Pattern/OffsetHandler';
-import { rotateHandler } from 'services/EventCycle/Pattern/RotateHandler';
-import { speedHandler } from 'services/EventCycle/Pattern/SpeedHandler';
-import { everyHandler } from 'services/EventCycle/Pattern/EveryHandler';
-import { degradeHandler } from 'services/EventCycle/Pattern/DegradeHandler';
+import { repeatHandler } from 'services/EventCycle/PatternFunctions/RepeatHandler';
+import { reverseHandler } from 'services/EventCycle/PatternFunctions/ReverseHandler';
+import { offsetHandler } from 'services/EventCycle/PatternFunctions/OffsetHandler';
+import { rotateHandler } from 'services/EventCycle/PatternFunctions/RotateHandler';
+import { speedHandler } from 'services/EventCycle/PatternFunctions/SpeedHandler';
+import { everyHandler } from 'services/EventCycle/PatternFunctions/EveryHandler';
+import { degradeHandler } from 'services/EventCycle/PatternFunctions/DegradeHandler';
 
 function buildHof(transformer) {
   function hof(param) {
