@@ -13,9 +13,9 @@ function speedHandler(speed) {
   };
 }
 
-export default function speedFn(speed) {
-  if (Number.isNaN(speed)) {
-    throw new TypeError(`Illegal Argument: float required for speed(${speed})`);
+export default function speed(speed) {
+  if (Number.isNaN(speed) || speed <= 0) {
+    throw new TypeError(`Illegal Argument: float > 0 required for speed(${speed})`);
   }
   return patternWrapper(speedHandler(speed));
 }

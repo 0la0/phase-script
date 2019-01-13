@@ -14,7 +14,7 @@ function degradeHandler(threshold) {
   };
 }
 
-export default function degradeFn(threshold) {
+export default function degrade(threshold) {
   if (Number.isNaN(threshold) || threshold < 0 || threshold > 1) {
     throw new TypeError(`Illegal Argument: float [0, 1] required for degrade(${threshold})`);
   }

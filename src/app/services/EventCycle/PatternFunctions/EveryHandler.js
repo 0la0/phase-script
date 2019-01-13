@@ -14,6 +14,6 @@ function everyHandler(iteration, transform) {
   };
 }
 
-export default function everyFn(iteration, transform) {
+export default function every(iteration, transform) {
   return patternWrapper(everyHandler(iteration, transform));
 }

@@ -16,6 +16,6 @@ function reverseHandler() {
   };
 }
 
-export default function reverseFn() {
+export default function reverse() {
   return patternWrapper(reverseHandler());
 }

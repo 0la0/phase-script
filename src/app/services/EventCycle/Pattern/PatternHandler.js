@@ -40,7 +40,7 @@ export default class PatternHandler {
   }
 }
 
-export function patternFn(str) {
+export function pattern(str) {
   if (typeof str !== 'string') {
     throw new TypeError(`Illegal Argument: string required for pattern(${str})`);
   }

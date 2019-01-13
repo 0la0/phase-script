@@ -22,7 +22,7 @@ function repeatHandler(numRepeats) {
   };
 }
 
-export default function repeatFn(num) {
+export default function repeat(num) {
   if (!Number.isInteger(num) || num < 1) {
     throw new TypeError(`Illegal Argument: integer required for repeat(${num})`);
   }

@@ -16,7 +16,7 @@ function offsetHandler(offset) {
   };
 }
 
-export default function offsetFn(offset) {
+export default function offset(offset) {
   if (Number.isNaN(offset) || offset < 0 || offset > 1) {
     throw new TypeError(`Illegal Argument: float [0, 1] required for offset(${offset})`);
   }

@@ -16,7 +16,7 @@ function rotateHandler(rotation) {
   };
 }
 
-export default function rotateFn(rotation) {
+export default function rotate(rotation) {
   if (Number.isNaN(rotation) || rotation < 0 || rotation > 1) {
     throw new TypeError(`Illegal Argument: float [0, 1] required for rotate(${rotation})`);
   }
