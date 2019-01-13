@@ -1,4 +1,6 @@
-export function repeatHandler(numRepeats) {
+import patternWrapper from 'services/EventCycle/PatternFunctions/PatternFunctionWrapper';
+
+function repeatHandler(numRepeats) {
   return function handleRepeat(pattern) {
     const transform = {
       predicate: () => true,
@@ -18,4 +20,11 @@ export function repeatHandler(numRepeats) {
     };
     return pattern.pushToTransformStack(transform);
   };
+}
+
+export default function repeatFn(num) {
+  if (!Number.isInteger(num) || num < 1) {
+    throw new TypeError(`Illegal Argument: integer required for repeat(${num})`);
+  }
+  return patternWrapper(repeatHandler(num));
 }

@@ -1,4 +1,6 @@
-export function reverseHandler() {
+import patternWrapper from 'services/EventCycle/PatternFunctions/PatternFunctionWrapper';
+
+function reverseHandler() {
   return function handleReverse(pattern) {
     const transform = {
       predicate: () => true,
@@ -12,4 +14,8 @@ export function reverseHandler() {
     };
     return pattern.pushToTransformStack(transform);
   };
+}
+
+export default function reverseFn() {
+  return patternWrapper(reverseHandler());
 }

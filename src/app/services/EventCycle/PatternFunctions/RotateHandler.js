@@ -1,4 +1,6 @@
-export function rotateHandler(rotation) {
+import patternWrapper from 'services/EventCycle/PatternFunctions/PatternFunctionWrapper';
+
+function rotateHandler(rotation) {
   return function handleRotate(pattern) {
     const transform = {
       predicate: () => true,
@@ -12,4 +14,11 @@ export function rotateHandler(rotation) {
     };
     return pattern.pushToTransformStack(transform);
   };
+}
+
+export default function rotateFn(rotation) {
+  if (Number.isNaN(rotation) || rotation < 0 || rotation > 1) {
+    throw new TypeError(`Illegal Argument: float [0, 1] required for rotate(${rotation})`);
+  }
+  return patternWrapper(rotateHandler(rotation));
 }

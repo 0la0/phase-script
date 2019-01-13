@@ -1,5 +1,6 @@
+import patternWrapper from 'services/EventCycle/PatternFunctions/PatternFunctionWrapper';
 
-export function everyHandler(iteration, transform) {
+function everyHandler(iteration, transform) {
   return function handleEvery(pattern) {
     const res = transform(pattern.clone());
     const predicate = (cnt) => cnt % iteration === 0;
@@ -11,4 +12,8 @@ export function everyHandler(iteration, transform) {
     });
     return pattern;
   };
+}
+
+export default function everyFn(iteration, transform) {
+  return patternWrapper(everyHandler(iteration, transform));
 }

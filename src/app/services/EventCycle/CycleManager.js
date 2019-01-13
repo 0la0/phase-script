@@ -16,8 +16,9 @@ export default class CycleManager {
     }
     let cycleResults;
     try {
-      const result = evaluate(cycleString);
-      cycleResults = result;
+      const { sequences, addressInlets } = evaluate(cycleString);
+      cycleResults = sequences;
+      console.log('addressInlets', addressInlets);
     } catch(error) {
       // TODO: render error message
       console.log('result error', error);

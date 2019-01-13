@@ -1,5 +1,6 @@
+import patternWrapper from 'services/EventCycle/PatternFunctions/PatternFunctionWrapper';
 
-export function speedHandler(speed) {
+function speedHandler(speed) {
   return function handleSpeed(pattern) {
     const transform = {
       predicate: () => true,
@@ -10,4 +11,11 @@ export function speedHandler(speed) {
     };
     return pattern.pushToTransformStack(transform);
   };
+}
+
+export default function speedFn(speed) {
+  if (Number.isNaN(speed)) {
+    throw new TypeError(`Illegal Argument: float required for speed(${speed})`);
+  }
+  return patternWrapper(speedHandler(speed));
 }

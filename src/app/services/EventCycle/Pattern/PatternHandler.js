@@ -39,3 +39,10 @@ export default class PatternHandler {
     return new PatternHandler(this.patternString);
   }
 }
+
+export function patternFn(str) {
+  if (typeof str !== 'string') {
+    throw new TypeError(`Illegal Argument: string required for pattern(${str})`);
+  }
+  return new PatternHandler(str);
+}
