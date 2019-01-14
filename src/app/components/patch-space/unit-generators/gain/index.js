@@ -4,12 +4,13 @@ import Gain from 'services/audio/gain';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchParam from 'components/patch-space/patch-param';
+import style from './patch-gain.css';
 
 const markup = '<div id="frequencyInlet" class="frequency-inlet"></div>';
 
 class PatchGain extends BaseComponent {
   constructor() {
-    super('', markup, [ 'gainInlet', 'frequencyInlet' ]);
+    super(style, markup, [ 'gainInlet', 'frequencyInlet' ]);
     this.gain = new Gain();
     this.audioModel = new PatchAudioModel('GAIN', this.gain, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
   }
