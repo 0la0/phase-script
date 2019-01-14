@@ -8,7 +8,7 @@ class Node {
   constructor(type, id) {
     this.type = type;
     this.id = id;
-    this.inputs = [];
+    this.inputs = new Set();
   }
 
   setParams(params) {
@@ -16,9 +16,13 @@ class Node {
     return this;
   }
 
-  setInput(node) {
-    if (!node) { return; }
-    this.inputs.push(node.id);
+  addInput(nodeId) {
+    if (!nodeId) { return; }
+    this.inputs.add(nodeId);
+  }
+
+  getInputs() {
+    return this.inputs;
   }
 }
 
@@ -29,8 +33,8 @@ class AudioGraph {
   }
 
   addNode(node) {
-    if (this.currentNode) {
-      this.currentNode.setInput(node);
+    if (this.currentNode && node.id) {
+      this.currentNode.addInput(node.id);
     }
     this.nodes.push(node);
     this.currentNode = node;
@@ -88,21 +92,6 @@ function dac() {
   return new AudioGraph().addNode(dac);
 }
 
-// function getStringRepresentation(graph, start) {
-//   let activeNode = start;
-//   if (!activeNode) { return ''; }
-//   let str = activeNode.type;
-//   while (activeNode.inputs.length) {
-//     const inputNode = graph.find(node => node.id === activeNode.inputs[0]);
-//     if (!inputNode) {
-//       break;
-//     }
-//     str = `${inputNode.type} -> ${str}`;
-//     activeNode = inputNode;
-//   }
-//   return str;
-// }
-
 
 const _gain = gain(0.5);
 
@@ -110,6 +99,15 @@ addr('a') (_gain) (dac())
 addr('b') (_gain) (reverb(1)) (dac())
 addr('c') (gain(0.5)) (reverb(1))
 
-const allNodes = inputs.map(graph => graph.nodes).flat();
+const allNodes = inputs.flatMap(graph => graph.nodes);
+const uniqueNodes = allNodes.reduce((nodeMap, node) => {
+  if (nodeMap[node.id]) {
+    Array.from(node.getInputs()).forEach(input => nodeMap[node.id].addInput(input));
+  } else {
+    nodeMap[node.id] = node;
+  }
+  return nodeMap;
+}, {});
 
-console.log('allNodes:', allNodes)
+console.log('allNodes:', allNodes);
+console.log('\n\nuniqueNodes', uniqueNodes);
