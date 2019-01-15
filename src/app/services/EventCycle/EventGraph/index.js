@@ -1,8 +1,4 @@
-const inputs = [];
-
-function getRandomId() {
-  return `${Math.floor(1000000 * Math.random())}`;
-}
+import { uuid } from 'services/Math';
 
 class EventGraphNode {
   constructor(type, id) {
@@ -61,37 +57,27 @@ function eventNodeWrapper(transformer) {
   return higherOrderFunction;
 }
 
-function addr(a) {
-  const id = getRandomId();
-  return eventNodeWrapper((graph) => {
-    const address = new EventGraphNode('ADDRESS', id).setParams({ address: a });
-    graph.addNode(address);
-    inputs.push(graph);
-    return graph;
-  });
-}
-
 function reverb(reverbValue) {
-  const id = getRandomId();
+  const id = uuid();
   return eventNodeWrapper((graph) => {
     const reverb = new EventGraphNode('REVERB', id).setParams({ reverbValue: reverbValue });
     return graph.addNode(reverb);
   });
 }
 
-const osc = {
-  sin: (attack, sustain, release) => {
-    const id = getRandomId();
+class osc {
+  static sin(attack, sustain, release) {
+    const id = uuid();
     const params = { attack, sustain, release, };
     return eventNodeWrapper((graph) => {
       const gain = new EventGraphNode('OSC.SIN', id).setParams(params);
       return graph.addNode(gain);
     });
-  },
-};
+  }
+}
 
 function gain(gainValue) {
-  const id = getRandomId();
+  const id = uuid();
   return eventNodeWrapper((graph) => {
     const gain = new EventGraphNode('GAIN', id).setParams({ gainValue: gainValue });
     return graph.addNode(gain);
@@ -103,31 +89,4 @@ function dac() {
   return new EventGraph().addNode(dac);
 }
 
-
-const _gain = gain(0.5);
-
-addr('a') (osc.sin(10, 10, 100)) (_gain) (dac())
-addr('b') (osc.sin(10, 10, 100)) (_gain) (reverb(1)) (dac())
-addr('c') (gain(0.5)) (reverb(1))
-
-const allNodes = inputs.flatMap(graph => graph.nodes);
-const uniqueNodes = allNodes.reduce((nodeMap, node) => {
-  if (nodeMap[node.id]) {
-    Array.from(node.getInputs()).forEach(input => nodeMap[node.id].addInput(input));
-  } else {
-    nodeMap[node.id] = node;
-  }
-  return nodeMap;
-}, {});
-
-// const dacNode = uniqueNodes.find(node => node.id === 'DAC_ID');
-console.log('dacNode', uniqueNodes['DAC_ID']);
-
-// on graph similarity: need to define or formalize similarity
-// identical upstream edge
-// identical downstream edge
-// best cases: both or neither
-// worst case: neither but still in graph (node is moved)
-
-// console.log('allNodes:', allNodes);
-console.log('\n\nuniqueNodes', uniqueNodes);
+export const eventGraphApi = [ dac, gain, osc, reverb, eventNodeWrapper, EventGraphNode ];
