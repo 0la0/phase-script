@@ -1,5 +1,5 @@
 import { uuid } from 'services/Math';
-import { eventGraphApi } from 'services/EventCycle/EventGraph';
+import { eventGraphApi } from 'services/EventCycle/EventGraph/ExposedApi';
 import { patternApi } from 'services/EventCycle/PatternFunctions';
 
 const exposedApi = [].concat(patternApi, eventGraphApi, [ uuid ]);

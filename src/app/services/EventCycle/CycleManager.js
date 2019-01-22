@@ -1,6 +1,7 @@
 import CycleHandler from 'services/EventCycle/CycleHandler';
 import { evaluateUserInput } from 'services/EventCycle/Evaluator';
 import { createEventGraph } from 'services/EventCycle/EventGraphHandler';
+import { buildEventGraph } from 'services/EventCycle/EventGraph/EventGraphBuilder';
 
 export default class CycleManager {
   constructor() {
@@ -16,12 +17,11 @@ export default class CycleManager {
       return;
     }
     let cycleResults;
-    let eventGraph;
     try {
       const { sequences, addressInlets } = evaluateUserInput(cycleString);
       cycleResults = sequences;
-      eventGraph = createEventGraph(addressInlets);
-      console.log('eventGraph', eventGraph);
+      const graphDefinition = createEventGraph(addressInlets);
+      buildEventGraph(graphDefinition);
     } catch(error) {
       // TODO: render error message
       console.log('result error', error);
