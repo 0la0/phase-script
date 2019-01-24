@@ -9,8 +9,21 @@ const typeMap = {
   DAC: Dac,
   GAIN: Gain,
   ADDRESS: Address,
-  'OSC.SIN': Osc,
+  OSC: Osc,
 };
+
+let currentBuiltGraph = {};
+let currentGraph = {};
+
+function teardownGraph(graph = {}) {
+  if (!graph) { return; }
+  Object.keys(graph).forEach(key => {
+    const node = graph[key];
+    if (node.instance) {
+      node.instance.disconnect();
+    }
+  });
+}
 
 function buildNodeType(node) {
   const instance = typeMap[node.type];
@@ -33,8 +46,43 @@ function connectToInputs(node, graph) {
   });
 }
 
+function getOccurance(strList) {
+  return strList.reduce((cnt, str) => {
+    if (!cnt[str]) {
+      cnt[str] = 1;
+    } else {
+      cnt[str]++;
+    }
+    return cnt;
+  }, {});
+}
+
+function analyzeGraphDiff(nextGraph, lastGraph) {
+  console.log('allNodes:', nextGraph)
+  function getInDegree(node) {
+    return node.inputs.size;
+  }
+
+  function describeNode(node) {
+    return `${node.type} in degree: ${getInDegree(node)}`;
+  }
+
+  const nodes = {
+    next: getOccurance(Object.keys(nextGraph).map(key => describeNode(nextGraph[key]))),
+    last: getOccurance(Object.keys(lastGraph).map(key => describeNode(lastGraph[key]))),
+  };
+
+  console.log('nodes', nodes);
+}
 
 export function buildEventGraph(graphDefinition = {}) {
+  analyzeGraphDiff(graphDefinition, currentGraph);
+  teardownGraph(currentBuiltGraph);
+  currentBuiltGraph = null;
+  if (!graphDefinition[DAC_ID]) {
+    console.log('graphDefinition missing end node', graphDefinition);
+    return;
+  }
   const builtNodes = Object.keys(graphDefinition)
     .reduce((acc, key) => {
       const nodeDefinition = graphDefinition[key];
@@ -44,9 +92,7 @@ export function buildEventGraph(graphDefinition = {}) {
         [key]: { nodeDefinition, instance, },
       });
     }, {});
-  const endNode = builtNodes[DAC_ID];
-  if (!endNode) {
-    throw new Error('graphDefinition missing end node', graphDefinition);
-  }
-  connectToInputs(endNode, builtNodes);
+  connectToInputs(builtNodes[DAC_ID], builtNodes);
+  currentGraph = graphDefinition;
+  currentBuiltGraph = builtNodes;
 }

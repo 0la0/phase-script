@@ -5,3 +5,10 @@ export default {
   TRIANGLE: 'triangle',
   NOISE: 'noise',
 };
+
+export const shorthandTypes = {
+  sin: 'SINE',
+  squ: 'SQUARE',
+  saw: 'SAWTOOTH',
+  tri: 'TRIANGLE',
+};

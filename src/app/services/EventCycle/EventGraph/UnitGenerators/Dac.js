@@ -9,6 +9,10 @@ export default class PatchDac {
     this.audioModel = new PatchAudioModel('DAC', this.dac, PATCH_EVENT.SIGNAL, PATCH_EVENT.EMPTY);
   }
 
+  disconnect() {
+    this.audioModel.disconnect();
+  }
+
   static fromParams() {
     return new PatchDac();
   }

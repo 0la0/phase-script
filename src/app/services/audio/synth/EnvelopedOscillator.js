@@ -2,7 +2,7 @@ import audioGraph from 'services/audio/graph';
 import {mtof} from 'services/midi/util';
 import { AsrEnvelope } from 'services/audio/Envelope';
 import { playNoiseBuffer } from 'services/audio/whiteNoise';
-import OSCILATORS from 'services/audio/synth/Oscilators';
+import OSCILATORS from 'services/audio/synth/Oscillators';
 
 export default function envelopedOscilator(midiNote, startTime, asr, type, gain, outputs, modulator) {
   const _type = OSCILATORS[type] || OSCILATORS.SINE;

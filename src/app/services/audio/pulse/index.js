@@ -1,5 +1,5 @@
 import audioGraph from 'services/audio/graph';
-import OSCILATORS from 'services/audio/synth/Oscilators';
+import OSCILLATORS from 'services/audio/synth/Oscillators';
 
 export default function triggerPulse(frequency, waveType, startTime, duration, resonance, outputs) {
   const audioContext = audioGraph.getAudioContext();
@@ -11,7 +11,7 @@ export default function triggerPulse(frequency, waveType, startTime, duration, r
   filter.Q.value = resonance;
   osc.connect(filter);
   outputs.forEach(output => filter.connect(output));
-  osc.type = OSCILATORS[waveType];
+  osc.type = OSCILLATORS[waveType];
   osc.frequency.setValueAtTime(frequency, 0); // TODO: experiment with a constant frequency
   osc.start(startTime);
   osc.stop(endTime);

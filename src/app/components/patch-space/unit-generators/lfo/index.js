@@ -1,6 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import ContinuousOsc from 'services/audio/synth/ContinuousOscilator';
+import ContinuousOsc from 'services/audio/synth/ContinuousOscillator';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchParam from 'components/patch-space/patch-param';

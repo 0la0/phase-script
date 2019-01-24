@@ -12,7 +12,8 @@ export default class PatchAudioModel {
   }
 
   disconnect(audioModel) {
-    this.audioModel.disconnect(audioModel.getAudioModelInput());
+    const output = audioModel ? audioModel.getAudioModelInput() : undefined;
+    this.audioModel.disconnect(output);
   }
 
   getAudioModelInput() {

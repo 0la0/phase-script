@@ -49,7 +49,7 @@ class EventCycle extends BaseComponent {
       seq([
         every(4, reverse()) (pattern("a:48 a:60 , a:72"))
       ])
-      
+
       addr("a") (osc.sin(10, 10, 100)) (gain(0.5)) (dac())
     `;
     this.dom.cycleInput.innerText = testCycleValue;
@@ -80,7 +80,8 @@ class EventCycle extends BaseComponent {
     // this.cycleManager.getAudioEventsAndIncrement(time);
     // const schedulables = this.cycleManager.getAudioEventsAndIncrement(audioCycleDuration, time);
     // audioEvents
-    this.cycleManager.getAudioEventsAndIncrement(time, metronomeManager.getMetronome().getTickLength())
+    const shouldRefresh = tickNumber % this.cycleLength === 0;
+    this.cycleManager.getAudioEventsAndIncrement(time, metronomeManager.getMetronome().getTickLength(), shouldRefresh)
       .forEach(audioEvent => audioEventBus.publish(audioEvent));
       // .forEach(({ element, timeObj}) => {
       //   const { address, note } = parseToken(element);

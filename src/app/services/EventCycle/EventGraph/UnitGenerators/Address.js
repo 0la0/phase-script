@@ -16,6 +16,7 @@ export default class Address {
   }
 
   disconnect() {
+    this.eventModel.disconnect();
     audioEventBus.unsubscribe(this.audioEventSubscription);
   }
 

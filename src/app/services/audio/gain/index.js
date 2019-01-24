@@ -1,9 +1,12 @@
 import audioGraph from 'services/audio/graph';
 
 export default class Gain  {
-  constructor () {
+  constructor (gainValue) {
     const audioContext = audioGraph.getAudioContext();
     this.gain = audioContext.createGain();
+    if (gainValue !== undefined) {
+      this.setValue(gainValue);
+    }
   }
 
   connect(node) {

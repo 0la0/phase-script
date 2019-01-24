@@ -1,5 +1,5 @@
 import audioGraph from 'services/audio/graph';
-import OSCILATORS from 'services/audio/synth/Oscilators';
+import OSCILLATORS from 'services/audio/synth/Oscillators';
 
 export default class ContinuousOsc {
   constructor(type) {
@@ -9,7 +9,7 @@ export default class ContinuousOsc {
   }
 
   setType(type) {
-    this.type = OSCILATORS[type] || OSCILATORS.SINE;
+    this.type = OSCILLATORS[type] || OSCILLATORS.SINE;
   }
 
   connect(node) {

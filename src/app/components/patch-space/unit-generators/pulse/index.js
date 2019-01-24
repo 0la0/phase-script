@@ -1,6 +1,6 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
-import OSCILATORS from 'services/audio/synth/Oscilators';
+import OSCILLATORS from 'services/audio/synth/Oscillators';
 import triggerPulse from 'services/audio/pulse';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
@@ -30,7 +30,7 @@ class PatchPulse extends BaseComponent {
     this.params = {
       cycleLength: DEFAULT_VALUES.CYCLE_LENGTH,
       resonance: DEFAULT_VALUES.RESONANCE,
-      oscType: OSCILATORS.SINE,
+      oscType: OSCILLATORS.SINE,
     };
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('PULSE', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);

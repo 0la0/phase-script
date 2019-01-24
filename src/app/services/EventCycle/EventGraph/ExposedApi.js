@@ -66,13 +66,27 @@ function reverb(reverbValue) {
 }
 
 class osc {
-  static sin(attack, sustain, release) {
+  static _buildOsc(attack, sustain, release, oscType) {
     const id = uuid();
-    const params = { attack, sustain, release, };
+    const params = { attack, sustain, release, oscType, };
     return eventNodeWrapper((graph) => {
-      const gain = new EventGraphNode('OSC.SIN', id).setParams(params);
+      console.log('cool osc', params);
+      const gain = new EventGraphNode('OSC', id).setParams(params);
       return graph.addNode(gain);
     });
+  }
+
+  static sin(attack, sustain, release) {
+    return osc._buildOsc(attack, sustain, release, 'sin');
+  }
+  static squ(attack, sustain, release) {
+    return osc._buildOsc(attack, sustain, release, 'squ');
+  }
+  static saw(attack, sustain, release) {
+    return osc._buildOsc(attack, sustain, release, 'saw');
+  }
+  static tri(attack, sustain, release) {
+    return osc._buildOsc(attack, sustain, release, 'tri');
   }
 }
 
