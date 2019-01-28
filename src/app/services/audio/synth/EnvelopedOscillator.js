@@ -4,7 +4,7 @@ import { AsrEnvelope } from 'services/audio/Envelope';
 import { playNoiseBuffer } from 'services/audio/whiteNoise';
 import OSCILATORS from 'services/audio/synth/Oscillators';
 
-export default function envelopedOscilator(midiNote, startTime, asr, type, gain, outputs, modulator) {
+export default function envelopedOscilator(midiNote, startTime, asr, type, gain, outputs, modulator, onComplete) {
   const _type = OSCILATORS[type] || OSCILATORS.SINE;
   if (_type === OSCILATORS.NOISE) {
     playNoiseBuffer(startTime, asr, gain, outputs);
@@ -13,7 +13,7 @@ export default function envelopedOscilator(midiNote, startTime, asr, type, gain,
   const frequency = mtof(midiNote);
   const endTime = startTime + asr.attack + asr.sustain + asr.release;
   const osc = audioGraph.getAudioContext().createOscillator();
-  const envelope = new AsrEnvelope(asr.attack, asr.sustain, asr.release)
+  let envelope = new AsrEnvelope(asr.attack, asr.sustain, asr.release)
     .build(startTime, gain);
   osc.connect(envelope);
   outputs.forEach(output => envelope.connect(output));
@@ -23,6 +23,7 @@ export default function envelopedOscilator(midiNote, startTime, asr, type, gain,
   if (modulator) {
     modulator.connect(osc.frequency);
   }
+  osc.onended = () => envelope.disconnect();
   osc.start(startTime);
   osc.stop(endTime);
 }

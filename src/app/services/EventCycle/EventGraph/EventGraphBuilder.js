@@ -46,37 +46,33 @@ function connectToInputs(node, graph) {
   });
 }
 
-function getOccurance(strList) {
-  return strList.reduce((cnt, str) => {
-    if (!cnt[str]) {
-      cnt[str] = 1;
-    } else {
-      cnt[str]++;
-    }
-    return cnt;
-  }, {});
+class NodeDescription {
+  constructor(name, inDegree) {
+    this.name = name;
+    this.inDegree = inDegree;
+  }
+
+  equals(obj) {
+    return this.name === obj.name && this.inDegree === obj.inDegree;
+  }
 }
 
 function analyzeGraphDiff(nextGraph, lastGraph) {
-  console.log('allNodes:', nextGraph)
-  function getInDegree(node) {
-    return node.inputs.size;
-  }
-
   function describeNode(node) {
-    return `${node.type} in degree: ${getInDegree(node)}`;
+    return new NodeDescription(node.type, node.inputs.size);
   }
-
-  const nodes = {
-    next: getOccurance(Object.keys(nextGraph).map(key => describeNode(nextGraph[key]))),
-    last: getOccurance(Object.keys(lastGraph).map(key => describeNode(lastGraph[key]))),
-  };
-
-  console.log('nodes', nodes);
+  const nextDefinition = Object.keys(nextGraph).map(key => describeNode(nextGraph[key]));
+  const lastDefinition = Object.keys(lastGraph).map(key => describeNode(lastGraph[key]));
+  const lengthsAreEqual = nextDefinition.length === lastDefinition.length;
+  const nodesAreContained = nextDefinition.every(node => lastDefinition.find(_node => _node.equals(node)));
+  return lengthsAreEqual && nodesAreContained;
 }
 
 export function buildEventGraph(graphDefinition = {}) {
-  analyzeGraphDiff(graphDefinition, currentGraph);
+  const graphsAreEqual = analyzeGraphDiff(graphDefinition, currentGraph);
+  // if (graphsAreEqual) {
+  //   // TODO: update params
+  // }
   teardownGraph(currentBuiltGraph);
   currentBuiltGraph = null;
   if (!graphDefinition[DAC_ID]) {

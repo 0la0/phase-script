@@ -21,6 +21,7 @@ function playSample(sampleKey, scheduledTime, startOffset, note, asr, outputs) {
   sampler.playbackRate.value = Math.pow(semitoneRatio, note - 60);
 
   // TODO: add playback length as last arg
+  sampler.onended = () => envelope.disconnect();
   sampler.start(scheduledTime, startOffset);
 }
 
