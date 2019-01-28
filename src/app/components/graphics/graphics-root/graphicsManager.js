@@ -3,6 +3,7 @@ import DisplacedSpheres from 'components/graphics/displaced-spheres';
 import Particles from 'components/graphics/Particles';
 import TriangleClusters from 'components/graphics/triangle-clusters';
 import WaterSpheres from 'components/graphics/water-spheres';
+import TextureShader from 'components/graphics/texture-shader';
 
 const options = {
   CONNECTED_GRAPH: {
@@ -24,6 +25,10 @@ const options = {
   WATER_SPHERES: {
     label: 'water spheres',
     value: 'WATER_SPHERES'
+  },
+  TEXTURE_SHADER: {
+    label: 'texture shader',
+    value: 'TEXTURE_SHADER',
   }
 };
 
@@ -39,7 +44,8 @@ class GraphicsManager {
     this.map.set(options.PARTICLES.value, new Particles());
     this.map.set(options.TRIANGLE_CLUSTERS.value, new TriangleClusters());
     this.map.set(options.WATER_SPHERES.value, new WaterSpheres());
-    this.activeState = options.DISPLACED_SPHERES.value;
+    this.map.set(options.TEXTURE_SHADER.value, new TextureShader());
+    this.activeState = options.TEXTURE_SHADER.value;
   }
 
   setActiveState(activeState) {
