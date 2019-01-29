@@ -7,12 +7,12 @@ import {
   Vector3
 } from 'three';
 
-const SEGMENTS = 50;
+const SEGMENTS = 200;
+const SIZE = 50;
 
 export default class TexturePlane {
   constructor(vertexShader, fragmentShader) {
-    const size = 100;
-    const geometry = new PlaneGeometry(size, size, SEGMENTS, SEGMENTS);
+    const geometry = new PlaneGeometry(SIZE, SIZE, SEGMENTS, SEGMENTS);
 
     this.uniforms = {
       time: {

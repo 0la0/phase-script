@@ -10,7 +10,7 @@ export default class Texture {
     this.scene = defaultScene.scene;
     this.texturePlane = new TexturePlane(vertexShader, fragmentShader);
     this.scene.add(this.texturePlane.getMesh());
-    this.camera.position.set(0, 0, 100);
+    this.camera.position.set(0, 0, 50);
     this.totalTime = 0;
   }
 
