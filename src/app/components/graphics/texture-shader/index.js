@@ -1,7 +1,12 @@
 import { buildDefaultScene } from 'components/graphics/util';
 import TexturePlane from './TexturePlane';
-import vertexShader from './shaders/displace.vert';
+// import vertexShader from './shaders/displace.vert';
 import fragmentShader from './shaders/displace.frag';
+
+import perlinNoiseLib from './shaders/pnoise.vert';
+import vertexShaderRoutine from './shaders/displace.vert';
+
+const vertexShader = `${perlinNoiseLib}${vertexShaderRoutine}`;
 
 export default class Texture {
   constructor() {
