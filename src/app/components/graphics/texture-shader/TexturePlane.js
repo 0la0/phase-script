@@ -1,10 +1,8 @@
 import {
   FrontSide,
-  IcosahedronGeometry,
   PlaneGeometry,
   Mesh,
-  ShaderMaterial,
-  Vector3
+  ShaderMaterial
 } from 'three';
 
 const SEGMENTS = 200;
@@ -15,10 +13,9 @@ export default class TexturePlane {
     const geometry = new PlaneGeometry(SIZE, SIZE, SEGMENTS, SEGMENTS);
 
     this.uniforms = {
-      time: {
-        type: 'f',
-        value: 0
-      }
+      time: { value: 0 },
+      cloudSpeed: { value: 1.2 },
+      cloudFrequency: { value: 10, }
     };
 
     const material = new ShaderMaterial({
@@ -30,7 +27,6 @@ export default class TexturePlane {
     this.mesh = new Mesh(geometry, material);
     this.startTime = performance.now();
     this.isActive = false;
-    // this.rate = 0.0002 * Math.random() + 0.00001;
   }
 
   getMesh() {
@@ -39,5 +35,6 @@ export default class TexturePlane {
 
   update(elapsedTime, totalTime) {
     this.uniforms.time.value = totalTime;
+    // this.uniforms.cloudSpeed.value = 0.5 * Math.sin(totalTime) + 0.5;
   }
 }

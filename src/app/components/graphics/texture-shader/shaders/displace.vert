@@ -1,16 +1,10 @@
 uniform float time;
-varying float x;
-varying float y;
+uniform float cloudSpeed;
+uniform float cloudFrequency;
+
 varying float r;
 varying float g;
 varying float b;
-
-// void main() {
-//   vec3 newPosition = position;
-//   x = 0.5 * sin(0.1 * cos(newPosition.x) * newPosition.y * sin(time)) + 0.5;
-//   y = 0.5 * cos(0.5 * newPosition.y * time * sin(newPosition.x)) + 0.5;
-//   gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
-// }
 
 float R_FREQUENCY = 0.4;
 float G_FREQUENCY = 0.2;
@@ -83,46 +77,28 @@ vec2 modulatePosition(vec3 position) {
   );
 }
 
-// float turbulence(vec3 p) {
-//   float t = -0.5;
-//   for (float f = 1.0; f <= 10.0; f++ ){
-//     float power = pow(2.0, f);
-//     t += abs( pnoise( vec3( power * p ), vec3( 10.0, 10.0, 10.0 ) ) / power );
-//   }
-//   return t;
-// }
-//
-// float getDisplacement(vec3 position) {
-//     float noiseBuffer = 4.0 * pnoise( 0.09 + vec3( 2.0 * time ), vec3(10.0));
-//     float noise = 3.0 * turbulence( 0.75 * normal + time );
-//     return (noise + noiseBuffer) * 1.0;
-// }
+vec2 modX(vec2 v, float freq, float amp) {
+  return vec2(
+    v.x + amp * sin(v.y + time * freq),
+    v.y
+  );
+}
 
-// void main() {
-//   float noiseBuffer = 4.0 * pnoise( 0.09 * position + vec3( 2.0 * time ), vec3( 100.0 ) );
-//   float noise = 3.0 * turbulence( 0.75 * normal + time );
-//   displacement = (noise + noiseBuffer) * magnitude;
-//   vec3 newPosition = position + normal * displacement;
-//   gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
-// }
-
-// float cloudNoise(vec2 pos) {
-//   float tur = turbulence(vec3(pos.x, pos.y, 0.001 * time));
-//   return pnoise(vec3(tur) * 10.0, vec3(100.0));
-//   // return vec3(noise(vec3(.5, .5, tur) * .7));
-// }
-
-// vec3 cloudEffect = clouds(vPosition.x, vPosition.y);
-//      color = cloudEffect + vec3(.5, .8, 0.95);
+vec2 modY(vec2 v, float freq, float amp) {
+  return vec2(
+    v.x,
+    v.y + amp * sin(0.1 * v.x + time * freq)
+  );
+}
 
 void main() {
   vec3 newPosition = position;
+  // vec2 pos = modY(vec2(newPosition), 2.0, 2.0);
   vec2 pos = vec2(newPosition);
   // vec2 pos = kalid(normalPos);
 
   // float base = rotatedPosition.x + FREQUENCY * time;
-  // x = osc(base);
-  // vUv = uv;
+
   // b = 0.5 * cos(0.5 * newPosition.y * time * sin(newPosition.x)) + 0.5;
 
   // r = getOsc(kalid(pos), R_FREQUENCY, R_ROTATION, R_SPEED, R_AMP);
@@ -133,7 +109,7 @@ void main() {
   // g = getOsc(pos, G_FREQUENCY, G_ROTATION, G_SPEED, G_AMP);
   // b = getOsc(pos, B_FREQUENCY, B_ROTATION, B_SPEED, B_AMP);
 
-  float cloudEffect = clouds(pos * 0.01, 0.05 * time);
+  float cloudEffect = clouds(pos * 0.01 * cloudFrequency, time * 0.1 * cloudSpeed);
   // color = cloudEffect + vec3(.5, .8, 0.95);
   // r = clouds(pos * 0.01, 0.1 * time) + 0.5;
   // g = clouds(pos * 0.1, 0.1 * time) + 0.5;
