@@ -14,8 +14,18 @@ export default class TexturePlane {
 
     this.uniforms = {
       time: { value: 0 },
-      cloudSpeed: { value: 1.2 },
-      cloudFrequency: { value: 10, }
+
+      generator: { value: true, }, // osc vs noise
+      generatorFrequency: { value: 10, },
+      generatorSpeed: { value: 1.2, },
+      generatorAmplitude: { value: 0.4, },
+      generatorRotation: { value: 0, },
+
+      modulator: { value: false, },
+      modulatorFrequency: { value: 4, },
+      modulatorSpeed: { value: 20, },
+      modulatorAmplitude: { value: 1, },
+      modulatorRotation: { value: 90, },
     };
 
     const material = new ShaderMaterial({
@@ -35,6 +45,9 @@ export default class TexturePlane {
 
   update(elapsedTime, totalTime) {
     this.uniforms.time.value = totalTime;
-    // this.uniforms.cloudSpeed.value = 0.5 * Math.sin(totalTime) + 0.5;
+    this.uniforms.generatorFrequency.value = 0.5 * Math.sin(totalTime) + 2;
+    this.uniforms.generatorRotation.value = totalTime * 10;
+    this.uniforms.modulatorAmplitude.value = 3 * Math.sin(totalTime);
+    this.uniforms.modulatorRotation.value = totalTime * -20;
   }
 }

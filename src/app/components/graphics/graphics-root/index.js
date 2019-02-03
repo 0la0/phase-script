@@ -55,7 +55,9 @@ class GraphicsRoot extends BaseComponent {
   }
 
   init() {
-    this.renderer = new WebGLRenderer({canvas: this.dom.canvas, alpha: false, antialias: false});
+    const canvas = ('OffscreenCanvas' in window) ? this.dom.canvas.transferControlToOffscreen() : this.dom.canvas;
+    console.log('canvas?', canvas)
+    this.renderer = new WebGLRenderer({canvas, alpha: false, antialias: false});
     this.lastRenderTime = performance.now();
     this.addEventListeners();
     this.isInRenderLoop = true;

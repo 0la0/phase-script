@@ -4,7 +4,7 @@ import TexturePlane from './TexturePlane';
 import fragmentShader from './shaders/displace.frag';
 
 import perlinNoiseLib from './shaders/pnoise.vert';
-import vertexShaderRoutine from './shaders/displace.vert';
+import vertexShaderRoutine from './shaders/synth-layer.vert';
 
 const vertexShader = `${perlinNoiseLib}${vertexShaderRoutine}`;
 

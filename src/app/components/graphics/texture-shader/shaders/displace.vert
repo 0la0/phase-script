@@ -1,6 +1,19 @@
 uniform float time;
 uniform float cloudSpeed;
 uniform float cloudFrequency;
+uniform float testRotation;
+
+uniform float generator;
+uniform float generatorFrequency;
+uniform float generatorSpeed;
+uniform float generatorAmplitude;
+uniform float generatorRotation;
+
+uniform float modulator;
+uniform float modulatorFrequency;
+uniform float modulatorSpeed;
+uniform float modulatorAmplitude;
+uniform float modulatorRotation;
 
 varying float r;
 varying float g;
@@ -49,7 +62,7 @@ vec2 rotateVector(vec2 vec, float rotation) {
   return vec2(x, y);
 }
 
-float getOsc(vec2 position, float frequency, float rotation, float speed, float amplitude) {
+float getOsc(float frequency, float speed, float amplitude, float rotation, vec2 position) {
   float param = frequency * rotateVector(position, rotation).x + speed * time;
   float normalVal = 0.5 * sin(param) + 0.5;
   return normalVal * amplitude;
@@ -91,10 +104,29 @@ vec2 modY(vec2 v, float freq, float amp) {
   );
 }
 
+vec2 modPosition(float frequency, float speed, float amplitude, float rotation, vec2 position) {
+  vec2 rotatedVec = rotateVector(position, rotation);
+  float x = rotatedVec.x + amplitude * sin(rotatedVec.y + time * frequency);
+  return vec2(x, rotatedVec.y);
+}
+
+// vec2 modulatePosition
+
 void main() {
   vec3 newPosition = position;
-  // vec2 pos = modY(vec2(newPosition), 2.0, 2.0);
-  vec2 pos = vec2(newPosition);
+
+  // float MOD_FREQUENCY = 0.0;
+  // float MOD_SPEED = 0.0;
+  // float MOD_AMPLITUDE = 0.0;
+  // float MOD_ROTATION = testRotation;
+
+  // getOsc(pos, G_FREQUENCY, G_ROTATION, G_SPEED, G_AMP);
+
+  // vec2 rotated = rotateVector(vec2(position), testRotation);
+  // vec2 pos = modY(rotated, 4.0, 2.0);
+
+
+  // vec2 pos = vec2(newPosition);
   // vec2 pos = kalid(normalPos);
 
   // float base = rotatedPosition.x + FREQUENCY * time;
@@ -109,15 +141,26 @@ void main() {
   // g = getOsc(pos, G_FREQUENCY, G_ROTATION, G_SPEED, G_AMP);
   // b = getOsc(pos, B_FREQUENCY, B_ROTATION, B_SPEED, B_AMP);
 
-  float cloudEffect = clouds(pos * 0.01 * cloudFrequency, time * 0.1 * cloudSpeed);
   // color = cloudEffect + vec3(.5, .8, 0.95);
   // r = clouds(pos * 0.01, 0.1 * time) + 0.5;
   // g = clouds(pos * 0.1, 0.1 * time) + 0.5;
   // b = clouds(pos * 0.05, 0.1 * time) + 0.5;
-  r = cloudEffect + 0.5;
-  g = cloudEffect + 0.8;
-  b = cloudEffect + 0.95;
+
+  // float cloudEffect = clouds(pos * 0.01 * cloudFrequency, time * 0.1 * cloudSpeed);
+  // r = cloudEffect + 0.5;
+  // g = cloudEffect + 0.8;
+  // b = cloudEffect + 0.95;
+
+  vec2 modPos = modPosition(modulatorFrequency, modulatorSpeed, modulatorAmplitude, modulatorRotation, vec2(position));
+  // TODO: move modPos to last arg
+  float outputVal = getOsc(generatorFrequency, generatorSpeed, generatorAmplitude, generatorRotation,
+    modPos
+  );
+  r = outputVal;
+  g = outputVal;
+  b = outputVal;
+
 
   // vec3 modPos = newPosition + normal * oscSin(pos.x * time);
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
