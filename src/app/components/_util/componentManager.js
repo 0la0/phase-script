@@ -44,6 +44,7 @@ import CanvasMenu from 'components/event-network/canvas-menu';
 import PropertyMenu from 'components/event-network/property-menu';
 import EventCycle from 'components/event-cycle';
 import PatchParam from 'components/patch-space/patch-param';
+import GraphicsEditor from 'components/graphics/graphics-editor';
 
 const components = [
   App,
@@ -92,6 +93,7 @@ const components = [
   PropertyMenu,
   EventCycle,
   PatchParam,
+  GraphicsEditor
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

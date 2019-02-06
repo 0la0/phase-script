@@ -1,0 +1,27 @@
+:host {
+  border: var(--border-default);
+  border-radius: var(--border-radius);
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.top-bar {
+  border-bottom: var(--border-default);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.cycle-input {
+  display: block;
+  font-size: 2.3em;
+  margin: 10px;
+  background-color: var(--color-black-light);
+  border: var(--border-default);
+  border-radius: var(--border-radius);
+  outline: none;
+  color: var(--border-default);
+  width: 100%;
+  width: -webkit-fill-available;
+}

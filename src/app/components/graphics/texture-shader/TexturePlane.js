@@ -8,6 +8,14 @@ import {
 const SEGMENTS = 200;
 const SIZE = 50;
 
+const GEN_TYPE = {
+  NOISE: 0,
+  OSC_SIN: 1,
+  OSC_SQU: 2,
+  OSC_SAW: 3,
+  OSC_TRI: 4,
+};
+
 export default class TexturePlane {
   constructor(vertexShader, fragmentShader) {
     const geometry = new PlaneGeometry(SIZE, SIZE, SEGMENTS, SEGMENTS);
@@ -15,17 +23,17 @@ export default class TexturePlane {
     this.uniforms = {
       time: { value: 0 },
 
-      generator: { value: true, }, // osc vs noise
-      generatorFrequency: { value: 10, },
-      generatorSpeed: { value: 1.2, },
-      generatorAmplitude: { value: 0.4, },
+      generatorType: { value: GEN_TYPE.OSC_SIN, },
+      generatorFrequency: { value: 3, },
+      generatorSpeed: { value: 2, },
+      generatorAmplitude: { value: 1, },
       generatorRotation: { value: 0, },
 
-      modulator: { value: false, },
-      modulatorFrequency: { value: 4, },
-      modulatorSpeed: { value: 20, },
-      modulatorAmplitude: { value: 1, },
-      modulatorRotation: { value: 90, },
+      modulatorType: { value: GEN_TYPE.NOISE, },
+      modulatorFrequency: { value: 2, },
+      modulatorSpeed: { value: 10, },
+      modulatorAmplitude: { value: 2, },
+      modulatorRotation: { value: 45, },
     };
 
     const material = new ShaderMaterial({
@@ -45,9 +53,11 @@ export default class TexturePlane {
 
   update(elapsedTime, totalTime) {
     this.uniforms.time.value = totalTime;
-    this.uniforms.generatorFrequency.value = 0.5 * Math.sin(totalTime) + 2;
-    this.uniforms.generatorRotation.value = totalTime * 10;
-    this.uniforms.modulatorAmplitude.value = 3 * Math.sin(totalTime);
-    this.uniforms.modulatorRotation.value = totalTime * -20;
+    // this.uniforms.generatorAmplitude.value = 3 + 0.5 * Math.sin(0.25 * totalTime);
+    // this.uniforms.generatorSpeed.value = 4 * (0.5 * Math.sin(totalTime) + 1);
+    this.uniforms.generatorRotation.value = totalTime * 20;
+    this.uniforms.modulatorFrequency.value = 10 + 4 * Math.sin(totalTime * 0.5);
+    // this.uniforms.modulatorSpeed.value = 9 + 3 * Math.sin(totalTime * 2);
+    this.uniforms.modulatorRotation.value = totalTime * -10;
   }
 }
