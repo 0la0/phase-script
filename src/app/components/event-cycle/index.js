@@ -47,7 +47,8 @@ class EventCycle extends BaseComponent {
     // const testCycleValue = 'a:48 a:60 , a:72\n   \na a a';
     const testCycleValue = `
       seq([
-        every(4, reverse()) (pattern("a:48 a:60 , a:72"))
+        p("a:48 a:60 , a:72"),
+        p("a a a")
       ])
 
       addr("a") (osc.sin(10, 10, 100)) (gain(0.5)) (dac())

@@ -1,10 +1,11 @@
-import { pattern } from 'services/EventCycle/Pattern/PatternHandler';
-import repeat from 'services/EventCycle/PatternFunctions/RepeatHandler';
-import reverse from 'services/EventCycle/PatternFunctions/ReverseHandler';
-import offset from 'services/EventCycle/PatternFunctions/OffsetHandler';
-import rotate from 'services/EventCycle/PatternFunctions/RotateHandler';
-import speed from 'services/EventCycle/PatternFunctions/SpeedHandler';
-import every from 'services/EventCycle/PatternFunctions/EveryHandler';
-import degrade from 'services/EventCycle/PatternFunctions/DegradeHandler';
+import PatternTransformer from './PatternTransformer';
+import p from './PatternBuilder';
+const speed = (...args) => new PatternTransformer().speed(...args);
+const rotate = (...args) => new PatternTransformer().rotate(...args);
+const reverse = (...args) => new PatternTransformer().reverse(...args);
+const repeat = (...args) => new PatternTransformer().repeat(...args);
+const offset = (...args) => new PatternTransformer().offset(...args);
+const degrade = (...args) => new PatternTransformer().degrade(...args);
+const every = (...args) => new PatternTransformer().every(...args);
 
-export const patternApi = [ repeat, reverse, offset, rotate, speed, every, degrade, pattern ];
+export const patternApi = [ p, degrade, repeat, reverse, offset, rotate, speed, every ];
