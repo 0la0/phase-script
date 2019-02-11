@@ -13,17 +13,6 @@ const typeMap = {
 };
 
 let currentBuiltGraph = {};
-let currentGraph = {};
-
-function teardownGraph(graph = {}) {
-  if (!graph) { return; }
-  Object.keys(graph).forEach(key => {
-    const node = graph[key];
-    if (node.instance) {
-      node.instance.disconnect();
-    }
-  });
-}
 
 function buildNodeType(node) {
   const instance = typeMap[node.type];
@@ -46,35 +35,7 @@ function connectToInputs(node, graph) {
   });
 }
 
-class NodeDescription {
-  constructor(name, inDegree) {
-    this.name = name;
-    this.inDegree = inDegree;
-  }
-
-  equals(obj) {
-    return this.name === obj.name && this.inDegree === obj.inDegree;
-  }
-}
-
-function analyzeGraphDiff(nextGraph, lastGraph) {
-  function describeNode(node) {
-    return new NodeDescription(node.type, node.inputs.size);
-  }
-  const nextDefinition = Object.keys(nextGraph).map(key => describeNode(nextGraph[key]));
-  const lastDefinition = Object.keys(lastGraph).map(key => describeNode(lastGraph[key]));
-  const lengthsAreEqual = nextDefinition.length === lastDefinition.length;
-  const nodesAreContained = nextDefinition.every(node => lastDefinition.find(_node => _node.equals(node)));
-  return lengthsAreEqual && nodesAreContained;
-}
-
 export function buildEventGraph(graphDefinition = {}) {
-  const graphsAreEqual = analyzeGraphDiff(graphDefinition, currentGraph);
-  // if (graphsAreEqual) {
-  //   // TODO: update params
-  // }
-  teardownGraph(currentBuiltGraph);
-  currentBuiltGraph = null;
   if (!graphDefinition[DAC_ID]) {
     console.log('graphDefinition missing end node', graphDefinition);
     return;
@@ -82,6 +43,13 @@ export function buildEventGraph(graphDefinition = {}) {
   const builtNodes = Object.keys(graphDefinition)
     .reduce((acc, key) => {
       const nodeDefinition = graphDefinition[key];
+      if (currentBuiltGraph && currentBuiltGraph[nodeDefinition.id]) {
+        const instance = currentBuiltGraph[nodeDefinition.id].instance;
+        instance.updateParams(nodeDefinition.params);
+        return Object.assign(acc, {
+          [key]: { nodeDefinition, instance, },
+        });
+      }
       const NodeClazz = buildNodeType(nodeDefinition);
       const instance = NodeClazz.fromParams(nodeDefinition.params);
       return Object.assign(acc, {
@@ -89,6 +57,5 @@ export function buildEventGraph(graphDefinition = {}) {
       });
     }, {});
   connectToInputs(builtNodes[DAC_ID], builtNodes);
-  currentGraph = graphDefinition;
   currentBuiltGraph = builtNodes;
 }

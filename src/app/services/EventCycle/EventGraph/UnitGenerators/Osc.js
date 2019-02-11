@@ -31,6 +31,15 @@ export default class EnvelopedOsc {
     this.audioModel.disconnect();
   }
 
+  updateParams({ attack, sustain, release, oscType }) {
+    this.asr = {
+      attack: attack / DIV,
+      sustain: sustain / DIV,
+      release: release / DIV,
+    };
+    this.oscType = shorthandTypes[oscType];
+  }
+
   static fromParams({ attack, sustain, release, oscType }) {
     return new EnvelopedOsc(attack, sustain, release, oscType);
   }

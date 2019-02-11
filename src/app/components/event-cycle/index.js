@@ -51,8 +51,9 @@ class EventCycle extends BaseComponent {
         p("a a a")
       ])
 
-      addr("a") (osc.sin(10, 10, 100)) (gain(0.5)) (dac())
+      addr("a").osc.sin(0, 0, 100, 0x1).gain(0.5, 0x2).dac()
     `;
+    // addr("a") (osc.sin(10, 10, 100)) (gain(0.5)) (dac())
     this.dom.cycleInput.innerText = testCycleValue;
     this.handleCycleChange(testCycleValue);
   }

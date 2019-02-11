@@ -12,7 +12,11 @@ export function evaluateUserInput(str) {
       const addressInlets = [];
       const addGraphCallback = graph => addressInlets.push(graph);
       const seq = (arg) => sequences.push(Array.isArray(arg) ? arg : [ arg ]);
-      const addr = a => _address(a, addGraphCallback);
+      const addr = a => {
+        const graph = _address(a);
+        addressInlets.push(graph);
+        return graph;
+      };
       ${str}
       return { sequences, addressInlets };
     };

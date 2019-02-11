@@ -1,61 +1,80 @@
-import { uuid } from 'services/Math';
-import eventNodeWrapper from './EventNodeWrapper';
-import EventGraphNode from './EventGraphNode';
-import EventGraph from './EventGraph';
+import { EventGraphNode } from './EventGraphNode';
+import { eventGraph } from './EventGraph';
 
-function reverb(reverbValue) {
-  const id = uuid();
-  return eventNodeWrapper((graph) => {
-    const reverb = new EventGraphNode('REVERB', id).setParams({ reverbValue: reverbValue });
-    return graph.addNode(reverb);
-  });
+function _setCurrent(node) {
+  if (this instanceof EventGraphBuilder) {
+    return this._setCurrent(node);
+  }
+  return new EventGraphBuilder()._setCurrent(node);
 }
 
-class osc {
-  static _buildOsc(attack, sustain, release, oscType) {
-    const id = uuid();
-    const params = { attack, sustain, release, oscType, };
-    return eventNodeWrapper((graph) => {
-      const gain = new EventGraphNode('OSC', id).setParams(params);
-      return graph.addNode(gain);
-    });
-  }
-
-  static sin(attack, sustain, release) {
-    return osc._buildOsc(attack, sustain, release, 'sin');
-  }
-  static squ(attack, sustain, release) {
-    return osc._buildOsc(attack, sustain, release, 'squ');
-  }
-  static saw(attack, sustain, release) {
-    return osc._buildOsc(attack, sustain, release, 'saw');
-  }
-  static tri(attack, sustain, release) {
-    return osc._buildOsc(attack, sustain, release, 'tri');
-  }
-}
-
-function gain(gainValue) {
-  const id = uuid();
-  return eventNodeWrapper((graph) => {
-    const gain = new EventGraphNode('GAIN', id).setParams({ gainValue });
-    return graph.addNode(gain);
-  });
+function _address(address) {
+  const addressNode = new EventGraphNode('ADDRESS').setParams({ address });
+  return _setCurrent.call(this, addressNode);
 }
 
 function dac() {
-  const dac = new EventGraphNode('DAC', 'DAC_ID');
-  return new EventGraph().addNode(dac);
+  const dacNode = new EventGraphNode('DAC', 'DAC_ID');
+  return _setCurrent.call(this, dacNode);
 }
 
-function _address(address, addGraphCallback) {
-  const id = uuid();
-  return eventNodeWrapper((graph) => {
-    const addressNode = new EventGraphNode('ADDRESS', id).setParams({ address });
-    graph.addNode(addressNode);
-    addGraphCallback(graph);
-    return graph;
-  });
+function gain(gainValue, id) {
+  const gainNode = new EventGraphNode('GAIN', id).setParams({ gainValue });
+  return _setCurrent.call(this, gainNode);
 }
 
-export const eventGraphApi = [ _address, dac, gain, osc, reverb, ];
+function buildOsc(attack, sustain, release, oscType, id) {
+  const params = { attack, sustain, release, oscType, };
+  const oscNode = new EventGraphNode('OSC', id).setParams(params);
+  return _setCurrent.call(this, oscNode);
+}
+
+const osc = {
+  sin: function (attack, sustain, release, id) {
+    return buildOsc.call(this, attack, sustain, release, 'sin', id);
+  },
+  squ: function (attack, sustain, release, id) {
+    return buildOsc.call(this, attack, sustain, release, 'squ', id);
+  },
+  saw: function (attack, sustain, release, id) {
+    return buildOsc.call(this, attack, sustain, release, 'saw', id);
+  },
+  tri: function (attack, sustain, release, id) {
+    return buildOsc.call(this, attack, sustain, release, 'tri', id);
+  },
+};
+
+class EventGraphBuilder {
+  constructor() {
+    eventGraph.clear();
+    this.currentNode;
+
+    this.address = _address.bind(this);
+    this.dac = dac.bind(this);
+    this.gain = gain.bind(this);
+    this.osc = {
+      sin: osc.sin.bind(this),
+    };
+  }
+
+  _setCurrent(node) {
+    if (this.currentNode) {
+      node.addInput(this.currentNode.id);
+    }
+    this.currentNode = node;
+    eventGraph.addNode(node, this.currentNode);
+    return this;
+  }
+
+  __buildOsc(attack, sustain, release, oscType, id) {
+    const params = { attack, sustain, release, oscType, };
+    const oscNode = new EventGraphNode('OSC', id).setParams(params);
+    return this._setCurrent(oscNode);
+  }
+
+  showGraph() {
+    return eventGraph;
+  }
+}
+
+export const eventGraphApi = [ _address, dac, gain, osc, ];

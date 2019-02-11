@@ -22,7 +22,8 @@ export default class CycleManager {
     try {
       const { sequences, addressInlets } = evaluateUserInput(cycleString);
       cycleResults = sequences;
-      this.nextGraphDefinition = createEventGraph(addressInlets);
+      const allInlets = addressInlets.map(inlet => inlet.showGraph());
+      this.nextGraphDefinition = createEventGraph(allInlets);
     } catch(error) {
       // TODO: render error message
       console.log('result error', error);

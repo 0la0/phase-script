@@ -6,6 +6,7 @@ const dacInstance = {
   type: 'DAC',
   audioModel: new PatchAudioModel('DAC', new Dac(), PATCH_EVENT.SIGNAL, PATCH_EVENT.EMPTY),
   disconnect: () => {},
+  updateParams: () => {},
 };
 
 export default class PatchDac {
