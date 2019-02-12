@@ -12,8 +12,8 @@ export default class PatchGain {
     this.audioModel.disconnect();
   }
 
-  updateParams({ gainValue, }) {
-    this.gain.setValueAtTime(gainValue, 0);
+  updateParams({ gainValue, }, time) {
+    this.gain.setValueAtTime(gainValue, time.audio);
   }
 
   static fromParams({ gainValue, }) {

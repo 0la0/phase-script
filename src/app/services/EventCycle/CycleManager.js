@@ -45,7 +45,7 @@ export default class CycleManager {
       this.cycleHandlers = this.nextCycleHandlers;
       this.nextCycleHandlers = null;
       if (this.nextGraphDefinition) {
-        buildEventGraph(this.nextGraphDefinition);
+        buildEventGraph(this.nextGraphDefinition, time);
         this.nextGraphDefinition = null;
       }
     }

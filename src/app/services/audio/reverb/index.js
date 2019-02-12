@@ -1,8 +1,12 @@
 import audioGraph from 'services/audio/graph';
 import buildConvolutionBuffer from 'services/audio/reverb/convolutionBuilder';
 
+function undefinedOr(val, fallback) {
+  return ((val === undefined) || (val === null)) ? fallback : val;
+}
+
 export default class Reverb  {
-  constructor () {
+  constructor (attack, decay, wet) {
     const audioContext = audioGraph.getAudioContext();
     this.convolver = audioContext.createConvolver();
     this.input = audioContext.createGain();
@@ -12,10 +16,10 @@ export default class Reverb  {
     this.input.connect(this.convolver);
     this.convolver.connect(this.wetGain);
 
-    this.attack = 0.1;
-    this.decay = 0.5;
+    this.attack = undefinedOr(attack, 0.1);
+    this.decay = undefinedOr(decay, 0.5);
     this.generateBuffer();
-    this.setWetLevel(0.5, 0);
+    this.setWetLevel(undefinedOr(wet, 0.5), 0);
   }
 
   connect(node) {
@@ -49,6 +53,13 @@ export default class Reverb  {
   setWetLevel(normalValue, scheduledTime) {
     this.wetGain.gain.linearRampToValueAtTime(normalValue, scheduledTime);
     this.dryGain.gain.linearRampToValueAtTime(1 - normalValue, scheduledTime);
+  }
+
+  updateParams(attack, decay, wet, scheduledTime) {
+    this.attack = attack;
+    this.decay = decay;
+    this.setWetLevel(wet, scheduledTime);
+    this.generateBuffer();
   }
 
   // domain: [-24, 0]

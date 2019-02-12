@@ -2,14 +2,16 @@ import Address from './UnitGenerators/Address';
 import Dac from './UnitGenerators/Dac';
 import Gain from './UnitGenerators/Gain';
 import Osc from './UnitGenerators/Osc';
+import Reverb from './UnitGenerators/Reverb';
 
 const DAC_ID = 'DAC_ID';
 
 const typeMap = {
+  ADDRESS: Address,
   DAC: Dac,
   GAIN: Gain,
-  ADDRESS: Address,
   OSC: Osc,
+  REVERB: Reverb,
 };
 
 let currentBuiltGraph = {};
@@ -35,7 +37,7 @@ function connectToInputs(node, graph) {
   });
 }
 
-export function buildEventGraph(graphDefinition = {}) {
+export function buildEventGraph(graphDefinition = {}, time) {
   if (!graphDefinition[DAC_ID]) {
     console.log('graphDefinition missing end node', graphDefinition);
     return;
@@ -45,7 +47,7 @@ export function buildEventGraph(graphDefinition = {}) {
       const nodeDefinition = graphDefinition[key];
       if (currentBuiltGraph && currentBuiltGraph[nodeDefinition.id]) {
         const instance = currentBuiltGraph[nodeDefinition.id].instance;
-        instance.updateParams(nodeDefinition.params);
+        instance.updateParams(nodeDefinition.params, time);
         return Object.assign(acc, {
           [key]: { nodeDefinition, instance, },
         });

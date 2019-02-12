@@ -29,6 +29,12 @@ function buildOsc(attack, sustain, release, oscType, id) {
   return _setCurrent.call(this, oscNode);
 }
 
+function reverb(attack, decay, wet, id) {
+  const params = { attack, decay, wet, };
+  const oscNode = new EventGraphNode('REVERB', id).setParams(params);
+  return _setCurrent.call(this, oscNode);
+}
+
 const osc = {
   sin: function (attack, sustain, release, id) {
     return buildOsc.call(this, attack, sustain, release, 'sin', id);
@@ -44,6 +50,7 @@ const osc = {
   },
 };
 
+
 class EventGraphBuilder {
   constructor() {
     eventGraph.clear();
@@ -54,7 +61,11 @@ class EventGraphBuilder {
     this.gain = gain.bind(this);
     this.osc = {
       sin: osc.sin.bind(this),
+      squ: osc.squ.bind(this),
+      saw: osc.saw.bind(this),
+      tri: osc.tri.bind(this),
     };
+    this.reverb = reverb.bind(this);
   }
 
   _setCurrent(node) {
