@@ -35,6 +35,30 @@ function reverb(attack, decay, wet, id) {
   return _setCurrent.call(this, oscNode);
 }
 
+function chorus(frequency, depth, feedback, id) {
+  const params = { frequency, depth, feedback, };
+  const oscNode = new EventGraphNode('CHORUS', id).setParams(params);
+  return _setCurrent.call(this, oscNode);
+}
+
+function delay(delayMs, feedback, wet, id) {
+  const params = { delayMs, feedback, wet, };
+  const oscNode = new EventGraphNode('DELAY', id).setParams(params);
+  return _setCurrent.call(this, oscNode);
+}
+
+// TODO
+// function delay() {}
+//
+// // TODO
+// function filter() {}
+//
+// // TODO
+// function waveshaper() {}
+//
+// // TODO
+// const samp = {};
+
 const osc = {
   sin: function (attack, sustain, release, id) {
     return buildOsc.call(this, attack, sustain, release, 'sin', id);
@@ -66,6 +90,8 @@ class EventGraphBuilder {
       tri: osc.tri.bind(this),
     };
     this.reverb = reverb.bind(this);
+    this.chorus = chorus.bind(this);
+    this.delay = delay.bind(this);
   }
 
   _setCurrent(node) {
@@ -88,4 +114,11 @@ class EventGraphBuilder {
   }
 }
 
-export const eventGraphApi = [ _address, dac, gain, osc, ];
+export const eventGraphApi = [
+  _address,
+  // chorus,
+  dac,
+  gain,
+  osc,
+  // reverb
+];

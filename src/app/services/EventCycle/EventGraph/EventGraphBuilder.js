@@ -1,5 +1,7 @@
 import Address from './UnitGenerators/Address';
+import Chorus from './UnitGenerators/Chorus';
 import Dac from './UnitGenerators/Dac';
+import Delay from './UnitGenerators/Delay';
 import Gain from './UnitGenerators/Gain';
 import Osc from './UnitGenerators/Osc';
 import Reverb from './UnitGenerators/Reverb';
@@ -8,7 +10,9 @@ const DAC_ID = 'DAC_ID';
 
 const typeMap = {
   ADDRESS: Address,
+  CHORUS: Chorus,
   DAC: Dac,
+  DELAY: Delay,
   GAIN: Gain,
   OSC: Osc,
   REVERB: Reverb,

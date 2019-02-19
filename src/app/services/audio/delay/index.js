@@ -1,13 +1,14 @@
 import audioGraph from 'services/audio/graph';
 
 export default class Delay  {
-  constructor () {
+  constructor (delayTime = 0, feedback = 0.8, wet = 0.6) {
     const audioContext = audioGraph.getAudioContext();
     this.input = audioContext.createDelay();
     this.feedback = audioContext.createGain();
     this.wetLevel = audioContext.createGain();
-    this.feedback.gain.value = 0.85;
-    this.wetLevel.gain.value = 0.80;
+    this.input.delayTime.value = delayTime;
+    this.feedback.gain.value = feedback;
+    this.wetLevel.gain.value = wet;
     this.feedback.connect(this.input);
     this.input.connect(this.wetLevel);
     this.input.connect(this.feedback);
@@ -47,5 +48,11 @@ export default class Delay  {
     } else {
       this.wetLevel.gain.setValueAtTime(frequency, 0);
     }
+  }
+
+  updateParams(delayTime, feedback, wet, time) {
+    this.input.delayTime.linearRampToValueAtTime(delayTime, time);
+    this.feedback.gain.linearRampToValueAtTime(feedback, time);
+    this.wetLevel.gain.linearRampToValueAtTime(wet, time);
   }
 }
