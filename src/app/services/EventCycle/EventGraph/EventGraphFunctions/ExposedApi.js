@@ -47,9 +47,6 @@ function delay(delayMs, feedback, wet, id) {
   return _setCurrent.call(this, oscNode);
 }
 
-// TODO
-// function delay() {}
-//
 // // TODO
 // function filter() {}
 //
