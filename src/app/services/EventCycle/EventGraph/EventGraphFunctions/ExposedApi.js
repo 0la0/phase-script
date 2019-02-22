@@ -19,32 +19,50 @@ function dac() {
 }
 
 function gain(gainValue, id) {
-  const gainNode = new EventGraphNode('GAIN', id).setParams({ gainValue });
+  const gainNode = new EventGraphNode('GAIN', `GAIN-${id}`).setParams({ gainValue });
   return _setCurrent.call(this, gainNode);
 }
 
 function buildOsc(attack, sustain, release, oscType, id) {
   const params = { attack, sustain, release, oscType, };
-  const oscNode = new EventGraphNode('OSC', id).setParams(params);
+  const oscNode = new EventGraphNode('OSC', `OSC-${oscType}-${id}`).setParams(params);
   return _setCurrent.call(this, oscNode);
 }
 
 function reverb(attack, decay, wet, id) {
   const params = { attack, decay, wet, };
-  const oscNode = new EventGraphNode('REVERB', id).setParams(params);
+  const oscNode = new EventGraphNode('REVERB', `REVERB-${id}`).setParams(params);
   return _setCurrent.call(this, oscNode);
 }
 
 function chorus(frequency, depth, feedback, id) {
   const params = { frequency, depth, feedback, };
-  const oscNode = new EventGraphNode('CHORUS', id).setParams(params);
+  const oscNode = new EventGraphNode('CHORUS', `CHORUS-${id}`).setParams(params);
   return _setCurrent.call(this, oscNode);
 }
 
 function delay(delayMs, feedback, wet, id) {
   const params = { delayMs, feedback, wet, };
-  const oscNode = new EventGraphNode('DELAY', id).setParams(params);
+  const oscNode = new EventGraphNode('DELAY', `DELAY-${id}`).setParams(params);
   return _setCurrent.call(this, oscNode);
+}
+
+function filter(type, frequency, q, id) {
+  const params = { type, frequency, q, };
+  const filterNode = new EventGraphNode('FILTER', `FILTER-${type}-${id}`).setParams(params);
+  return _setCurrent.call(this, filterNode);
+}
+
+function lp(frequency, q, id) {
+  return filter.call(this, 'lowpass', frequency, q, id);
+}
+
+function hp(frequency, q, id) {
+  return filter.call(this, 'highpass', frequency, q, id);
+}
+
+function bp(frequency, q, id) {
+  return filter.call(this, 'bandpass', frequency, q, id);
 }
 
 // // TODO
@@ -55,6 +73,7 @@ function delay(delayMs, feedback, wet, id) {
 //
 // // TODO
 // const samp = {};
+
 
 const osc = {
   sin: function (attack, sustain, release, id) {
@@ -89,6 +108,9 @@ class EventGraphBuilder {
     this.reverb = reverb.bind(this);
     this.chorus = chorus.bind(this);
     this.delay = delay.bind(this);
+    this.lp = lp.bind(this);
+    this.hp = hp.bind(this);
+    this.bp = bp.bind(this);
   }
 
   _setCurrent(node) {

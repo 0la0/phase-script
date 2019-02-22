@@ -2,6 +2,7 @@ import Address from './UnitGenerators/Address';
 import Chorus from './UnitGenerators/Chorus';
 import Dac from './UnitGenerators/Dac';
 import Delay from './UnitGenerators/Delay';
+import Filter from './UnitGenerators/Filter';
 import Gain from './UnitGenerators/Gain';
 import Osc from './UnitGenerators/Osc';
 import Reverb from './UnitGenerators/Reverb';
@@ -13,6 +14,7 @@ const typeMap = {
   CHORUS: Chorus,
   DAC: Dac,
   DELAY: Delay,
+  FILTER: Filter,
   GAIN: Gain,
   OSC: Osc,
   REVERB: Reverb,
@@ -22,9 +24,8 @@ let currentBuiltGraph = {};
 
 function buildNodeType(node) {
   const instance = typeMap[node.type];
-  if (!typeMap[node.type]) {
-    console.log('Audio graph definition not found for', node.type);
-    return `TODO: ${node.type}`;
+  if (!instance) {
+    throw new Error(`Audio graph definition not found for ${node.type}`);
   }
   return instance;
 }
@@ -43,8 +44,7 @@ function connectToInputs(node, graph) {
 
 export function buildEventGraph(graphDefinition = {}, time) {
   if (!graphDefinition[DAC_ID]) {
-    console.log('graphDefinition missing end node', graphDefinition);
-    return;
+    throw new Error(`graphDefinition missing end node ${graphDefinition}`);
   }
   const builtNodes = Object.keys(graphDefinition)
     .reduce((acc, key) => {

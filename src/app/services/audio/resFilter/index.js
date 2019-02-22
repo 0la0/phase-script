@@ -1,12 +1,13 @@
 import audioGraph from 'services/audio/graph';
 
 export default class ResFilter {
-  constructor() {
+  constructor(type, frequency, q) {
     const audioContext = audioGraph.getAudioContext();
     this.output = audioContext.createGain();
     this.filter = audioContext.createBiquadFilter();
-    this.filter.type = 'lowpass';
-    this.filter.frequency.value = 400;
+    this.filter.type = type || 'lowpass';
+    this.filter.frequency.value = frequency || 400;
+    this.filter.Q.value = q || 1;
     this.filter.gain.value = 0;
     this.filter.connect(this.output);
   }
@@ -41,6 +42,11 @@ export default class ResFilter {
     } else {
       this.filter.Q.value = resonance;
     }
+  }
+
+  updateParams(frequency, q, time) {
+    this.filter.frequency.linearRampToValueAtTime(frequency, time);
+    this.filter.Q.linearRampToValueAtTime(q, time);
   }
 
   getFrequencyResponse(frequencyHz, magResponse, phaseResponse) {
