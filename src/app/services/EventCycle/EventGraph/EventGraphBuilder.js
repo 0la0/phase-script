@@ -4,6 +4,8 @@ import Dac from './UnitGenerators/Dac';
 import Delay from './UnitGenerators/Delay';
 import Filter from './UnitGenerators/Filter';
 import Gain from './UnitGenerators/Gain';
+import MessageMap from './UnitGenerators/MessageMap';
+import MessageFilter from './UnitGenerators/MessageFilter';
 import Osc from './UnitGenerators/Osc';
 import Reverb from './UnitGenerators/Reverb';
 import Sampler from './UnitGenerators/Sampler';
@@ -12,12 +14,14 @@ import Waveshaper from './UnitGenerators/Waveshaper';
 const DAC_ID = 'DAC_ID';
 
 const typeMap = {
-  ADDRESS: Address,
+  ADDRESS: Address, // TODO: rename to MSG_ADDRESS
   CHORUS: Chorus,
   DAC: Dac,
   DELAY: Delay,
   FILTER: Filter,
   GAIN: Gain,
+  MSG_MAP: MessageMap,
+  MSG_FILTER: MessageFilter,
   OSC: Osc,
   REVERB: Reverb,
   SAMPLER: Sampler,

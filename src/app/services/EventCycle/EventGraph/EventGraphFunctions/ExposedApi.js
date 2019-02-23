@@ -1,6 +1,8 @@
 import { EventGraphNode } from './EventGraphNode';
 import { eventGraph } from './EventGraph';
 
+// TODO: parameter validation
+
 function _setCurrent(node) {
   if (this instanceof EventGraphBuilder) {
     return this._setCurrent(node);
@@ -47,22 +49,22 @@ function delay(delayMs, feedback, wet, id) {
   return _setCurrent.call(this, oscNode);
 }
 
-function filter(type, frequency, q, id) {
+function biquadFilter(type, frequency, q, id) {
   const params = { type, frequency, q, };
   const filterNode = new EventGraphNode('FILTER', `FILTER-${type}-${id}`).setParams(params);
   return _setCurrent.call(this, filterNode);
 }
 
 function lp(frequency, q, id) {
-  return filter.call(this, 'lowpass', frequency, q, id);
+  return biquadFilter.call(this, 'lowpass', frequency, q, id);
 }
 
 function hp(frequency, q, id) {
-  return filter.call(this, 'highpass', frequency, q, id);
+  return biquadFilter.call(this, 'highpass', frequency, q, id);
 }
 
 function bp(frequency, q, id) {
-  return filter.call(this, 'bandpass', frequency, q, id);
+  return biquadFilter.call(this, 'bandpass', frequency, q, id);
 }
 
 function buildWvshp(type, wet, id) {
@@ -83,6 +85,18 @@ function samp(sampleName, attack, sustain, release, id) {
   const params = { sampleName, attack, sustain, release, };
   const samplerNode = new EventGraphNode('SAMPLER', `SAMPLER-${sampleName}-${id}`).setParams(params);
   return _setCurrent.call(this, samplerNode);
+}
+
+function map(mapFn) {
+  const params = { mapFn, };
+  const messageMapNode = new EventGraphNode('MSG_MAP').setParams(params);
+  return _setCurrent.call(this, messageMapNode);
+}
+
+function filter(filterFn) {
+  const params = { filterFn, };
+  const messageFilterNode = new EventGraphNode('MSG_FILTER').setParams(params);
+  return _setCurrent.call(this, messageFilterNode);
 }
 
 const osc = {
@@ -129,6 +143,8 @@ class EventGraphBuilder {
       clip: wvshp.clip.bind(this),
     };
     this.samp = samp.bind(this);
+    this.map = map.bind(this);
+    this.filter = filter.bind(this);
   }
 
   _setCurrent(node) {

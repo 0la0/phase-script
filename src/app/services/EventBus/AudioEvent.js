@@ -10,14 +10,26 @@ export default class AudioEvent {
     return this;
   }
 
+  getAddress() {
+    return this.address;
+  }
+
   setNote(note) {
     this.note = note;
     return this;
   }
 
+  getNote() {
+    return this.note;
+  }
+
   setTime(time) {
     this.time = time;
     return this;
+  }
+
+  getTime() {
+    return this.time;
   }
 
   clone() {
