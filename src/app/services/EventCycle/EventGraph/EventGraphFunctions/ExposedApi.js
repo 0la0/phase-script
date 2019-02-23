@@ -79,8 +79,11 @@ const wvshp = {
   clip: function (wet, id) { return buildWvshp.call(this, 'hardClip', wet, id); },
 };
 
-// // TODO
-// const samp = {};
+function samp(sampleName, attack, sustain, release, id) {
+  const params = { sampleName, attack, sustain, release, };
+  const samplerNode = new EventGraphNode('SAMPLER', `SAMPLER-${sampleName}-${id}`).setParams(params);
+  return _setCurrent.call(this, samplerNode);
+}
 
 const osc = {
   sin: function (attack, sustain, release, id) {
@@ -125,6 +128,7 @@ class EventGraphBuilder {
       sig: wvshp.sig.bind(this),
       clip: wvshp.clip.bind(this),
     };
+    this.samp = samp.bind(this);
   }
 
   _setCurrent(node) {
