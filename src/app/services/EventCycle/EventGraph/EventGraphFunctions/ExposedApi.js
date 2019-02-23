@@ -65,15 +65,22 @@ function bp(frequency, q, id) {
   return filter.call(this, 'bandpass', frequency, q, id);
 }
 
-// // TODO
-// function filter() {}
-//
-// // TODO
-// function waveshaper() {}
-//
+function buildWvshp(type, wet, id) {
+  const params = { type, wet, id, };
+  const filterNode = new EventGraphNode('WAVESHAPER', `WAVESHAPER-${type}-${id}`).setParams(params);
+  return _setCurrent.call(this, filterNode);
+}
+
+const wvshp = {
+  squ: function (wet, id) { return buildWvshp.call(this, 'square', wet, id); },
+  cube: function (wet, id) { return buildWvshp.call(this, 'cubed', wet, id); },
+  cheb: function (wet, id) { return buildWvshp.call(this, 'chebyshev2', wet, id); },
+  sig: function (wet, id) { return buildWvshp.call(this, 'sigmoidLike', wet, id); },
+  clip: function (wet, id) { return buildWvshp.call(this, 'hardClip', wet, id); },
+};
+
 // // TODO
 // const samp = {};
-
 
 const osc = {
   sin: function (attack, sustain, release, id) {
@@ -111,6 +118,13 @@ class EventGraphBuilder {
     this.lp = lp.bind(this);
     this.hp = hp.bind(this);
     this.bp = bp.bind(this);
+    this.wvshp = {
+      squ: wvshp.squ.bind(this),
+      cube: wvshp.cube.bind(this),
+      cheb: wvshp.cheb.bind(this),
+      sig: wvshp.sig.bind(this),
+      clip: wvshp.clip.bind(this),
+    };
   }
 
   _setCurrent(node) {

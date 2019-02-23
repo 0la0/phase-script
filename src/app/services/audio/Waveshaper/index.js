@@ -18,6 +18,14 @@ const CARRIER_FUNCTIONS = {
   hardClip: x =>  (1 + 0.4 * x) / (1 + Math.abs(x))
 };
 
+const CARRIER_NAMES = {
+  squ: CARRIER_FUNCTIONS.square,
+  cube: CARRIER_FUNCTIONS.cubed,
+  cheb: CARRIER_FUNCTIONS.chebyshev2,
+  sig: CARRIER_FUNCTIONS.sigmoidLike,
+  clip: CARRIER_FUNCTIONS.hardClip,
+};
+
 function createCurve(carrierFunction, sampleRate, multiplier) {
   let curve = new Float32Array(sampleRate);
   for (let i = 0; i < sampleRate; i++) {
@@ -30,7 +38,7 @@ function createCurve(carrierFunction, sampleRate, multiplier) {
 }
 
 export default class Waveshaper {
-  constructor () {
+  constructor (wetLevel) {
     const audioContext = audioGraph.getAudioContext();
     this.sampleRate = audioContext.sampleRate;
     this.input = audioContext.createGain();
@@ -41,6 +49,7 @@ export default class Waveshaper {
     this.input.connect(this.waveshaperNode);
     this.waveshaperNode.connect(this.wetGain);
     this.setCarrierFunction(Object.keys(CARRIER_FUNCTIONS)[0]);
+    this.setWetLevel(wetLevel);
   }
 
   connect(node) {
@@ -57,7 +66,7 @@ export default class Waveshaper {
     return this.input;
   }
 
-  setWetLevel(normalValue, scheduledTime) {
+  setWetLevel(normalValue, scheduledTime = 0) {
     this.wetGain.gain.linearRampToValueAtTime(normalValue, scheduledTime);
     this.dryGain.gain.linearRampToValueAtTime(1 - normalValue, scheduledTime);
   }

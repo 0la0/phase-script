@@ -4,7 +4,6 @@ import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 
 export default class PatchReverb {
   constructor({ attack, decay, wet }) {
-    console.log('adw', attack, decay, wet)
     this.reverb = new Reverb(attack, decay, wet);
     this.audioModel = new PatchAudioModel('REVERB', this.reverb, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
   }

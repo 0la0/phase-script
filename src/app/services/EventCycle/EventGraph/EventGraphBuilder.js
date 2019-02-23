@@ -6,6 +6,7 @@ import Filter from './UnitGenerators/Filter';
 import Gain from './UnitGenerators/Gain';
 import Osc from './UnitGenerators/Osc';
 import Reverb from './UnitGenerators/Reverb';
+import Waveshaper from './UnitGenerators/Waveshaper';
 
 const DAC_ID = 'DAC_ID';
 
@@ -18,6 +19,7 @@ const typeMap = {
   GAIN: Gain,
   OSC: Osc,
   REVERB: Reverb,
+  WAVESHAPER: Waveshaper,
 };
 
 let currentBuiltGraph = {};
