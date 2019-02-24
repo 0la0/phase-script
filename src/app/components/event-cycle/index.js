@@ -60,6 +60,10 @@ class EventCycle extends BaseComponent {
         .bp(262, 2, 0x6)
         .dac()
     `;
+    // const testCycleValue = `
+    // sin(220, 0x1).gain(0.1, 0x3).dac();
+    // sin(880, 0x2).gain(0.1, 0x4).dac();
+    // `;
     // addr("a") (osc.sin(10, 10, 100)) (gain(0.5)) (dac())
     this.dom.cycleInput.innerText = testCycleValue;
     this.handleCycleChange(testCycleValue);

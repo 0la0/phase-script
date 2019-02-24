@@ -1,12 +1,13 @@
 import Chorus from './UnitGenerators/Chorus';
+import ContinuousOsc from './UnitGenerators/ContinuousOsc';
 import Dac from './UnitGenerators/Dac';
 import Delay from './UnitGenerators/Delay';
+import EnvelopedOsc from './UnitGenerators/EnvelopedOsc';
 import Filter from './UnitGenerators/Filter';
 import Gain from './UnitGenerators/Gain';
 import MessageAddress from './UnitGenerators/MessageAddress';
 import MessageMap from './UnitGenerators/MessageMap';
 import MessageFilter from './UnitGenerators/MessageFilter';
-import Osc from './UnitGenerators/Osc';
 import Panner from './UnitGenerators/Panner';
 import Reverb from './UnitGenerators/Reverb';
 import Sampler from './UnitGenerators/Sampler';
@@ -16,14 +17,15 @@ const DAC_ID = 'DAC_ID';
 
 const typeMap = {
   CHORUS: Chorus,
+  CONTINUOUS_OSC: ContinuousOsc,
   DAC: Dac,
   DELAY: Delay,
+  ENVELOPED_OSC: EnvelopedOsc,
   FILTER: Filter,
   GAIN: Gain,
   MSG_ADDRESS: MessageAddress,
   MSG_MAP: MessageMap,
   MSG_FILTER: MessageFilter,
-  OSC: Osc,
   PANNER: Panner,
   REVERB: Reverb,
   SAMPLER: Sampler,

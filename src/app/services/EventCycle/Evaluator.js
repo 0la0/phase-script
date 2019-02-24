@@ -1,23 +1,31 @@
 import { eventGraphApi } from 'services/EventCycle/EventGraph/EventGraphFunctions/ExposedApi';
 import { patternApi } from 'services/EventCycle/PatternFunctions/ExposedApi';
 
-const exposedApi = [].concat(patternApi, eventGraphApi);
+// TODO: new file for mtof, ftom, other helper functions
+
+const eventGraphFunctions = eventGraphApi.map(ele => ele.fn);
+const exposedApi = [].concat(patternApi, eventGraphFunctions);
 const apiNamespace = exposedApi.map(fn => fn.name).join(', ');
 
-export function evaluateUserInput(str) {
+const exposedEventGraph = eventGraphApi.map(({ name, fn, }) => {
+  return `
+    function ${name}() {
+      const graph = ${fn.name}.apply(undefined, arguments);
+      addressInlets.push(graph);
+      return graph;
+    }
+  `;
+}).join('');
+
+export function evaluateUserInput(userInputString) {
   return Function(`
     'use strict';
     return (${apiNamespace}) => {
       const sequences = [];
       const addressInlets = [];
-      const addGraphCallback = graph => addressInlets.push(graph);
       const seq = (arg) => sequences.push(Array.isArray(arg) ? arg : [ arg ]);
-      const addr = a => {
-        const graph = _address(a);
-        addressInlets.push(graph);
-        return graph;
-      };
-      ${str}
+      ${exposedEventGraph}
+      ${userInputString}
       return { sequences, addressInlets };
     };
   `)()(...exposedApi);

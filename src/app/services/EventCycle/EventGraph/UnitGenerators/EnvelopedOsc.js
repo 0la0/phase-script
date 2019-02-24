@@ -18,7 +18,7 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
     };
     this.oscType = shorthandTypes[oscType];
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
-    this.audioModel = new PatchAudioModel('OSC', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);
+    this.audioModel = new PatchAudioModel('ENVELOPED_OSC', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);
   }
 
   schedule(message) {

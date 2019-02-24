@@ -18,4 +18,8 @@ export class EventGraphNode {
     if (!nodeId) { return; }
     this.inputs.add(nodeId);
   }
+
+  getInputs() {
+    return this.inputs;
+  }
 }
