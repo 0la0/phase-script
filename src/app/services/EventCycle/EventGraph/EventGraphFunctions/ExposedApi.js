@@ -11,7 +11,7 @@ function _setCurrent(node) {
 }
 
 function _address(address) {
-  const addressNode = new EventGraphNode('ADDRESS').setParams({ address });
+  const addressNode = new EventGraphNode('MSG_ADDRESS').setParams({ address });
   return _setCurrent.call(this, addressNode);
 }
 

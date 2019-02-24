@@ -1,9 +1,9 @@
-import Address from './UnitGenerators/Address';
 import Chorus from './UnitGenerators/Chorus';
 import Dac from './UnitGenerators/Dac';
 import Delay from './UnitGenerators/Delay';
 import Filter from './UnitGenerators/Filter';
 import Gain from './UnitGenerators/Gain';
+import MessageAddress from './UnitGenerators/MessageAddress';
 import MessageMap from './UnitGenerators/MessageMap';
 import MessageFilter from './UnitGenerators/MessageFilter';
 import Osc from './UnitGenerators/Osc';
@@ -14,12 +14,12 @@ import Waveshaper from './UnitGenerators/Waveshaper';
 const DAC_ID = 'DAC_ID';
 
 const typeMap = {
-  ADDRESS: Address, // TODO: rename to MSG_ADDRESS
   CHORUS: Chorus,
   DAC: Dac,
   DELAY: Delay,
   FILTER: Filter,
   GAIN: Gain,
+  MSG_ADDRESS: MessageAddress,
   MSG_MAP: MessageMap,
   MSG_FILTER: MessageFilter,
   OSC: Osc,
@@ -38,16 +38,35 @@ function buildNodeType(node) {
   return instance;
 }
 
-function connectToInputs(node, graph) {
-  if (!node) {
-    return;
-  }
-  node.nodeDefinition.inputs.forEach(inputId => {
-    const input = graph[inputId].instance;
-    const output = node.instance;
-    input.audioModel.connectTo(output.audioModel);
-    connectToInputs(graph[inputId], graph);
+function connectNodes(graph) {
+  const nodeOutputMap = Object.keys(graph).reduce((acc, key) => {
+    graph[key].nodeDefinition.inputs.forEach((inputId) => {
+      if (!acc[inputId]) {
+        acc[inputId] = new Set([key]);
+      } else {
+        acc[inputId].add(key);
+      }
+    });
+    return acc;
+  }, {});
+
+  Object.keys(nodeOutputMap).forEach(key => {
+    const node = graph[key].instance;
+    const outputAudioModels = [...nodeOutputMap[key]].map(id => graph[id].instance.getAudioModel());
+    node.batchConnect(outputAudioModels);
   });
+}
+
+function disconnectOldNodes(oldGraph, currentGraph) {
+  Object.values(oldGraph)
+    .forEach((node) => {
+      // const { id } = node.nodeDefinition;
+      const currentGraphHasNode = Object.values(currentGraph)
+        .some(_node => _node.nodeDefinition.id === node.nodeDefinition.id);
+      if (!currentGraphHasNode) {
+        setTimeout(() => node.instance.disconnect());
+      }
+    });
 }
 
 export function buildEventGraph(graphDefinition = {}, time) {
@@ -70,6 +89,7 @@ export function buildEventGraph(graphDefinition = {}, time) {
         [key]: { nodeDefinition, instance, },
       });
     }, {});
-  connectToInputs(builtNodes[DAC_ID], builtNodes);
+  disconnectOldNodes(currentBuiltGraph, builtNodes);
+  connectNodes(builtNodes);
   currentBuiltGraph = builtNodes;
 }

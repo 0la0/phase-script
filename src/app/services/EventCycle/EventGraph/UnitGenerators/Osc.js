@@ -1,3 +1,4 @@
+import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
@@ -7,8 +8,9 @@ import { shorthandTypes } from 'services/audio/synth/Oscillators';
 const GAIN_VALUE = 1;
 const DIV = 1000;
 
-export default class EnvelopedOsc {
+export default class EnvelopedOsc extends BaseUnitGenerator {
   constructor(attack, sustain, release, oscType) {
+    super();
     this.asr = {
       attack: attack / DIV,
       sustain: sustain / DIV,
@@ -24,11 +26,6 @@ export default class EnvelopedOsc {
     const outputs = [...this.eventModel.getOutlets()];
     // envelopedOscilator(note, message.time.audio, this.asr, this.oscType, GAIN_VALUE, outputs, this.signalCarrier.getInput());
     envelopedOscilator(note, message.time.audio, this.asr, this.oscType, GAIN_VALUE, outputs);
-  }
-
-  disconnect() {
-    this.eventModel.disconnect();
-    this.audioModel.disconnect();
   }
 
   updateParams({ attack, sustain, release, oscType }) {

@@ -7,13 +7,17 @@ export default class PatchAudioModel {
   }
 
   connectTo(audioModel) {
-    // TODO: check compatibility
+    // TODO: check compatibility, throw error
     this.audioModel.connect(audioModel.getAudioModelInput());
   }
 
   disconnect(audioModel) {
     const output = audioModel ? audioModel.getAudioModelInput() : undefined;
     this.audioModel.disconnect(output);
+  }
+
+  disconnectFrom(audioModel) {
+    this.audioModel.disconnect(audioModel.getAudioModelInput());
   }
 
   getAudioModelInput() {

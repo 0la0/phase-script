@@ -1,3 +1,4 @@
+import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
@@ -13,8 +14,9 @@ function sampleKeyOrDefault(sampleKey) {
   return 'hat';
 }
 
-export default class PatchSampler {
+export default class PatchSampler extends BaseUnitGenerator{
   constructor(params) {
+    super();
     this.asr = {
       attack: 0,
       sustain: 1,
@@ -31,11 +33,6 @@ export default class PatchSampler {
     const note = message.note !== undefined ? message.note : 60;
     const sampleKey = sampleKeyOrDefault(this.sampleName);
     playSample(sampleKey, message.time.audio, 0, note, this.asr, outputs);
-  }
-
-  disconnect() {
-    this.eventModel.disconnect();
-    this.audioModel.disconnect();
   }
 
   updateParams({ sampleName, attack, sustain, release }) {

@@ -1,16 +1,15 @@
+import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
 import Dac from 'services/audio/dac';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 
-const dacInstance = {
-  type: 'DAC',
-  audioModel: new PatchAudioModel('DAC', new Dac(), PATCH_EVENT.SIGNAL, PATCH_EVENT.EMPTY),
-  disconnect: () => {},
-  updateParams: () => {},
-};
-
-export default class PatchDac {
-  static fromParams() {
-    return dacInstance;
+class PatchDac extends BaseUnitGenerator {
+  constructor() {
+    super();
+    this.audioModel = new PatchAudioModel('DAC', new Dac(), PATCH_EVENT.SIGNAL, PATCH_EVENT.EMPTY);
   }
+  disconnect() {}
+  updateParams() {}
+  fromParams() { return this; }
 }
+export default new PatchDac();
