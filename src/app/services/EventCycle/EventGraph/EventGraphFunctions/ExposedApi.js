@@ -73,6 +73,12 @@ function buildWvshp(type, wet, id) {
   return _setCurrent.call(this, filterNode);
 }
 
+function pan(panValue, id) {
+  const params = { panValue, id, };
+  const pannerNode = new EventGraphNode('PANNER', `PANNER-${id}`).setParams(params);
+  return _setCurrent.call(this, pannerNode);
+}
+
 const wvshp = {
   squ: function (wet, id) { return buildWvshp.call(this, 'square', wet, id); },
   cube: function (wet, id) { return buildWvshp.call(this, 'cubed', wet, id); },
@@ -145,6 +151,7 @@ class EventGraphBuilder {
     this.samp = samp.bind(this);
     this.map = map.bind(this);
     this.filter = filter.bind(this);
+    this.pan = pan.bind(this);
   }
 
   _setCurrent(node) {

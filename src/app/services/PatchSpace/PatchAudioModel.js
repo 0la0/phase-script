@@ -7,7 +7,9 @@ export default class PatchAudioModel {
   }
 
   connectTo(audioModel) {
-    // TODO: check compatibility, throw error
+    if (this.getOutputType() !== audioModel.getInputType()) {
+      throw new Error(`Incompatible connection attempted: ${this.name} to ${audioModel.name}`);
+    }
     this.audioModel.connect(audioModel.getAudioModelInput());
   }
 

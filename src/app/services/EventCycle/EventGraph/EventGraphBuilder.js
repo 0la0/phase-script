@@ -7,6 +7,7 @@ import MessageAddress from './UnitGenerators/MessageAddress';
 import MessageMap from './UnitGenerators/MessageMap';
 import MessageFilter from './UnitGenerators/MessageFilter';
 import Osc from './UnitGenerators/Osc';
+import Panner from './UnitGenerators/Panner';
 import Reverb from './UnitGenerators/Reverb';
 import Sampler from './UnitGenerators/Sampler';
 import Waveshaper from './UnitGenerators/Waveshaper';
@@ -23,6 +24,7 @@ const typeMap = {
   MSG_MAP: MessageMap,
   MSG_FILTER: MessageFilter,
   OSC: Osc,
+  PANNER: Panner,
   REVERB: Reverb,
   SAMPLER: Sampler,
   WAVESHAPER: Waveshaper,
