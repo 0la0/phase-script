@@ -1,7 +1,22 @@
 import { EventGraphNode } from './EventGraphNode';
 import { eventGraph } from './EventGraph';
+import { mtof, ftom, } from 'services/midi/util';
 
-// TODO: parameter validation
+// TODO:
+//   * parameter validation
+//   * message duplicator
+//   * message delay (with rand parameters)
+//   * message threshold (like svg graph)
+//   * message scale
+//   * message repeater
+//   * midi out
+//   * continuous osc
+//   * modulator connections
+//   * connection fan out / fan in
+//   * mic in
+//   * audio signal thresh -> trigger event
+//   * bitcrusher worklet
+//   * noise gen worklet
 
 function _setCurrent(node) {
   if (this instanceof EventGraphBuilder) {
@@ -67,6 +82,22 @@ function bp(frequency, q, id) {
   return biquadFilter.call(this, 'bandpass', frequency, q, id);
 }
 
+function sin(attack, sustain, release, id) {
+  return buildOsc.call(this, attack, sustain, release, 'sin', id);
+}
+
+function squ(attack, sustain, release, id) {
+  return buildOsc.call(this, attack, sustain, release, 'squ', id);
+}
+
+function saw(attack, sustain, release, id) {
+  return buildOsc.call(this, attack, sustain, release, 'saw', id);
+}
+
+function tri(attack, sustain, release, id) {
+  return buildOsc.call(this, attack, sustain, release, 'tri', id);
+}
+
 function buildWvshp(type, wet, id) {
   const params = { type, wet, id, };
   const filterNode = new EventGraphNode('WAVESHAPER', `WAVESHAPER-${type}-${id}`).setParams(params);
@@ -105,20 +136,6 @@ function filter(filterFn) {
   return _setCurrent.call(this, messageFilterNode);
 }
 
-const osc = {
-  sin: function (attack, sustain, release, id) {
-    return buildOsc.call(this, attack, sustain, release, 'sin', id);
-  },
-  squ: function (attack, sustain, release, id) {
-    return buildOsc.call(this, attack, sustain, release, 'squ', id);
-  },
-  saw: function (attack, sustain, release, id) {
-    return buildOsc.call(this, attack, sustain, release, 'saw', id);
-  },
-  tri: function (attack, sustain, release, id) {
-    return buildOsc.call(this, attack, sustain, release, 'tri', id);
-  },
-};
 
 
 class EventGraphBuilder {
@@ -129,12 +146,10 @@ class EventGraphBuilder {
     this.address = _address.bind(this);
     this.dac = dac.bind(this);
     this.gain = gain.bind(this);
-    this.osc = {
-      sin: osc.sin.bind(this),
-      squ: osc.squ.bind(this),
-      saw: osc.saw.bind(this),
-      tri: osc.tri.bind(this),
-    };
+    this.sin = sin.bind(this),
+    this.squ = squ.bind(this),
+    this.saw = saw.bind(this),
+    this.tri = tri.bind(this),
     this.reverb = reverb.bind(this);
     this.chorus = chorus.bind(this);
     this.delay = delay.bind(this);
@@ -179,6 +194,8 @@ export const eventGraphApi = [
   // chorus,
   dac,
   gain,
-  osc,
+  // osc,
   // reverb
+  mtof,
+  ftom,
 ];
