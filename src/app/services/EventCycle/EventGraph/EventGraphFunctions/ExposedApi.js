@@ -2,8 +2,6 @@ import { EventGraphNode } from './EventGraphNode';
 import EventGraph from './EventGraph';
 
 // TODO:
-//   * coallate multiple graphs
-//   * connection fan out / fan in
 //   * parameter validation
 //   * message duplicator
 //   * message delay (with rand parameters)
@@ -59,6 +57,7 @@ function buildOsc(...args) {
 
 function buildEnvelopedOsc(attack, sustain, release, id, oscType) {
   const params = { attack, sustain, release, oscType, };
+  console.log('buildEnvelopedOsc', params, id)
   const oscNode = new EventGraphNode('ENVELOPED_OSC', `OSC-${oscType}-${id}`).setParams(params);
   return _setCurrent.call(this, oscNode);
 }
@@ -103,16 +102,16 @@ function _sin(...args) {
   return buildOsc.apply(this, args.concat('sin'));
 }
 
-function _squ(attack, sustain, release, id) {
-  return buildOsc.call(this, attack, sustain, release, 'squ', id);
+function _squ(...args) {
+  return buildOsc.apply(this, args.concat('squ'));
 }
 
-function _saw(attack, sustain, release, id) {
-  return buildOsc.call(this, attack, sustain, release, 'saw', id);
+function _saw(...args) {
+  return buildOsc.apply(this, args.concat('saw'));
 }
 
-function _tri(attack, sustain, release, id) {
-  return buildOsc.call(this, attack, sustain, release, 'tri', id);
+function _tri(...args) {
+  return buildOsc.apply(this, args.concat('tri'));
 }
 
 function buildWvshp(type, wet, id) {
@@ -184,17 +183,45 @@ class EventGraphBuilder {
     this.pan = _pan.bind(this);
   }
 
+  // TODO: reverse connection strucure: currentNode.addOutput
   _setCurrent(node) {
     if (this.currentNode) {
-      node.addInput(this.currentNode.id);
+      if (Array.isArray(this.currentNode)) {
+        this.currentNode.forEach(currentNode => node.addInput(currentNode.id));
+      } else {
+        node.addInput(this.currentNode.id);
+      }
     }
     this.currentNode = node;
     this.eventGraph.addNode(node, this.currentNode);
     return this;
   }
 
-  showGraph() {
+  getEventGraph() {
     return this.eventGraph;
+  }
+
+  to(...graphBuilders) {
+    if (!graphBuilders.length) {
+      throw new Error('.to() requires at least one argument');
+    }
+    if (!graphBuilders.every(ele => ele instanceof EventGraphBuilder)) {
+      throw new Error('.to() requires every argument to be an event graph node');
+    }
+    const subGraphOutputs = graphBuilders.map(graphBuilder => {
+      const subGraphInput = graphBuilder.getEventGraph().getInputNode();
+      const subGraphOutput = graphBuilder.getEventGraph().getOutputNode();
+      // CONNECT CURRENT NODE TO subGraphInput
+      Array.isArray(this.currentNode) ?
+        this.currentNode.forEach(currentNode => subGraphInput.addInput(currentNode.id)) :
+        subGraphInput.addInput(this.currentNode.id);
+      // ADD ALL NODES TO THIS GRAPH
+      this.eventGraph.addEventGraph(graphBuilder.getEventGraph());
+      return subGraphOutput;
+    });
+    // set subGraphOutputs as the current node
+    this.currentNode = subGraphOutputs;
+    return this;
   }
 }
 
@@ -204,6 +231,7 @@ export const eventGraphApi = [
   { name: 'dac', fn: _dac },
   { name: 'delay', fn: _delay },
   { name: 'filter', fn: _filter },
+  { name: 'gain', fn: _gain },
   { name: 'map', fn: _map },
   { name: 'pan', fn: _pan },
   { name: 'samp', fn: _samp },

@@ -22,7 +22,7 @@ export default class CycleManager {
     try {
       const { sequences, addressInlets } = evaluateUserInput(cycleString);
       cycleResults = sequences;
-      const allInlets = addressInlets.map(inlet => inlet.showGraph());
+      const allInlets = addressInlets.map(inlet => inlet.getEventGraph());
       this.nextGraphDefinition = createEventGraph(allInlets);
     } catch(error) {
       // TODO: render error message

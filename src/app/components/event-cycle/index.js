@@ -53,7 +53,7 @@ class EventCycle extends BaseComponent {
 
       addr("a")
         .sin(0, 0, 100, 0x1)
-        .gain(0.5, 0x2)
+        .to(gain(1.0, 0x5).gain(1.0, 0x6).gain(0.4, 0x7))
         // .reverb(0, 0.01, 0, 0x3)
         // .chorus(0.1, 0.003, 0.25, 0x4)
         // .delay(10, 0.4, 0.5, 0x5)
