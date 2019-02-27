@@ -4,7 +4,7 @@ import EventGraph from './EventGraph';
 // TODO:
 //   * parameter validation
 //   * message duplicator
-//   * message delay (with rand parameters)
+//   * rand parameters for msgDelay
 //   * message threshold (like svg graph)
 //   * message scale
 //   * message repeater
@@ -57,7 +57,6 @@ function buildOsc(...args) {
 
 function buildEnvelopedOsc(attack, sustain, release, id, oscType) {
   const params = { attack, sustain, release, oscType, };
-  console.log('buildEnvelopedOsc', params, id)
   const oscNode = new EventGraphNode('ENVELOPED_OSC', `OSC-${oscType}-${id}`).setParams(params);
   return _setCurrent.call(this, oscNode);
 }
@@ -152,6 +151,18 @@ function _filter(filterFn) {
   return _setCurrent.call(this, messageFilterNode);
 }
 
+function _messageDelay(delayTime) {
+  const params = { delayTime, };
+  const messageFilterNode = new EventGraphNode('MSG_DELAY').setParams(params);
+  return _setCurrent.call(this, messageFilterNode);
+}
+
+function _messageThreshold(threshold, id) {
+  const params = { threshold, };
+  const messageFilterNode = new EventGraphNode('MSG_THRESH', `MSG_THRESH-${id}`).setParams(params);
+  return _setCurrent.call(this, messageFilterNode);
+}
+
 class EventGraphBuilder {
   constructor() {
     this.eventGraph = new EventGraph();
@@ -181,6 +192,8 @@ class EventGraphBuilder {
     this.map = _map.bind(this);
     this.filter = _filter.bind(this);
     this.pan = _pan.bind(this);
+    this.msgDelay = _messageDelay.bind(this);
+    this.msgThresh = _messageThreshold.bind(this);
   }
 
   // TODO: reverse connection strucure: currentNode.addOutput
@@ -233,6 +246,8 @@ export const eventGraphApi = [
   { name: 'filter', fn: _filter },
   { name: 'gain', fn: _gain },
   { name: 'map', fn: _map },
+  { name: 'msgDelay', fn: _messageDelay },
+  { name: 'msgThresh', fn: _messageThreshold },
   { name: 'pan', fn: _pan },
   { name: 'samp', fn: _samp },
   { name: 'sin', fn: _sin },

@@ -6,8 +6,10 @@ import EnvelopedOsc from './UnitGenerators/EnvelopedOsc';
 import Filter from './UnitGenerators/Filter';
 import Gain from './UnitGenerators/Gain';
 import MessageAddress from './UnitGenerators/MessageAddress';
+import MessageDelay from './UnitGenerators/MessageDelay';
 import MessageMap from './UnitGenerators/MessageMap';
 import MessageFilter from './UnitGenerators/MessageFilter';
+import MessageThreshold from './UnitGenerators/MessageThreshold';
 import Panner from './UnitGenerators/Panner';
 import Reverb from './UnitGenerators/Reverb';
 import Sampler from './UnitGenerators/Sampler';
@@ -24,8 +26,10 @@ const typeMap = {
   FILTER: Filter,
   GAIN: Gain,
   MSG_ADDRESS: MessageAddress,
-  MSG_MAP: MessageMap,
+  MSG_DELAY: MessageDelay,
   MSG_FILTER: MessageFilter,
+  MSG_MAP: MessageMap,
+  MSG_THRESH: MessageThreshold,
   PANNER: Panner,
   REVERB: Reverb,
   SAMPLER: Sampler,
