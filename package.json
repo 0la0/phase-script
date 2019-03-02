@@ -4,8 +4,11 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "build:assets": "cp -r src/assets dist/assets",
+    "build:copyworklets": "cp -r src/worklets dist/worklets",
+    "build:copyhtml": "cp -r src/index.html dist/index.html",
     "build:webpack": "webpack --mode=production --inline --colors --progress --content-base src",
-    "build": "npm run clean; npm run build:webpack; cp -r src/assets dist/assets; cp -r src/index.html dist/index.html",
+    "build": "npm run clean; npm run build:webpack; npm run build:assets; npm run build:copyworklets; npm run build:copyhtml",
     "clean": "rm -rf dist",
     "start": "webpack-dev-server --mode=development --inline --colors --progress --content-base src",
     "test": "NODE_PATH=./src/app mocha -r esm test/**/*.test.js",

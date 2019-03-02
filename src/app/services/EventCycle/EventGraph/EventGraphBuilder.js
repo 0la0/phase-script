@@ -1,8 +1,10 @@
+import Bitcrusher from './UnitGenerators/Bitcrusher';
 import Chorus from './UnitGenerators/Chorus';
 import ContinuousOsc from './UnitGenerators/ContinuousOsc';
 import Dac from './UnitGenerators/Dac';
 import Delay from './UnitGenerators/Delay';
 import EnvelopedOsc from './UnitGenerators/EnvelopedOsc';
+import EnvelopedNoise from './UnitGenerators/EnvelopedNoise';
 import Filter from './UnitGenerators/Filter';
 import Gain from './UnitGenerators/Gain';
 import MessageAddress from './UnitGenerators/MessageAddress';
@@ -18,11 +20,13 @@ import Waveshaper from './UnitGenerators/Waveshaper';
 const DAC_ID = 'DAC_ID';
 
 const typeMap = {
+  BITCRUSHER: Bitcrusher,
   CHORUS: Chorus,
   CONTINUOUS_OSC: ContinuousOsc,
   DAC: Dac,
   DELAY: Delay,
   ENVELOPED_OSC: EnvelopedOsc,
+  ENVELOPED_NOISE: EnvelopedNoise,
   FILTER: Filter,
   GAIN: Gain,
   MSG_ADDRESS: MessageAddress,

@@ -12,9 +12,10 @@ import EventGraph from './EventGraph';
 //   * continuous osc
 //   * modulator connections
 //   * mic in
-//   * audio signal thresh -> trigger event
+//   * audio signal thresh -> trigger event worklet
 //   * bitcrusher worklet
 //   * noise gen worklet
+//   * wet levels on all audio effect nodes
 
 function _setCurrent(node) {
   if (this instanceof EventGraphBuilder) {
@@ -163,6 +164,18 @@ function _messageThreshold(threshold, id) {
   return _setCurrent.call(this, messageFilterNode);
 }
 
+function _bitcrusher(bitDepth, freqReduction, wet, id) {
+  const params = { bitDepth, freqReduction, wet, };
+  const messageFilterNode = new EventGraphNode('BITCRUSHER', `BITCRUSHER-${id}`).setParams(params);
+  return _setCurrent.call(this, messageFilterNode);
+}
+
+function _noise(attack, sustain, release, id) {
+  const params = { attack, sustain, release, };
+  const oscNode = new EventGraphNode('ENVELOPED_NOISE', `NOISE-${id}`).setParams(params);
+  return _setCurrent.call(this, oscNode);
+}
+
 class EventGraphBuilder {
   constructor() {
     this.eventGraph = new EventGraph();
@@ -194,6 +207,8 @@ class EventGraphBuilder {
     this.pan = _pan.bind(this);
     this.msgDelay = _messageDelay.bind(this);
     this.msgThresh = _messageThreshold.bind(this);
+    this.crush = _bitcrusher.bind(this);
+    this.noise = _noise.bind(this);
   }
 
   // TODO: reverse connection strucure: currentNode.addOutput
@@ -240,6 +255,7 @@ class EventGraphBuilder {
 
 export const eventGraphApi = [
   { name: 'addr', fn: _address },
+  { name: 'crush', fn: _bitcrusher },
   { name: 'chorus', fn: _chorus },
   { name: 'dac', fn: _dac },
   { name: 'delay', fn: _delay },

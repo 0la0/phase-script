@@ -57,6 +57,7 @@ class EventCycle extends BaseComponent {
         // .reverb(0, 0.01, 0, 0x3)
         // .chorus(0.1, 0.003, 0.25, 0x4)
         // .delay(10, 0.4, 0.5, 0x5)
+        .crush(12, 0.5, 0.5, 0x2)
         .bp(262, 2, 0x6)
         .dac()
     `;
