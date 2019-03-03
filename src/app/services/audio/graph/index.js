@@ -1,10 +1,15 @@
+const workletFilenames = [
+  'BitcrusherWorklet',
+  'GateWorklet',
+  'NoiseGeneratorWorklet'
+];
+
 function initAudioWorklets(audioContext) {
   if (!audioContext.audioWorklet) {
     console.log('Audio worklets not supported');
     return;
   }
   const workletPath = './worklets/';
-  const workletFilenames = [ 'BitcrusherWorklet', 'NoiseGeneratorWorklet' ];
   const loadAllWorklets = workletFilenames.map(fileName =>
     audioContext.audioWorklet.addModule(`${workletPath}${fileName}.js`));
   Promise.all(loadAllWorklets)

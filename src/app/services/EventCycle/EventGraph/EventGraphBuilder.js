@@ -7,6 +7,7 @@ import EnvelopedOsc from './UnitGenerators/EnvelopedOsc';
 import EnvelopedNoise from './UnitGenerators/EnvelopedNoise';
 import Filter from './UnitGenerators/Filter';
 import Gain from './UnitGenerators/Gain';
+import Gate from './UnitGenerators/Gate';
 import MessageAddress from './UnitGenerators/MessageAddress';
 import MessageDelay from './UnitGenerators/MessageDelay';
 import MessageMap from './UnitGenerators/MessageMap';
@@ -29,6 +30,7 @@ const typeMap = {
   ENVELOPED_NOISE: EnvelopedNoise,
   FILTER: Filter,
   GAIN: Gain,
+  GATE: Gate,
   MSG_ADDRESS: MessageAddress,
   MSG_DELAY: MessageDelay,
   MSG_FILTER: MessageFilter,

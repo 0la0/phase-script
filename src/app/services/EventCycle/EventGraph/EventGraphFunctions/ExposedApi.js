@@ -12,10 +12,15 @@ import EventGraph from './EventGraph';
 //   * continuous osc
 //   * modulator connections
 //   * mic in
+//   * compressor node
 //   * audio signal thresh -> trigger event worklet
 //   * bitcrusher worklet
 //   * noise gen worklet
+//   * gate worklet
 //   * wet levels on all audio effect nodes
+//   * arpeggiators
+//   * address as graph parameters
+//   * anonymous patterns
 
 function _setCurrent(node) {
   if (this instanceof EventGraphBuilder) {
@@ -170,9 +175,15 @@ function _bitcrusher(bitDepth, freqReduction, wet, id) {
   return _setCurrent.call(this, messageFilterNode);
 }
 
-function _noise(attack, sustain, release, id) {
+function _noise(attack, sustain, release) {
   const params = { attack, sustain, release, };
   const oscNode = new EventGraphNode('ENVELOPED_NOISE').setParams(params);
+  return _setCurrent.call(this, oscNode);
+}
+
+function _gate(threshold, id) {
+  const params = { threshold };
+  const oscNode = new EventGraphNode('GATE', `GATE-${id}`).setParams(params);
   return _setCurrent.call(this, oscNode);
 }
 
@@ -209,6 +220,7 @@ class EventGraphBuilder {
     this.msgThresh = _messageThreshold.bind(this);
     this.crush = _bitcrusher.bind(this);
     this.noise = _noise.bind(this);
+    this.gate = _gate.bind(this);
   }
 
   // TODO: reverse connection strucure: currentNode.addOutput

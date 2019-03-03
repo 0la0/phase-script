@@ -3,7 +3,6 @@ import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import envelopedNoiseGenerator from 'services/audio/NoiseGenerator/EnvelopedNoise';
-// import { shorthandTypes } from 'services/audio/synth/Oscillators';
 
 const GAIN_VALUE = 1;
 const DIV = 1000;
@@ -21,9 +20,8 @@ export default class EnvelopedNoise extends BaseUnitGenerator {
   }
 
   schedule(message) {
-    const note = message.note !== undefined ? message.note : 60;
     const outputs = [...this.eventModel.getOutlets()];
-    envelopedNoiseGenerator(note, message.time.audio, this.asr, '', GAIN_VALUE, outputs);
+    envelopedNoiseGenerator(message.time.audio, this.asr, GAIN_VALUE, outputs);
   }
 
   updateParams({ attack, sustain, release }) {
