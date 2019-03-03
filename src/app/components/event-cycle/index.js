@@ -59,8 +59,10 @@ class EventCycle extends BaseComponent {
         // .delay(10, 0.4, 0.5, 0x5)
         // .crush(12, 0.5, 0.5, 0x2)
         // .bp(262, 2, 0x6)
-        .gate(0.15, 0x7)
+        .threshEvent(0.15, "b", 0x7)
         .dac()
+
+      addr("b").sin(0, 0, 100, 0x5).gain(0.5, 0x1).dac()
     `;
     // const testCycleValue = `
     // sin(220, 0x1).gain(0.1, 0x3).dac();

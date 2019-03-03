@@ -24,7 +24,6 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
   schedule(message) {
     const note = message.note !== undefined ? message.note : 60;
     const outputs = [...this.eventModel.getOutlets()];
-    // envelopedOscilator(note, message.time.audio, this.asr, this.oscType, GAIN_VALUE, outputs, this.signalCarrier.getInput());
     envelopedOscilator(note, message.time.audio, this.asr, this.oscType, GAIN_VALUE, outputs);
   }
 

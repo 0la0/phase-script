@@ -13,10 +13,6 @@ import EventGraph from './EventGraph';
 //   * modulator connections
 //   * mic in
 //   * compressor node
-//   * audio signal thresh -> trigger event worklet
-//   * bitcrusher worklet
-//   * noise gen worklet
-//   * gate worklet
 //   * wet levels on all audio effect nodes
 //   * arpeggiators
 //   * address as graph parameters
@@ -187,6 +183,12 @@ function _gate(threshold, id) {
   return _setCurrent.call(this, oscNode);
 }
 
+function _thresholdEventProcessor(threshold, address, id) {
+  const params = { threshold, address };
+  const oscNode = new EventGraphNode('THRESH_EVENT', `THRESH_EVENT-${id}`).setParams(params);
+  return _setCurrent.call(this, oscNode);
+}
+
 class EventGraphBuilder {
   constructor() {
     this.eventGraph = new EventGraph();
@@ -221,6 +223,7 @@ class EventGraphBuilder {
     this.crush = _bitcrusher.bind(this);
     this.noise = _noise.bind(this);
     this.gate = _gate.bind(this);
+    this.threshEvent = _thresholdEventProcessor.bind(this);
   }
 
   // TODO: reverse connection strucure: currentNode.addOutput

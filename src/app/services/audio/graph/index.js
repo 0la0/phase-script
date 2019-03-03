@@ -1,7 +1,8 @@
 const workletFilenames = [
   'BitcrusherWorklet',
   'GateWorklet',
-  'NoiseGeneratorWorklet'
+  'NoiseGeneratorWorklet',
+  'ThresholdEventWorklet',
 ];
 
 function initAudioWorklets(audioContext) {

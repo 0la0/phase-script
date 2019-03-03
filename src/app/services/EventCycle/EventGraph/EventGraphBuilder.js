@@ -16,6 +16,7 @@ import MessageThreshold from './UnitGenerators/MessageThreshold';
 import Panner from './UnitGenerators/Panner';
 import Reverb from './UnitGenerators/Reverb';
 import Sampler from './UnitGenerators/Sampler';
+import ThresholdEventProcessor from './UnitGenerators/ThresholdEventProcessor';
 import Waveshaper from './UnitGenerators/Waveshaper';
 
 const DAC_ID = 'DAC_ID';
@@ -39,6 +40,7 @@ const typeMap = {
   PANNER: Panner,
   REVERB: Reverb,
   SAMPLER: Sampler,
+  THRESH_EVENT: ThresholdEventProcessor,
   WAVESHAPER: Waveshaper,
 };
 

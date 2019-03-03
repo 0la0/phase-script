@@ -11,6 +11,7 @@ export default function envelopedOscilator(midiNote, startTime, asr, type, gain,
     return;
   }
   const frequency = mtof(midiNote);
+  startTime = startTime || audioGraph.getCurrentTime();
   const endTime = startTime + asr.attack + asr.sustain + asr.release;
   const osc = audioGraph.getAudioContext().createOscillator();
   let envelope = new AsrEnvelope(asr.attack, asr.sustain, asr.release)

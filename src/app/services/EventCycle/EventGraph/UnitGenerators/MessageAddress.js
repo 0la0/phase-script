@@ -9,7 +9,6 @@ export default class MessageAddress extends BaseUnitGenerator {
     super();
     this.eventModel = new PatchEventModel();
     this.audioModel = new PatchAudioModel('MSG_ADDRESS', this.eventModel, PATCH_EVENT.EMPTY, PATCH_EVENT.MESSAGE);
-
     this.audioEventSubscription = {
       address,
       onNext: message => this.eventModel.getOutlets().forEach(outlet => outlet.schedule(message)),
