@@ -1,14 +1,14 @@
 import audioGraph from 'services/audio/graph';
-import { AsrEnvelope } from 'services/audio/Envelope';
 
 export default function envelopedNoiseGenerator(midiNote, startTime, asr, type, gain, outputs, modulator, onComplete) {
   const endTime = startTime + asr.attack + asr.sustain + asr.release;
+  const totalTimeMs = (asr.attack + asr.sustain + asr.release) * 1000;
   const noiseGenerator = new AudioWorkletNode(audioGraph.getAudioContext(), 'NoiseGenerator');
-  // TODO: apply logic from ASR envelope to amplitude parameter of NoiseGen
-  // let envelope = new AsrEnvelope(asr.attack, asr.sustain, asr.release).build(startTime, gain);
-  // noiseGenerator.connect(envelope);
-  outputs.forEach(output => envelope.connect(output));
-  noiseGenerator.onended = () => envelope.disconnect();
-  noiseGenerator.start(startTime);
-  noiseGenerator.stop(endTime);
+  const noiseAmplitude = noiseGenerator.parameters.get('amplitude');
+  noiseAmplitude.setValueAtTime(0, startTime);
+  noiseAmplitude.linearRampToValueAtTime(gain, startTime + asr.attack);
+  noiseAmplitude.linearRampToValueAtTime(gain, startTime + asr.attack + asr.sustain);
+  noiseAmplitude.linearRampToValueAtTime(0, endTime);
+  outputs.forEach(output => noiseGenerator.connect(output));
+  setTimeout(() => noiseGenerator.disconnect(), totalTimeMs + 1000); // TODO: improve this
 }

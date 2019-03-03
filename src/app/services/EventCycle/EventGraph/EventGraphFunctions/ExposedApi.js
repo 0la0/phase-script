@@ -172,7 +172,7 @@ function _bitcrusher(bitDepth, freqReduction, wet, id) {
 
 function _noise(attack, sustain, release, id) {
   const params = { attack, sustain, release, };
-  const oscNode = new EventGraphNode('ENVELOPED_NOISE', `NOISE-${id}`).setParams(params);
+  const oscNode = new EventGraphNode('ENVELOPED_NOISE').setParams(params);
   return _setCurrent.call(this, oscNode);
 }
 

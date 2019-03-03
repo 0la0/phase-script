@@ -23,12 +23,10 @@ export default class EnvelopedNoise extends BaseUnitGenerator {
   schedule(message) {
     const note = message.note !== undefined ? message.note : 60;
     const outputs = [...this.eventModel.getOutlets()];
-    console.log('schedule noise module')
-    // envelopedOscilator(note, message.time.audio, this.asr, this.oscType, GAIN_VALUE, outputs, this.signalCarrier.getInput());
     envelopedNoiseGenerator(note, message.time.audio, this.asr, '', GAIN_VALUE, outputs);
   }
 
-  updateParams({ attack, sustain, release, oscType }) {
+  updateParams({ attack, sustain, release }) {
     this.asr = {
       attack: attack / DIV,
       sustain: sustain / DIV,
