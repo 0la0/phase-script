@@ -5,7 +5,6 @@ import EventGraph from './EventGraph';
 //   * parameter validation
 //   * message duplicator
 //   * rand parameters for msgDelay
-//   * message threshold (like svg graph)
 //   * message scale
 //   * message repeater
 //   * midi out
@@ -13,7 +12,7 @@ import EventGraph from './EventGraph';
 //   * modulator connections
 //   * mic in
 //   * compressor node
-//   * wet levels on all audio effect nodes
+//   * wet levels on audio effect nodes
 //   * arpeggiators
 //   * address as graph parameters
 //   * anonymous patterns
@@ -189,6 +188,12 @@ function _thresholdEventProcessor(threshold, address, id) {
   return _setCurrent.call(this, oscNode);
 }
 
+function _toScale(scaleName) {
+  const params = { scaleName };
+  const scaleLockNode = new EventGraphNode('MSG_SCALE_LOCK').setParams(params);
+  return _setCurrent.call(this, scaleLockNode);
+}
+
 class EventGraphBuilder {
   constructor() {
     this.eventGraph = new EventGraph();
@@ -224,6 +229,7 @@ class EventGraphBuilder {
     this.noise = _noise.bind(this);
     this.gate = _gate.bind(this);
     this.threshEvent = _thresholdEventProcessor.bind(this);
+    this.toScale = _toScale.bind(this);
   }
 
   // TODO: reverse connection strucure: currentNode.addOutput

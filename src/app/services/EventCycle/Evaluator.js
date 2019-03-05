@@ -1,10 +1,9 @@
 import { eventGraphApi } from 'services/EventCycle/EventGraph/EventGraphFunctions/ExposedApi';
 import { patternApi } from 'services/EventCycle/PatternFunctions/ExposedApi';
-
-// TODO: new file for mtof, ftom, other helper functions
+import { utilApi } from 'services/EventCycle/Util';
 
 const eventGraphFunctions = eventGraphApi.map(ele => ele.fn);
-const exposedApi = [].concat(patternApi, eventGraphFunctions);
+const exposedApi = [].concat(patternApi, eventGraphFunctions, utilApi);
 const apiNamespace = exposedApi.map(fn => fn.name).join(', ');
 
 const exposedEventGraph = eventGraphApi.map(({ name, fn, }) => {

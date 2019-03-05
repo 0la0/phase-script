@@ -12,6 +12,7 @@ import MessageAddress from './UnitGenerators/MessageAddress';
 import MessageDelay from './UnitGenerators/MessageDelay';
 import MessageMap from './UnitGenerators/MessageMap';
 import MessageFilter from './UnitGenerators/MessageFilter';
+import MessageScaleLock from './UnitGenerators/MessageScaleLock';
 import MessageThreshold from './UnitGenerators/MessageThreshold';
 import Panner from './UnitGenerators/Panner';
 import Reverb from './UnitGenerators/Reverb';
@@ -36,6 +37,7 @@ const typeMap = {
   MSG_DELAY: MessageDelay,
   MSG_FILTER: MessageFilter,
   MSG_MAP: MessageMap,
+  MSG_SCALE_LOCK: MessageScaleLock,
   MSG_THRESH: MessageThreshold,
   PANNER: Panner,
   REVERB: Reverb,
