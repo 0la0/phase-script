@@ -24,23 +24,35 @@ function _setCurrent(node) {
 }
 
 function _address(address) {
-  const addressNode = new EventGraphNode('MSG_ADDRESS').setParams({ address });
+  const addressNode = new EventGraphNode({
+    type: 'MSG_ADDRESS',
+    params: { address }
+  });
   return _setCurrent.call(this, addressNode);
 }
 
 function _dac() {
-  const dacNode = new EventGraphNode('DAC', 'DAC_ID');
+  const dacNode = new EventGraphNode({ type: 'DAC', id: 'DAC_ID' });
   return _setCurrent.call(this, dacNode);
 }
 
 function _gain(gainValue, id) {
-  const gainNode = new EventGraphNode('GAIN', `GAIN-${id}`).setParams({ gainValue });
+  const gainNode = new EventGraphNode({
+    type: 'GAIN',
+    id: id ? `GAIN-${id}` : undefined,
+    params: { gainValue },
+  });
   return _setCurrent.call(this, gainNode);
 }
 
 function buildContinuousOsc(frequency, id, oscType) {
   const params = { frequency, oscType, };
-  const oscNode = new EventGraphNode('CONTINUOUS_OSC', `OSC-${oscType}-${id}`).setParams(params);
+  const oscNode = new EventGraphNode({
+    type: 'CONTINUOUS_OSC',
+    id: id ? `OSC-${oscType}-${id}` : undefined,
+    params,
+    isModulatable: true
+  });
   return _setCurrent.call(this, oscNode);
 }
 
@@ -57,31 +69,51 @@ function buildOsc(...args) {
 
 function buildEnvelopedOsc(attack, sustain, release, id, oscType) {
   const params = { attack, sustain, release, oscType, };
-  const oscNode = new EventGraphNode('ENVELOPED_OSC', `OSC-${oscType}-${id}`).setParams(params);
+  const oscNode = new EventGraphNode({
+    type: 'ENVELOPED_OSC',
+    id: id ? `OSC-${oscType}-${id}` : undefined,
+    params,
+  });
   return _setCurrent.call(this, oscNode);
 }
 
 function _reverb(attack, decay, wet, id) {
   const params = { attack, decay, wet, };
-  const oscNode = new EventGraphNode('REVERB', `REVERB-${id}`).setParams(params);
+  const oscNode = new EventGraphNode({
+    type: 'REVERB',
+    id: id ? `REVERB-${id}` : undefined,
+    params,
+  });
   return _setCurrent.call(this, oscNode);
 }
 
 function _chorus(frequency, depth, feedback, id) {
   const params = { frequency, depth, feedback, };
-  const oscNode = new EventGraphNode('CHORUS', `CHORUS-${id}`).setParams(params);
+  const oscNode = new EventGraphNode({
+    type: 'CHORUS',
+    id: id ? `CHORUS-${id}` : undefined,
+    params,
+  });
   return _setCurrent.call(this, oscNode);
 }
 
 function _delay(delayMs, feedback, wet, id) {
   const params = { delayMs, feedback, wet, };
-  const oscNode = new EventGraphNode('DELAY', `DELAY-${id}`).setParams(params);
+  const oscNode = new EventGraphNode({
+    type: 'DELAY',
+    id: id ? `DELAY-${id}` : undefined,
+    params,
+  });
   return _setCurrent.call(this, oscNode);
 }
 
 function _biquadFilter(type, frequency, q, id) {
   const params = { type, frequency, q, };
-  const filterNode = new EventGraphNode('FILTER', `FILTER-${type}-${id}`).setParams(params);
+  const filterNode = new EventGraphNode({
+    type: 'FILTER',
+    id: id ? `FILTER-${type}-${id}` : undefined,
+    params,
+  });
   return _setCurrent.call(this, filterNode);
 }
 
@@ -115,13 +147,21 @@ function _tri(...args) {
 
 function buildWvshp(type, wet, id) {
   const params = { type, wet, id, };
-  const filterNode = new EventGraphNode('WAVESHAPER', `WAVESHAPER-${type}-${id}`).setParams(params);
+  const filterNode = new EventGraphNode({
+    type: 'WAVESHAPER',
+    id: id ? `WAVESHAPER-${type}-${id}` : undefined,
+    params,
+  });
   return _setCurrent.call(this, filterNode);
 }
 
 function _pan(panValue, id) {
   const params = { panValue, id, };
-  const pannerNode = new EventGraphNode('PANNER', `PANNER-${id}`).setParams(params);
+  const pannerNode = new EventGraphNode({
+    type: 'PANNER',
+    id: id ? `PANNER-${id}` : undefined,
+    params,
+  });
   return _setCurrent.call(this, pannerNode);
 }
 
@@ -135,61 +175,96 @@ const wvshp = {
 
 function _samp(sampleName, attack, sustain, release, id) {
   const params = { sampleName, attack, sustain, release, };
-  const samplerNode = new EventGraphNode('SAMPLER', `SAMPLER-${sampleName}-${id}`).setParams(params);
+  const samplerNode = new EventGraphNode({
+    type: 'SAMPLER',
+    id: id ? `SAMPLER-${sampleName}-${id}` : undefined,
+    params,
+  });
   return _setCurrent.call(this, samplerNode);
 }
 
 function _map(mapFn) {
   const params = { mapFn, };
-  const messageMapNode = new EventGraphNode('MSG_MAP').setParams(params);
+  const messageMapNode = new EventGraphNode({
+    type: 'MSG_MAP',
+    params,
+  });
   return _setCurrent.call(this, messageMapNode);
 }
 
 function _filter(filterFn) {
   const params = { filterFn, };
-  const messageFilterNode = new EventGraphNode('MSG_FILTER').setParams(params);
+  const messageFilterNode = new EventGraphNode({
+    type: 'MSG_FILTER',
+    params,
+  });
   return _setCurrent.call(this, messageFilterNode);
 }
 
 function _messageDelay(delayTime) {
   const params = { delayTime, };
-  const messageFilterNode = new EventGraphNode('MSG_DELAY').setParams(params);
+  const messageFilterNode = new EventGraphNode({
+    type: 'MSG_DELAY',
+    params,
+  });
   return _setCurrent.call(this, messageFilterNode);
 }
 
 function _messageThreshold(threshold, id) {
   const params = { threshold, };
-  const messageFilterNode = new EventGraphNode('MSG_THRESH', `MSG_THRESH-${id}`).setParams(params);
+  const messageFilterNode = new EventGraphNode({
+    type: 'MSG_THRESH',
+    id: id ? `MSG_THRESH-${id}` : undefined,
+    params,
+  });
   return _setCurrent.call(this, messageFilterNode);
 }
 
 function _bitcrusher(bitDepth, freqReduction, wet, id) {
   const params = { bitDepth, freqReduction, wet, };
-  const messageFilterNode = new EventGraphNode('BITCRUSHER', `BITCRUSHER-${id}`).setParams(params);
+  const messageFilterNode = new EventGraphNode({
+    type: 'BITCRUSHER',
+    id: id ? `BITCRUSHER-${id}` : undefined,
+    params,
+  });
   return _setCurrent.call(this, messageFilterNode);
 }
 
 function _noise(attack, sustain, release) {
   const params = { attack, sustain, release, };
-  const oscNode = new EventGraphNode('ENVELOPED_NOISE').setParams(params);
+  const oscNode = new EventGraphNode({
+    type: 'ENVELOPED_NOISE',
+    params,
+  });
   return _setCurrent.call(this, oscNode);
 }
 
 function _gate(threshold, id) {
   const params = { threshold };
-  const oscNode = new EventGraphNode('GATE', `GATE-${id}`).setParams(params);
+  const oscNode = new EventGraphNode({
+    type: 'GATE',
+    id: id ? `GATE-${id}` : undefined,
+    params,
+  });
   return _setCurrent.call(this, oscNode);
 }
 
 function _thresholdEventProcessor(threshold, address, id) {
   const params = { threshold, address };
-  const oscNode = new EventGraphNode('THRESH_EVENT', `THRESH_EVENT-${id}`).setParams(params);
+  const oscNode = new EventGraphNode({
+    type: 'THRESH_EVENT',
+    id: id ? `THRESH_EVENT-${id}` : undefined,
+    params,
+  });
   return _setCurrent.call(this, oscNode);
 }
 
 function _toScale(scaleName) {
   const params = { scaleName };
-  const scaleLockNode = new EventGraphNode('MSG_SCALE_LOCK').setParams(params);
+  const scaleLockNode = new EventGraphNode({
+    type: 'MSG_SCALE_LOCK',
+    params,
+  });
   return _setCurrent.call(this, scaleLockNode);
 }
 
@@ -284,8 +359,9 @@ class EventGraphBuilder {
 
     const subGraphOutputs = graphBuilders
       .map(graphBuilder => graphBuilder.getEventGraph().getOutputNode());
-    console.log('MODULATE WITH:', subGraphOutputs.map(output => output.type));
+    console.log('MODULATE WITH:', subGraphOutputs, subGraphOutputs.map(output => output.type));
     const currentNodes = Array.isArray(this.currentNode) ? this.currentNode : [ this.currentNode, ];
+    // TODO: add subGraph
     currentNodes.forEach((currentNode) => {
       if (currentNode.modulate) {
         currentNode.modulate(subGraphOutputs);

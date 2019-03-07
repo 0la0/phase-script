@@ -1,17 +1,15 @@
 import { uuid } from 'services/Math';
 
 export class EventGraphNode {
-  constructor(type, id) {
+  constructor({ type, id, params, isModulatable }) {
     this.type = type;
     this.id = id || uuid();
     this.isTemporary = !!id;
-    this.params = {};
+    this.params = params || {};
     this.inputs = new Set();
-  }
-
-  setParams(params) {
-    this.params = params;
-    return this;
+    if (isModulatable) {
+      this.modulate = (graphOuputs) => console.log('modulate', this, graphOuputs);
+    }
   }
 
   addInput(nodeId) {
