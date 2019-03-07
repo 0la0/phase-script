@@ -5,7 +5,6 @@ import EventGraph from './EventGraph';
 //   * parameter validation
 //   * message duplicator
 //   * rand parameters for msgDelay
-//   * message scale
 //   * message repeater
 //   * midi out
 //   * continuous osc
@@ -272,6 +271,30 @@ class EventGraphBuilder {
     this.currentNode = subGraphOutputs;
     return this;
   }
+
+  mod(...graphBuilders) {
+    if (!graphBuilders.length) {
+      throw new Error('.mod() requires at least one argument');
+    }
+    if (!graphBuilders.every(ele => ele instanceof EventGraphBuilder)) {
+      throw new Error('.mod() requires every argument to be an event graph node');
+    }
+    // need to evaluate graph, trigger all inputs ...
+    // connect outputs to .mod function of current nodes
+
+    const subGraphOutputs = graphBuilders
+      .map(graphBuilder => graphBuilder.getEventGraph().getOutputNode());
+    console.log('MODULATE WITH:', subGraphOutputs.map(output => output.type));
+    const currentNodes = Array.isArray(this.currentNode) ? this.currentNode : [ this.currentNode, ];
+    currentNodes.forEach((currentNode) => {
+      if (currentNode.modulate) {
+        currentNode.modulate(subGraphOutputs);
+      } else {
+        console.log(`modulate definition not found for ${currentNode.type}`)
+      }
+    });
+    return this;
+  }
 }
 
 export const eventGraphApi = [
@@ -288,4 +311,5 @@ export const eventGraphApi = [
   { name: 'pan', fn: _pan },
   { name: 'samp', fn: _samp },
   { name: 'sin', fn: _sin },
+  { name: 'squ', fn: _squ },
 ];

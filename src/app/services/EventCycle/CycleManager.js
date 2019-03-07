@@ -20,9 +20,9 @@ export default class CycleManager {
     }
     let cycleResults;
     try {
-      const { sequences, addressInlets } = evaluateUserInput(cycleString);
+      const { sequences, audioGraphInlets } = evaluateUserInput(cycleString);
       cycleResults = sequences;
-      const allInlets = addressInlets.map(inlet => inlet.getEventGraph());
+      const allInlets = audioGraphInlets.map(inlet => inlet.getEventGraph());
       this.nextGraphDefinition = createEventGraph(allInlets);
     } catch(error) {
       // TODO: render error message

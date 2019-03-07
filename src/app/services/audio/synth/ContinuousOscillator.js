@@ -35,6 +35,7 @@ export default class ContinuousOsc {
   }
 
   startAtTime(startTime) {
+    console.log('startAtTime', startTime)
     this.osc = audioGraph.getAudioContext().createOscillator();
     this.osc.frequency.value = this.frequency;
     this.osc.type = this.type;

@@ -9,8 +9,9 @@ const apiNamespace = exposedApi.map(fn => fn.name).join(', ');
 const exposedEventGraph = eventGraphApi.map(({ name, fn, }) => {
   return `
     function ${name}() {
+      console.log('audioGraphInlet:', ${name});
       const graph = ${fn.name}.apply(undefined, arguments);
-      addressInlets.push(graph);
+      audioGraphInlets.push(graph);
       return graph;
     }
   `;
@@ -21,11 +22,11 @@ export function evaluateUserInput(userInputString) {
     'use strict';
     return (${apiNamespace}) => {
       const sequences = [];
-      const addressInlets = [];
+      const audioGraphInlets = [];
       const seq = (arg) => sequences.push(Array.isArray(arg) ? arg : [ arg ]);
       ${exposedEventGraph}
       ${userInputString}
-      return { sequences, addressInlets };
+      return { sequences, audioGraphInlets };
     };
   `)()(...exposedApi);
 }
