@@ -58,8 +58,8 @@ class EventCycle extends BaseComponent {
     //     .dac()
     // `;
     const testCycleValue = `
-    sin(880, 0x1)
-    .mod(squ(220, 0x2).gain(0.5, 0x5))
+    sin(440, 0x1)
+    .mod(squ(55, 0x2).gain(0.5, 0x5))
     .gain(0.1, 0x3)
     .dac();
     // sin(880, 0x2).gain(0.1, 0x4).dac();

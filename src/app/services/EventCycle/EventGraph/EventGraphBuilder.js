@@ -68,6 +68,13 @@ function connectNodes(graph) {
     return acc;
   }, {});
 
+  Object.keys(graph).forEach((key) => {
+    const node = graph[key];
+    node.nodeDefinition.modulationInputs.forEach((inputId) => {
+      node.instance.modulateWith(graph[inputId].instance);
+    });
+  }, {});
+
   Object.keys(nodeOutputMap).forEach(key => {
     const node = graph[key].instance;
     const outputAudioModels = [...nodeOutputMap[key]].map(id => graph[id].instance.getAudioModel());
@@ -78,7 +85,6 @@ function connectNodes(graph) {
 function disconnectOldNodes(oldGraph, currentGraph) {
   Object.values(oldGraph)
     .forEach((node) => {
-      // const { id } = node.nodeDefinition;
       const currentGraphHasNode = Object.values(currentGraph)
         .some(_node => _node.nodeDefinition.id === node.nodeDefinition.id);
       if (!currentGraphHasNode) {

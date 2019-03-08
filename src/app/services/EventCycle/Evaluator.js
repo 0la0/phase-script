@@ -9,7 +9,6 @@ const apiNamespace = exposedApi.map(fn => fn.name).join(', ');
 const exposedEventGraph = eventGraphApi.map(({ name, fn, }) => {
   return `
     function ${name}() {
-      console.log('audioGraphInlet:', ${name});
       const graph = ${fn.name}.apply(undefined, arguments);
       audioGraphInlets.push(graph);
       return graph;

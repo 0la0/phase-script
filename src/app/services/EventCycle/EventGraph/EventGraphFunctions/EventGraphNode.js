@@ -7,8 +7,11 @@ export class EventGraphNode {
     this.isTemporary = !!id;
     this.params = params || {};
     this.inputs = new Set();
+    this.modulationInputs = new Set();
     if (isModulatable) {
-      this.modulate = (graphOuputs) => console.log('modulate', this, graphOuputs);
+      this.modulate = (graphOuputs) => {
+        graphOuputs.forEach(node => this.modulationInputs.add(node.id));
+      };
     }
   }
 

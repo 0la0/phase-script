@@ -15,6 +15,7 @@ import EventGraph from './EventGraph';
 //   * arpeggiators
 //   * address as graph parameters
 //   * anonymous patterns
+//   * key shortcut to generate node IDs
 
 function _setCurrent(node) {
   if (this instanceof EventGraphBuilder) {
@@ -359,7 +360,6 @@ class EventGraphBuilder {
 
     const subGraphOutputs = graphBuilders
       .map(graphBuilder => graphBuilder.getEventGraph().getOutputNode());
-    console.log('MODULATE WITH:', subGraphOutputs, subGraphOutputs.map(output => output.type));
     const currentNodes = Array.isArray(this.currentNode) ? this.currentNode : [ this.currentNode, ];
     // TODO: add subGraph
     currentNodes.forEach((currentNode) => {

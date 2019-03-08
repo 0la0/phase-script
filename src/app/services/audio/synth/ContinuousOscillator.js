@@ -3,6 +3,7 @@ import OSCILLATORS from 'services/audio/synth/Oscillators';
 
 export default class ContinuousOsc {
   constructor(frequency, type) {
+    console.log('type', type, OSCILLATORS)
     this.setType(type);
     this.outputs = new Set([]);
     this.isOn = false;
@@ -25,6 +26,14 @@ export default class ContinuousOsc {
     if (this.osc) {
       this.osc.disconnect(node);
     }
+  }
+
+  modulateWith(node) {
+    if (!this.osc) {
+      throw new Error('Cannot connect', this, node);
+    }
+    console.log('connect', node, 'to', this.osc)
+    node.connect(this.osc.frequency);
   }
 
   start(frequency, startTime) {
