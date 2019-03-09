@@ -45,6 +45,7 @@ import PropertyMenu from 'components/event-network/property-menu';
 import EventCycle from 'components/event-cycle';
 import PatchParam from 'components/patch-space/patch-param';
 import GraphicsEditor from 'components/graphics/graphics-editor';
+import SoundVisualizer from 'components/SoundVisualizer';
 
 const components = [
   App,
@@ -93,7 +94,8 @@ const components = [
   PropertyMenu,
   EventCycle,
   PatchParam,
-  GraphicsEditor
+  GraphicsEditor,
+  SoundVisualizer
 ];
 
 components.forEach(component => customElements.define(component.tag, component.element));

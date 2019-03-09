@@ -26,6 +26,7 @@ class EventCycle extends BaseComponent {
   }
 
   connectedCallback() {
+    document.execCommand('defaultParagraphSeparator', false, 'p');
     this.dom.cycleLength.value = this.cycleLength;
     this.dom.cycleLength.addEventListener('blur', this.handleCycleLengthChange.bind(this));
     this.dom.cycleInput.addEventListener('keydown', event => {
@@ -59,7 +60,7 @@ class EventCycle extends BaseComponent {
     // `;
     const testCycleValue = `
     sin(440, 0x1)
-    .mod(squ(55, 0x2).gain(0.5, 0x5))
+    .mod(squ(55, 0x2).gain(100, 0x5))
     .gain(0.1, 0x3)
     .dac();
     // sin(880, 0x2).gain(0.1, 0x4).dac();
@@ -114,6 +115,10 @@ class EventCycle extends BaseComponent {
   onToggleClick() {
     this.isOn = !this.isOn;
     this.cycleManager.resetCounter();
+  }
+
+  handleFontSizeChange(event) {
+    this.dom.cycleInput.style.setProperty('font-size', `${event.target.value}px`);
   }
 }
 

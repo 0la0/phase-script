@@ -1,7 +1,14 @@
 import BaseComponent from 'components/_util/base-component';
 import Component from 'components/_util/component';
 import { mapToRange } from 'services/Math';
-import style from './fft-visualizer.css';
+
+const style = `
+  canvas {
+    margin: 0;
+    padding: 0;
+    border-radius: var(--border-radius);
+  }
+`;
 
 const WIDTH = 2 ** 7;
 const HEIGHT = 50;

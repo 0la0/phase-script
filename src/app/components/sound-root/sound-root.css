@@ -19,3 +19,10 @@
   flex-direction: row;
   flex-wrap: wrap;
 }
+
+.sound-visualizer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin: 8px;
+}

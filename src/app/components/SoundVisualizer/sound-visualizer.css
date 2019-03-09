@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.button {
+  display: none;
+  width: 24px;
+  height: 24px;
+}
+
+.fft-visualizer {
+  display: none;
+  border: var(--border-default);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.visible {
+  display: flex;
+}
