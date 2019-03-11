@@ -3,9 +3,9 @@ import OSCILLATORS from 'services/audio/synth/Oscillators';
 
 export default class ContinuousOsc {
   constructor(frequency, type) {
-    console.log('type', type, OSCILLATORS)
     this.setType(type);
-    this.outputs = new Set([]);
+    this.outputs = new Set();
+    this.modulationInputs = new Set();
     this.isOn = false;
     this.frequency = frequency || 440;
   }
@@ -29,11 +29,14 @@ export default class ContinuousOsc {
   }
 
   modulateWith(node) {
-    if (!this.osc) {
-      throw new Error('Cannot connect', this, node);
+    this.modulationInputs.add(node);
+    if (this.osc) {
+      node.connect(this.osc.frequency);
     }
-    console.log('connect', node, 'to', this.osc)
-    node.connect(this.osc.frequency);
+  }
+
+  getModulationSource() {
+    return this.osc.frequency;
   }
 
   start(frequency, startTime) {
@@ -44,11 +47,11 @@ export default class ContinuousOsc {
   }
 
   startAtTime(startTime) {
-    console.log('startAtTime', startTime)
     this.osc = audioGraph.getAudioContext().createOscillator();
     this.osc.frequency.value = this.frequency;
     this.osc.type = this.type;
     this.outputs.forEach(output => this.osc.connect(output));
+    this.modulationInputs.forEach(modulationInput => modulationInput.connect(this.osc.frequency));
     this.osc.start(startTime);
   }
 

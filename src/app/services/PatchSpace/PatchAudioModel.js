@@ -13,6 +13,13 @@ export default class PatchAudioModel {
     this.audioModel.connect(audioModel.getAudioModelInput());
   }
 
+  connectToModulationSource(node) {
+    if (this.outputType !== 'SIGNAL') {
+      throw new Error('Modulation can only happen with a signal source');
+    }
+    node.audioModel.modulateWith(this.audioModel);
+  }
+
   disconnect(audioModel) {
     const output = audioModel ? audioModel.getAudioModelInput() : undefined;
     this.audioModel.disconnect(output);
@@ -24,6 +31,10 @@ export default class PatchAudioModel {
 
   getAudioModelInput() {
     return this.audioModel.getInput();
+  }
+
+  getModulationSource() {
+    return this.audioModel.getModulationSource();
   }
 
   getInputType() {
