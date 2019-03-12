@@ -19,12 +19,13 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
     this.oscType = shorthandTypes[oscType];
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('ENVELOPED_OSC', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);
+    this.modulationInputs = new Set();
   }
 
   schedule(message) {
     const note = message.note !== undefined ? message.note : 60;
     const outputs = [...this.eventModel.getOutlets()];
-    envelopedOscilator(note, message.time.audio, this.asr, this.oscType, GAIN_VALUE, outputs);
+    envelopedOscilator(note, message.time.audio, this.asr, this.oscType, GAIN_VALUE, outputs, this.modulationInputs);
   }
 
   updateParams({ attack, sustain, release, oscType }) {
@@ -34,6 +35,10 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
       release: release / DIV,
     };
     this.oscType = shorthandTypes[oscType];
+  }
+
+  modulateWith(node) {
+    this.modulationInputs.add(node.getAudioModel().getConnectionFn());
   }
 
   static fromParams({ attack, sustain, release, oscType }) {

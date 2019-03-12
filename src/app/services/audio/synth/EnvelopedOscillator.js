@@ -19,10 +19,11 @@ export default function envelopedOscilator(midiNote, startTime, asr, type, gain,
   osc.connect(envelope);
   outputs.forEach(output => envelope.connect(output));
   osc.type = _type;
-  // osc.frequency.setValueAtTime(frequency, 0);
   osc.frequency.value = frequency;
   if (modulator) {
-    modulator.connect(osc.frequency);
+    modulator.forEach ?
+      modulator.forEach(connectTo => connectTo(osc.frequency)) :
+      modulator.connect(osc.frequency);
   }
   osc.onended = () => envelope.disconnect();
   osc.start(startTime);

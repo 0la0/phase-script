@@ -46,28 +46,27 @@ class EventCycle extends BaseComponent {
 
     // for testing
     // const testCycleValue = 'a:48 a:60 , a:72\n   \na a a';
-    // const testCycleValue = `
-    //   seq([
-    //     p("a:48 a:60 , a:72"),
-    //     p("a a a")
-    //   ])
-    //
-    //   addr("a")
-    //     .toScale('major', 0)
-    //     .sin(0, 0, 100, 0x1)
-    //     .gain(0.4, 0x7)
-    //     .dac()
-    // `;
     const testCycleValue = `
-    sin(440, 0x1)
-    .mod(
-      squ(55, 0x2).gain(100, 0x5),
-      squ(110, 0x3).gain(100, 0x6)
-    )
-    .gain(0.1, 0x3)
-    .dac();
-    // sin(880, 0x2).gain(0.1, 0x4).dac();
+      seq([
+        p("a:48 a:60 , a:72"),
+        p("a a a")
+      ])
+
+      addr("a")
+        .sin(0, 0, 400, 0x1).mod( squ(55, 0x2).gain(100, 0x5) )
+        .gain(0.4, 0x7)
+        .dac()
     `;
+    // const testCycleValue = `
+    // sin(440, 0x1)
+    // .mod(
+    //   squ(55, 0x2).gain(100, 0x5),
+    //   // squ(110, 0x3).gain(100, 0x6)
+    // )
+    // .gain(0.1, 0x3)
+    // .dac();
+    // // sin(880, 0x2).gain(0.1, 0x4).dac();
+    // `;
     // addr("a") (osc.sin(10, 10, 100)) (gain(0.5)) (dac())
     this.dom.cycleInput.innerText = testCycleValue;
     this.handleCycleChange(testCycleValue);

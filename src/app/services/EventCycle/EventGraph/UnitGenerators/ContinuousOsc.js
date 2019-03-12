@@ -20,9 +20,6 @@ export default class PatchContinuousOsc extends BaseUnitGenerator {
   }
 
   modulateWith(node) {
-    if (!node.getAudioModel().connectToModulationSource) {
-      throw new Error('audio model does not implement "connectToModulationSource"');
-    }
     node.getAudioModel().connectToModulationSource(this.audioModel);
   }
 

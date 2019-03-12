@@ -74,6 +74,7 @@ function buildEnvelopedOsc(attack, sustain, release, id, oscType) {
     type: 'ENVELOPED_OSC',
     id: id ? `OSC-${oscType}-${id}` : undefined,
     params,
+    isModulatable: true
   });
   return _setCurrent.call(this, oscNode);
 }

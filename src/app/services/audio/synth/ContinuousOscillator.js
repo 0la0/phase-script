@@ -28,15 +28,11 @@ export default class ContinuousOsc {
     }
   }
 
-  modulateWith(node) {
-    this.modulationInputs.add(node);
+  modulateWith(modulationInput) {
+    this.modulationInputs.add(modulationInput);
     if (this.osc) {
-      node.connect(this.osc.frequency);
+      modulationInput.connect(this.osc.frequency);
     }
-  }
-
-  getModulationSource() {
-    return this.osc.frequency;
   }
 
   start(frequency, startTime) {
@@ -67,6 +63,7 @@ export default class ContinuousOsc {
   setFrequency(frequency, time) {
     if (!this.osc) { return; }
     const targetTime = (time === undefined) ? 0 : time;
+    this.frequency = frequency;
     this.osc.frequency.setValueAtTime(frequency, targetTime);
   }
 }

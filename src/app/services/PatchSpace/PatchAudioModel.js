@@ -4,6 +4,7 @@ export default class PatchAudioModel {
     this.audioModel = audioModel;
     this.inputType = inputType;
     this.outputType = outputType;
+    this.connectionFn = this.audioModel.connect ? this.audioModel.connect.bind(this.audioModel) : undefined;
   }
 
   connectTo(audioModel) {
@@ -11,6 +12,10 @@ export default class PatchAudioModel {
       throw new Error(`Incompatible connection attempted: ${this.name} to ${audioModel.name}`);
     }
     this.audioModel.connect(audioModel.getAudioModelInput());
+  }
+
+  getConnectionFn() {
+    return this.connectionFn;
   }
 
   connectToModulationSource(node) {
@@ -31,10 +36,6 @@ export default class PatchAudioModel {
 
   getAudioModelInput() {
     return this.audioModel.getInput();
-  }
-
-  getModulationSource() {
-    return this.audioModel.getModulationSource();
   }
 
   getInputType() {
