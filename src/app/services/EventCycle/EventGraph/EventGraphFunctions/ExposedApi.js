@@ -16,6 +16,8 @@ import EventGraph from './EventGraph';
 //   * address as graph parameters
 //   * anonymous patterns
 //   * key shortcut to generate node IDs
+//   * sample bank
+//   * midi config editor
 
 function _setCurrent(node) {
   if (this instanceof EventGraphBuilder) {
@@ -42,6 +44,7 @@ function _gain(gainValue, id) {
     type: 'GAIN',
     id: id ? `GAIN-${id}` : undefined,
     params: { gainValue },
+    isModulatable: true
   });
   return _setCurrent.call(this, gainNode);
 }

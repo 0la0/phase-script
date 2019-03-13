@@ -31,4 +31,8 @@ export default class Gain  {
     this.gain.gain.linearRampToValueAtTime(gain, time);
     return this;
   }
+
+  modulateWith(modulationInput) {
+    modulationInput.connect(this.gain.gain);
+  }
 }

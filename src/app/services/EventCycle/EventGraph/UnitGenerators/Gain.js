@@ -14,6 +14,10 @@ export default class PatchGain extends BaseUnitGenerator {
     this.gain.setValueAtTime(gainValue, time.audio);
   }
 
+  modulateWith(node) {
+    node.getAudioModel().connectToModulationSource(this.audioModel);
+  }
+
   static fromParams({ gainValue, }) {
     return new PatchGain(gainValue);
   }
