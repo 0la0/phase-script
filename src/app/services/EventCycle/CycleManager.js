@@ -24,6 +24,7 @@ export default class CycleManager {
       cycleResults = sequences;
       const allInlets = audioGraphInlets.map(inlet => inlet.getEventGraph());
       this.nextGraphDefinition = createEventGraph(allInlets);
+      console.log('nextGraphDefinition', this.nextGraphDefinition)
     } catch(error) {
       // TODO: render error message
       console.log('result error', error);

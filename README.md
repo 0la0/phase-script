@@ -1,5 +1,6 @@
-### Cycle-Patcher
-A web based environment for real-time sound synthesis and pattern generation.
+### Cycle Script (In development)
+A web based environment for real-time sound synthesis and pattern generation.  
+The initial intent of this project was to create non-linear pattern generators for midi devices using native web components. It has since transformed into a live coding environment for sound, midi, and (hopefully) graphics.
 
 ### Development
 Install dependencies: `npm i`  
@@ -16,23 +17,13 @@ This project has a hard dependency on
 And feature level dependencies on
 * [Web Midi API](https://caniuse.com/#feat=midi) to interface with external synths and controllers
 * [Broadcast Channel](https://caniuse.com/#feat=broadcastchannel) to interface with a graphics window
+* Web audio worklets
 
 ### TODO
-* feature detection => incompatible browser warning
-* remove all old and unused components
-* necessity of multiple `onRemove`s
 * linter progress
-* separate core / audio / graphics bundles, dynamic imports
-* replace component wrapper with a static name property
-* replace instances of `setTimeout` with `TaskScheduler` (also batch all `connectedCallback` dom update timeouts.
-* remove all instances of new Array()
-* improve rendering efficiency of patch-space draggables
-* Patcher components to create:
-  - markov events
-  - message macros
-  - noise modulators
-  - arpeggiator
-* Input components:
-  - MIDI
-  - Keypress
-  - particle velocity event (lemur like)
+* separate core / audio / graphics bundles, & use dynamic imports
+* replace component component wrapper with a static name property
+* feature detection => incompatible browser warnings
+* remove all old and unused components
+* document previous versions
+* documentation and examples

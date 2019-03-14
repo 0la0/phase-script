@@ -51,10 +51,11 @@ class EventCycle extends BaseComponent {
         p("a:48 a:60 , a:72"),
         p("a a a")
       ])
+      seq( p("b:0 b:1 b:0") )
 
       addr("a")
         .sin(0, 0, 400, 0x1)
-        .gain(0.4, 0x7).mod( sin(55, 0x2).gain(2, 0x5) )
+        .gain(addr("b"), 0x7)
         .dac()
     `;
     // const testCycleValue = `

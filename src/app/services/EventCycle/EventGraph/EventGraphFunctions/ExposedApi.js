@@ -40,6 +40,12 @@ function _dac() {
 }
 
 function _gain(gainValue, id) {
+  if (gainValue instanceof EventGraphBuilder) {
+    // TODO: create addapter to go from address node to param ...
+    console.log('gainValue', gainValue);
+    gainValue.addaptMessageToParam();
+    gainValue = 0.5;
+  }
   const gainNode = new EventGraphNode({
     type: 'GAIN',
     id: id ? `GAIN-${id}` : undefined,
@@ -359,13 +365,9 @@ class EventGraphBuilder {
     if (!graphBuilders.every(ele => ele instanceof EventGraphBuilder)) {
       throw new Error('.mod() requires every argument to be an event graph node');
     }
-    // need to evaluate graph, trigger all inputs ...
-    // connect outputs to .mod function of current nodes
-
     const subGraphOutputs = graphBuilders
       .map(graphBuilder => graphBuilder.getEventGraph().getOutputNode());
     const currentNodes = Array.isArray(this.currentNode) ? this.currentNode : [ this.currentNode, ];
-    // TODO: add subGraph
     currentNodes.forEach((currentNode) => {
       if (currentNode.modulate) {
         currentNode.modulate(subGraphOutputs);
@@ -373,6 +375,11 @@ class EventGraphBuilder {
         console.log(`modulate definition not found for ${currentNode.type}`)
       }
     });
+    return this;
+  }
+
+  // TODO
+  addaptMessageToParam() {
     return this;
   }
 }
@@ -390,6 +397,8 @@ export const eventGraphApi = [
   { name: 'msgThresh', fn: _messageThreshold },
   { name: 'pan', fn: _pan },
   { name: 'samp', fn: _samp },
+  { name: 'saw', fn: _saw },
   { name: 'sin', fn: _sin },
   { name: 'squ', fn: _squ },
+  { name: 'tri', fn: _tri },
 ];
