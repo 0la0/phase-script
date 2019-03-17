@@ -19,12 +19,15 @@ export default class PatchContinuousOsc extends BaseUnitGenerator {
     this.osc.startAtTime();
   }
 
-  modulateWith(node) {
-    node.getAudioModel().connectToModulationSource(this.audioModel);
-  }
-
   updateParams({ frequency }, time) {
     this.osc.setFrequency(frequency, time.audio);
+  }
+
+  updateDynamicParam(dynamicParam) {
+    dynamicParam.connectTo({
+      getInputType: () => 'SIGNAL',
+      getAudioModelInput: () => this.osc.getFrequencyParam(),
+    });
   }
 
   disconnect() {

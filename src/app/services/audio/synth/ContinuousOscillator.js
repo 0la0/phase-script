@@ -28,11 +28,8 @@ export default class ContinuousOsc {
     }
   }
 
-  modulateWith(modulationInput) {
-    this.modulationInputs.add(modulationInput);
-    if (this.osc) {
-      modulationInput.connect(this.osc.frequency);
-    }
+  getFrequencyParam() {
+    return this.osc.frequency;
   }
 
   start(frequency, startTime) {

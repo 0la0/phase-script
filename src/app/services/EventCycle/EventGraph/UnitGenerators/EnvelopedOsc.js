@@ -37,8 +37,8 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
     this.oscType = shorthandTypes[oscType];
   }
 
-  modulateWith(node) {
-    this.modulationInputs.add(node.getAudioModel().getConnectionFn());
+  updateDynamicParam(dynamicParam) {
+    this.modulationInputs.add(dynamicParam.getConnectionFn());
   }
 
   static fromParams({ attack, sustain, release, oscType }) {

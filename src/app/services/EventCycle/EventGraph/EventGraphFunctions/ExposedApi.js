@@ -5,6 +5,7 @@ const PARAM_TYPES = {
   FLOAT: 'float',
   FUNCTION: 'function',
   STRING: 'string',
+  GRAPH_NODE: 'graphNode'
 };
 const CONSTANTS = {
   ID: 'ID',
@@ -46,14 +47,16 @@ function _setCurrent(node) {
 }
 
 function buildNodeEvaluator(dto) {
-  const { name, paramDefinitions = [], constantDefinitions = [], isModulatable } = dto;
-  // const { name, paramDefinitions, } = nameParamPair;
+  const { name, paramDefinitions = [], constantDefinitions = [] } = dto;
   function nodeBuilder(...args) {
-    // let id;
     let tag = '';
     const variableParams = paramDefinitions.reduce((acc, definition, index) => {
-      // const definition = paramDefinitions[index];
       const arg = args[index];
+      // TODO: if definition.isOptional && validateType(arg, definition.type) === false
+      if (definition.type === PARAM_TYPES.GRAPH_NODE && (!(arg instanceof EventGraphBuilder))) {
+        return acc;
+      }
+
       if (definition.paramName === CONSTANTS.ID) {
         // id = definition.value || arg;
         tag += (definition.value || arg);
@@ -87,7 +90,6 @@ function buildNodeEvaluator(dto) {
       type: name,
       id: tag ? `${name}-${tag}` : undefined,
       params: Object.assign({}, variableParams, constantParams),
-      isModulatable: !!isModulatable,
     });
     return _setCurrent.call(this, eventGraphNode);
   }
@@ -465,6 +467,31 @@ const thresholdEventNode = {
   ]
 };
 
+const envelopedOscParams = [
+  {
+    paramName: 'attack',
+    type: PARAM_TYPES.FLOAT,
+  },
+  {
+    paramName: 'sustain',
+    type: PARAM_TYPES.FLOAT,
+  },
+  {
+    paramName: 'release',
+    type: PARAM_TYPES.FLOAT,
+  },
+  {
+    paramName: 'modulator',
+    type: PARAM_TYPES.GRAPH_NODE,
+    isOptional: true,
+  },
+  {
+    paramName: CONSTANTS.ID,
+    isTaggable: true,
+    isStatic: true,
+  },
+];
+
 const envelopedSinNode = {
   name: 'ENVELOPED_OSC',
   constantDefinitions: [
@@ -474,25 +501,7 @@ const envelopedSinNode = {
       isTaggable: true,
     }
   ],
-  paramDefinitions: [
-    {
-      paramName: 'attack',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: 'sustain',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: 'release',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: CONSTANTS.ID,
-      isTaggable: true,
-      isStatic: true,
-    },
-  ],
+  paramDefinitions: envelopedOscParams,
 };
 
 const envelopedSquNode = {
@@ -504,25 +513,7 @@ const envelopedSquNode = {
       isTaggable: true,
     }
   ],
-  paramDefinitions: [
-    {
-      paramName: 'attack',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: 'sustain',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: 'release',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: CONSTANTS.ID,
-      isTaggable: true,
-      isStatic: true,
-    },
-  ],
+  paramDefinitions: envelopedOscParams,
 };
 
 const envelopedSawNode = {
@@ -534,25 +525,7 @@ const envelopedSawNode = {
       isTaggable: true,
     }
   ],
-  paramDefinitions: [
-    {
-      paramName: 'attack',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: 'sustain',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: 'release',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: CONSTANTS.ID,
-      isTaggable: true,
-      isStatic: true,
-    },
-  ],
+  paramDefinitions: envelopedOscParams,
 };
 
 const envelopedTriNode = {
@@ -564,26 +537,25 @@ const envelopedTriNode = {
       isTaggable: true,
     }
   ],
-  paramDefinitions: [
-    {
-      paramName: 'attack',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: 'sustain',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: 'release',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: CONSTANTS.ID,
-      isTaggable: true,
-      isStatic: true,
-    },
-  ],
+  paramDefinitions: envelopedOscParams,
 };
+
+const continuousOscParams = [
+  {
+    paramName: 'frequency',
+    type: PARAM_TYPES.FLOAT,
+  },
+  {
+    paramName: 'modulator',
+    type: PARAM_TYPES.GRAPH_NODE,
+    isOptional: true,
+  },
+  {
+    paramName: CONSTANTS.ID,
+    isTaggable: true,
+    isStatic: true,
+  }
+];
 
 const continuousSinNode = {
   name: 'CONTINUOUS_OSC',
@@ -594,17 +566,7 @@ const continuousSinNode = {
       isTaggable: true,
     }
   ],
-  paramDefinitions: [
-    {
-      paramName: 'frequency',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: CONSTANTS.ID,
-      isTaggable: true,
-      isStatic: true,
-    }
-  ]
+  paramDefinitions: continuousOscParams,
 };
 
 const continuousSquNode = {
@@ -616,17 +578,7 @@ const continuousSquNode = {
       isTaggable: true,
     }
   ],
-  paramDefinitions: [
-    {
-      paramName: 'frequency',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: CONSTANTS.ID,
-      isTaggable: true,
-      isStatic: true,
-    }
-  ]
+  paramDefinitions: continuousOscParams,
 };
 
 const continuousSawNode = {
@@ -638,17 +590,7 @@ const continuousSawNode = {
       isTaggable: true,
     }
   ],
-  paramDefinitions: [
-    {
-      paramName: 'frequency',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: CONSTANTS.ID,
-      isTaggable: true,
-      isStatic: true,
-    }
-  ]
+  paramDefinitions: continuousOscParams,
 };
 
 const continuousTriNode = {
@@ -660,17 +602,7 @@ const continuousTriNode = {
       isTaggable: true,
     }
   ],
-  paramDefinitions: [
-    {
-      paramName: 'frequency',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: CONSTANTS.ID,
-      isTaggable: true,
-      isStatic: true,
-    }
-  ]
+  paramDefinitions: continuousOscParams,
 };
 
 const testGainNode = buildNodeEvaluator(gainNode);
