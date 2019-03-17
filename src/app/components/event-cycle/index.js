@@ -58,7 +58,7 @@ class EventCycle extends BaseComponent {
       let val = 0.5
 
       addr("a")
-        .sin(0, 0, 400, 0x1)
+        .envSin(0, 0, 400, 0x1)
         .gain(1, 0x7)
         .pan(sin(1, 0x8), 0x4)
         .dac()

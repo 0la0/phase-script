@@ -81,6 +81,7 @@ function buildNodeEvaluator(dto) {
         return acc;
       }
       acc[definition.paramName] = definition.value;
+      return acc;
     }, {});
     const eventGraphNode = new EventGraphNode({
       type: name,
@@ -140,56 +141,6 @@ const addressNode = {
     {
       paramName: 'address',
       type: PARAM_TYPES.STRING,
-    }
-  ]
-};
-
-const continuousOsc = {
-  name: 'CONTINUOUS_OSC',
-  isModulatable: true, // TODO: remove ...
-  paramDefinitions: [
-    {
-      paramName: 'frequency',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: CONSTANTS.ID,
-      isTaggable: true,
-      isStatic: true,
-    },
-    {
-      paramName: 'oscType',
-      type: PARAM_TYPES.STRING,
-      isTaggable: true,
-    }
-  ]
-};
-
-const envelopedOsc = {
-  name: 'ENVELOPED_OSC',
-  isModulatable: true, // TODO: remove ...
-  paramDefinitions: [
-    {
-      paramName: 'attack',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: 'sustain',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: 'release',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: CONSTANTS.ID,
-      isTaggable: true,
-      isStatic: true,
-    },
-    {
-      paramName: 'oscType',
-      type: PARAM_TYPES.STRING,
-      isTaggable: true,
     }
   ]
 };
@@ -514,12 +465,218 @@ const thresholdEventNode = {
   ]
 };
 
+const envelopedSinNode = {
+  name: 'ENVELOPED_OSC',
+  constantDefinitions: [
+    {
+      paramName: 'oscType',
+      value: 'sin',
+      isTaggable: true,
+    }
+  ],
+  paramDefinitions: [
+    {
+      paramName: 'attack',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'sustain',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'release',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    },
+  ],
+};
+
+const envelopedSquNode = {
+  name: 'ENVELOPED_OSC',
+  constantDefinitions: [
+    {
+      paramName: 'oscType',
+      value: 'squ',
+      isTaggable: true,
+    }
+  ],
+  paramDefinitions: [
+    {
+      paramName: 'attack',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'sustain',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'release',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    },
+  ],
+};
+
+const envelopedSawNode = {
+  name: 'ENVELOPED_OSC',
+  constantDefinitions: [
+    {
+      paramName: 'oscType',
+      value: 'saw',
+      isTaggable: true,
+    }
+  ],
+  paramDefinitions: [
+    {
+      paramName: 'attack',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'sustain',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'release',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    },
+  ],
+};
+
+const envelopedTriNode = {
+  name: 'ENVELOPED_OSC',
+  constantDefinitions: [
+    {
+      paramName: 'oscType',
+      value: 'tri',
+      isTaggable: true,
+    }
+  ],
+  paramDefinitions: [
+    {
+      paramName: 'attack',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'sustain',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'release',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    },
+  ],
+};
+
+const continuousSinNode = {
+  name: 'CONTINUOUS_OSC',
+  constantDefinitions: [
+    {
+      paramName: 'oscType',
+      value: 'sin',
+      isTaggable: true,
+    }
+  ],
+  paramDefinitions: [
+    {
+      paramName: 'frequency',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    }
+  ]
+};
+
+const continuousSquNode = {
+  name: 'CONTINUOUS_OSC',
+  constantDefinitions: [
+    {
+      paramName: 'oscType',
+      value: 'squ',
+      isTaggable: true,
+    }
+  ],
+  paramDefinitions: [
+    {
+      paramName: 'frequency',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    }
+  ]
+};
+
+const continuousSawNode = {
+  name: 'CONTINUOUS_OSC',
+  constantDefinitions: [
+    {
+      paramName: 'oscType',
+      value: 'saw',
+      isTaggable: true,
+    }
+  ],
+  paramDefinitions: [
+    {
+      paramName: 'frequency',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    }
+  ]
+};
+
+const continuousTriNode = {
+  name: 'CONTINUOUS_OSC',
+  constantDefinitions: [
+    {
+      paramName: 'oscType',
+      value: 'tri',
+      isTaggable: true,
+    }
+  ],
+  paramDefinitions: [
+    {
+      paramName: 'frequency',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    }
+  ]
+};
+
 const testGainNode = buildNodeEvaluator(gainNode);
 const testPanNode = buildNodeEvaluator(panNode);
 const testDacNode = buildNodeEvaluator(dacNode);
 const testAddressNode = buildNodeEvaluator(addressNode);
-const testContinuousOscNode = buildNodeEvaluator(continuousOsc);
-const testEnvelopedOscNode = buildNodeEvaluator(envelopedOsc);
 const testReverbNode = buildNodeEvaluator(reverbNode);
 const testChorusNode = buildNodeEvaluator(chorusNode);
 const testDelayNode = buildNodeEvaluator(delayNode);
@@ -537,6 +694,14 @@ const testEnvelopedNoiseNode = buildNodeEvaluator(envelopedNoiseNode);
 const testBitcrusherNode = buildNodeEvaluator(bitcrusherNode);
 const testGateNode = buildNodeEvaluator(gateNode);
 const testThresholdEventNode = buildNodeEvaluator(thresholdEventNode);
+const testEnvelopedSinNode = buildNodeEvaluator(envelopedSinNode);
+const testEnvelopedSquNode = buildNodeEvaluator(envelopedSquNode);
+const testEnvelopedSawNode = buildNodeEvaluator(envelopedSawNode);
+const testEnvelopedTriNode = buildNodeEvaluator(envelopedTriNode);
+const testContinuousSinNode = buildNodeEvaluator(continuousSinNode);
+const testContinuousSquNode = buildNodeEvaluator(continuousSquNode);
+const testContinuousSawNode = buildNodeEvaluator(continuousSawNode);
+const testContinuousTriNode = buildNodeEvaluator(continuousTriNode);
 
 function _gain(...args) {
   return testGainNode.nodeBuilder.apply(this, args);
@@ -552,26 +717,6 @@ function _dac(...args) {
 
 function _address(...args) {
   return testAddressNode.nodeBuilder.apply(this, args);
-}
-
-function buildContinuousOsc(...args) {
-  return testContinuousOscNode.nodeBuilder.apply(this, args);
-}
-
-// attack, sustain, release, type
-// attack, sustain, release, type, id
-// frequency, type
-// frequency, type, id
-// frequency, mod, type
-function buildOsc(...args) {
-  if (args.length > 3) {
-    return buildEnvelopedOsc.apply(this, args);
-  }
-  return buildContinuousOsc.apply(this, args);
-}
-
-function buildEnvelopedOsc(...args) {
-  return testEnvelopedOscNode.nodeBuilder.apply(this, args);
 }
 
 function _reverb(...args) {
@@ -599,19 +744,35 @@ function _bp(...args) {
 }
 
 function _sin(...args) {
-  return buildOsc.apply(this, args.concat('sin'));
+  return testContinuousSinNode.nodeBuilder.apply(this, args);
 }
 
 function _squ(...args) {
-  return buildOsc.apply(this, args.concat('squ'));
+  return testContinuousSquNode.nodeBuilder.apply(this, args);
 }
 
 function _saw(...args) {
-  return buildOsc.apply(this, args.concat('saw'));
+  return testContinuousSawNode.nodeBuilder.apply(this, args);
 }
 
 function _tri(...args) {
-  return buildOsc.apply(this, args.concat('tri'));
+  return testContinuousTriNode.nodeBuilder.apply(this, args);
+}
+
+function _envSin(...args) {
+  return testEnvelopedSinNode.nodeBuilder.apply(this, args);
+}
+
+function _envSqu(...args) {
+  return testEnvelopedSquNode.nodeBuilder.apply(this, args);
+}
+
+function _envSaw(...args) {
+  return testEnvelopedSawNode.nodeBuilder.apply(this, args);
+}
+
+function _envTri(...args) {
+  return testEnvelopedTriNode.nodeBuilder.apply(this, args);
 }
 
 function _waveshaper(...args) {
@@ -643,7 +804,7 @@ function _bitcrusher(...args) {
 
 }
 
-function _noise(...args) {
+function _envNoise(...args) {
   return testEnvelopedNoiseNode.nodeBuilder.apply(this, args);
 }
 
@@ -685,10 +846,15 @@ class EventGraphBuilder {
     this.msgDelay = _messageDelay.bind(this);
     this.msgThresh = _messageThreshold.bind(this);
     this.crush = _bitcrusher.bind(this);
-    this.noise = _noise.bind(this);
+    this.envNoise = _envNoise.bind(this);
     this.gate = _gate.bind(this);
     this.threshEvent = _thresholdEventProcessor.bind(this);
     this.toScale = _toScale.bind(this);
+
+    this.envSin = _envSin.bind(this);
+    this.envSqu = _envSqu.bind(this);
+    this.envSaw = _envSaw.bind(this);
+    this.envTri = _envTri.bind(this);
   }
 
   // TODO: reverse connection strucure: currentNode.addOutput
