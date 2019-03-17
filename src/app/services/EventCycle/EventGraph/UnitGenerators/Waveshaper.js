@@ -4,9 +4,9 @@ import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 
 export default class PatchWaveshaper extends BaseUnitGenerator {
-  constructor({ wet }) {
+  constructor({ type, wet }) {
     super();
-    this.waveshaper = new Waveshaper(wet);
+    this.waveshaper = new Waveshaper(type, wet);
     this.audioModel = new PatchAudioModel('WAVESHAPER', this.waveshaper, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
   }
 

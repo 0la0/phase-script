@@ -3,6 +3,7 @@ import EventGraph from './EventGraph';
 
 const PARAM_TYPES = {
   FLOAT: 'float',
+  FUNCTION: 'function',
   STRING: 'string',
 };
 const CONSTANTS = {
@@ -44,12 +45,13 @@ function _setCurrent(node) {
   return new EventGraphBuilder()._setCurrent(node);
 }
 
-function buildNodeEvaluator(nameParamPair) {
-  const { name, paramDefinitions, } = nameParamPair;
+function buildNodeEvaluator(dto) {
+  const { name, paramDefinitions = [], constantDefinitions = [], isModulatable } = dto;
+  // const { name, paramDefinitions, } = nameParamPair;
   function nodeBuilder(...args) {
     // let id;
     let tag = '';
-    const params = paramDefinitions.reduce((acc, definition, index) => {
+    const variableParams = paramDefinitions.reduce((acc, definition, index) => {
       // const definition = paramDefinitions[index];
       const arg = args[index];
       if (definition.paramName === CONSTANTS.ID) {
@@ -71,11 +73,20 @@ function buildNodeEvaluator(nameParamPair) {
       acc[definition.paramName] = paramValue;
       return acc;
     }, {});
+    const constantParams = constantDefinitions.reduce((acc, definition) => {
+      if (definition.isTaggable) {
+        tag += definition.value;
+      }
+      if (definition.paramName === CONSTANTS.ID) {
+        return acc;
+      }
+      acc[definition.paramName] = definition.value;
+    }, {});
     const eventGraphNode = new EventGraphNode({
       type: name,
       id: tag ? `${name}-${tag}` : undefined,
-      params,
-      isModulatable: !!nameParamPair.isModulatable,
+      params: Object.assign({}, variableParams, constantParams),
+      isModulatable: !!isModulatable,
     });
     return _setCurrent.call(this, eventGraphNode);
   }
@@ -114,14 +125,13 @@ const panNode = {
 
 const dacNode = {
   name: 'DAC',
-  paramDefinitions: [
+  constantDefinitions: [
     {
       paramName: CONSTANTS.ID,
-      value: 'ID',
+      value: CONSTANTS.ID,
       isTaggable: true,
-      isStatic: true,
     }
-  ]
+  ],
 };
 
 const addressNode = {
@@ -253,6 +263,257 @@ const delayNode = {
   ]
 };
 
+const lowpassNode = {
+  name: 'FILTER',
+  constantDefinitions: [
+    {
+      paramName: 'type',
+      value: 'lowpass',
+      isTaggable: true,
+    }
+  ],
+  paramDefinitions: [
+    {
+      paramName: 'frequency',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'q',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    }
+  ]
+};
+
+const highpassNode = {
+  name: 'FILTER',
+  constantDefinitions: [
+    {
+      paramName: 'type',
+      value: 'highpass',
+      isTaggable: true,
+    }
+  ],
+  paramDefinitions: [
+    {
+      paramName: 'frequency',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'q',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    }
+  ]
+};
+
+const bandpassNode = {
+  name: 'FILTER',
+  constantDefinitions: [
+    {
+      paramName: 'type',
+      value: 'bandpass',
+      isTaggable: true,
+    }
+  ],
+  paramDefinitions: [
+    {
+      paramName: 'frequency',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'q',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    }
+  ]
+};
+
+const waveshaperNode = {
+  name: 'WAVESHAPER',
+  paramDefinitions: [
+    {
+      paramName: 'type',
+      type: PARAM_TYPES.STRING,
+      isTaggable: true,
+    },
+    {
+      paramName: 'wet',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    }
+  ]
+};
+
+const samplerNode = {
+  name: 'SAMPLER',
+  paramDefinitions: [
+    {
+      paramName: 'sampleName',
+      type: PARAM_TYPES.STRING,
+      isTaggable: true,
+    },
+    {
+      paramName: 'attack',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'sustain',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'release',
+      type: PARAM_TYPES.FLOAT,
+    }
+  ]
+};
+
+const messageMapNode = {
+  name: 'MSG_MAP',
+  paramDefinitions: [
+    {
+      paramName: 'mapFn',
+      type: PARAM_TYPES.FUNCTION,
+    }
+  ]
+};
+
+const messageFilterNode = {
+  name: 'MSG_FILTER',
+  paramDefinitions: [
+    {
+      paramName: 'filterFn',
+      type: PARAM_TYPES.FUNCTION,
+    }
+  ]
+};
+
+const messageDelayNode = {
+  name: 'MSG_DELAY',
+  paramDefinitions: [
+    {
+      paramName: 'delayTime',
+      type: PARAM_TYPES.FLOAT,
+    }
+  ]
+};
+
+const messageThresholdNode = {
+  name: 'MSG_THRESH',
+  paramDefinitions: [
+    {
+      paramName: 'threshold',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    }
+  ]
+};
+
+const messageScaleLockNode = {
+  name: 'MSG_SCALE_LOCK',
+  paramDefinitions: [
+    {
+      paramName: 'scaleName',
+      type: PARAM_TYPES.STRING,
+    }
+  ]
+};
+
+const envelopedNoiseNode = {
+  name: 'ENVELOPED_NOISE',
+  paramDefinitions: [
+    {
+      paramName: 'attack',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'sustain',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'release',
+      type: PARAM_TYPES.FLOAT,
+    }
+  ]
+};
+
+const bitcrusherNode = {
+  name: 'BITCRUSHER',
+  paramDefinitions: [
+    {
+      paramName: 'bitDepth',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'freqReduction',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'wet',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    }
+  ]
+};
+
+const gateNode = {
+  name: 'GATE',
+  paramDefinitions: [
+    {
+      paramName: 'threshold',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    }
+  ]
+};
+
+const thresholdEventNode = {
+  name: 'THRESH_EVENT',
+  paramDefinitions: [
+    {
+      paramName: 'threshold',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'address',
+      type: PARAM_TYPES.STRING,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    }
+  ]
+};
+
 const testGainNode = buildNodeEvaluator(gainNode);
 const testPanNode = buildNodeEvaluator(panNode);
 const testDacNode = buildNodeEvaluator(dacNode);
@@ -262,6 +523,20 @@ const testEnvelopedOscNode = buildNodeEvaluator(envelopedOsc);
 const testReverbNode = buildNodeEvaluator(reverbNode);
 const testChorusNode = buildNodeEvaluator(chorusNode);
 const testDelayNode = buildNodeEvaluator(delayNode);
+const testLowpassNode = buildNodeEvaluator(lowpassNode);
+const testHighpassNode = buildNodeEvaluator(highpassNode);
+const testBandpassNode = buildNodeEvaluator(bandpassNode);
+const testWaveshaperNode = buildNodeEvaluator(waveshaperNode);
+const testSamplerNode = buildNodeEvaluator(samplerNode);
+const testMessageMapNode = buildNodeEvaluator(messageMapNode);
+const testMessageFilterNode = buildNodeEvaluator(messageFilterNode);
+const testMessageDelayNode = buildNodeEvaluator(messageDelayNode);
+const testMessageThresholdNode = buildNodeEvaluator(messageThresholdNode);
+const testMessageScaleLockNode = buildNodeEvaluator(messageScaleLockNode);
+const testEnvelopedNoiseNode = buildNodeEvaluator(envelopedNoiseNode);
+const testBitcrusherNode = buildNodeEvaluator(bitcrusherNode);
+const testGateNode = buildNodeEvaluator(gateNode);
+const testThresholdEventNode = buildNodeEvaluator(thresholdEventNode);
 
 function _gain(...args) {
   return testGainNode.nodeBuilder.apply(this, args);
@@ -287,6 +562,7 @@ function buildContinuousOsc(...args) {
 // attack, sustain, release, type, id
 // frequency, type
 // frequency, type, id
+// frequency, mod, type
 function buildOsc(...args) {
   if (args.length > 3) {
     return buildEnvelopedOsc.apply(this, args);
@@ -310,26 +586,16 @@ function _delay(...args) {
   return testDelayNode.nodeBuilder.apply(this, args);
 }
 
-function _biquadFilter(type, frequency, q, id) {
-  const params = { type, frequency, q, };
-  const filterNode = new EventGraphNode({
-    type: 'FILTER',
-    id: id ? `FILTER-${type}-${id}` : undefined,
-    params,
-  });
-  return _setCurrent.call(this, filterNode);
+function _lp(...args) {
+  return testLowpassNode.nodeBuilder.apply(this, args);
 }
 
-function _lp(frequency, q, id) {
-  return _biquadFilter.call(this, 'lowpass', frequency, q, id);
+function _hp(...args) {
+  return testHighpassNode.nodeBuilder.apply(this, args);
 }
 
-function _hp(frequency, q, id) {
-  return _biquadFilter.call(this, 'highpass', frequency, q, id);
-}
-
-function _bp(frequency, q, id) {
-  return _biquadFilter.call(this, 'bandpass', frequency, q, id);
+function _bp(...args) {
+  return testBandpassNode.nodeBuilder.apply(this, args);
 }
 
 function _sin(...args) {
@@ -348,117 +614,49 @@ function _tri(...args) {
   return buildOsc.apply(this, args.concat('tri'));
 }
 
-function buildWvshp(type, wet, id) {
-  const params = { type, wet, id, };
-  const filterNode = new EventGraphNode({
-    type: 'WAVESHAPER',
-    id: id ? `WAVESHAPER-${type}-${id}` : undefined,
-    params,
-  });
-  return _setCurrent.call(this, filterNode);
+function _waveshaper(...args) {
+  return testWaveshaperNode.nodeBuilder.apply(this, args);
 }
 
-const wvshp = {
-  squ: function (wet, id) { return buildWvshp.call(this, 'square', wet, id); },
-  cube: function (wet, id) { return buildWvshp.call(this, 'cubed', wet, id); },
-  cheb: function (wet, id) { return buildWvshp.call(this, 'chebyshev2', wet, id); },
-  sig: function (wet, id) { return buildWvshp.call(this, 'sigmoidLike', wet, id); },
-  clip: function (wet, id) { return buildWvshp.call(this, 'hardClip', wet, id); },
-};
-
-function _samp(sampleName, attack, sustain, release, id) {
-  const params = { sampleName, attack, sustain, release, };
-  const samplerNode = new EventGraphNode({
-    type: 'SAMPLER',
-    id: `SAMPLER-${sampleName}-${id}`,
-    params,
-  });
-  return _setCurrent.call(this, samplerNode);
+function _samp(...args) {
+  return testSamplerNode.nodeBuilder.apply(this, args);
 }
 
-function _map(mapFn) {
-  const params = { mapFn, };
-  const messageMapNode = new EventGraphNode({
-    type: 'MSG_MAP',
-    params,
-  });
-  return _setCurrent.call(this, messageMapNode);
+function _map(...args) {
+  return testMessageMapNode.nodeBuilder.apply(this, args);
 }
 
-function _filter(filterFn) {
-  const params = { filterFn, };
-  const messageFilterNode = new EventGraphNode({
-    type: 'MSG_FILTER',
-    params,
-  });
-  return _setCurrent.call(this, messageFilterNode);
+function _filter(...args) {
+  return testMessageFilterNode.nodeBuilder.apply(this, args);
 }
 
-function _messageDelay(delayTime) {
-  const params = { delayTime, };
-  const messageFilterNode = new EventGraphNode({
-    type: 'MSG_DELAY',
-    params,
-  });
-  return _setCurrent.call(this, messageFilterNode);
+function _messageDelay(...args) {
+  return testMessageDelayNode.nodeBuilder.apply(this, args);
 }
 
-function _messageThreshold(threshold, id) {
-  const params = { threshold, };
-  const messageFilterNode = new EventGraphNode({
-    type: 'MSG_THRESH',
-    id: id ? `MSG_THRESH-${id}` : undefined,
-    params,
-  });
-  return _setCurrent.call(this, messageFilterNode);
+function _messageThreshold(...args) {
+  return testMessageThresholdNode.nodeBuilder.apply(this, args);
 }
 
-function _bitcrusher(bitDepth, freqReduction, wet, id) {
-  const params = { bitDepth, freqReduction, wet, };
-  const messageFilterNode = new EventGraphNode({
-    type: 'BITCRUSHER',
-    id: id ? `BITCRUSHER-${id}` : undefined,
-    params,
-  });
-  return _setCurrent.call(this, messageFilterNode);
+function _bitcrusher(...args) {
+  return testBitcrusherNode.nodeBuilder.apply(this, args);
+
 }
 
-function _noise(attack, sustain, release) {
-  const params = { attack, sustain, release, };
-  const oscNode = new EventGraphNode({
-    type: 'ENVELOPED_NOISE',
-    params,
-  });
-  return _setCurrent.call(this, oscNode);
+function _noise(...args) {
+  return testEnvelopedNoiseNode.nodeBuilder.apply(this, args);
 }
 
-function _gate(threshold, id) {
-  const params = { threshold };
-  const oscNode = new EventGraphNode({
-    type: 'GATE',
-    id: id ? `GATE-${id}` : undefined,
-    params,
-  });
-  return _setCurrent.call(this, oscNode);
+function _gate(...args) {
+  return testGateNode.nodeBuilder.apply(this, args);
 }
 
-function _thresholdEventProcessor(threshold, address, id) {
-  const params = { threshold, address };
-  const oscNode = new EventGraphNode({
-    type: 'THRESH_EVENT',
-    id: id ? `THRESH_EVENT-${id}` : undefined,
-    params,
-  });
-  return _setCurrent.call(this, oscNode);
+function _thresholdEventProcessor(...args) {
+  return testThresholdEventNode.nodeBuilder.apply(this, args);
 }
 
-function _toScale(scaleName) {
-  const params = { scaleName };
-  const scaleLockNode = new EventGraphNode({
-    type: 'MSG_SCALE_LOCK',
-    params,
-  });
-  return _setCurrent.call(this, scaleLockNode);
+function _toScale(...args) {
+  return testMessageScaleLockNode.nodeBuilder.apply(this, args);
 }
 
 class EventGraphBuilder {
@@ -479,13 +677,7 @@ class EventGraphBuilder {
     this.lp = _lp.bind(this);
     this.hp = _hp.bind(this);
     this.bp = _bp.bind(this);
-    this.wvshp = {
-      squ: wvshp.squ.bind(this),
-      cube: wvshp.cube.bind(this),
-      cheb: wvshp.cheb.bind(this),
-      sig: wvshp.sig.bind(this),
-      clip: wvshp.clip.bind(this),
-    };
+    this.wvshp = _waveshaper.bind(this);
     this.samp = _samp.bind(this);
     this.map = _map.bind(this);
     this.filter = _filter.bind(this);

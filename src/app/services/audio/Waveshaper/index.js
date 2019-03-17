@@ -19,11 +19,11 @@ const CARRIER_FUNCTIONS = {
 };
 
 const CARRIER_NAMES = {
-  squ: CARRIER_FUNCTIONS.square,
-  cube: CARRIER_FUNCTIONS.cubed,
-  cheb: CARRIER_FUNCTIONS.chebyshev2,
-  sig: CARRIER_FUNCTIONS.sigmoidLike,
-  clip: CARRIER_FUNCTIONS.hardClip,
+  squ: 'square',
+  cube: 'cubed',
+  cheb: 'chebyshev2',
+  sig: 'sigmoidLike',
+  clip: 'hardClip',
 };
 
 function createCurve(carrierFunction, sampleRate, multiplier) {
@@ -38,7 +38,7 @@ function createCurve(carrierFunction, sampleRate, multiplier) {
 }
 
 export default class Waveshaper {
-  constructor (wetLevel) {
+  constructor (type = 'sig', wetLevel = 0.5) {
     const audioContext = audioGraph.getAudioContext();
     this.sampleRate = audioContext.sampleRate;
     this.input = audioContext.createGain();
@@ -48,7 +48,7 @@ export default class Waveshaper {
     this.input.connect(this.dryGain);
     this.input.connect(this.waveshaperNode);
     this.waveshaperNode.connect(this.wetGain);
-    this.setCarrierFunction(Object.keys(CARRIER_FUNCTIONS)[0]);
+    this.setCarrierFunction(CARRIER_NAMES[type]);
     this.setWetLevel(wetLevel);
   }
 
