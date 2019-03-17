@@ -19,6 +19,16 @@ import EventGraph from './EventGraph';
 //   * sample bank
 //   * midi config editor
 
+export class DynamicParameter {
+  constructor(nodeId) {
+    this.nodeId = nodeId;
+  }
+
+  getNodeId() {
+    return this.nodeId;
+  }
+}
+
 function _setCurrent(node) {
   if (this instanceof EventGraphBuilder) {
     return this._setCurrent(node);
@@ -39,20 +49,92 @@ function _dac() {
   return _setCurrent.call(this, dacNode);
 }
 
-function _gain(gainValue, id) {
-  if (gainValue instanceof EventGraphBuilder) {
-    // TODO: create addapter to go from address node to param ...
-    console.log('gainValue', gainValue);
-    gainValue.addaptMessageToParam();
-    gainValue = 0.5;
+function buildNodeEvaluator(nameParamPair) {
+  const { name, paramDefinitions, } = nameParamPair;
+  function nodeBuilder(...args) {
+    let id;
+    let tag = '';
+    const params = args.reduce((acc, arg, index) => {
+      const definition = paramDefinitions[index];
+      if (definition.paramName === 'ID') {
+        id = arg;
+        return acc;
+      }
+      let paramValue;
+      if (arg instanceof EventGraphBuilder) {
+        const outputNode = arg.currentNode;
+        paramValue = new DynamicParameter(outputNode.id);
+      } else {
+        paramValue = arg;
+      }
+      acc[definition.paramName] = paramValue;
+      return acc;
+    }, {});
+    const eventGraphNode = new EventGraphNode({
+      type: name,
+      id: id ? `${name}-${id}` : undefined,
+      params
+    });
+    return _setCurrent.call(this, eventGraphNode);
   }
-  const gainNode = new EventGraphNode({
-    type: 'GAIN',
-    id: id ? `GAIN-${id}` : undefined,
-    params: { gainValue },
-    isModulatable: true
-  });
-  return _setCurrent.call(this, gainNode);
+  return { name, nodeBuilder, };
+}
+
+const gainNode = {
+  name: 'GAIN',
+  paramDefinitions: [
+    {
+      paramName: 'gainValue',
+      type: 'float',
+    },
+    {
+      paramName: 'ID', // USE CONSTANT
+      taggable: true,
+    }
+  ],
+};
+
+const panNode = {
+  name: 'PANNER',
+  paramDefinitions: [
+    {
+      paramName: 'panValue',
+      type: 'float',
+    },
+    {
+      paramName: 'ID', // USE CONSTANT
+      taggable: true,
+    }
+  ],
+};
+
+const testGainNode = buildNodeEvaluator(gainNode);
+const testPanNode = buildNodeEvaluator(panNode);
+
+// function _gain(gainValue, id) {
+//   if (gainValue instanceof EventGraphBuilder) {
+//     // TODO: create addapter to go from address node to param ...
+//     const outputNode = gainValue.currentNode;
+//     // console.log('gainValue', outputNode.id);
+//     // gainValue.addaptMessageToParam();
+//     // gainValue = 0.5;
+//     gainValue = new DynamicParameter(outputNode.id);
+//   }
+//   const gainNode = new EventGraphNode({
+//     type: 'GAIN',
+//     id: id ? `GAIN-${id}` : undefined,
+//     params: { gainValue },
+//     isModulatable: true
+//   });
+//   return _setCurrent.call(this, gainNode);
+// }
+
+function _gain(...args) {
+  return testGainNode.nodeBuilder.apply(this, args);
+}
+
+function _pan(...args) {
+  return testPanNode.nodeBuilder.apply(this, args);
 }
 
 function buildContinuousOsc(frequency, id, oscType) {
@@ -164,16 +246,6 @@ function buildWvshp(type, wet, id) {
     params,
   });
   return _setCurrent.call(this, filterNode);
-}
-
-function _pan(panValue, id) {
-  const params = { panValue, id, };
-  const pannerNode = new EventGraphNode({
-    type: 'PANNER',
-    id: id ? `PANNER-${id}` : undefined,
-    params,
-  });
-  return _setCurrent.call(this, pannerNode);
 }
 
 const wvshp = {

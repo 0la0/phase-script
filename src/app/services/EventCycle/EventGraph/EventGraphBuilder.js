@@ -20,6 +20,8 @@ import Sampler from './UnitGenerators/Sampler';
 import ThresholdEventProcessor from './UnitGenerators/ThresholdEventProcessor';
 import Waveshaper from './UnitGenerators/Waveshaper';
 
+import { DynamicParameter, } from './EventGraphFunctions/ExposedApi';
+
 const DAC_ID = 'DAC_ID';
 
 const typeMap = {
@@ -82,6 +84,22 @@ function connectNodes(graph) {
   });
 }
 
+function connectNodeParams(graph) {
+  Object.keys(graph).forEach(key => {
+    const { nodeDefinition, instance, } = graph[key];
+    Object.keys(nodeDefinition.params).forEach(paramKey => {
+      const param = nodeDefinition.params[paramKey];
+      if (param instanceof DynamicParameter) {
+        const targetNode = graph[param.getNodeId()];
+        const targetAudioModel = targetNode.instance.getAudioModel();
+        // console.log('targetNode', targetAudioModel);
+        console.log('connectParamWithNode', instance, targetAudioModel);
+        instance.updateDynamicParam(targetAudioModel);
+      }
+    });
+  });
+}
+
 function disconnectOldNodes(oldGraph, currentGraph) {
   Object.values(oldGraph)
     .forEach((node) => {
@@ -93,6 +111,7 @@ function disconnectOldNodes(oldGraph, currentGraph) {
     });
 }
 
+// TODO: create definition instace pair
 export function buildEventGraph(graphDefinition = {}, time) {
   if (!graphDefinition[DAC_ID]) {
     throw new Error(`graphDefinition missing end node ${graphDefinition}`);
@@ -102,6 +121,7 @@ export function buildEventGraph(graphDefinition = {}, time) {
       const nodeDefinition = graphDefinition[key];
       if (currentBuiltGraph && currentBuiltGraph[nodeDefinition.id]) {
         const instance = currentBuiltGraph[nodeDefinition.id].instance;
+        console.log('instance.updateParams', nodeDefinition.params);
         instance.updateParams(nodeDefinition.params, time);
         return Object.assign(acc, {
           [key]: { nodeDefinition, instance, },
@@ -115,5 +135,6 @@ export function buildEventGraph(graphDefinition = {}, time) {
     }, {});
   disconnectOldNodes(currentBuiltGraph, builtNodes);
   connectNodes(builtNodes);
+  connectNodeParams(builtNodes);
   currentBuiltGraph = builtNodes;
 }

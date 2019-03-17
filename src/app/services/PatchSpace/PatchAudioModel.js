@@ -18,6 +18,7 @@ export default class PatchAudioModel {
     return this.connectionFn;
   }
 
+  // TODO: this will only be used for oscillator nodes, so remove this abstraction
   connectToModulationSource(node) {
     if (this.outputType !== 'SIGNAL') {
       throw new Error('Modulation can only happen with a signal source');

@@ -23,4 +23,8 @@ export default class StereoPanner  {
     this.panNode.pan.linearRampToValueAtTime(panValue, scheduledTime);
     return this;
   }
+
+  getPanParam() {
+    return this.panNode.pan;
+  }
 }

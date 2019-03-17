@@ -22,7 +22,7 @@ And feature level dependencies on
 ### TODO
 * linter progress
 * separate core / audio / graphics bundles, & use dynamic imports
-* replace component component wrapper with a static name property
+* replace common component wrapper with a static name property
 * feature detection => incompatible browser warnings
 * remove all old and unused components
 * document previous versions

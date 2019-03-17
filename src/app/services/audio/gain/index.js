@@ -32,6 +32,10 @@ export default class Gain  {
     return this;
   }
 
+  getGainParam() {
+    return this.gain.gain;
+  }
+
   modulateWith(modulationInput) {
     modulationInput.connect(this.gain.gain);
   }
