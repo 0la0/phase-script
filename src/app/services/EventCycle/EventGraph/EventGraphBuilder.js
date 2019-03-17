@@ -22,7 +22,7 @@ import Waveshaper from './UnitGenerators/Waveshaper';
 
 import { DynamicParameter, } from './EventGraphFunctions/ExposedApi';
 
-const DAC_ID = 'DAC_ID';
+const DAC_ID = 'DAC-ID';
 
 const typeMap = {
   BITCRUSHER: Bitcrusher,

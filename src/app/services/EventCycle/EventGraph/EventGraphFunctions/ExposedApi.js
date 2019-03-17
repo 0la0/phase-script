@@ -1,6 +1,14 @@
 import { EventGraphNode } from './EventGraphNode';
 import EventGraph from './EventGraph';
 
+const PARAM_TYPES = {
+  FLOAT: 'float',
+  STRING: 'string',
+};
+const CONSTANTS = {
+  ID: 'ID',
+};
+
 // TODO:
 //   * parameter validation
 //   * message duplicator
@@ -36,28 +44,18 @@ function _setCurrent(node) {
   return new EventGraphBuilder()._setCurrent(node);
 }
 
-function _address(address) {
-  const addressNode = new EventGraphNode({
-    type: 'MSG_ADDRESS',
-    params: { address }
-  });
-  return _setCurrent.call(this, addressNode);
-}
-
-function _dac() {
-  const dacNode = new EventGraphNode({ type: 'DAC', id: 'DAC_ID' });
-  return _setCurrent.call(this, dacNode);
-}
-
 function buildNodeEvaluator(nameParamPair) {
   const { name, paramDefinitions, } = nameParamPair;
   function nodeBuilder(...args) {
-    let id;
+    // let id;
     let tag = '';
-    const params = args.reduce((acc, arg, index) => {
-      const definition = paramDefinitions[index];
-      if (definition.paramName === 'ID') {
-        id = arg;
+    const params = paramDefinitions.reduce((acc, definition, index) => {
+      // const definition = paramDefinitions[index];
+      const arg = args[index];
+      if (definition.paramName === CONSTANTS.ID) {
+        // id = definition.value || arg;
+        tag += (definition.value || arg);
+        // id = arg;
         return acc;
       }
       let paramValue;
@@ -66,14 +64,18 @@ function buildNodeEvaluator(nameParamPair) {
         paramValue = new DynamicParameter(outputNode.id);
       } else {
         paramValue = arg;
+        if (definition.isTaggable) {
+          tag += arg;
+        }
       }
       acc[definition.paramName] = paramValue;
       return acc;
     }, {});
     const eventGraphNode = new EventGraphNode({
       type: name,
-      id: id ? `${name}-${id}` : undefined,
-      params
+      id: tag ? `${name}-${tag}` : undefined,
+      params,
+      isModulatable: !!nameParamPair.isModulatable,
     });
     return _setCurrent.call(this, eventGraphNode);
   }
@@ -85,13 +87,14 @@ const gainNode = {
   paramDefinitions: [
     {
       paramName: 'gainValue',
-      type: 'float',
+      type: PARAM_TYPES.FLOAT,
     },
     {
-      paramName: 'ID', // USE CONSTANT
-      taggable: true,
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
     }
-  ],
+  ]
 };
 
 const panNode = {
@@ -99,35 +102,166 @@ const panNode = {
   paramDefinitions: [
     {
       paramName: 'panValue',
-      type: 'float',
+      type: PARAM_TYPES.FLOAT,
     },
     {
-      paramName: 'ID', // USE CONSTANT
-      taggable: true,
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
     }
-  ],
+  ]
+};
+
+const dacNode = {
+  name: 'DAC',
+  paramDefinitions: [
+    {
+      paramName: CONSTANTS.ID,
+      value: 'ID',
+      isTaggable: true,
+      isStatic: true,
+    }
+  ]
+};
+
+const addressNode = {
+  name: 'MSG_ADDRESS',
+  paramDefinitions: [
+    {
+      paramName: 'address',
+      type: PARAM_TYPES.STRING,
+    }
+  ]
+};
+
+const continuousOsc = {
+  name: 'CONTINUOUS_OSC',
+  isModulatable: true, // TODO: remove ...
+  paramDefinitions: [
+    {
+      paramName: 'frequency',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    },
+    {
+      paramName: 'oscType',
+      type: PARAM_TYPES.STRING,
+      isTaggable: true,
+    }
+  ]
+};
+
+const envelopedOsc = {
+  name: 'ENVELOPED_OSC',
+  isModulatable: true, // TODO: remove ...
+  paramDefinitions: [
+    {
+      paramName: 'attack',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'sustain',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'release',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    },
+    {
+      paramName: 'oscType',
+      type: PARAM_TYPES.STRING,
+      isTaggable: true,
+    }
+  ]
+};
+
+const reverbNode = {
+  name: 'REVERB',
+  paramDefinitions: [
+    {
+      paramName: 'attack',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'decay',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'wet',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    }
+  ]
+};
+
+const chorusNode = {
+  name: 'CHORUS',
+  paramDefinitions: [
+    {
+      paramName: 'frequency',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'depth',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'feedback',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    }
+  ]
+};
+
+const delayNode = {
+  name: 'DELAY',
+  paramDefinitions: [
+    {
+      paramName: 'delayMs',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'feedback',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'wet',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      isTaggable: true,
+      isStatic: true,
+    }
+  ]
 };
 
 const testGainNode = buildNodeEvaluator(gainNode);
 const testPanNode = buildNodeEvaluator(panNode);
-
-// function _gain(gainValue, id) {
-//   if (gainValue instanceof EventGraphBuilder) {
-//     // TODO: create addapter to go from address node to param ...
-//     const outputNode = gainValue.currentNode;
-//     // console.log('gainValue', outputNode.id);
-//     // gainValue.addaptMessageToParam();
-//     // gainValue = 0.5;
-//     gainValue = new DynamicParameter(outputNode.id);
-//   }
-//   const gainNode = new EventGraphNode({
-//     type: 'GAIN',
-//     id: id ? `GAIN-${id}` : undefined,
-//     params: { gainValue },
-//     isModulatable: true
-//   });
-//   return _setCurrent.call(this, gainNode);
-// }
+const testDacNode = buildNodeEvaluator(dacNode);
+const testAddressNode = buildNodeEvaluator(addressNode);
+const testContinuousOscNode = buildNodeEvaluator(continuousOsc);
+const testEnvelopedOscNode = buildNodeEvaluator(envelopedOsc);
+const testReverbNode = buildNodeEvaluator(reverbNode);
+const testChorusNode = buildNodeEvaluator(chorusNode);
+const testDelayNode = buildNodeEvaluator(delayNode);
 
 function _gain(...args) {
   return testGainNode.nodeBuilder.apply(this, args);
@@ -137,15 +271,16 @@ function _pan(...args) {
   return testPanNode.nodeBuilder.apply(this, args);
 }
 
-function buildContinuousOsc(frequency, id, oscType) {
-  const params = { frequency, oscType, };
-  const oscNode = new EventGraphNode({
-    type: 'CONTINUOUS_OSC',
-    id: id ? `OSC-${oscType}-${id}` : undefined,
-    params,
-    isModulatable: true
-  });
-  return _setCurrent.call(this, oscNode);
+function _dac(...args) {
+  return testDacNode.nodeBuilder.apply(this, args);
+}
+
+function _address(...args) {
+  return testAddressNode.nodeBuilder.apply(this, args);
+}
+
+function buildContinuousOsc(...args) {
+  return testContinuousOscNode.nodeBuilder.apply(this, args);
 }
 
 // attack, sustain, release, type
@@ -159,45 +294,20 @@ function buildOsc(...args) {
   return buildContinuousOsc.apply(this, args);
 }
 
-function buildEnvelopedOsc(attack, sustain, release, id, oscType) {
-  const params = { attack, sustain, release, oscType, };
-  const oscNode = new EventGraphNode({
-    type: 'ENVELOPED_OSC',
-    id: id ? `OSC-${oscType}-${id}` : undefined,
-    params,
-    isModulatable: true
-  });
-  return _setCurrent.call(this, oscNode);
+function buildEnvelopedOsc(...args) {
+  return testEnvelopedOscNode.nodeBuilder.apply(this, args);
 }
 
-function _reverb(attack, decay, wet, id) {
-  const params = { attack, decay, wet, };
-  const oscNode = new EventGraphNode({
-    type: 'REVERB',
-    id: id ? `REVERB-${id}` : undefined,
-    params,
-  });
-  return _setCurrent.call(this, oscNode);
+function _reverb(...args) {
+  return testReverbNode.nodeBuilder.apply(this, args);
 }
 
-function _chorus(frequency, depth, feedback, id) {
-  const params = { frequency, depth, feedback, };
-  const oscNode = new EventGraphNode({
-    type: 'CHORUS',
-    id: id ? `CHORUS-${id}` : undefined,
-    params,
-  });
-  return _setCurrent.call(this, oscNode);
+function _chorus(...args) {
+  return testChorusNode.nodeBuilder.apply(this, args);
 }
 
-function _delay(delayMs, feedback, wet, id) {
-  const params = { delayMs, feedback, wet, };
-  const oscNode = new EventGraphNode({
-    type: 'DELAY',
-    id: id ? `DELAY-${id}` : undefined,
-    params,
-  });
-  return _setCurrent.call(this, oscNode);
+function _delay(...args) {
+  return testDelayNode.nodeBuilder.apply(this, args);
 }
 
 function _biquadFilter(type, frequency, q, id) {
@@ -260,7 +370,7 @@ function _samp(sampleName, attack, sustain, release, id) {
   const params = { sampleName, attack, sustain, release, };
   const samplerNode = new EventGraphNode({
     type: 'SAMPLER',
-    id: id ? `SAMPLER-${sampleName}-${id}` : undefined,
+    id: `SAMPLER-${sampleName}-${id}`,
     params,
   });
   return _setCurrent.call(this, samplerNode);
