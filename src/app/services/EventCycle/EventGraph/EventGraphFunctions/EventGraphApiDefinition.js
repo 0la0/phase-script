@@ -19,7 +19,6 @@ const gainNode = {
     {
       paramName: CONSTANTS.ID,
       isTaggable: true,
-      isStatic: true,
     }
   ]
 };
@@ -35,7 +34,6 @@ const panNode = {
     {
       paramName: CONSTANTS.ID,
       isTaggable: true,
-      isStatic: true,
     }
   ]
 };
@@ -82,7 +80,6 @@ const reverbNode = {
     {
       paramName: CONSTANTS.ID,
       isTaggable: true,
-      isStatic: true,
     }
   ]
 };
@@ -106,7 +103,6 @@ const chorusNode = {
     {
       paramName: CONSTANTS.ID,
       isTaggable: true,
-      isStatic: true,
     }
   ]
 };
@@ -130,7 +126,6 @@ const delayNode = {
     {
       paramName: CONSTANTS.ID,
       isTaggable: true,
-      isStatic: true,
     }
   ]
 };
@@ -157,7 +152,6 @@ const lowpassNode = {
     {
       paramName: CONSTANTS.ID,
       isTaggable: true,
-      isStatic: true,
     }
   ]
 };
@@ -184,7 +178,6 @@ const highpassNode = {
     {
       paramName: CONSTANTS.ID,
       isTaggable: true,
-      isStatic: true,
     }
   ]
 };
@@ -211,7 +204,6 @@ const bandpassNode = {
     {
       paramName: CONSTANTS.ID,
       isTaggable: true,
-      isStatic: true,
     }
   ]
 };
@@ -232,7 +224,6 @@ const waveshaperNode = {
     {
       paramName: CONSTANTS.ID,
       isTaggable: true,
-      isStatic: true,
     }
   ]
 };
@@ -305,7 +296,6 @@ const messageThresholdNode = {
     {
       paramName: CONSTANTS.ID,
       isTaggable: true,
-      isStatic: true,
     }
   ]
 };
@@ -359,7 +349,6 @@ const bitcrusherNode = {
     {
       paramName: CONSTANTS.ID,
       isTaggable: true,
-      isStatic: true,
     }
   ]
 };
@@ -375,7 +364,6 @@ const gateNode = {
     {
       paramName: CONSTANTS.ID,
       isTaggable: true,
-      isStatic: true,
     }
   ]
 };
@@ -395,7 +383,6 @@ const thresholdEventNode = {
     {
       paramName: CONSTANTS.ID,
       isTaggable: true,
-      isStatic: true,
     }
   ]
 };
@@ -421,7 +408,6 @@ const envelopedOscParams = [
   {
     paramName: CONSTANTS.ID,
     isTaggable: true,
-    isStatic: true,
   },
 ];
 
@@ -490,7 +476,6 @@ const continuousOscParams = [
   {
     paramName: CONSTANTS.ID,
     isTaggable: true,
-    isStatic: true,
   }
 ];
 

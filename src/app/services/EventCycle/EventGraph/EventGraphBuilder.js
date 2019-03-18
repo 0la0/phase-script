@@ -19,11 +19,12 @@ import Reverb from './UnitGenerators/Reverb';
 import Sampler from './UnitGenerators/Sampler';
 import ThresholdEventProcessor from './UnitGenerators/ThresholdEventProcessor';
 import Waveshaper from './UnitGenerators/Waveshaper';
-
-import { DynamicParameter, } from './EventGraphFunctions/ExposedApi';
+import DynamicParameter from './EventGraphFunctions/DynamicParameter';
 
 const DAC_ID = 'DAC-ID';
 
+// TODO: rename file to `AudioStateBuilder`, `AudioStateManager`, or `UnitGeneratorFactory`
+// TODO: use types from EventGraphApiDefinition.js
 const typeMap = {
   BITCRUSHER: Bitcrusher,
   CHORUS: Chorus,
