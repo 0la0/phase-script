@@ -12,6 +12,8 @@ describe('ParamTable', () => {
     [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ]
       .forEach(val => param.addScheduledValue(val, `${val}`));
     assert.equal(param.table.length, 16);
+    assert.equal(param.size, 10);
+    assert.equal(param.writeIndex, 10);
     assert.equal(param.getValueForTime(0), 0);
     assert.equal(param.getValueForTime(3.3), 3);
     assert.equal(param.getValueForTime(6), 6);
@@ -21,6 +23,8 @@ describe('ParamTable', () => {
     [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ]
       .forEach(val => param.addScheduledValue(val, `${val}`));
     assert.equal(param.table.length, 16);
+    assert.equal(param.size, 16);
+    assert.equal(param.writeIndex, 4);
     assert.equal(param.getValueForTime(0), 0);
     assert.equal(param.getValueForTime(3.3), 3);
     assert.equal(param.getValueForTime(6), 6);
@@ -29,12 +33,18 @@ describe('ParamTable', () => {
     assert.equal(param.getValueForTime(1.5), 2);
     [ 10, 11, 12, 13, 14, 15, 16, 17, 18, ]
       .forEach(val => param.addScheduledValue(val, `${val}`));
+    assert.equal(param.size, 16);
+    assert.equal(param.writeIndex, 13);
     assert.equal(param.getValueForTime(14.7), 15);
     assert.equal(param.getValueForTime(3.3), 3);
     param.addScheduledValue(19, `${19}`)
+    assert.equal(param.size, 16);
+    assert.equal(param.writeIndex, 14);
     assert.equal(param.getValueForTime(3.3), 4);
     [ 20, 21, 22, 23, ]
       .forEach(val => param.addScheduledValue(val, `${val}`));
+    assert.equal(param.size, 16);
+    assert.equal(param.writeIndex, 2);
     assert.equal(param.getValueForTime(0), 8);
     assert.equal(param.getValueForTime(25), 23);
     assert.equal(param.getValueForTime(16), 16);

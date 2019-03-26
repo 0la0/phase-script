@@ -52,4 +52,12 @@ export default class ResFilter {
   getFrequencyResponse(frequencyHz, magResponse, phaseResponse) {
     return this.filter.getFrequencyResponse(frequencyHz, magResponse, phaseResponse);
   }
+
+  getFilterParam() {
+    return this.filter.frequency;
+  }
+
+  getQParam() {
+    return this.filter.Q;
+  }
 }

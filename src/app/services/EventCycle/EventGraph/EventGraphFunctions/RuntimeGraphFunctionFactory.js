@@ -22,7 +22,7 @@ export default function buildNodeEvaluator(dto, _setCurrent) {
       let paramValue;
       if (arg instanceof EventGraphBuilder) {
         const outputNode = arg.currentNode;
-        paramValue = new DynamicParameter(outputNode.id);
+        paramValue = new DynamicParameter(outputNode.id, definition.paramName);
       } else {
         paramValue = arg;
         if (definition.isTaggable) {

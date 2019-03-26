@@ -51,16 +51,18 @@ class EventCycle extends BaseComponent {
         p("a:48 a:60 , a:72"),
         p("a a a")
       ])
-      seq( p("b:0 b:1 b:0") )
+      seq( p("b:100 b:500 b:100") )
+      seq( p("c:0 c:1 c:0") )
 
       let msg = addr('b')
-      let sig = sin(mtof(72))
+      let sig = sin(mtof(92))
       let val = 0.5
 
       addr("a")
         .envSin(0, 0, 400, 0x1)
-        .gain(1, 0x7)
-        .pan(sin(1, 0x8), 0x4)
+        // .gain(addr('c'), 0x7)
+        // .pan(sin(1, 0x8), 0x4)
+        // .bp(msg, 2, 0x1)
         .dac()
     `;
     // const testCycleValue = `

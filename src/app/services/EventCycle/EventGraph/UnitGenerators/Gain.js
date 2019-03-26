@@ -2,7 +2,7 @@ import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/Bas
 import Gain from 'services/audio/gain';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
-import SignalParameter from './_SignalParameter';
+import SignalParameter, { InputType, } from './_SignalParameter';
 
 export default class PatchGain extends BaseUnitGenerator {
   constructor(gainValue) {
@@ -11,16 +11,25 @@ export default class PatchGain extends BaseUnitGenerator {
     this.gain = new Gain();
     this.audioModel = new PatchAudioModel('GAIN', this.gain, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
     this.paramMap = {
-      gainValue: new SignalParameter(this.gain.getGainParam(), defaultGainValue),
+      gainValue: new SignalParameter(this.gain.getGainParam(), defaultGainValue, new InputType().numeric().message().signal().build()),
     };
   }
 
-  updateParams({ gainValue, }, time) {
-    this.paramMap['gainValue'].setParamValueAtTime(gainValue, time);
-  }
-
-  updateDynamicParam(dynamicParam) {
-    this.paramMap['gainValue'].setDynamicParam(dynamicParam);
+  updateParams(params, time) {
+    if (!this.paramMap) {
+      return;
+    }
+    Object.keys(params).forEach(paramKey => {
+      const paramVal = params[paramKey];
+      if (paramVal.constructor.name === 'DynamicParameter') {
+        console.log('TODO: received dynamicParam, fix');
+        return;
+      }
+      if (!this.paramMap[paramKey]) {
+        return;
+      }
+      this.paramMap[paramKey].setParamValue(paramVal, time);
+    });
   }
 
   static fromParams({ gainValue, }) {

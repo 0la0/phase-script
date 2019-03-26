@@ -15,10 +15,17 @@ export default class ParamScheduler {
     this.paramTable.addScheduledValue(message.time.audio, value);
   }
 
-  // getAudioModelInput() {
-  //   // return this.audioModel.getInput();
-  //   return this;
-  // }
+  setParamValue(paramVal) {
+    if (paramVal.outputType !== 'MESSAGE') {
+      throw new Error('ParamScheduler requires message model');
+    }
+    paramVal.audioModel.outlets.add({
+      schedule: (message) => {
+        const value = this.paramTransform(message.note);
+        this.paramTable.addScheduledValue(message.time.audio, value);
+      }
+    });
+  }
 
   getValueForTime(time) {
     return this.paramTable.getValueForTime(time);

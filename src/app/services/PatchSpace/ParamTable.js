@@ -34,7 +34,7 @@ export default class ParamTable {
     }
     if (this.size < this.table.length) {
       const targetIndex = binarySearch(this.table, time, 0, this.writeIndex - 1);
-      return this.table[targetIndex].time;
+      return this.table[targetIndex].value;
     }
     const upperBoundBottom = this.writeIndex - 1 < 0 ? 0 : this.writeIndex - 1;
     const bottomIndex = binarySearch(this.table, time, 0, upperBoundBottom);

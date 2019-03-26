@@ -81,16 +81,18 @@ function connectNodes(graph) {
 function connectNodeParams(graph) {
   Object.keys(graph).forEach(key => {
     const { nodeDefinition, instance, } = graph[key];
-    Object.keys(nodeDefinition.params).forEach(paramKey => {
-      const param = nodeDefinition.params[paramKey];
-      if (param instanceof DynamicParameter) {
-        const targetNode = graph[param.getNodeId()];
-        const targetAudioModel = targetNode.instance.getAudioModel();
-        // console.log('targetNode', targetAudioModel);
-        console.log('connectParamWithNode', instance, targetAudioModel);
-        instance.updateDynamicParam(targetAudioModel);
-      }
-    });
+    const params = Object.keys(nodeDefinition.params)
+      .filter(paramKey => nodeDefinition.params[paramKey] instanceof DynamicParameter)
+      .map(paramKey => nodeDefinition.params[paramKey]);
+    if (!params.length) {
+      return;
+    }
+    const paramMap = params.reduce((acc, param) => {
+      const targetNode = graph[param.getNodeId()];
+      const targetAudioModel = targetNode.instance.getAudioModel();
+      return Object.assign(acc, { [param.getParamName()]: targetAudioModel });
+    }, {});
+    instance.updateParams(paramMap);
   });
 }
 
