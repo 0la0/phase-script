@@ -4,7 +4,7 @@ import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import envelopedOscilator from 'services/audio/synth/EnvelopedOscillator';
 import { shorthandTypes } from 'services/audio/synth/Oscillators';
-import DiscreteSignalParamter from './_DiscreteSignalParameter';
+import DiscreteSignalParameter from './_DiscreteSignalParameter';
 
 const GAIN_VALUE = 1;
 const DIV = 1000;
@@ -17,12 +17,19 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('ENVELOPED_OSC', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);
     this.modulationInputs = new Set();
-    // TODO: add modulation to paramMap
     this.paramMap = {
-      attack: new DiscreteSignalParamter(attack, paramTransform),
-      sustain: new DiscreteSignalParamter(sustain, paramTransform),
-      release: new DiscreteSignalParamter(release, paramTransform),
-      oscType: new DiscreteSignalParamter(shorthandTypes[oscType], val => val),
+      attack: new DiscreteSignalParameter(attack, paramTransform),
+      sustain: new DiscreteSignalParameter(sustain, paramTransform),
+      release: new DiscreteSignalParameter(release, paramTransform),
+      oscType: new DiscreteSignalParameter(shorthandTypes[oscType], val => val),
+      modulator: {
+        setParamValue: paramVal => {
+          if (paramVal.constructor.name !== 'PatchAudioModel') {
+            throw new Error('Modulator must be a PatchAudioModel');
+          }
+          this.modulationInputs.add(paramVal.connectionFn);
+        }
+      },
     };
   }
 

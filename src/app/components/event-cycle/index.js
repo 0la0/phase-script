@@ -57,9 +57,10 @@ class EventCycle extends BaseComponent {
       let msg = addr('b')
       let sig = sin(mtof(92))
       let val = 0.5
+      let mod = saw(mtof(92), 0x88).gain(200)
 
       addr("a")
-        .envSin(0, 0, 400, 0x1)
+        .envSin(0, 0, 400, mod, 0x1)
         // .gain(addr('c'), 0x7)
         // .pan(sin(1, 0x8), 0x4)
         // .bp(msg, 2, 0x1)
