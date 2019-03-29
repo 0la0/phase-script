@@ -4,10 +4,14 @@ import OSCILLATORS from 'services/audio/synth/Oscillators';
 export default class ContinuousOsc {
   constructor(frequency, type) {
     this.setType(type);
-    this.outputs = new Set();
-    this.modulationInputs = new Set();
-    this.isOn = false;
     this.frequency = frequency || 440;
+    this.gain = audioGraph.getAudioContext().createGain();
+    this.gain.gain.setValueAtTime(0, 0);
+    this.osc = audioGraph.getAudioContext().createOscillator();
+    this.osc.frequency.value = frequency;
+    this.osc.type = this.type;
+    this.osc.connect(this.gain);
+    this.osc.start();
   }
 
   setType(type) {
@@ -15,52 +19,23 @@ export default class ContinuousOsc {
   }
 
   connect(node) {
-    this.outputs.add(node);
-    if (this.osc) {
-      this.osc.connect(node);
-    }
+    this.gain.connect(node);
   }
 
   disconnect(node) {
-    this.outputs.delete(node);
-    if (this.osc) {
-      this.osc.disconnect(node);
-    }
+    this.osc.disconnect();
+    this.gain.disconnect(node);
   }
 
   getFrequencyParam() {
     return this.osc.frequency;
   }
 
-  start(frequency, startTime) {
-    this.osc = audioGraph.getAudioContext().createOscillator();
-    this.osc.type = this.type;
-    this.outputs.forEach(output => this.osc.connect(output));
-    this.osc.start(startTime);
+  startAtTime(time = 0) {
+    this.gain.gain.setValueAtTime(1, time);
   }
 
-  startAtTime(startTime) {
-    this.osc = audioGraph.getAudioContext().createOscillator();
-    this.osc.frequency.value = this.frequency;
-    this.osc.type = this.type;
-    this.outputs.forEach(output => this.osc.connect(output));
-    this.modulationInputs.forEach(modulationInput => modulationInput.connect(this.osc.frequency));
-    this.osc.start(startTime);
-  }
-
-  stop(offTime) {
-    if (!this.osc) {
-      console.warn('Attempting to stop a non-running oscillator');
-      return;
-    }
-    this.osc.stop(offTime);
-    this.osc = undefined;
-  }
-
-  setFrequency(frequency, time) {
-    if (!this.osc) { return; }
-    const targetTime = (time === undefined) ? 0 : time;
-    this.frequency = frequency;
-    this.osc.frequency.setValueAtTime(frequency, targetTime);
+  stop(time = 0) {
+    this.gain.gain.setValueAtTime(0, time);
   }
 }

@@ -5,12 +5,18 @@ import metronomeManager from 'services/metronome/metronomeManager';
 import ContinuousOscillator from 'services/audio/synth/ContinuousOscillator';
 import { shorthandTypes } from 'services/audio/synth/Oscillators';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
+import SignalParameter, { InputType, } from './_SignalParameter';
 
 export default class PatchContinuousOsc extends BaseUnitGenerator {
-  constructor({ frequency, oscType }) {
+  constructor(frequency, oscType) {
     super();
-    this.osc = new ContinuousOscillator(frequency, shorthandTypes[oscType]);
+    const defaultFrequency = typeof frequency === 'number' ? frequency : 440;
+    this.osc = new ContinuousOscillator(defaultFrequency, shorthandTypes[oscType]);
     this.audioModel = new PatchAudioModel('CONTINUOUS_OSC', this.osc, PATCH_EVENT.EMPTY, PATCH_EVENT.SIGNAL);
+    this.paramMap = {
+      frequency: new SignalParameter(this.osc.getFrequencyParam(), defaultFrequency, new InputType().numeric().message().build()),
+      modulator: new SignalParameter(this.osc.getFrequencyParam(), defaultFrequency, new InputType().signal().build()),
+    };
     this.metronomeSchedulable = new MetronomeScheduler({
       start: () => this.osc.startAtTime(),
       stop: () => this.osc.stop(),
@@ -19,14 +25,20 @@ export default class PatchContinuousOsc extends BaseUnitGenerator {
     this.osc.startAtTime();
   }
 
-  updateParams({ frequency }, time) {
-    this.osc.setFrequency(frequency, time.audio);
-  }
-
-  updateDynamicParam(dynamicParam) {
-    dynamicParam.connectTo({
-      getInputType: () => 'SIGNAL',
-      getAudioModelInput: () => this.osc.getFrequencyParam(),
+  updateParams(params, time) {
+    if (!this.paramMap) {
+      return;
+    }
+    Object.keys(params).forEach((paramKey) => {
+      const paramVal = params[paramKey];
+      if (paramVal.constructor.name === 'DynamicParameter') {
+        console.log('TODO: received dynamicParam, fix');
+        return;
+      }
+      if (!this.paramMap[paramKey]) {
+        return;
+      }
+      this.paramMap[paramKey].setParamValue(paramVal, time);
     });
   }
 
@@ -35,7 +47,7 @@ export default class PatchContinuousOsc extends BaseUnitGenerator {
     metronomeManager.getScheduler().deregister(this.metronomeSchedulable);
   }
 
-  static fromParams(params) {
-    return new PatchContinuousOsc(params);
+  static fromParams({ frequency, oscType }) {
+    return new PatchContinuousOsc(frequency, oscType);
   }
 }

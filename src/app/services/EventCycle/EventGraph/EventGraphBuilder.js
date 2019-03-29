@@ -78,7 +78,7 @@ function connectNodes(graph) {
   });
 }
 
-function connectNodeParams(graph) {
+function connectNodeParams(graph, time) {
   Object.keys(graph).forEach(key => {
     const { nodeDefinition, instance, } = graph[key];
     const params = Object.keys(nodeDefinition.params)
@@ -92,7 +92,7 @@ function connectNodeParams(graph) {
       const targetAudioModel = targetNode.instance.getAudioModel();
       return Object.assign(acc, { [param.getParamName()]: targetAudioModel });
     }, {});
-    instance.updateParams(paramMap);
+    instance.updateParams(paramMap, time);
   });
 }
 
@@ -130,6 +130,6 @@ export function buildEventGraph(graphDefinition = {}, time) {
     }, {});
   disconnectOldNodes(currentBuiltGraph, builtNodes);
   connectNodes(builtNodes);
-  connectNodeParams(builtNodes);
+  connectNodeParams(builtNodes, time);
   currentBuiltGraph = builtNodes;
 }
