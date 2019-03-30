@@ -1,5 +1,4 @@
 import BaseComponent from 'components/_util/base-component';
-import Component from 'components/_util/component';
 import CycleManager from 'services/EventCycle/CycleManager';
 import style from './graphics-editor.css';
 import markup from './graphics-editor.html';
@@ -8,7 +7,11 @@ const KEY_CODE_ENTER = 13;
 
 const dom = [ 'cycleInput', ];
 
-class GraphicsEditor extends BaseComponent {
+export default class GraphicsEditor extends BaseComponent {
+  static get tag() {
+    return 'graphics-editor';
+  }
+
   constructor() {
     super(style, markup, dom);
     this.cycleLength = 16;
@@ -35,5 +38,3 @@ class GraphicsEditor extends BaseComponent {
     console.log('handleCycleChange', cycleString);
   }
 }
-
-export default new Component('graphics-editor', GraphicsEditor);

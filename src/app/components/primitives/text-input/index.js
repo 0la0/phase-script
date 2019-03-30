@@ -1,12 +1,15 @@
 import BaseComponent from 'components/_util/base-component';
-import Component from 'components/_util/component';
 import {
   reflectAttribute,
   reflectCallback
 } from 'components/_util/dom';
 import style from './text-input.css';
 
-class TextInput extends BaseComponent {
+export default class TextInput extends BaseComponent {
+  static get tag() {
+    return 'text-input';
+  }
+
   constructor() {
     super(
       style,
@@ -21,5 +24,3 @@ class TextInput extends BaseComponent {
     reflectCallback(this, 'change', this.dom.textInput);
   }
 }
-
-export default new Component('text-input', TextInput);

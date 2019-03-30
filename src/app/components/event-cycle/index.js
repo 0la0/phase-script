@@ -1,5 +1,4 @@
 import BaseComponent from 'components/_util/base-component';
-import Component from 'components/_util/component';
 import { audioEventBus } from 'services/EventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
@@ -17,7 +16,11 @@ const KEY_CODE_ENTER = 13;
 
 const dom = [ 'cycleLength', 'cycleElement', 'cycleInput', 'cycleIndicator', 'cycleState' ];
 
-class EventCycle extends BaseComponent {
+export default class EventCycle extends BaseComponent {
+  static get tag() {
+    return 'event-cycle';
+  }
+
   constructor() {
     super(style, markup, dom);
     this.cycleLength = 16;
@@ -128,5 +131,3 @@ class EventCycle extends BaseComponent {
     this.dom.cycleInput.style.setProperty('font-size', `${event.target.value}px`);
   }
 }
-
-export default new Component('event-cycle', EventCycle);

@@ -1,5 +1,4 @@
 import BaseComponent from 'components/_util/base-component';
-import Component from 'components/_util/component';
 import Visualizer from 'services/audio/visualizer';
 import metronomeManager from 'services/metronome/metronomeManager';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
@@ -32,7 +31,11 @@ function getStateManager(fftVisualizer, visualizer) {
   };
 }
 
-class SoundVisualizer extends BaseComponent {
+export default class SoundVisualizer extends BaseComponent {
+  static get tag() {
+    return 'sound-visualizer';
+  }
+
   constructor() {
     super(style, markup, [ 'button', 'fftVisualizer' ]);
     this.visualizer = new Visualizer();
@@ -49,7 +52,6 @@ class SoundVisualizer extends BaseComponent {
   }
 
   disconnectedCallback() {
-    this.dac.disconnect();
     metronomeManager.getScheduler().deregister(this.metronomeSchedulable);
   }
 
@@ -71,5 +73,3 @@ class SoundVisualizer extends BaseComponent {
     this.stateManager.renderStrategy()();
   }
 }
-
-export default new Component('sound-visualizer', SoundVisualizer);

@@ -1,6 +1,5 @@
 import { WebGLRenderer } from 'three';
 import BaseComponent from 'components/_util/base-component';
-import Component from 'components/_util/component';
 import graphicsChannel from 'services/GraphicsChannel';
 import AnimationScheduler from 'services/AnimationScheduler';
 import { GraphicsManager } from './graphicsManager';
@@ -14,7 +13,11 @@ export const MESSAGE = {
   TICK: 'TICK',
 };
 
-class GraphicsRoot extends BaseComponent {
+export default class GraphicsRoot extends BaseComponent {
+  static get tag() {
+    return 'graphics-root';
+  }
+
   constructor() {
     super(style, markup, [ 'canvas', 'fullscreenButton' ]);
     this.graphicsManager = new GraphicsManager();
@@ -101,5 +104,3 @@ class GraphicsRoot extends BaseComponent {
     }
   }
 }
-
-export default new Component('graphics-root', GraphicsRoot);

@@ -1,10 +1,13 @@
 import BaseComponent from 'components/_util/base-component';
-import Component from 'components/_util/component';
 import { clamp } from 'services/Math';
 import { buildAttributeCallback } from 'components/_util/dom';
 import style from './slider-horizontal.css';
 
-class SliderHorizontal extends BaseComponent {
+export default class SliderHorizontal extends BaseComponent {
+  static get tag() {
+    return 'slider-horizontal';
+  }
+
   constructor() {
     super(
       style,
@@ -58,5 +61,3 @@ class SliderHorizontal extends BaseComponent {
     this.dom.tracker.style.setProperty('width', `${value * 100}%`);
   }
 }
-
-export default new Component('slider-horizontal', SliderHorizontal);

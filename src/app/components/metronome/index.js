@@ -1,10 +1,13 @@
 import BaseComponent from 'components/_util/base-component';
-import Component from 'components/_util/component';
 import metronomeManager from 'services/metronome/metronomeManager';
 import style from './metronome-ctrl.css';
 import markup from './metronome-ctrl.html';
 
-class Metronome extends BaseComponent {
+export default class Metronome extends BaseComponent {
+  static get tag() {
+    return 'metronome-ctrl';
+  }
+
   constructor() {
     super(style, markup, ['metronomeButton']);
     this.isRunning = false;
@@ -38,5 +41,3 @@ class Metronome extends BaseComponent {
     metronomeManager.getMetronome().setTempo(value);
   }
 }
-
-export default new Component('metronome-ctrl', Metronome);

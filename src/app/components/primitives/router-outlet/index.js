@@ -1,9 +1,10 @@
-import Component from 'components/_util/component';
 import router from 'services/Router';
 
-const COMPONENT_NAME = 'router-outlet';
+export default class RouterOutlet extends HTMLElement {
+  static get tag() {
+    return 'router-outlet';
+  }
 
-class RouterOutlet extends HTMLElement {
   constructor() {
     super();
     this.template = document.createElement('template');
@@ -23,5 +24,3 @@ class RouterOutlet extends HTMLElement {
     [...this.children].forEach(child => this.removeChild(child));
   }
 }
-
-export default new Component(COMPONENT_NAME, RouterOutlet);

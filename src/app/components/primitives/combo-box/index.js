@@ -1,9 +1,12 @@
 import BaseComponent from 'components/_util/base-component';
-import Component from 'components/_util/component';
 import { reflectCallback } from 'components/_util/dom';
 import style from './combo-box.css';
 
-class ComboBox extends BaseComponent {
+export default class ComboBox extends BaseComponent {
+  static get tag() {
+    return 'combo-box';
+  }
+
   constructor() {
     super(
       style,
@@ -35,5 +38,3 @@ class ComboBox extends BaseComponent {
     this.dom.selectBox.setAttribute('selectedIndex', 0);
   }
 }
-
-export default new Component('combo-box', ComboBox);

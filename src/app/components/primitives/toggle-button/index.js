@@ -1,5 +1,4 @@
 import BaseComponent from 'components/_util/base-component';
-import Component from 'components/_util/component';
 import { buildAttributeCallback } from 'components/_util/dom';
 import buttonStyle from 'components/primitives/text-button/text-button.css';
 
@@ -14,7 +13,11 @@ const markup = '<button id="button"/>';
 
 const BUTTON_ACTIVE = 'button--active';
 
-class ToggleButton extends BaseComponent {
+export default class ToggleButton extends BaseComponent {
+  static get tag() {
+    return 'toggle-button';
+  }
+
   constructor() {
     super(style, markup, ['button']);
     this.isOn = false;
@@ -42,5 +45,3 @@ class ToggleButton extends BaseComponent {
     this.dom.button.innerText = this.isOn ? this.onText : this.offText;
   }
 }
-
-export default new Component('toggle-button', ToggleButton);

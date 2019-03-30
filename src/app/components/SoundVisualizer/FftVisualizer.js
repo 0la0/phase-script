@@ -1,5 +1,4 @@
 import BaseComponent from 'components/_util/base-component';
-import Component from 'components/_util/component';
 import { mapToRange } from 'services/Math';
 
 const style = `
@@ -28,7 +27,11 @@ function getGraphicsContext(canvasElement, width, height) {
   return g2d;
 }
 
-class FftVisualizer extends BaseComponent {
+export default class FftVisualizer extends BaseComponent {
+  static get tag() {
+    return 'fft-visualizer';
+  }
+
   constructor() {
     super(style, '<canvas id="canvas"></canvas>', [ 'canvas' ]);
     this.g2d = getGraphicsContext(this.dom.canvas, WIDTH, HEIGHT);
@@ -75,5 +78,3 @@ class FftVisualizer extends BaseComponent {
     }
   }
 }
-
-export default new Component('fft-visualizer', FftVisualizer);

@@ -1,9 +1,0 @@
-.frequency-inlet {
-  border: var(--border-default);
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  position: absolute;
-  left: 0;
-  top: -18px;
-}
