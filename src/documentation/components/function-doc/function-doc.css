@@ -1,0 +1,27 @@
+a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.entry {
+  margin: 8px 0;
+  font-size: 18px;
+}
+
+.definition {
+
+}
+
+.param {
+  font-style: italic;
+}
+
+.description {
+  margin-left: 12px;
+  font-size: 16px;
+}
+
+.return-value {
+  margin-left: 8px;
+  font-size: 16px;
+}

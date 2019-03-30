@@ -5,7 +5,7 @@ const webpackConfig = {
   context: path.resolve(__dirname, 'src'),
   entry: {
     main: './app/main.js',
-    documentation: './documentation/main.js',
+    documentation: './documentation/documentation.js',
   },
   output: {
     publicPath: 'scripts',
@@ -15,12 +15,6 @@ const webpackConfig = {
     chunkFilename: '[id].chunk.js'
   },
   devtool: 'source-map',
-  // plugins: [],
-  optimization: {
-    // splitChunks: {
-    //   chunks: 'all'
-    // }
-  },
   module: {
     rules: [
       {

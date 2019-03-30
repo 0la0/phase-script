@@ -16,8 +16,9 @@ a {
 }
 
 .main-container {
-  max-width: 720px;
+  max-width: 1020px;
   margin: 16px auto;
+  padding: 16px;
   font-family: Hack, monospace;
 }
 
@@ -31,15 +32,11 @@ a {
   font-style: italic;
 }
 
+.sub-title {
+  font-weight: unset;
+}
+
 .content-block {
   font-size: 18px;
   margin: 16px 0;
-}
-
-.entry {
-  margin: 4px 0;
-}
-
-.param {
-  font-style: italic;
 }
