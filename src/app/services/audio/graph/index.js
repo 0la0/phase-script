@@ -10,7 +10,7 @@ function initAudioWorklets(audioContext) {
     console.log('Audio worklets not supported');
     return;
   }
-  const workletPath = './worklets/';
+  const workletPath = './app/services/audio/_worklets/';
   const loadAllWorklets = workletFilenames.map(fileName =>
     audioContext.audioWorklet.addModule(`${workletPath}${fileName}.js`));
   Promise.all(loadAllWorklets)

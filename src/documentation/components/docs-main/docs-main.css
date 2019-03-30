@@ -31,7 +31,15 @@ a {
   font-style: italic;
 }
 
-.text-block {
+.content-block {
   font-size: 18px;
   margin: 16px 0;
+}
+
+.entry {
+  margin: 4px 0;
+}
+
+.param {
+  font-style: italic;
 }

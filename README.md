@@ -1,4 +1,4 @@
-### Cycle Script (In development)
+### PhaseScript (In development)
 A web based environment for real-time sound synthesis and pattern generation.  
 The initial intent of this project was to create non-linear pattern generators for midi devices using native web components. It has since transformed into a live coding environment for sound, midi, and (hopefully) graphics.
 

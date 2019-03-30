@@ -1,6 +1,6 @@
 import loadSample from './SampleLoader';
 
-const BASE_PATH = 'assets/audio/';
+const BASE_PATH = 'app/assets/audio/';
 
 const fileMap = {
   'hat': `${BASE_PATH}hat_loFi.wav`,
