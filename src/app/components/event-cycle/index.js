@@ -1,4 +1,4 @@
-import BaseComponent from 'components/_util/base-component';
+import BaseComponent from 'common/util/base-component';
 import { audioEventBus } from 'services/EventBus';
 import metronomeManager from 'services/metronome/metronomeManager';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';

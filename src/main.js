@@ -1,4 +1,4 @@
-import 'components/_util/componentManager';
+import 'components/app/componentManager';
 import App from 'components/app';
 
 document.addEventListener('DOMContentLoaded', () =>

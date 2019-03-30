@@ -1,6 +1,6 @@
-import BaseComponent from 'components/_util/base-component';
-import { buildAttributeCallback } from 'components/_util/dom';
-import buttonStyle from 'components/primitives/text-button/text-button.css';
+import BaseComponent from 'common/util/base-component';
+import { buildAttributeCallback } from 'common/util/dom';
+import buttonStyle from '../text-button/text-button.css';
 
 const style = `
   ${buttonStyle}

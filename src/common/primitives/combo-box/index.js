@@ -1,5 +1,5 @@
-import BaseComponent from 'components/_util/base-component';
-import { reflectCallback } from 'components/_util/dom';
+import BaseComponent from 'common/util/base-component';
+import { reflectCallback } from 'common/util/dom';
 import style from './combo-box.css';
 
 export default class ComboBox extends BaseComponent {

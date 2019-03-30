@@ -1,8 +1,8 @@
-import BaseComponent from 'components/_util/base-component';
+import BaseComponent from 'common/util/base-component';
 import {
   reflectCallback,
   reflectAttribute
-} from 'components/_util/dom';
+} from 'common/util/dom';
 import style from './text-button.css';
 
 export default class TextButton extends BaseComponent {

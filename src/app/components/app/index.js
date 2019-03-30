@@ -1,5 +1,5 @@
-import BaseComponent from 'components/_util/base-component';
-import router from 'services/Router';
+import BaseComponent from 'common/util/base-component';
+import router from 'common/primitives/Router';
 import markup from './app-entry.html';
 import styles from './app-entry.css';
 

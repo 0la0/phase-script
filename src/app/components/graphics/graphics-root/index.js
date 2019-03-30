@@ -1,5 +1,5 @@
 import { WebGLRenderer } from 'three';
-import BaseComponent from 'components/_util/base-component';
+import BaseComponent from 'common/util/base-component';
 import graphicsChannel from 'services/GraphicsChannel';
 import AnimationScheduler from 'services/AnimationScheduler';
 import { GraphicsManager } from './graphicsManager';

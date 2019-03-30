@@ -7,7 +7,7 @@ const commonStyles = `
   p {
     margin: 0;
   }
-`; // TODO: replace with components
+`;
 
 function buildDomMap(shadowRoot, elements) {
   if (!elements) { return {}; }

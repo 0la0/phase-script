@@ -1,8 +1,8 @@
-import BaseComponent from 'components/_util/base-component';
+import BaseComponent from 'common/util/base-component';
 import {
   reflectAttribute,
   reflectCallback
-} from 'components/_util/dom';
+} from 'common/util/dom';
 import style from './text-input.css';
 
 export default class TextInput extends BaseComponent {

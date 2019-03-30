@@ -1,4 +1,4 @@
-import BaseComponent from 'components/_util/base-component';
+import BaseComponent from 'common/util/base-component';
 import CycleManager from 'services/EventCycle/CycleManager';
 import style from './graphics-editor.css';
 import markup from './graphics-editor.html';

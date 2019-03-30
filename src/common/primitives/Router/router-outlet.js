@@ -1,4 +1,4 @@
-import router from 'services/Router';
+import router from './index';
 
 export default class RouterOutlet extends HTMLElement {
   static get tag() {

@@ -1,4 +1,4 @@
-import BaseComponent from 'components/_util/base-component';
+import BaseComponent from 'common/util/base-component';
 import { mapToRange } from 'services/Math';
 
 const style = `

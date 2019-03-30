@@ -1,4 +1,4 @@
-import BaseComponent from 'components/_util/base-component';
+import BaseComponent from 'common/util/base-component';
 import EventCycle from 'components/event-cycle';
 import style from './sound-root.css';
 import markup from './sound-root.html';

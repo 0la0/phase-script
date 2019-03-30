@@ -1,6 +1,6 @@
-import BaseComponent from 'components/_util/base-component';
+import BaseComponent from 'common/util/base-component';
 import { clamp } from 'services/Math';
-import { buildAttributeCallback } from 'components/_util/dom';
+import { buildAttributeCallback } from 'common/util/dom';
 import style from './slider-horizontal.css';
 
 export default class SliderHorizontal extends BaseComponent {

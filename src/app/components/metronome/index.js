@@ -1,4 +1,4 @@
-import BaseComponent from 'components/_util/base-component';
+import BaseComponent from 'common/util/base-component';
 import metronomeManager from 'services/metronome/metronomeManager';
 import style from './metronome-ctrl.css';
 import markup from './metronome-ctrl.html';
