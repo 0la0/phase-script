@@ -1,0 +1,23 @@
+a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.title {
+  text-align: center;
+  font-weight: unset;
+  font-size: 42px;
+}
+
+.title-italic {
+  font-style: italic;
+}
+
+.sub-title {
+  font-weight: unset;
+}
+
+.content-block {
+  font-size: 18px;
+  margin: 16px 0;
+}
