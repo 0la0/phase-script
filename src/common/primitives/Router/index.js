@@ -11,7 +11,8 @@ class Router {
     this.basePath = window.location.pathname === '/' ? '' : removeTailingSlash(window.location.pathname);
     window.addEventListener('hashchange', () => this.replaceRoute(`/${location.hash}`));
     setTimeout(() => {
-      const initialRoute = `${this.basePath}/${location.hash}`;
+      const initialhash = location.hash || '#/';
+      const initialRoute = `${this.basePath}/${initialhash}`;
       const path = this.routes.has(initialRoute) ? initialRoute : '/#/';
       this.replaceRoute(path);
     }, 100);
