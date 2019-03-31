@@ -1,14 +1,13 @@
 {
-  "name": "midi-components",
+  "name": "PhaseScript",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build:assets": "cp -r src/assets dist/assets",
-    "build:copyworklets": "cp -r src/worklets dist/worklets",
-    "build:copyhtml": "cp -r src/index.html dist/index.html",
+    "build:assets": "mkdir dist/app && cp -r src/app/assets dist/app/assets",
+    "build:copyhtml": "cp src/index.html dist/index.html && cp src/documentation/index.html dist/documentation/index.html",
     "build:webpack": "webpack --mode=production --inline --colors --progress --content-base src",
-    "build": "npm run clean; npm run build:webpack; npm run build:assets; npm run build:copyworklets; npm run build:copyhtml",
+    "build": "npm run clean; npm run build:webpack; mkdir dist/documentation; npm run build:copyhtml; npm run build:assets",
     "clean": "rm -rf dist",
     "start": "webpack-dev-server --mode=development --inline --colors --progress --content-base src",
     "test": "NODE_PATH=./src/app mocha -r esm test/**/*.test.js",
@@ -20,7 +19,7 @@
     "mocha": "^6.0.2",
     "raw-loader": "^1.0.0",
     "webpack": "^v5.0.0-alpha.11",
-    "webpack-cli": "^3.2.3",
+    "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
