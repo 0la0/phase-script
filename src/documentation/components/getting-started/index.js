@@ -45,14 +45,18 @@ sin(110, mod, 0x1).gain(0.1, 0x3).dac()`
   },
 ];
 
-function getCopyButton(textToCopy) {
+function getCopyButton(textToCopy, copyAck) {
   const button = document.createElement('button');
   button.classList.add('copy-button');
   button.textContent = 'Copy to Clipboard';
   button.onclick = (event) => {
     event.preventDefault();
     navigator.clipboard.writeText(textToCopy)
-      .then(() => console.log('TODO: pop toast'))
+      .then(() => new Promise(resolve => {
+        copyAck.classList.add('copy-ack-active');
+        setTimeout(resolve, 2500);
+      }))
+      .then(() => copyAck.classList.remove('copy-ack-active'))
       .catch(error => console.log(error));
   };
   return button;
@@ -73,16 +77,19 @@ export default class DocsMain extends BaseComponent {
         const section = document.createElement('section');
         const title = document.createElement('h2');
         const codeExample = document.createElement('code');
-        // const copyAck = document.createElement('div');
-        const copyToClipboard = getCopyButton(example.code);
+        const copyAck = document.createElement('div');
+        const copyToClipboard = getCopyButton(example.code, copyAck);
         section.classList.add('content-block');
         title.classList.add('sub-title');
         title.textContent = example.name;
         codeExample.classList.add('code-example');
         codeExample.textContent = example.code;
+        copyAck.classList.add('copy-ack');
+        copyAck.textContent = 'Copied to clipboard';
         section.appendChild(title);
         section.appendChild(codeExample);
         section.appendChild(copyToClipboard);
+        section.appendChild(copyAck);
         return section;
       })
       .forEach(section => this.dom.exampleContainer.appendChild(section));

@@ -47,6 +47,7 @@ h1 {
 
 .copy-button {
   background: unset;
+  background-color: var(--color-grey-light);
   border: 1px solid var(--color-black);
   margin: unset;
   padding: 4px;
@@ -55,4 +56,22 @@ h1 {
   right: 0;
   border-radius: var(--border-radius);
   cursor: pointer;
+}
+
+.copy-ack {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: var(--color-accent);
+  border-radius: var(--border-radius);
+  color: var(--color-black);
+  padding: 4px;
+  opacity: 0;
+  transform: translateY(30px) scaleY(0);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.copy-ack-active {
+  opacity: 1;
+  transform: translateY(0px) scaleY(1);
 }
