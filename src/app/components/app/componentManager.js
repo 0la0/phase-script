@@ -1,14 +1,5 @@
 import App from 'components/app';
-
 import Primitives from 'common/primitives';
-// PRIMITIVES
-// import TextButton from 'components/primitives/text-button';
-// import ToggleButton from 'components/primitives/toggle-button';
-// import SliderHorizontal from 'components/primitives/slider-horizontal';
-// import ComboBox from 'components/primitives/combo-box';
-// import RouterOutlet from 'components/primitives/router-outlet';
-// import TextInput from 'components/primitives/text-input';
-
 import Metronome from 'components/metronome';
 import GraphicsRoot from 'components/graphics/graphics-root';
 import SoundRoot from 'components/sound-root';
@@ -24,7 +15,6 @@ const components = [
   Primitives.SliderHorizontal,
   Primitives.RouterOutlet,
   Primitives.TextInput,
-
   App,
   Metronome,
   GraphicsRoot,
