@@ -2,8 +2,11 @@ import eventGraphApi from 'services/EventCycle/EventGraph/EventGraphFunctions/Ex
 import { patternApi } from 'services/EventCycle/PatternFunctions/ExposedApi';
 import { utilApi } from 'services/EventCycle/Util';
 
+const patternFunctions = patternApi.map(ele => ele.fn);
 const eventGraphFunctions = eventGraphApi.map(ele => ele.fn);
-const exposedApi = [].concat(patternApi, eventGraphFunctions, utilApi);
+const utilFunctions = utilApi.map(ele => ele.fn);
+
+const exposedApi = [].concat(patternFunctions, eventGraphFunctions, utilFunctions);
 const apiNamespace = exposedApi.map(fn => fn.name).join(', ');
 
 const exposedEventGraph = eventGraphApi.map(({ name, fn, }) => {

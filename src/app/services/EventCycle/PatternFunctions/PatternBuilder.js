@@ -35,7 +35,7 @@ class PatternBuilder extends PatternTransformer{
   }
 }
 
-export default function p(str) {
+export default function pattern(str) {
   if (typeof str !== 'string') {
     throw new TypeError(`Illegal Argument: string required for p(${str})`);
   }

@@ -1,9 +1,5 @@
 import { mtof, ftom } from 'services/midi/util';
 
-// function mtof() {}
-//
-// function ftom() {}
-
 function intArray(base, length) {
   const arr = [];
   for (let i = base; i < base + length; i++) {
@@ -13,7 +9,6 @@ function intArray(base, length) {
 }
 
 function range(...args) {
-  console.log('callRange', args);
   if (!args.length) {
     throw new Error('range requires at least one argument');
   }
@@ -30,4 +25,24 @@ function range(...args) {
   throw new Error('range requires one or two integers');
 }
 
-export const utilApi = [ mtof, ftom, range ];
+function buildUtilFunction(name, fn) {
+  const scopedFuncitonName = `_${name}`;
+  return { [scopedFuncitonName]: function(...args) {
+    return fn(...args);
+  } }[scopedFuncitonName];
+}
+
+export const utilApi = [
+  {
+    name: 'mtofm',
+    fn: buildUtilFunction('mtof', mtof)
+  },
+  {
+    name: 'ftom',
+    fn: buildUtilFunction('ftom', ftom)
+  },
+  {
+    name: 'range',
+    fn: buildUtilFunction('range', range)
+  }
+];

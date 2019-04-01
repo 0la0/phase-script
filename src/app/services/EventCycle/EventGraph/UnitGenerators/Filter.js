@@ -3,6 +3,7 @@ import ResFilter from 'services/audio/resFilter';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import SignalParameter, { InputType } from './_SignalParameter';
+import DynamicParameter from 'services/EventCycle/EventGraph/EventGraphFunctions/DynamicParameter';
 
 export default class PatchFilter extends BaseUnitGenerator {
   constructor({ type, frequency, q, }) {
@@ -23,7 +24,7 @@ export default class PatchFilter extends BaseUnitGenerator {
     }
     Object.keys(params).forEach(paramKey => {
       const paramVal = params[paramKey];
-      if (paramVal.constructor.name === 'DynamicParameter') {
+      if (paramVal instanceof DynamicParameter) {
         console.log('TODO: received dynamicParam, fix');
         return;
       }

@@ -9,7 +9,7 @@ class Router {
   constructor() {
     this.routes = new Map();
     this.basePath = window.location.pathname === '/' ? '' : removeTailingSlash(window.location.pathname);
-    window.addEventListener('hashchange', () => this.replaceRoute(`/${location.hash}`));
+    window.addEventListener('hashchange', () => this.replaceRoute(`${this.basePath}/${location.hash}`));
     setTimeout(() => {
       const initialhash = location.hash || '#/';
       const initialRoute = `${this.basePath}/${initialhash}`;

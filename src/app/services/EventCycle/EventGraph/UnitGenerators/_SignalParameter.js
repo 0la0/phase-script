@@ -1,3 +1,5 @@
+import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
+
 // TODO: COMBINE WITH PATCH PARAM TYPES
 const InputTypes = {
   NUMERIC: 'NUMERIC',
@@ -79,7 +81,7 @@ export default class SignalParameter {
   }
 
   setParamValue(value, time) {
-    if (value.constructor.name === 'PatchAudioModel') {
+    if (value instanceof PatchAudioModel) {
       this._setDynamicParam(value);
       return;
     }

@@ -5,6 +5,7 @@ import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import envelopedOscilator from 'services/audio/synth/EnvelopedOscillator';
 import { shorthandTypes } from 'services/audio/synth/Oscillators';
 import DiscreteSignalParameter from './_DiscreteSignalParameter';
+import DynamicParameter from 'services/EventCycle/EventGraph/EventGraphFunctions/DynamicParameter';
 
 const GAIN_VALUE = 1;
 const DIV = 1000;
@@ -24,7 +25,7 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
       oscType: new DiscreteSignalParameter(shorthandTypes[oscType], val => val),
       modulator: {
         setParamValue: paramVal => {
-          if (paramVal.constructor.name !== 'PatchAudioModel') {
+          if (!(paramVal instanceof PatchAudioModel)) {
             throw new Error('Modulator must be a PatchAudioModel');
           }
           this.modulationInputs.add(paramVal.connectionFn);
@@ -53,7 +54,7 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
     }
     Object.keys(params).forEach((paramKey) => {
       const paramVal = params[paramKey];
-      if (paramVal.constructor.name === 'DynamicParameter') {
+      if (paramVal instanceof DynamicParameter) {
         console.log('TODO: received dynamicParam, fix');
         return;
       }

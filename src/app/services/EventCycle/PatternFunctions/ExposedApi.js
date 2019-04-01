@@ -1,11 +1,26 @@
 import PatternTransformer from './PatternTransformer';
-import p from './PatternBuilder';
-const speed = (...args) => new PatternTransformer().speed(...args);
-const rotate = (...args) => new PatternTransformer().rotate(...args);
-const reverse = (...args) => new PatternTransformer().reverse(...args);
-const repeat = (...args) => new PatternTransformer().repeat(...args);
-const offset = (...args) => new PatternTransformer().offset(...args);
-const degrade = (...args) => new PatternTransformer().degrade(...args);
-const every = (...args) => new PatternTransformer().every(...args);
+import pattern from './PatternBuilder';
 
-export const patternApi = [ p, degrade, repeat, reverse, offset, rotate, speed, every ];
+function buildPatternFunction(name) {
+  if (name === 'p') {
+    const scopedFuncitonName = 'p';
+    return { [scopedFuncitonName]: function(...args) {
+      return pattern(...args);
+    } }[scopedFuncitonName];
+  }
+  const scopedFuncitonName = `${name}`;
+  return { [scopedFuncitonName]: function(...args) {
+    return new PatternTransformer()[name](...args);
+  } }[scopedFuncitonName];
+}
+
+export const patternApi = [
+  'p',
+  'speed',
+  'rotate',
+  'reverse',
+  'repeat',
+  'offset',
+  'degrade',
+  'every',
+].map(name => ({ name, fn: buildPatternFunction(name) }));

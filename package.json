@@ -5,12 +5,12 @@
   "main": "dist/index.js",
   "scripts": {
     "build:assets": "mkdir dist/app && cp -r src/app/assets dist/app/assets",
-    "build:cname": "echo $'www.phasescripter.com\nphasescripter.com' > dist/CNAME",
     "build:copyhtml": "cp src/index.html dist/index.html && cp src/documentation/index.html dist/documentation/index.html",
     "build:webpack": "webpack --mode=production --inline --colors --progress --content-base src",
-    "build": "npm run clean; npm run build:webpack; mkdir dist/documentation; npm run build:copyhtml; npm run build:assets; npm run build:cname",
-    "deploy": "npm run build && git-directory-deploy --directory dist --branch gh-pages",
+    "build": "npm run clean; npm run build:webpack; mkdir dist/documentation; npm run build:copyhtml; npm run build:assets",
+    "deploy": "npm run build && firebase deploy",
     "clean": "rm -rf dist",
+    "serve-local": "firebase serve --only hosting",
     "start": "webpack-dev-server --mode=development --inline --colors --progress --content-base src",
     "test": "NODE_PATH=./src/app mocha -r esm test/**/*.test.js",
     "lint": "eslint src"
@@ -18,7 +18,6 @@
   "devDependencies": {
     "eslint": "^5.15.1",
     "esm": "^3.2.16",
-    "git-directory-deploy": "^1.5.1",
     "mocha": "^6.0.2",
     "raw-loader": "^1.0.0",
     "webpack": "^v5.0.0-alpha.11",

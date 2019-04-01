@@ -6,6 +6,7 @@ import ContinuousOscillator from 'services/audio/synth/ContinuousOscillator';
 import { shorthandTypes } from 'services/audio/synth/Oscillators';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
 import SignalParameter, { InputType, } from './_SignalParameter';
+import DynamicParameter from 'services/EventCycle/EventGraph/EventGraphFunctions/DynamicParameter';
 
 export default class PatchContinuousOsc extends BaseUnitGenerator {
   constructor(frequency, oscType) {
@@ -31,7 +32,7 @@ export default class PatchContinuousOsc extends BaseUnitGenerator {
     }
     Object.keys(params).forEach((paramKey) => {
       const paramVal = params[paramKey];
-      if (paramVal.constructor.name === 'DynamicParameter') {
+      if (paramVal instanceof DynamicParameter) {
         console.log('TODO: received dynamicParam, fix');
         return;
       }
