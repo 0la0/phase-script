@@ -2,7 +2,8 @@ export const PARAM_TYPES = {
   FLOAT: 'float',
   FUNCTION: 'function',
   STRING: 'string',
-  GRAPH_NODE: 'graphNode'
+  GRAPH_NODE: 'graphNode',
+  NUMBER: 'number',
 };
 export const CONSTANTS = {
   ID: 'ID',
@@ -18,6 +19,7 @@ const gainNode = {
     },
     {
       paramName: CONSTANTS.ID,
+      type: PARAM_TYPES.NUMBER,
       isTaggable: true,
     }
   ]
@@ -33,6 +35,7 @@ const panNode = {
     },
     {
       paramName: CONSTANTS.ID,
+      type: PARAM_TYPES.NUMBER,
       isTaggable: true,
     }
   ]
@@ -44,6 +47,7 @@ const dacNode = {
   constantDefinitions: [
     {
       paramName: CONSTANTS.ID,
+      type: PARAM_TYPES.NUMBER,
       value: CONSTANTS.ID,
       isTaggable: true,
     }
@@ -79,6 +83,7 @@ const reverbNode = {
     },
     {
       paramName: CONSTANTS.ID,
+      type: PARAM_TYPES.NUMBER,
       isTaggable: true,
     }
   ]
@@ -102,6 +107,7 @@ const chorusNode = {
     },
     {
       paramName: CONSTANTS.ID,
+      type: PARAM_TYPES.NUMBER,
       isTaggable: true,
     }
   ]
@@ -125,6 +131,7 @@ const delayNode = {
     },
     {
       paramName: CONSTANTS.ID,
+      type: PARAM_TYPES.NUMBER,
       isTaggable: true,
     }
   ]
@@ -151,6 +158,7 @@ const lowpassNode = {
     },
     {
       paramName: CONSTANTS.ID,
+      type: PARAM_TYPES.NUMBER,
       isTaggable: true,
     }
   ]
@@ -177,6 +185,7 @@ const highpassNode = {
     },
     {
       paramName: CONSTANTS.ID,
+      type: PARAM_TYPES.NUMBER,
       isTaggable: true,
     }
   ]
@@ -203,6 +212,7 @@ const bandpassNode = {
     },
     {
       paramName: CONSTANTS.ID,
+      type: PARAM_TYPES.NUMBER,
       isTaggable: true,
     }
   ]
@@ -223,6 +233,7 @@ const waveshaperNode = {
     },
     {
       paramName: CONSTANTS.ID,
+      type: PARAM_TYPES.NUMBER,
       isTaggable: true,
     }
   ]
@@ -295,6 +306,7 @@ const messageThresholdNode = {
     },
     {
       paramName: CONSTANTS.ID,
+      type: PARAM_TYPES.NUMBER,
       isTaggable: true,
     }
   ]
@@ -348,6 +360,7 @@ const bitcrusherNode = {
     },
     {
       paramName: CONSTANTS.ID,
+      type: PARAM_TYPES.NUMBER,
       isTaggable: true,
     }
   ]
@@ -363,6 +376,7 @@ const gateNode = {
     },
     {
       paramName: CONSTANTS.ID,
+      type: PARAM_TYPES.NUMBER,
       isTaggable: true,
     }
   ]
@@ -382,6 +396,7 @@ const thresholdEventNode = {
     },
     {
       paramName: CONSTANTS.ID,
+      type: PARAM_TYPES.NUMBER,
       isTaggable: true,
     }
   ]
@@ -407,6 +422,7 @@ const envelopedOscParams = [
   },
   {
     paramName: CONSTANTS.ID,
+    type: PARAM_TYPES.NUMBER,
     isTaggable: true,
   },
 ];
@@ -475,6 +491,7 @@ const continuousOscParams = [
   },
   {
     paramName: CONSTANTS.ID,
+    type: PARAM_TYPES.NUMBER,
     isTaggable: true,
   }
 ];
