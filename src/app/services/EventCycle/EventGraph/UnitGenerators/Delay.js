@@ -2,20 +2,28 @@ import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/Bas
 import Delay from 'services/audio/delay';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
+import SignalParameter, { InputType, } from './_SignalParameter';
 
-function msToSec(ms) {
-  return ms / 1000;
-}
+const msToSec = ms => ms / 1000;
 
 export default class PatchDelay extends BaseUnitGenerator {
   constructor({ delayMs, feedback, wet  }) {
     super();
-    this.delay = new Delay(msToSec(delayMs), feedback, wet);
+    const defaultDelay = this._ifNumberOr(msToSec(delayMs), msToSec(120));
+    const defaultFeedback = this._ifNumberOr(feedback, 0.5);
+    const defaultWet = this._ifNumberOr(wet, 0.5);
+    this.delay = new Delay(defaultDelay, defaultFeedback, defaultWet);
     this.audioModel = new PatchAudioModel('DELAY', this.delay, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
+    this.paramMap = {
+      delayMs: new SignalParameter(this.delay.getDelayParam(), defaultDelay, new InputType().numeric().message().build()),
+      feedback: new SignalParameter(this.delay.getFeedbackParam(), defaultFeedback, new InputType().numeric().message().build()),
+      wet: new SignalParameter(this.delay.getWetParam(), defaultWet, new InputType().numeric().message().build()),
+    };
   }
 
-  updateParams({ delayMs, feedback, wet }, time) {
-    this.delay.updateParams(msToSec(delayMs), feedback, wet, time.audio);
+  updateParams(params, time) {
+    const updatedParams = Object.assign({}, params, { delayMs: msToSec(params.delayMs), });
+    super.updateParams(updatedParams, time);
   }
 
   static fromParams(params) {

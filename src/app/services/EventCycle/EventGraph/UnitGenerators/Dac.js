@@ -9,7 +9,6 @@ class PatchDac extends BaseUnitGenerator {
     this.audioModel = new PatchAudioModel('DAC', new Dac(), PATCH_EVENT.SIGNAL, PATCH_EVENT.EMPTY);
   }
   disconnect() {}
-  updateParams() {}
   fromParams() { return this; }
 }
 export default new PatchDac();

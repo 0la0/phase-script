@@ -56,7 +56,7 @@ export default class EventCycle extends BaseComponent {
 
     addr('a')
     .envSin(0, 0, 400)
-    .crush(8, 0.5, 0.5, 0x8)
+    .delay(120, 0.5, 0.5, 0x77)
     .gain(0.3, 0x7)
     .dac()
     `;
