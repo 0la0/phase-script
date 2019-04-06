@@ -16,8 +16,8 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-    "eslint": "^5.15.1",
-    "esm": "^3.2.16",
+    "eslint": "^5.16.0",
+    "esm": "^3.2.22",
     "mocha": "^6.0.2",
     "raw-loader": "^1.0.0",
     "webpack": "^v5.0.0-alpha.11",

@@ -6,12 +6,11 @@ import ContinuousOscillator from 'services/audio/synth/ContinuousOscillator';
 import { shorthandTypes } from 'services/audio/synth/Oscillators';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
 import SignalParameter, { InputType, } from './_SignalParameter';
-import DynamicParameter from 'services/EventCycle/EventGraph/EventGraphFunctions/DynamicParameter';
 
 export default class PatchContinuousOsc extends BaseUnitGenerator {
   constructor(frequency, oscType) {
     super();
-    const defaultFrequency = typeof frequency === 'number' ? frequency : 440;
+    const defaultFrequency = this._ifNumberOr(frequency, 440);
     this.osc = new ContinuousOscillator(defaultFrequency, shorthandTypes[oscType]);
     this.audioModel = new PatchAudioModel('CONTINUOUS_OSC', this.osc, PATCH_EVENT.EMPTY, PATCH_EVENT.SIGNAL);
     this.paramMap = {
@@ -24,23 +23,6 @@ export default class PatchContinuousOsc extends BaseUnitGenerator {
     });
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
     this.osc.startAtTime();
-  }
-
-  updateParams(params, time) {
-    if (!this.paramMap) {
-      return;
-    }
-    Object.keys(params).forEach((paramKey) => {
-      const paramVal = params[paramKey];
-      if (paramVal instanceof DynamicParameter) {
-        console.log('TODO: received dynamicParam, fix');
-        return;
-      }
-      if (!this.paramMap[paramKey]) {
-        return;
-      }
-      this.paramMap[paramKey].setParamValue(paramVal, time);
-    });
   }
 
   disconnect() {

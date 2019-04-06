@@ -89,29 +89,29 @@ const reverbNode = {
   ]
 };
 
-const chorusNode = {
-  name: 'CHORUS',
-  fnName: 'chorus',
-  paramDefinitions: [
-    {
-      paramName: 'frequency',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: 'depth',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: 'feedback',
-      type: PARAM_TYPES.FLOAT,
-    },
-    {
-      paramName: CONSTANTS.ID,
-      type: PARAM_TYPES.NUMBER,
-      isTaggable: true,
-    }
-  ]
-};
+// const chorusNode = {
+//   name: 'CHORUS',
+//   fnName: 'chorus',
+//   paramDefinitions: [
+//     {
+//       paramName: 'frequency',
+//       type: PARAM_TYPES.FLOAT,
+//     },
+//     {
+//       paramName: 'depth',
+//       type: PARAM_TYPES.FLOAT,
+//     },
+//     {
+//       paramName: 'feedback',
+//       type: PARAM_TYPES.FLOAT,
+//     },
+//     {
+//       paramName: CONSTANTS.ID,
+//       type: PARAM_TYPES.NUMBER,
+//       isTaggable: true,
+//     }
+//   ]
+// };
 
 const delayNode = {
   name: 'DELAY',
@@ -554,7 +554,7 @@ export default [
   dacNode,
   addressNode,
   reverbNode,
-  chorusNode,
+  // chorusNode,
   delayNode,
   lowpassNode,
   highpassNode,

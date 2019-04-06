@@ -5,7 +5,6 @@ import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import envelopedOscilator from 'services/audio/synth/EnvelopedOscillator';
 import { shorthandTypes } from 'services/audio/synth/Oscillators';
 import DiscreteSignalParameter from './_DiscreteSignalParameter';
-import DynamicParameter from 'services/EventCycle/EventGraph/EventGraphFunctions/DynamicParameter';
 
 const GAIN_VALUE = 1;
 const DIV = 1000;
@@ -45,23 +44,6 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
       };
       const oscType = this.paramMap.oscType.getValueForTime(message.time);
       envelopedOscilator(note, message.time.audio, asr, oscType, GAIN_VALUE, outputs, this.modulationInputs);
-    });
-  }
-
-  updateParams(params, time) {
-    if (!this.paramMap) {
-      return;
-    }
-    Object.keys(params).forEach((paramKey) => {
-      const paramVal = params[paramKey];
-      if (paramVal instanceof DynamicParameter) {
-        console.log('TODO: received dynamicParam, fix');
-        return;
-      }
-      if (!this.paramMap[paramKey]) {
-        return;
-      }
-      this.paramMap[paramKey].setParamValue(paramVal, time);
     });
   }
 

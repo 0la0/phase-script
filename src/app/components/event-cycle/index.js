@@ -48,33 +48,17 @@ export default class EventCycle extends BaseComponent {
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
 
     // for testing
-    // const testCycleValue = 'a:48 a:60 , a:72\n   \na a a';
-    // const testCycleValue = `
-    //   seq([
-    //     p("a:48 a:60 , a:72"),
-    //     p("a a a")
-    //   ])
-    //   seq( p("b:100 b:500 b:100") )
-    //   seq( p("c:0 c:1 c:0") )
-    //
-    //   let msg = addr('b')
-    //   let sig = sin(mtof(92))
-    //   let val = 0.5
-    //   let mod = saw(mtof(92), 0x88).gain(200)
-    //
-    //   addr("a")
-    //     .envSin(0, 0, 400, mod, 0x1)
-    //     // .gain(addr('c'), 0x7)
-    //     // .pan(sin(1, 0x8), 0x4)
-    //     // .bp(msg, 2, 0x1)
-    //     .dac()
-    // `;
     const testCycleValue = `
-    seq(
-      p("a:220 a:440 a:220").speed(0.25)
-    )
-    let mod = squ(220, 0x77).gain(100, 0x99)
-    sin(addr('a'), 0x1).gain(0.1, 0x3).dac();
+    seq([
+      p("a:48 a:60 , a:72"),
+      p("a a a"),
+    ])
+
+    addr('a')
+    .envSin(0, 0, 400)
+    .crush(8, 0.5, 0.5, 0x8)
+    .gain(0.3, 0x7)
+    .dac()
     `;
     this.dom.cycleInput.innerText = testCycleValue;
     this.handleCycleChange(testCycleValue);

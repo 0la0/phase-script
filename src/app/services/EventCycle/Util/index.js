@@ -26,15 +26,14 @@ function range(...args) {
 }
 
 function buildUtilFunction(name, fn) {
-  const scopedFuncitonName = `_${name}`;
-  return { [scopedFuncitonName]: function(...args) {
+  return { [name]: function(...args) {
     return fn(...args);
-  } }[scopedFuncitonName];
+  } }[name];
 }
 
 export const utilApi = [
   {
-    name: 'mtofm',
+    name: 'mtof',
     fn: buildUtilFunction('mtof', mtof)
   },
   {

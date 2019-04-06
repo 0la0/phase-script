@@ -3,22 +3,22 @@ import nodeDefinitions from './EventGraphApiDefinition';
 import buildNodeEvaluator from './RuntimeGraphFunctionFactory';
 
 // TODO:
+//   * update all params to use SignalParam class
+//   * midi in / out
+//   * leap example
+//   * documentation descriptions / param descriptions
 //   * parameter validation
+//   * sample bank
+//   * midi config editor
 //   * message duplicator
 //   * rand parameters for msgDelay
 //   * message repeater
-//   * midi out
-//   * continuous osc
-//   * modulator connections
 //   * mic in
 //   * compressor node
 //   * wet levels on audio effect nodes
 //   * arpeggiators
-//   * address as graph parameters
 //   * anonymous patterns
 //   * key shortcut to generate node IDs
-//   * sample bank
-//   * midi config editor
 
 const eventGraphNodes = nodeDefinitions.reduce((acc, nodeDefinition) =>
   Object.assign(acc, {

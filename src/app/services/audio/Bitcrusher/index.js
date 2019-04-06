@@ -1,16 +1,13 @@
 import audioGraph from 'services/audio/graph';
 
-export default class Bitcrusher  {
-  constructor(bitDepth, freqReduction, wet) {
-    const audioContext = audioGraph.getAudioContext();
-    this.bitcrusher = new AudioWorkletNode(audioContext, 'Bitcrusher');
-    this.input = audioContext.createGain();
+class WetLevel {
+  constructor(audioContext, dryInput, wetInput) {
     this.dryGain = audioContext.createGain();
     this.wetGain = audioContext.createGain();
-    this.input.connect(this.dryGain);
-    this.input.connect(this.bitcrusher);
-    this.bitcrusher.connect(this.wetGain);
-    this.setParamsAtTime(bitDepth, freqReduction, wet, 0);
+    dryInput.connect(this.dryGain);
+    wetInput.connect(this.wetGain);
+    // this.setValueAtTime(0.5, 0);
+    console.log('?', this);
   }
 
   connect(node) {
@@ -23,15 +20,67 @@ export default class Bitcrusher  {
     this.wetGain.disconnect(node);
   }
 
+  setValueAtTime(wetLevel, time) {
+    this.wetGain.gain.setValueAtTime(wetLevel, time);
+    this.dryGain.gain.setValueAtTime(1 - wetLevel, time);
+  }
+
+  linearRampToValueAtTime(wetLevel, time) {
+    console.log('?', this);
+    this.wetGain.gain.linearRampToValueAtTime(wetLevel, time);
+    this.dryGain.gain.linearRampToValueAtTime(1 - wetLevel, time);
+  }
+}
+
+export default class Bitcrusher  {
+  constructor(bitDepth, freqReduction, wet) {
+    const audioContext = audioGraph.getAudioContext();
+    this.bitcrusher = new AudioWorkletNode(audioContext, 'Bitcrusher');
+    this.input = audioContext.createGain();
+    this.wetLevel = new WetLevel(audioContext, this.input, this.bitcrusher);
+    // this.dryGain = audioContext.createGain();
+    // this.wetGain = audioContext.createGain();
+    // this.input.connect(this.dryGain);
+    this.input.connect(this.bitcrusher);
+    // this.bitcrusher.connect(this.wetGain);
+    // this.setParamsAtTime(bitDepth, freqReduction, wet, 0);
+  }
+
+  connect(node) {
+    this.wetLevel.connect(node);
+    // this.dryGain.connect(node);
+    // this.wetGain.connect(node);
+  }
+
+  disconnect(node) {
+    this.wetLevel.disconnect(node);
+    // this.dryGain.disconnect(node);
+    // this.wetGain.disconnect(node);
+  }
+
   getInput() {
     return this.input;
   }
 
-  setParamsAtTime(bitDepth = 12, freqReduction = 0.5, wetLevel = 0.5, time = 0) {
-    this.bitcrusher.parameters.get('bitDepth').setValueAtTime(bitDepth, time);
-    this.bitcrusher.parameters.get('frequencyReduction').setValueAtTime(freqReduction, time);
-    this.wetGain.gain.linearRampToValueAtTime(wetLevel, time);
-    this.dryGain.gain.linearRampToValueAtTime(1 - wetLevel, time);
-    return this;
+  getBitDepthParam() {
+    return this.bitcrusher.parameters.get('bitDepth');
   }
+
+  getFrequencyReductionParam() {
+    return this.bitcrusher.parameters.get('frequencyReduction');
+  }
+
+  getWetParam() {
+    return this.wetLevel;
+  }
+
+  // setParamsAtTime(bitDepth = 12, freqReduction = 0.5, wetLevel = 0.5, time = 0) {
+  //   this.bitcrusher.parameters.get('bitDepth').setValueAtTime(bitDepth, time);
+  //   this.bitcrusher.parameters.get('frequencyReduction').setValueAtTime(freqReduction, time);
+  //   // this.wetGain.gain.linearRampToValueAtTime(wetLevel, time);
+  //   // this.dryGain.gain.linearRampToValueAtTime(1 - wetLevel, time);
+  //   console.log('setParamsAtTime', wetLevel, time)
+  //   this.wetLevel.linearRampToValueAtTime(wetLevel, time);
+  //   return this;
+  // }
 }
