@@ -3,8 +3,7 @@ import Delay from 'services/audio/delay';
 import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import SignalParameter, { InputType, } from './_SignalParameter';
-
-const msToSec = ms => ms / 1000;
+import { msToSec } from 'services/Math';
 
 export default class PatchDelay extends BaseUnitGenerator {
   constructor({ delayMs, feedback, wet  }) {

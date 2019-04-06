@@ -4,8 +4,7 @@ import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import { playSample } from 'services/audio/sampler';
 import sampleBank from 'services/audio/sampleBank';
-
-const DIV = 1000;
+import { msToSec } from 'services/Math';
 
 function sampleKeyOrDefault(sampleKey) {
   if (sampleBank.getSampleKeys().includes(sampleKey)) {
@@ -37,9 +36,9 @@ export default class PatchSampler extends BaseUnitGenerator{
 
   updateParams({ sampleName, attack, sustain, release }) {
     this.asr = {
-      attack: attack / DIV,
-      sustain: sustain / DIV,
-      release: release / DIV,
+      attack: msToSec(attack),
+      sustain: msToSec(sustain),
+      release: msToSec(release),
     };
     this.sampleName = sampleName;
   }

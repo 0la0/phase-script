@@ -5,11 +5,7 @@ import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import envelopedOscilator from 'services/audio/synth/EnvelopedOscillator';
 import { shorthandTypes } from 'services/audio/synth/Oscillators';
 import DiscreteSignalParameter from './_DiscreteSignalParameter';
-
-const GAIN_VALUE = 1;
-const DIV = 1000;
-
-const paramTransform = val => val / DIV;
+import { msToSec } from 'services/Math';
 
 export default class EnvelopedOsc extends BaseUnitGenerator {
   constructor(attack, sustain, release, oscType) {
@@ -18,9 +14,9 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
     this.audioModel = new PatchAudioModel('ENVELOPED_OSC', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);
     this.modulationInputs = new Set();
     this.paramMap = {
-      attack: new DiscreteSignalParameter(attack, paramTransform),
-      sustain: new DiscreteSignalParameter(sustain, paramTransform),
-      release: new DiscreteSignalParameter(release, paramTransform),
+      attack: new DiscreteSignalParameter(attack, msToSec),
+      sustain: new DiscreteSignalParameter(sustain, msToSec),
+      release: new DiscreteSignalParameter(release, msToSec),
       oscType: new DiscreteSignalParameter(shorthandTypes[oscType], val => val),
       modulator: {
         setParamValue: paramVal => {
@@ -43,7 +39,7 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
         release: this.paramMap.release.getValueForTime(message.time),
       };
       const oscType = this.paramMap.oscType.getValueForTime(message.time);
-      envelopedOscilator(note, message.time.audio, asr, oscType, GAIN_VALUE, outputs, this.modulationInputs);
+      envelopedOscilator(note, message.time.audio, asr, oscType, 1, outputs, this.modulationInputs);
     });
   }
 

@@ -38,3 +38,7 @@ export function floatingPrecision(num, precision) {
 export function mapToRange(inputMin, inputMax, outputMin, outputMax, x) {
   return (x - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin;
 }
+
+export function msToSec(ms) {
+  return ms / 1000;
+}

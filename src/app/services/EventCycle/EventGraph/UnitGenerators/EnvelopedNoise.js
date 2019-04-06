@@ -3,33 +3,31 @@ import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import envelopedNoiseGenerator from 'services/audio/NoiseGenerator/EnvelopedNoise';
-
-const GAIN_VALUE = 1;
-const DIV = 1000;
+import DiscreteSignalParameter from './_DiscreteSignalParameter';
+import { msToSec } from 'services/Math';
 
 export default class EnvelopedNoise extends BaseUnitGenerator {
   constructor(attack, sustain, release) {
     super();
-    this.asr = {
-      attack: attack / DIV,
-      sustain: sustain / DIV,
-      release: release / DIV,
-    };
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('ENVELOPED_NOISE', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);
+    this.paramMap = {
+      attack: new DiscreteSignalParameter(attack, msToSec),
+      sustain: new DiscreteSignalParameter(sustain, msToSec),
+      release: new DiscreteSignalParameter(release, msToSec),
+    };
   }
 
   schedule(message) {
-    const outputs = [...this.eventModel.getOutlets()];
-    envelopedNoiseGenerator(message.time.audio, this.asr, GAIN_VALUE, outputs);
-  }
-
-  updateParams({ attack, sustain, release }) {
-    this.asr = {
-      attack: attack / DIV,
-      sustain: sustain / DIV,
-      release: release / DIV,
-    };
+    setTimeout(() => {
+      const outputs = [...this.eventModel.getOutlets()];
+      const asr = {
+        attack: this.paramMap.attack.getValueForTime(message.time),
+        sustain: this.paramMap.sustain.getValueForTime(message.time),
+        release: this.paramMap.release.getValueForTime(message.time),
+      };
+      envelopedNoiseGenerator(message.time.audio, asr, 1, outputs);
+    });
   }
 
   static fromParams({ attack, sustain, release }) {
