@@ -3,7 +3,6 @@ import nodeDefinitions from './EventGraphApiDefinition';
 import buildNodeEvaluator from './RuntimeGraphFunctionFactory';
 
 // TODO:
-//   * pattern for address
 //   * leap example
 //   * midi in / out
 //   * documentation descriptions / param descriptions
