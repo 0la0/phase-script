@@ -1,8 +1,9 @@
 import { buildAudioEventsFromPattern } from 'services/EventCycle/Pattern/AudioEventBuilder';
 
 export default class Pattern {
-  constructor(relativeCycle, numTicks, cnt) {
+  constructor(relativeCycle, baseAddress, numTicks, cnt) {
     this.relativeCycle = relativeCycle;
+    this.baseAddress = baseAddress;
     this.numTicks = numTicks;
     this.cnt = cnt;
   }
@@ -14,6 +15,15 @@ export default class Pattern {
 
   getRelativeCycle() {
     return this.relativeCycle;
+  }
+
+  setBaseAddress(baseAddress) {
+    this.baseAddress = baseAddress;
+    return this;
+  }
+
+  getBaseAddress() {
+    return this.baseAddress;
   }
 
   setNumTicks(numTicks) {
@@ -30,6 +40,6 @@ export default class Pattern {
   }
 
   getAudioEvents(time, audioCycleDuration) {
-    return buildAudioEventsFromPattern(this.relativeCycle, time, audioCycleDuration);
+    return buildAudioEventsFromPattern(this.relativeCycle, this.baseAddress, time, audioCycleDuration);
   }
 }

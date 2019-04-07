@@ -4,20 +4,26 @@ import Pattern from 'services/EventCycle/Pattern/Pattern';
 import PatternTransformer from './PatternTransformer';
 
 class PatternBuilder extends PatternTransformer{
-  constructor(patternString, numTicks) {
+  constructor({ patternString = '', baseAddress = '' }) {
     super();
+    if (typeof patternString !== 'string') {
+      throw new Error(`PatternString must be a string, received: ${patternString}`);
+    }
+    if (typeof baseAddress !== 'string') {
+      throw new Error(`Pattern base address must be a string, received: ${baseAddress}`);
+    }
+    this.baseAddress = baseAddress;
     this.patternString = patternString;
     this.pattern = parseCycle(patternString);
     this.relativeCycle = this.pattern.ok ? getRelativeCycle(this.pattern.content, 0, 1) : [];
-    this.numTicks = numTicks || 16;
+    this.numTicks = 16;
     this.cnt = 0;
   }
 
   tick() {
     const cnt = this.cnt++;
     const clonedCycle = this.relativeCycle.map(ele => ele.clone());
-    const originalPattern = new Pattern(clonedCycle, this.numTicks, cnt);
-
+    const originalPattern = new Pattern(clonedCycle, this.baseAddress, this.numTicks, cnt);
     return this.transforms.reduce((pattern, patternTransform) => {
       if (!patternTransform.countPredicate(cnt)) {
         return pattern;
@@ -31,13 +37,21 @@ class PatternBuilder extends PatternTransformer{
   }
 
   clone() {
-    return new PatternBuilder(this.patternString);
+    return new PatternBuilder({
+      patternString: this.patternString,
+      baseAddress: this.baseAddress
+    });
   }
 }
 
-export default function pattern(str) {
-  if (typeof str !== 'string') {
-    throw new TypeError(`Illegal Argument: string required for p(${str})`);
+export default function pattern(...args) {
+  let patternBuilderArgs = {};
+  if (args.length < 2) {
+    patternBuilderArgs.patternString = args[0];
+    return new PatternBuilder({ patternString: args[0] });
   }
-  return new PatternBuilder(str);
+  return new PatternBuilder({
+    baseAddress: args[0],
+    patternString: args[1]
+  });
 }

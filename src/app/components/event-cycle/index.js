@@ -6,7 +6,6 @@ import CycleManager from 'services/EventCycle/CycleManager';
 import style from './event-cycle.css';
 import markup from './event-cycle.html';
 
-const CYCLE_ACTIVE = 'cycle-inicator--active';
 const CYCLE_STATE = {
   INVALID: ['background-color', '#DD7799'],
   QUEUED: ['background-color', '#7799DD'],
@@ -14,7 +13,7 @@ const CYCLE_STATE = {
 };
 const KEY_CODE_ENTER = 13;
 
-const dom = [ 'cycleLength', 'cycleElement', 'cycleInput', 'cycleIndicator', 'cycleState' ];
+const dom = [ 'cycleElement', 'cycleInput', 'cycleState' ];
 
 export default class EventCycle extends BaseComponent {
   static get tag() {
@@ -30,8 +29,6 @@ export default class EventCycle extends BaseComponent {
 
   connectedCallback() {
     document.execCommand('defaultParagraphSeparator', false, 'p');
-    this.dom.cycleLength.value = this.cycleLength;
-    this.dom.cycleLength.addEventListener('blur', this.handleCycleLengthChange.bind(this));
     this.dom.cycleInput.addEventListener('keydown', event => {
       event.stopPropagation();
       if (event.keyCode === KEY_CODE_ENTER && event.metaKey) {
@@ -43,22 +40,18 @@ export default class EventCycle extends BaseComponent {
     });
     this.metronomeSchedulable = new MetronomeScheduler({
       processTick: this.handleTick.bind(this),
-      render: this.handleTickRender.bind(this)
+      render: () => {}
     });
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
 
     const testCycleValue = `
-      seq( p("a:48 a:60 a:60 a:72") )
-      seq( p(", b:72 b:65 ,") )
+      seq( p('a', '48 60 , 72') )
+
+      let mod = squ(mtof(72), 0x88).gain(400, 0x8)
 
       addr('a')
-      .envSin(0, 0, 400)
+      .envSin(0, 0, 400, mod)
       .gain(0.5, 0x7)
-      .dac()
-
-      addr('b')
-      .envSqu(0, 0, 400)
-      .gain(0.5, 0x8)
       .dac()
     `;
     this.dom.cycleInput.innerText = testCycleValue;
@@ -67,10 +60,6 @@ export default class EventCycle extends BaseComponent {
 
   disconnectedCallback() {
     metronomeManager.getScheduler().deregister(this.metronomeSchedulable);
-  }
-
-  handleCycleLengthChange(event) {
-    this.cycleLength = parseInt(event.target.value, 10);
   }
 
   handleCycleChange(cycleString) {
@@ -84,27 +73,9 @@ export default class EventCycle extends BaseComponent {
 
   handleTick(tickNumber, time) {
     if (!this.isOn) { return; }
-    // if (tickNumber % this.cycleLength !== 0) { return; }
-    // const audioCycleDuration = metronomeManager.getMetronome().getTickLength() * this.cycleLength;
-    // this.cycleManager.getAudioEventsAndIncrement(time);
-    // const schedulables = this.cycleManager.getAudioEventsAndIncrement(audioCycleDuration, time);
-    // audioEvents
     const shouldRefresh = tickNumber % this.cycleLength === 0;
     this.cycleManager.getAudioEventsAndIncrement(time, metronomeManager.getMetronome().getTickLength(), shouldRefresh)
       .forEach(audioEvent => audioEventBus.publish(audioEvent));
-      // .forEach(({ element, timeObj}) => {
-      //   const { address, note } = parseToken(element);
-      //   audioEventBus.publish(new AudioEvent(address, note, timeObj));
-      // });
-  }
-
-  handleTickRender(tickNumber) {
-    const cycleModulo = tickNumber % this.cycleLength;
-    if (cycleModulo === 0) {
-      this.dom.cycleIndicator.classList.add(CYCLE_ACTIVE);
-    } else if (cycleModulo === 1) {
-      this.dom.cycleIndicator.classList.remove(CYCLE_ACTIVE);
-    }
   }
 
   onToggleClick() {

@@ -69,7 +69,6 @@ export default function buildNodeEvaluator(dto, _setCurrent) {
       acc[definition.paramName] = definition.value;
       return acc;
     }, {});
-    console.log('buildingEventGraphNode', name, tag)
     const eventGraphNode = new EventGraphNode({
       type: name,
       id: tag ? `${name}-${tag}` : undefined,

@@ -1,5 +1,5 @@
 export default class AudioEvent {
-  constructor(address, note, time) {
+  constructor(address = '', note = 60, time = 0) {
     this.address = address;
     this.note = note;
     this.time = time;
