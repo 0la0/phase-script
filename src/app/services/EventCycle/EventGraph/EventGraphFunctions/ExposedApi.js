@@ -3,9 +3,9 @@ import nodeDefinitions from './EventGraphApiDefinition';
 import buildNodeEvaluator from './RuntimeGraphFunctionFactory';
 
 // TODO:
-//   * update all params to use SignalParam class
-//   * midi in / out
+//   * pattern for address
 //   * leap example
+//   * midi in / out
 //   * documentation descriptions / param descriptions
 //   * parameter validation
 //   * sample bank

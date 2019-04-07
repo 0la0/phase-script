@@ -12,6 +12,15 @@ const examples = [
 addr('a').envSin(0, 0, 400).gain(0.5).dac()`
   },
   {
+    name: 'Chain patterns',
+    code:
+`seq(
+  p("a:48 a:60 a:60 a:72"),
+  p("a a a")
+)
+addr('a').envSqu(0, 0, 40).gain(0.5).dac()`
+  },
+  {
     name: 'Play samples',
     code:
 `seq(

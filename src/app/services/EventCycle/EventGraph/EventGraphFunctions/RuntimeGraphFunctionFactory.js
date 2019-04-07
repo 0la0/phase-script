@@ -2,6 +2,7 @@ import { EventGraphNode } from './EventGraphNode';
 import DynamicParameter from './DynamicParameter';
 import EventGraphBuilder from './EventGraphBuilder';
 import { PARAM_TYPES, CONSTANTS} from './EventGraphApiDefinition';
+import { uuid } from 'services/Math';
 
 const argumentValidationMap = {
   [PARAM_TYPES.FLOAT]: instance => typeof instance === 'number',
@@ -41,7 +42,7 @@ export default function buildNodeEvaluator(dto, _setCurrent) {
       }
 
       if (definition.paramName === CONSTANTS.ID) {
-        tag += (definition.value || arg);
+        tag += (definition.value || arg || uuid());
         return acc;
       }
       let paramValue;
@@ -68,6 +69,7 @@ export default function buildNodeEvaluator(dto, _setCurrent) {
       acc[definition.paramName] = definition.value;
       return acc;
     }, {});
+    console.log('buildingEventGraphNode', name, tag)
     const eventGraphNode = new EventGraphNode({
       type: name,
       id: tag ? `${name}-${tag}` : undefined,

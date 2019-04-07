@@ -49,13 +49,16 @@ export default class EventCycle extends BaseComponent {
 
     const testCycleValue = `
       seq( p("a:48 a:60 a:60 a:72") )
-
-      seq( p("w:0 w:0.5 w:0.8 w:0") )
+      seq( p(", b:72 b:65 ,") )
 
       addr('a')
       .envSin(0, 0, 400)
-      .wvshp('cheb', addr('w'), 0x8)
-      .gain(0.5)
+      .gain(0.5, 0x7)
+      .dac()
+
+      addr('b')
+      .envSqu(0, 0, 400)
+      .gain(0.5, 0x8)
       .dac()
     `;
     this.dom.cycleInput.innerText = testCycleValue;

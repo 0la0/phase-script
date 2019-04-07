@@ -25,7 +25,7 @@ export function evaluateUserInput(userInputString) {
     return (${apiNamespace}) => {
       const sequences = [];
       const audioGraphInlets = [];
-      const seq = (arg) => sequences.push(Array.isArray(arg) ? arg : [ arg ]);
+      const seq = (...args) => sequences.push(args);
       ${exposedEventGraph}
       ${userInputString}
       return { sequences, audioGraphInlets };
