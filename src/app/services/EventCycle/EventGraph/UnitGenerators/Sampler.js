@@ -4,6 +4,7 @@ import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import { playSample } from 'services/audio/sampler';
 import sampleBank from 'services/audio/sampleBank';
+import DiscreteSignalParameter from './_DiscreteSignalParameter';
 import { msToSec } from 'services/Math';
 
 function sampleKeyOrDefault(sampleKey) {
@@ -14,33 +15,39 @@ function sampleKeyOrDefault(sampleKey) {
 }
 
 export default class PatchSampler extends BaseUnitGenerator{
-  constructor(params) {
+  constructor({ sampleName, attack, sustain, release, }) {
     super();
-    this.asr = {
-      attack: 0,
-      sustain: 1,
-      release: 0,
-    };
-    this.sampleName = '';
+    this.sampleName = sampleName;
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('SAMPLER', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);
-    this.updateParams(params);
+    this.paramMap = {
+      attack: new DiscreteSignalParameter(attack, msToSec),
+      sustain: new DiscreteSignalParameter(sustain, msToSec),
+      release: new DiscreteSignalParameter(release, msToSec),
+      sampleName: new DiscreteSignalParameter(sampleName),
+      modulator: {
+        setParamValue: paramVal => {
+          if (!(paramVal instanceof PatchAudioModel)) {
+            throw new Error('Modulator must be a PatchAudioModel');
+          }
+          this.modulationInputs.add(paramVal.connectionFn);
+        }
+      },
+    };
   }
 
   schedule(message) {
-    const outputs = [...this.eventModel.getOutlets()];
-    const note = message.note !== undefined ? message.note : 60;
-    const sampleKey = sampleKeyOrDefault(this.sampleName);
-    playSample(sampleKey, message.time.audio, 0, note, this.asr, outputs);
-  }
-
-  updateParams({ sampleName, attack, sustain, release }) {
-    this.asr = {
-      attack: msToSec(attack),
-      sustain: msToSec(sustain),
-      release: msToSec(release),
-    };
-    this.sampleName = sampleName;
+    setTimeout(() => {
+      const outputs = [...this.eventModel.getOutlets()];
+      const note = message.note !== undefined ? message.note : 60;
+      const sampleKey = sampleKeyOrDefault(this.sampleName);
+      const asr = {
+        attack: this.paramMap.attack.getValueForTime(message.time),
+        sustain: this.paramMap.sustain.getValueForTime(message.time),
+        release: this.paramMap.release.getValueForTime(message.time),
+      };
+      playSample(sampleKey, message.time.audio, 0, note, asr, outputs);
+    });
   }
 
   static fromParams(params) {

@@ -18,9 +18,11 @@ export default class MessageThreshold extends BaseUnitGenerator {
     }
   }
 
-  // TODO: RESET?
   updateParams({ threshold, }) {
-    this.threshold = threshold;
+    if (this.threshold !== threshold) {
+      // TODO: reset
+      this.threshold = threshold;
+    }
   }
 
   static fromParams({ threshold, }) {

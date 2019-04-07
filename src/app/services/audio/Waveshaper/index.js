@@ -5,6 +5,7 @@
  *  http://msp.ucsd.edu/techniques/v0.11/book-html/node78.html
  */
 import audioGraph from 'services/audio/graph';
+import WetLevel from 'services/audio/WetLevel';
 
 const CARRIER_FUNCTIONS = {
   square: x => Math.pow(x, 2),
@@ -43,36 +44,25 @@ export default class Waveshaper {
     this.sampleRate = audioContext.sampleRate;
     this.input = audioContext.createGain();
     this.waveshaperNode = audioContext.createWaveShaper();
-    this.dryGain = audioContext.createGain();
-    this.wetGain = audioContext.createGain();
-    this.input.connect(this.dryGain);
+    this.wetLevel = new WetLevel(audioContext, this.input, this.waveshaperNode);
     this.input.connect(this.waveshaperNode);
-    this.waveshaperNode.connect(this.wetGain);
     this.setCarrierFunction(CARRIER_NAMES[type]);
-    this.setWetLevel(wetLevel);
   }
 
   connect(node) {
-    this.dryGain.connect(node);
-    this.wetGain.connect(node);
+    this.wetLevel.connect(node);
   }
 
   disconnect(node) {
-    this.dryGain.disconnect(node);
-    this.wetGain.disconnect(node);
+    this.wetLevel.disconnect(node);
   }
 
   getInput() {
     return this.input;
   }
 
-  setWetLevel(normalValue, scheduledTime = 0) {
-    this.wetGain.gain.linearRampToValueAtTime(normalValue, scheduledTime);
-    this.dryGain.gain.linearRampToValueAtTime(1 - normalValue, scheduledTime);
-  }
-
-  getCarrierFunctions() {
-    return Object.keys(CARRIER_FUNCTIONS);
+  getWetParam() {
+    return this.wetLevel;
   }
 
   setCarrierFunction(functionKey) {

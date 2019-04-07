@@ -1,9 +1,11 @@
 import ParamTable from 'services/PatchSpace/ParamTable';
 
+const identity = val => val;
+
 export default class DiscreteSignalParamter {
-  constructor(defaultValue, paramTransform) {
+  constructor(defaultValue, paramTransform = identity) {
     this.defaultValue = defaultValue;
-    this.paramTransform = paramTransform || (val => val);
+    this.paramTransform = paramTransform;
     this.hasConstantValue = false;
     this.constantValue;
     this.setConstantValue(defaultValue);
