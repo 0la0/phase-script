@@ -28,13 +28,13 @@ export default class ToggleButton extends BaseComponent {
     this.addEventListener('click', this.handleClick.bind(this));
     this.onText = this.getAttribute('onlabel') || '';
     this.offText = this.getAttribute('offlabel') || '';
-    this.isOn = !!this.getAttribute('ison');
+    this.isOn =  this.getAttribute('ison') === 'true';
     this.render();
   }
 
   handleClick(event) {
-    this.onClick(event);
     this.isOn = !this.isOn;
+    this.onClick(event);
     this.render();
   }
 

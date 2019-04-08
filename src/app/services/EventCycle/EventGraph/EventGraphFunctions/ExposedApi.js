@@ -5,6 +5,7 @@ import buildNodeEvaluator from './RuntimeGraphFunctionFactory';
 // TODO:
 //   * leap example
 //   * midi in / out
+//   * remove services/midi/mappings directory
 //   * documentation descriptions / param descriptions
 //   * parameter validation
 //   * sample bank
