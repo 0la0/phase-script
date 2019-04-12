@@ -39,7 +39,9 @@ export default class LeapController extends BaseComponent {
     }
     const { leftHandEvents, rightHandEvents } = leapHandler.update();
     if (leftHandEvents) {
-
+      audioEventBus.publish(new AudioEvent(this.distanceAddress, leftHandEvents.distance, new TimeSchedule()));
+      audioEventBus.publish(new AudioEvent(this.xAddress, leftHandEvents.x, new TimeSchedule()));
+      audioEventBus.publish(new AudioEvent(this.yAddress, leftHandEvents.y, new TimeSchedule()));
     }
     if (rightHandEvents && rightHandEvents.triggerEvent) {
       audioEventBus.publish(new AudioEvent(this.eventAddress, undefined, new TimeSchedule()));

@@ -1,16 +1,25 @@
 import { Controller } from 'leapjs';
+import { clamp } from 'services/Math';
 
 const EVENT_THRESH = 300;
+const DISTANCE_MIN = 50;
+const DISTANCE_MAX = 500;
+const VECTOR_MIN = -300;
+const VECTOR_MAX = 300;
+
+function normalize(val, min, max) {
+  return (clamp(val, min, max) - min) / (max - min);
+}
 
 function getContinuousControllerValues(palmPosition) {
   return {
-    distance: Math.sqrt(
-      palmPosition[0] ** 2 +
-      palmPosition[1] ** 2 +
-      palmPosition[2] ** 2
+    distance: normalize(
+      Math.sqrt( palmPosition[0] ** 2 + palmPosition[1] ** 2 + palmPosition[2] ** 2),
+      DISTANCE_MIN,
+      DISTANCE_MAX
     ),
-    x: palmPosition[0],
-    y: palmPosition[2]
+    x: normalize(palmPosition[0], VECTOR_MIN, VECTOR_MAX),
+    y: normalize(palmPosition[2], VECTOR_MIN, VECTOR_MAX)
   };
 }
 
