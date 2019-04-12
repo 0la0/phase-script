@@ -1,12 +1,32 @@
-<p>midi in device</p>
-
 <p id="label"></p>
 <toggle-button
   id="toggleButton"
   class="toggle-button"
   click="onToggleClick"
-  onlabel="Print"
-  offlabel="Print"
+  onlabel="Show Message"
+  offlabel="Show Message"
   ison="false">
 </toggle-button>
 <p id="messageOut"></p>
+
+<div class="row">
+  <p>Add CC mapping</p>
+  <text-button
+    click="addCcMapping"
+    label="Add CC Mapping"
+    class="add-mapping-button"
+  >
+  </text-button>
+</div>
+<div id="ccContainer"></div>
+
+<div class="row">
+  <p>Add note mapping</p>
+  <text-button
+    click="addNoteMapping"
+    label="Add Note Mapping"
+    class="add-mapping-button"
+  >
+  </text-button>
+</div>
+<div id="noteContainer"></div>

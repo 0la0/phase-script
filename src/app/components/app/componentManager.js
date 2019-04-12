@@ -10,6 +10,7 @@ import FftVisualizer from 'components/SoundVisualizer/FftVisualizer';
 import MidiOut from 'components/midi-out';
 import MidiIn from 'components/midi-in';
 import MidiInDevice from 'components/midi-in/midi-in-device';
+import LeapController from 'components/leap-controller';
 
 const components = [
   Primitives.TextButton,
@@ -28,7 +29,8 @@ const components = [
   FftVisualizer,
   MidiOut,
   MidiIn,
-  MidiInDevice
+  MidiInDevice,
+  LeapController,
 ];
 
 components.forEach(component => customElements.define(component.tag, component));

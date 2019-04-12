@@ -45,7 +45,7 @@ export default class EventCycle extends BaseComponent {
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
 
     const testCycleValue = `
-      seq( p('a', '48 60 , 72') )
+      // seq( p('a', '48 60 , 72') )
 
       let mod = squ(mtof(72), 0x88).gain(400, 0x8)
 

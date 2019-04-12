@@ -25,6 +25,8 @@
     "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
+    "leapjs": "^0.6.4",
+    "leapjs-plugins": "^0.1.12",
     "three": "^0.92.0"
   }
 }
