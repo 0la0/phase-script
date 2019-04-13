@@ -1,0 +1,28 @@
+:host {
+  max-width: 250px;
+  display: block;
+}
+
+.param-container {
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.2s ease;
+}
+
+.param-container--active {
+  transform: scaleY(1);
+}
+
+.param-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 8px;
+}
+
+.param-label {
+  min-width: 110px;
+}
+
+.param-input {}

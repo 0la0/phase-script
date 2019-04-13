@@ -1,5 +1,3 @@
-<p>leap controller</p>
-
 <toggle-button
   id="toggleButton"
   class="toggle-button"
@@ -9,26 +7,40 @@
   ison="false">
 </toggle-button>
 
-<p>Event address</p>
-<text-input
-  value="event-address"
-  change="handleEventAddressChange">
-</text-input>
+<div id="paramContainer" class="param-container">
+  <div class="param-row">
+    <p class="param-label">Event address</p>
+    <text-input
+      value="event-address"
+      class="param-input"
+      change="handleEventAddressChange">
+    </text-input>
+  </div>
 
-<p>Distance Address</p>
-<text-input
-  value="distance-address"
-  change="handleDistanceAddressChange">
-</text-input>
+  <div class="param-row">
+    <p class="param-label">Distance Address</p>
+    <text-input
+      value="distance-address"
+      class="param-input"
+      change="handleDistanceAddressChange">
+    </text-input>
+  </div>
 
-<p>x Address</p>
-<text-input
-  value="x-address"
-  change="handleXAddressChange">
-</text-input>
+  <div class="param-row">
+    <p class="param-label">x Address</p>
+    <text-input
+      value="x-address"
+      class="param-input"
+      change="handleXAddressChange">
+    </text-input>
+  </div>
 
-<p>y Address</p>
-<text-input
-  value="y-address"
-  change="handleYAddressChange">
-</text-input>
+  <div class="param-row">
+    <p class="param-label">y Address</p>
+    <text-input
+      value="y-address"
+      class="param-input"
+      change="handleYAddressChange">
+    </text-input>
+  </div>
+</div>

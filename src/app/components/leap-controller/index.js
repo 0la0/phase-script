@@ -14,7 +14,7 @@ export default class LeapController extends BaseComponent {
   }
 
   constructor() {
-    super(style, markup, []);
+    super(style, markup, [ 'paramContainer' ]);
     this.isOn = false;
     this.eventAddress = 'event-address';
     this.distanceAddress = 'distance-address';
@@ -65,5 +65,8 @@ export default class LeapController extends BaseComponent {
   }
   onToggleClick(event) {
     this.isOn = event.target.isOn;
+    this.isOn ?
+      this.dom.paramContainer.classList.add('param-container--active') :
+      this.dom.paramContainer.classList.remove('param-container--active');
   }
 }
