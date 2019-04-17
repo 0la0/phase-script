@@ -20,14 +20,15 @@ export default class LeapController extends BaseComponent {
     this.distanceAddress = 'distance-address';
     this.xAddress = 'x-address';
     this.yAddress = 'y-address';
-  }
-
-  connectedCallback() {
     this.metronomeSchedulable = new MetronomeScheduler({
       render: this.handleLeapFrame.bind(this)
     });
-    metronomeManager.getScheduler().register(this.metronomeSchedulable);
   }
+  //
+  // connectedCallback() {
+  //
+  //   // metronomeManager.getScheduler().register(this.metronomeSchedulable);
+  // }
 
   disconnectedCallback() {
     metronomeManager.getScheduler().deregister(this.metronomeSchedulable);
@@ -65,8 +66,14 @@ export default class LeapController extends BaseComponent {
   }
   onToggleClick(event) {
     this.isOn = event.target.isOn;
-    this.isOn ?
-      this.dom.paramContainer.classList.add('param-container--active') :
+
+    if (this.isOn) {
+      this.dom.paramContainer.classList.add('param-container--active');
+      metronomeManager.getScheduler().register(this.metronomeSchedulable);
+    }
+    else {
       this.dom.paramContainer.classList.remove('param-container--active');
+      metronomeManager.getScheduler().deregister(this.metronomeSchedulable);
+    }
   }
 }

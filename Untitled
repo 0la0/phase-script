@@ -1,0 +1,35 @@
+// Frequency modulation controlled with hand distance:
+let inlet = addr('a').map(e => (e * 440) + 4)
+let mod = squ(inlet, 0x77).gain(400, 0x99)
+sin(110, mod, 0x1).gain(0.1, 0x3).dac()
+
+--------------------------------
+
+//
+seq(p('kick , kick ,'))
+seq(p(', hat, hat'))
+
+addr('kick').samp('kick', 0, 0, 100).dac()
+addr('hat').samp('hat', 0, 0, 100).dac()
+
+// --------------
+
+// seq(
+//   p("a:48 a:60 , a:72").every(2, reverse()),
+//   p('a:60 a:60 a:60')
+// )
+
+addr('a').envSin(100, 0, 400).gain(0.5, 0x88).dac()
+
+
+// ---------------
+seq(
+  p("a", "60 , [ 72 65 ] ,")
+)
+
+addr('a')
+.envSin(0, 0, 200)
+.wvshp('sig', 0.8, 1, 0x87)
+.reverb(0.2, 0.5, 0.5, 0x89)
+.gain(0.4, 0x88)
+.dac()

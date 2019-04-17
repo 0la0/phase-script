@@ -1,0 +1,10 @@
+seq(
+  p("a", "60 62 60 64 67 58"),
+  p("a", "60 [61 63 62 71]")
+)
+
+seq(
+  p("decay", "500 73 75")
+)
+
+addr('a').toScale('major', 60).envSin(0, 0, addr("decay")).gain(0.5).dac()

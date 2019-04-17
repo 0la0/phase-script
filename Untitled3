@@ -1,0 +1,22 @@
+seq(
+  p("hat", ", hat:72 , hat:48 ").every(2, speed(0.5).repeat(2) )
+)
+
+seq(
+  p("kick", "x , x , ")
+)
+
+addr('hat')
+.samp('hat', 0, 0, 100)
+.wvshp('sig', 0.8, 1, 0x87)
+.reverb(0.2, 0.5, 0.5, 0x89)
+.gain(0.4, 0x88)
+.dac()
+
+addr('kick').samp("kick", 0, 0, 100).gain(1, 0x99).dac()
+
+seq(
+  p("synth", "60 60 [65 60]").every(2, speed(0.5).every(2, speed(0.5)))
+  // p("synth", "[60 , 75] [ 65 60 48 ]").degrade(0.8),
+)
+addr("synth").envSin(0, 0, 400).gain(0.1, 0x12).dac()
