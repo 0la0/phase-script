@@ -11,6 +11,8 @@ import Gate from './UnitGenerators/Gate';
 import MessageAddress from './UnitGenerators/MessageAddress';
 import MessageDelay from './UnitGenerators/MessageDelay';
 import MessageMap from './UnitGenerators/MessageMap';
+import MessageMidiCcOut from './UnitGenerators/MessageMidiCcOut';
+import MessageMidiNoteOut from './UnitGenerators/MessageMidiNoteOut';
 import MessageFilter from './UnitGenerators/MessageFilter';
 import MessageScaleLock from './UnitGenerators/MessageScaleLock';
 import MessageThreshold from './UnitGenerators/MessageThreshold';
@@ -40,6 +42,8 @@ const typeMap = {
   MSG_DELAY: MessageDelay,
   MSG_FILTER: MessageFilter,
   MSG_MAP: MessageMap,
+  MSG_MIDI_CC_OUT: MessageMidiCcOut,
+  MSG_MIDI_NOTE_OUT: MessageMidiNoteOut,
   MSG_SCALE_LOCK: MessageScaleLock,
   MSG_THRESH: MessageThreshold,
   PANNER: Panner,
@@ -50,6 +54,11 @@ const typeMap = {
 };
 
 let currentBuiltGraph = {};
+
+const outputTypes = [ 'DAC', 'MSG_MIDI_NOTE_OUT', 'MSG_MIDI_CC_OUT' ];
+function graphHasSink(graphDefinition) {
+  return Object.values(graphDefinition).some(ele => outputTypes.includes(ele.type));
+}
 
 function buildNodeType(node) {
   const instance = typeMap[node.type];
@@ -109,8 +118,8 @@ function disconnectOldNodes(oldGraph, currentGraph) {
 
 // TODO: create definition instace pair
 export function buildEventGraph(graphDefinition = {}, time) {
-  if (!graphDefinition[DAC_ID]) {
-    throw new Error(`graphDefinition missing end node ${graphDefinition}`);
+  if (!graphHasSink(graphDefinition)) {
+    throw new Error('graphDefinition missing sink (dac, or midiOut)');
   }
   const builtNodes = Object.keys(graphDefinition)
     .reduce((acc, key) => {

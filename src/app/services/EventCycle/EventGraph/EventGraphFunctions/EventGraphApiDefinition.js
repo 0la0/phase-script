@@ -296,6 +296,28 @@ const messageDelayNode = {
   ]
 };
 
+const messageMidiCcOut = {
+  name: 'MSG_MIDI_CC_OUT',
+  fnName: 'midiCc',
+  paramDefinitions: [
+    {
+      paramName: 'deviceName',
+      type: PARAM_TYPES.STRING,
+    }
+  ]
+};
+
+const messageMidiNoteOut = {
+  name: 'MSG_MIDI_NOTE_OUT',
+  fnName: 'midiNote',
+  paramDefinitions: [
+    {
+      paramName: 'deviceName',
+      type: PARAM_TYPES.STRING,
+    }
+  ]
+};
+
 const messageThresholdNode = {
   name: 'MSG_THRESH',
   fnName: 'msgThresh',
@@ -564,6 +586,8 @@ export default [
   messageMapNode,
   messageFilterNode,
   messageDelayNode,
+  messageMidiCcOut,
+  messageMidiNoteOut,
   messageThresholdNode,
   messageScaleLockNode,
   envelopedNoiseNode,

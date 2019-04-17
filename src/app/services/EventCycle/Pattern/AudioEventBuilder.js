@@ -16,7 +16,8 @@ export function parseToken(token, baseAddress) {
     }
     const note = getNumericVal(tokens[0]);
     if (note === undefined) {
-      return undefined;
+      // note is address
+      return new AudioEvent(tokens[0], undefined);
     }
     const address = baseAddress || tokens[0];
     return new AudioEvent(address, note);

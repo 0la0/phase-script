@@ -8,6 +8,7 @@ export default class CycleManager {
     this.cycleHandlers = [];
     this.nextCycleHandlers = null;
     this.nextGraphDefinition = null;
+    this.errorMessage = '';
     this.setCycleString('');
   }
 
@@ -25,14 +26,15 @@ export default class CycleManager {
       const allInlets = audioGraphInlets.map(inlet => inlet.getEventGraph());
       this.nextGraphDefinition = createEventGraph(allInlets);
     } catch(error) {
-      // TODO: render error message
-      console.log('result error', error);
+      console.log(error); // eslint-disable-line no-console
       this._isValid = false;
+      this.errorMessage = error.message;
       return;
     }
     this._isValid = cycleResults.every(cycleResult => cycleResult.every(cycle => cycle.isValid()));
     if (this._isValid) {
       this.nextCycleHandlers = cycleResults.map(cycleResult => new CycleHandler(cycleResult));
+      this.errorMessage = '';
     }
   }
 

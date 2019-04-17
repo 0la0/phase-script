@@ -89,3 +89,19 @@
 /* .cycle-state--queued {
   background-color: green;
 } */
+
+.error-display {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 8px;
+  background-color: var(--color-error);
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  color: var(--color-black);
+  display: none;
+}
+
+.error-display--visible {
+  display: block;
+}

@@ -13,7 +13,7 @@ const CYCLE_STATE = {
 };
 const KEY_CODE_ENTER = 13;
 
-const dom = [ 'cycleElement', 'cycleInput', 'cycleState' ];
+const dom = [ 'cycleElement', 'cycleInput', 'cycleState', 'errorDisplay' ];
 
 export default class EventCycle extends BaseComponent {
   static get tag() {
@@ -45,14 +45,8 @@ export default class EventCycle extends BaseComponent {
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
 
     const testCycleValue = `
-      seq( p('a', '48 60 , 72') )
-
-      let mod = squ(mtof(72), 0x88).gain(400, 0x8)
-
-      addr('a')
-      .envSin(0, 0, 400, mod)
-      .gain(0.5, 0x7)
-      .dac()
+      seq( p('m') )
+      addr('m').midiNote('test')
     `;
     this.dom.cycleInput.innerText = testCycleValue;
     this.handleCycleChange(testCycleValue);
@@ -66,16 +60,25 @@ export default class EventCycle extends BaseComponent {
     this.cycleManager.setCycleString(cycleString);
     if (!this.cycleManager.isValid()) {
       this.dom.cycleState.style.setProperty(...CYCLE_STATE.INVALID);
+      this.dom.errorDisplay.classList.add('error-display--visible');
+      this.dom.errorDisplay.innerText = this.cycleManager.errorMessage;
       return;
     }
     this.dom.cycleState.style.setProperty(...CYCLE_STATE.PLAYING);
+    this.dom.errorDisplay.classList.remove('error-display--visible');
   }
 
   handleTick(tickNumber, time) {
     if (!this.isOn) { return; }
     const shouldRefresh = tickNumber % this.cycleLength === 0;
-    this.cycleManager.getAudioEventsAndIncrement(time, metronomeManager.getMetronome().getTickLength(), shouldRefresh)
-      .forEach(audioEvent => audioEventBus.publish(audioEvent));
+    try {
+      this.cycleManager.getAudioEventsAndIncrement(time, metronomeManager.getMetronome().getTickLength(), shouldRefresh)
+        .forEach(audioEvent => audioEventBus.publish(audioEvent));
+    } catch(error) {
+      console.log('TODO: handle', error.message);
+      this.dom.errorDisplay.innerText = error.message;
+      this.dom.errorDisplay.classList.add('error-display--visible');
+    }
   }
 
   onToggleClick() {
