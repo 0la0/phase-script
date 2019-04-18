@@ -45,10 +45,13 @@ export default class EventCycle extends BaseComponent {
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
 
     const testCycleValue = `
-      seq( p('m') )
-      addr('m').midiNote('test')
+      seq(
+        p('m:127 m m').degrade(0.5),
+        p("m", "120 40 20 [90 120]").every(2, speed(0.5).repeat(2).degrade(0.5))
+      )
+      addr('m').midiNote('TR-08', 9, 64, 10)
     `;
-    this.dom.cycleInput.innerText = testCycleValue;
+    this.dom.cycleInput.innerText = testCycleValue.trim();
     this.handleCycleChange(testCycleValue);
   }
 

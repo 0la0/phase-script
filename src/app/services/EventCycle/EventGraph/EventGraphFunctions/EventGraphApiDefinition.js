@@ -314,7 +314,19 @@ const messageMidiNoteOut = {
     {
       paramName: 'deviceName',
       type: PARAM_TYPES.STRING,
-    }
+    },
+    {
+      paramName: 'channel',
+      type: PARAM_TYPES.NUMBER,
+    },
+    {
+      paramName: 'note',
+      type: PARAM_TYPES.NUMBER,
+    },
+    {
+      paramName: 'duration',
+      type: PARAM_TYPES.NUMBER,
+    },
   ]
 };
 

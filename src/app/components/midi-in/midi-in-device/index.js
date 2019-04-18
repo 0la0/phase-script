@@ -33,12 +33,11 @@ export default class MidiInDevice extends BaseComponent {
     }
     if (this.isOn) {
       const message = MidiMessage.fromSerialized(event.data);
-      console.log(`${this.deviceName} message`, message);
+      console.log(`${this.deviceName} message`, message.toString());
     }
   }
 
   onToggleClick(event) {
     this.isOn = event.target.isOn;
-    console.log('click', this.isOn)
   }
 }

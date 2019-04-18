@@ -12,6 +12,11 @@ const argumentValidationMap = {
   [PARAM_TYPES.GRAPH_NODE]: instance => instance instanceof EventGraphBuilder,
 };
 
+function buildParameterDefinitonString(parameterDefinitions) {
+  return parameterDefinitions
+    .map(({ paramName, type }) => `${paramName}: ${type}`).join(', ');
+}
+
 function typeMatchesDefinition(definition, argument) {
   if (!definition.type) {
     console.log('TODO: add definition type:', definition);
@@ -37,10 +42,8 @@ export default function buildNodeEvaluator(dto, _setCurrent) {
         return acc;
       }
       if (!(arg instanceof EventGraphBuilder) && !paramIsValid) {
-        console.log(`fn: ${fnName}, invalid parameter ${definition.paramName}:`, arg);
-        // throw new Error(`Invalid parameter ${definition.paramName}: ${arg}`);
+        console.log(`${fnName}: invalid parameter ${definition.paramName}: ${arg}\nusage: ${fnName}(${buildParameterDefinitonString(paramDefinitions)})`);
       }
-
       if (definition.paramName === CONSTANTS.ID) {
         tag += (definition.value || arg || uuid());
         return acc;
