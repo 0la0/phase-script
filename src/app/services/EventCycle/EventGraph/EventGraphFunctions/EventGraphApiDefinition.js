@@ -303,6 +303,14 @@ const messageMidiCcOut = {
     {
       paramName: 'deviceName',
       type: PARAM_TYPES.STRING,
+    },
+    {
+      paramName: 'channel',
+      type: PARAM_TYPES.NUMBER,
+    },
+    {
+      paramName: 'note',
+      type: PARAM_TYPES.NUMBER,
     }
   ]
 };
