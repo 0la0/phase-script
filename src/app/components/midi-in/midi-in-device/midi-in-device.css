@@ -1,0 +1,31 @@
+.message-container {
+  display: none;
+}
+
+.message-container--visible {
+  display: block;
+}
+
+.property-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 4px 0;
+}
+
+.property-label {
+  flex: 0;
+  display: inline;
+}
+
+.dots {
+  flex: 1;
+  border-bottom: 1px dotted var(--color-grey-light);
+  border-width: 2px;
+  margin: 0 4px;
+}
+
+.property-value {
+  text-align: right;
+  flex: 0;
+}

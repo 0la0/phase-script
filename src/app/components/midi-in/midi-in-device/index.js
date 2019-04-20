@@ -1,56 +1,10 @@
 import BaseComponent from 'common/util/base-component';
 import provideMidiFactory from 'services/midi/midiDeviceFactory';
-import MidiMessage, { COMMAND } from 'services/midi/MidiMessage';
-import { audioEventBus } from 'services/EventBus';
-import AudioEvent from 'services/EventBus/AudioEvent';
-import TimeSchedule from 'services/metronome/TimeSchedule';
+import MidiMessage, { getCommandString, } from 'services/midi/MidiMessage';
 import style from './midi-in-device.css';
 import markup from './midi-in-device.html';
 
-class LineItem {
-  constructor(command, channel, note, address) {
-    this.command = command;
-    this.channel = channel;
-    this.note = note;
-    this.address = address;
-  }
-
-  setCommand(command) {
-    this.command = command;
-    return this;
-  }
-
-  getCommand() {
-    return this.command;
-  }
-
-  setChannel(channel) {
-    this.channel = channel;
-    return this;
-  }
-
-  getChannel() {
-    return this;
-  }
-
-  setNote(note) {
-    this.note = note;
-    return this;
-  }
-
-  getNote() {
-    return this.note;
-  }
-
-  setAddress(address) {
-    this.address = address;
-    return this;
-  }
-
-  getAddress() {
-    return this.address;
-  }
-}
+const MIDI_MESSAGE = 'midimessage';
 
 export default class MidiInDevice extends BaseComponent {
   static get tag() {
@@ -58,14 +12,12 @@ export default class MidiInDevice extends BaseComponent {
   }
 
   constructor(deviceName) {
-    super(style, markup, [ 'label', 'messageOut' ]);
+    super(style, markup, [ 'label', 'messageContainer', 'command', 'channel', 'note', 'value' ]);
     this.deviceName = deviceName;
     this.deviceInputRef;
     this.isOn = false;
     this.messageHandler = this.handleDeviceMessage.bind(this);
-    this.lineItems = [
-      new LineItem(COMMAND.NOTE_ON, 0, 112, 'm'),
-    ];
+    this.dom.label.textContent = this.deviceName;
     provideMidiFactory()
       .then(factory => factory.getInputByName(deviceName))
       .then(midiInDevice => {
@@ -73,43 +25,25 @@ export default class MidiInDevice extends BaseComponent {
       });
   }
 
-  connectedCallback() {
-    this.dom.label.textContent = this.deviceName;
+  disconnectedCallback() {
     if (!this.deviceInputRef) {
       return;
     }
-    this.deviceInputRef.removeEventListener('midimessage', this.messageHandler);
+    this.deviceInputRef.removeEventListener(MIDI_MESSAGE, this.messageHandler);
   }
 
   handleDeviceMessage(event) {
     if (event.data.length === 1 && event.data[0] === 248) {
       return;
     }
-    if (this.isOn) {
-      this.message = MidiMessage.fromSerialized(event.data);
-
-      this.lineItems.forEach(lineItem => {
-        if (
-          lineItem.command === this.message.command &&
-          lineItem.channel === this.message.channel &&
-          lineItem.note === this.message.note
-        ) {
-          if (lineItem.command === COMMAND.NOTE_ON && this.message.value === 0) {
-            return;
-          }
-          audioEventBus.publish(new AudioEvent(lineItem.address, this.message.value, new TimeSchedule()));
-        }
-      });
-
-
-      requestAnimationFrame(() => {
-        const messageString = this.message.toString();
-        this.dom.messageOut.textContent = messageString;
-      });
-    }
+    this.message = MidiMessage.fromSerialized(event.data);
+    requestAnimationFrame(() => {
+      this.dom.command.textContent = getCommandString(this.message.command);
+      this.dom.channel.textContent = this.message.channel;
+      this.dom.note.textContent = this.message.note;
+      this.dom.value.textContent = this.message.value;
+    });
   }
-
-  onAddLineItem() {}
 
   onToggleClick(event) {
     this.isOn = event.target.isOn;
@@ -117,9 +51,11 @@ export default class MidiInDevice extends BaseComponent {
       return;
     }
     if (this.isOn) {
-      this.deviceInputRef.addEventListener('midimessage', this.messageHandler);
+      this.deviceInputRef.addEventListener(MIDI_MESSAGE, this.messageHandler);
+      this.dom.messageContainer.classList.add('message-container--visible');
     } else {
-      this.deviceInputRef.removeEventListener('midimessage', this.messageHandler);
+      this.deviceInputRef.removeEventListener(MIDI_MESSAGE, this.messageHandler);
+      this.dom.messageContainer.classList.remove('message-container--visible');
     }
   }
 }

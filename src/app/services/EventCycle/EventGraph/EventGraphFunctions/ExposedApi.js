@@ -19,6 +19,7 @@ import buildNodeEvaluator from './RuntimeGraphFunctionFactory';
 //   * arpeggiators
 //   * anonymous patterns
 //   * key shortcut to generate node IDs
+//   * better standard sample libbrary
 
 const eventGraphNodes = nodeDefinitions.reduce((acc, nodeDefinition) =>
   Object.assign(acc, {

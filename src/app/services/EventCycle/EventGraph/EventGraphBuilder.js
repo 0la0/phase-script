@@ -12,6 +12,7 @@ import MessageAddress from './UnitGenerators/MessageAddress';
 import MessageDelay from './UnitGenerators/MessageDelay';
 import MessageMap from './UnitGenerators/MessageMap';
 import MessageMidiCcOut from './UnitGenerators/MessageMidiCcOut';
+import MessageMidiIn from './UnitGenerators/MessageMidiIn';
 import MessageMidiNoteOut from './UnitGenerators/MessageMidiNoteOut';
 import MessageFilter from './UnitGenerators/MessageFilter';
 import MessageScaleLock from './UnitGenerators/MessageScaleLock';
@@ -22,8 +23,6 @@ import Sampler from './UnitGenerators/Sampler';
 import ThresholdEventProcessor from './UnitGenerators/ThresholdEventProcessor';
 import Waveshaper from './UnitGenerators/Waveshaper';
 import DynamicParameter from './EventGraphFunctions/DynamicParameter';
-
-const DAC_ID = 'DAC-ID';
 
 // TODO: rename file to `AudioStateBuilder`, `AudioStateManager`, or `UnitGeneratorFactory`
 // TODO: use types from EventGraphApiDefinition.js
@@ -43,6 +42,7 @@ const typeMap = {
   MSG_FILTER: MessageFilter,
   MSG_MAP: MessageMap,
   MSG_MIDI_CC_OUT: MessageMidiCcOut,
+  MSG_MIDI_IN: MessageMidiIn,
   MSG_MIDI_NOTE_OUT: MessageMidiNoteOut,
   MSG_SCALE_LOCK: MessageScaleLock,
   MSG_THRESH: MessageThreshold,
@@ -55,7 +55,7 @@ const typeMap = {
 
 let currentBuiltGraph = {};
 
-const outputTypes = [ 'DAC', 'MSG_MIDI_NOTE_OUT', 'MSG_MIDI_CC_OUT' ];
+const outputTypes = [ 'DAC', 'MSG_MIDI_NOTE_OUT', 'MSG_MIDI_CC_OUT', 'MSG_MIDI_IN' ];
 function graphHasSink(graphDefinition) {
   return Object.values(graphDefinition).some(ele => outputTypes.includes(ele.type));
 }

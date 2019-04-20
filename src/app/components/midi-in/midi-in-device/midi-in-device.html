@@ -1,22 +1,38 @@
 <p>midi in device</p>
 
 <p id="label"></p>
+<p>Copy to clipboard</p>
 <toggle-button
   id="toggleButton"
   class="toggle-button"
   click="onToggleClick"
-  onlabel="On"
-  offlabel="Off"
+  onlabel="Print Messages"
+  offlabel="Print Messages"
   ison="false">
 </toggle-button>
-<p id="messageOut"></p>
 
-<text-button
-  class="add-button"
-  click="onAddLineItem"
-  label="Add Line Item"
-  ison="false">
-</text-button>
-<p>selector for NOTE_ON, CC</p>
-<p>channel input</p>
-<p>note input</p>
+<div id="messageContainer" class="message-container">
+  <div class="property-row">
+    <p class="property-label">Command</p>
+    <span class="dots"></span>
+    <p id="command" class="property-value"></p>
+  </div>
+
+  <div class="property-row">
+    <p class="property-label">Channel</p>
+    <span class="dots"></span>
+    <p id="channel" class="property-value"></p>
+  </div>
+
+  <div class="property-row">
+    <p class="property-label">Note</p>
+    <span class="dots"></span>
+    <p id="note" class="property-value"></p>
+  </div>
+
+  <div class="property-row">
+    <p class="property-label">Value</p>
+    <span class="dots"></span>
+    <p id="value" class="property-value"></p>
+  </div>
+</div>
