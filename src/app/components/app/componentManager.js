@@ -1,15 +1,15 @@
 import App from 'components/app';
 import Primitives from 'common/primitives';
-import Metronome from 'components/metronome';
+import Metronome from 'components/metronome-ctrl';
 import GraphicsRoot from 'components/graphics/graphics-root';
 import SoundRoot from 'components/sound-root';
 import EventCycle from 'components/event-cycle';
 import GraphicsEditor from 'components/graphics/graphics-editor';
 import SoundVisualizer from 'components/SoundVisualizer';
 import FftVisualizer from 'components/SoundVisualizer/FftVisualizer';
-import MidiOut from 'components/midi-out';
-import MidiIn from 'components/midi-in';
-import MidiInDevice from 'components/midi-in/midi-in-device';
+import MidiEditor from 'components/midi-editor';
+import MidiDevice from 'components/midi-editor/midi-device';
+import SampleEditor from 'components/sample-editor';
 
 const components = [
   Primitives.TextButton,
@@ -19,16 +19,16 @@ const components = [
   Primitives.RouterOutlet,
   Primitives.TextInput,
   App,
-  Metronome,
-  GraphicsRoot,
-  SoundRoot,
   EventCycle,
-  GraphicsEditor,
-  SoundVisualizer,
   FftVisualizer,
-  MidiOut,
-  MidiIn,
-  MidiInDevice
+  GraphicsEditor,
+  GraphicsRoot,
+  Metronome,
+  MidiEditor,
+  MidiDevice,
+  SampleEditor,
+  SoundRoot,
+  SoundVisualizer
 ];
 
 components.forEach(component => customElements.define(component.tag, component));

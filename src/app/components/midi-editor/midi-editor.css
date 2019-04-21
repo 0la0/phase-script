@@ -1,0 +1,22 @@
+.top-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-grey-light);
+}
+
+.top-label {
+  flex: 1;
+  color: var(--color-black-light);
+  margin-left: 4px;
+}
+
+.close-button {
+  flex: 0;
+  background-color: var(--color-black-light);
+}
+
+.refresh-button {
+  display: inline-block;
+}

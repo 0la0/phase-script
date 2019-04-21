@@ -1,4 +1,20 @@
 <div class="row top-row">
+  <div class="row">
+    <toggle-button
+      id="midiButton"
+      class="ctrl-button"
+      click="handleMidiClick"
+      onlabel="MIDI"
+      offlabel="MIDI">
+    </toggle-button>
+    <toggle-button
+      id="sampleButton"
+      class="ctrl-button"
+      click="handleSampleClick"
+      onlabel="Samples"
+      offlabel="Samples">
+    </toggle-button>
+  </div>
   <metronome-ctrl></metronome-ctrl>
 </div>
 
@@ -14,7 +30,5 @@
   id="eventCycleContainer"
   class="container">
 </div>
-<midi-out></midi-out>
-<midi-in></midi-in>
 <!-- <graphics-editor></graphics-editor> -->
 <sound-visualizer class="sound-visualizer"></sound-visualizer>

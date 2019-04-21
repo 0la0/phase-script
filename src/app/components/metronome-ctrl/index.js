@@ -9,7 +9,7 @@ export default class Metronome extends BaseComponent {
   }
 
   constructor() {
-    super(style, markup, ['metronomeButton']);
+    super(style, markup, ['clockButton']);
     this.isRunning = false;
     this.titleIndex = 0;
   }
@@ -20,23 +20,21 @@ export default class Metronome extends BaseComponent {
       if (event.code !== 'Space') { return; }
       event.preventDefault();
       event.stopPropagation();
-      this.dom.metronomeButton.click();
+      this.dom.clockButton.click();
     });
   }
 
-  onMetronomeClick() {
+  handleMasterClockClick() {
     this.isRunning = !this.isRunning;
     if (this.isRunning) {
       metronomeManager.getMetronome().start();
-      this.titleElement.innerText = 'Audio Running';
     }
     else {
       metronomeManager.getMetronome().stop();
-      this.titleElement.innerText = 'Audio Stopped';
     }
   }
 
-  handleMetronomeChange(event) {
+  handleTempoChange(event) {
     const value = parseInt(event.target.value, 10);
     metronomeManager.getMetronome().setTempo(value);
   }

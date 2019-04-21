@@ -1,0 +1,29 @@
+:host {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: flex-end;
+}
+
+.metronome {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: baseline;
+}
+
+.metronome-label {
+  margin: 0;
+}
+
+.metronome-input {
+  margin-left: 4px;
+  max-width: 50px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.clock-button {
+  min-width: 70px;
+  margin-left: 16px;
+}

@@ -1,3 +1,24 @@
+.device-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.label-section {
+  flex: 1;
+}
+
+.output {
+  flex: 1;
+}
+
+.input {
+  flex: 1;
+}
+
+.toggle-button {
+  display: inline-block;
+}
+
 .message-container {
   display: none;
 }

@@ -1,0 +1,16 @@
+<div class="metronome">
+  <p class="metronome-label">BPM:</p>
+  <text-input
+    type="number"
+    value="120"
+    change="handleTempoChange"
+    class="metronome-input">
+  </text-input>
+</div>
+<toggle-button
+  id="clockButton"
+  class="clock-button"
+  click="handleMasterClockClick"
+  onlabel="Stop"
+  offlabel="Start">
+</toggle-button>

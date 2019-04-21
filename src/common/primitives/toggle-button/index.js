@@ -38,6 +38,11 @@ export default class ToggleButton extends BaseComponent {
     this.render();
   }
 
+  turnOff() {
+    this.isOn = false;
+    this.render();
+  }
+
   render() {
     this.isOn ?
       this.dom.button.classList.add(BUTTON_ACTIVE) :
