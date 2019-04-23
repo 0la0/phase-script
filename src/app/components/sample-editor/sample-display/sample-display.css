@@ -1,0 +1,30 @@
+:host {
+  display: block;
+  padding: 8px;
+}
+
+.top-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {}
+
+.dots {
+  flex: 1;
+  border-bottom: 1px dotted var(--color-grey-light);
+  border-width: 2px;
+  margin: 0 4px;
+}
+
+.sample-button {}
+
+.editor {
+  display: none;
+}
+
+.editor-active {
+  display: block;
+}

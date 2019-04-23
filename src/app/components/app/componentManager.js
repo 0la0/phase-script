@@ -9,7 +9,9 @@ import SoundVisualizer from 'components/SoundVisualizer';
 import FftVisualizer from 'components/SoundVisualizer/FftVisualizer';
 import MidiEditor from 'components/midi-editor';
 import MidiDevice from 'components/midi-editor/midi-device';
+import SampleDisplay from 'components/sample-editor/sample-display';
 import SampleEditor from 'components/sample-editor';
+import SampleVisualizer from 'components/sample-editor/sample-visualizer';
 
 const components = [
   Primitives.TextButton,
@@ -26,7 +28,9 @@ const components = [
   Metronome,
   MidiEditor,
   MidiDevice,
+  SampleDisplay,
   SampleEditor,
+  SampleVisualizer,
   SoundRoot,
   SoundVisualizer
 ];

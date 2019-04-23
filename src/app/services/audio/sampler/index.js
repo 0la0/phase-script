@@ -5,7 +5,7 @@ import sampleBank from 'services/audio/sampleBank';
 // flow: sampler -> adsr -> gain -> abstractOutput
 const semitoneRatio = Math.pow(2, 1 / 12);
 
-function playSample(sampleKey, scheduledTime, startOffset, note, asr, outputs) {
+export function playSample(sampleKey, scheduledTime, startOffset, note, asr, outputs) {
   const audioBuffer = sampleBank.getAudioBuffer(sampleKey);
   const sampler = audioGraph.getAudioContext().createBufferSource();
   if (!scheduledTime) {
@@ -24,5 +24,3 @@ function playSample(sampleKey, scheduledTime, startOffset, note, asr, outputs) {
   sampler.onended = () => envelope.disconnect();
   sampler.start(scheduledTime, startOffset);
 }
-
-export { playSample };

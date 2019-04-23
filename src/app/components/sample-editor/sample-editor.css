@@ -16,3 +16,7 @@
   flex: 0;
   background-color: var(--color-black-light);
 }
+
+.refresh-button {
+  display: inline-block;
+}
