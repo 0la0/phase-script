@@ -5,6 +5,8 @@ import {
 } from 'common/util/dom';
 import style from './text-input.css';
 
+const attributeReflectionList = [ 'type', 'value', 'min', 'max' ];
+
 export default class TextInput extends BaseComponent {
   static get tag() {
     return 'text-input';
@@ -19,8 +21,8 @@ export default class TextInput extends BaseComponent {
   }
 
   connectedCallback() {
-    reflectAttribute(this, 'type', this.dom.textInput);
-    reflectAttribute(this, 'value', this.dom.textInput);
+    attributeReflectionList.forEach(attributeName =>
+      reflectAttribute(this, attributeName, this.dom.textInput));
     reflectCallback(this, 'change', this.dom.textInput);
   }
 }

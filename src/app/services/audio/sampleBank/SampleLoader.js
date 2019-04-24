@@ -1,6 +1,6 @@
 import audioGraph from 'services/audio/graph';
 
-function decodeAudioData(compressedBuffer) {
+export function decodeAudioData(compressedBuffer) {
   try {
     return audioGraph.getAudioContext().decodeAudioData(compressedBuffer);
   } catch (error) {

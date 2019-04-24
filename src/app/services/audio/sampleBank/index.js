@@ -31,6 +31,10 @@ class SampleBank {
   getAudioBuffer(sampleKey) {
     return this.samples.get(sampleKey);
   }
+
+  addSample(name, audioBuffer) {
+    this.samples.set(name, audioBuffer);
+  }
 }
 
 export default new SampleBank();

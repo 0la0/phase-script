@@ -11,6 +11,7 @@ import MidiEditor from 'components/midi-editor';
 import MidiDevice from 'components/midi-editor/midi-device';
 import SampleDisplay from 'components/sample-editor/sample-display';
 import SampleEditor from 'components/sample-editor';
+import SampleLoader from 'components/sample-editor/sample-loader';
 import SampleVisualizer from 'components/sample-editor/sample-visualizer';
 
 const components = [
@@ -30,6 +31,7 @@ const components = [
   MidiDevice,
   SampleDisplay,
   SampleEditor,
+  SampleLoader,
   SampleVisualizer,
   SoundRoot,
   SoundVisualizer

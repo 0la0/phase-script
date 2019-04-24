@@ -1,7 +1,17 @@
+:host {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
 canvas {
   width: 120px;
   height: 40px;
   background-color: #AAA;
   border: 1px solid black;
   border-radius: var(--border-radius);
+}
+
+.text-container {
+  margin-left: 8px;
 }

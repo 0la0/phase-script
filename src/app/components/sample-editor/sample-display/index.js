@@ -5,7 +5,7 @@ import audioGraph from 'services/audio/graph';
 import style from './sample-display.css';
 import markup from './sample-display.html';
 
-const defaultAsr = { attack: 0, sustain: 0.5, release: 0.5, };
+const defaultAsr = { attack: 0, sustain: 0.5, release: 0, };
 
 export default class SampleDisplay extends BaseComponent {
   static get tag() {

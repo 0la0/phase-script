@@ -1,5 +1,6 @@
 import BaseComponent from 'common/util/base-component';
 import sampleBank from 'services/audio/sampleBank';
+import markup from './sample-visualizer.html';
 import style from './sample-visualizer.css';
 
 // TODO: make size dynamic
@@ -29,7 +30,7 @@ export default class SampleVisualizer extends BaseComponent {
   }
 
   constructor(sampleKey, asr) {
-    super(style, '<canvas id="canvas"></canvas>', ['canvas']);
+    super(style, markup, ['canvas', 'sampleLength', 'sampleStart', 'sampleDuration']);
     this.audioBuffer = { duration: 0 };
     this.asr = {
       attack: 0,
@@ -87,7 +88,16 @@ export default class SampleVisualizer extends BaseComponent {
     this.startOffsetCallback = cb;
   }
 
+  _renderText() {
+    const durationMs = this.bufferDuration * 1000;
+    const startMs = this.startOffset * durationMs;
+    this.dom.sampleLength.innerText = `Length: ${durationMs.toFixed(3)}ms`;
+    this.dom.sampleStart.innerText = `Start: ${startMs.toFixed(3)}ms`;
+  }
+
   _renderWaveform() {
+    this.g2d.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+    this.g2d.lineWidth = 2;
     this.g2d.beginPath();
     this.frequencyList.forEach((value, index) => {
       const y = value.left * RENDER_MAGNITUDE + HALF_HEIGHT;
@@ -122,35 +132,31 @@ export default class SampleVisualizer extends BaseComponent {
   }
 
   _renderControls(playbackStart, sustainStart, decayStart, decayEnd) {
-    const radius = 8;
-    const twoPi = 2 * Math.PI;
-    this.g2d.fillStyle = 'red';
+    this.g2d.strokeStyle = 'red';
+    this.g2d.lineWidth = 2;
     this.g2d.beginPath();
-    this.g2d.arc(playbackStart, HEIGHT, radius, 0, twoPi);
-    this.g2d.fill();
+    this.g2d.moveTo(playbackStart, 0);
+    this.g2d.lineTo(playbackStart, HEIGHT);
+    this.g2d.stroke();
 
     this.g2d.beginPath();
-    this.g2d.arc(sustainStart, 0, radius, 0, twoPi);
-    this.g2d.fill();
-
-    this.g2d.beginPath();
-    this.g2d.arc(decayStart, 0, radius, 0, twoPi);
-    this.g2d.fill();
-
-    this.g2d.beginPath();
-    this.g2d.arc(decayEnd, HEIGHT, radius, 0, twoPi);
-    this.g2d.fill();
+    this.g2d.moveTo(decayEnd, 0);
+    this.g2d.lineTo(decayEnd, HEIGHT);
+    this.g2d.stroke();
   }
 
   render() {
-    const playbackStart = (this.startOffset || 0) * WIDTH;
+    const realPlaybackStart = (this.startOffset || 0) * WIDTH;
+    const playbackStart = Math.max(0, realPlaybackStart);
     const secondMultiplier = (1 / this.audioBuffer.duration) * WIDTH;
     const sustainStart = playbackStart + secondMultiplier * this.asr.attack;
     const decayStart = sustainStart + secondMultiplier * this.asr.sustain;
-    const decayEnd = decayStart + secondMultiplier * this.asr.release;
+    const realDecayEnd = decayStart + secondMultiplier * this.asr.release;
+    const decayEnd = Math.min(realDecayEnd, WIDTH);
     this.g2d.clearRect(0, 0, WIDTH, HEIGHT);
     this._renderWaveform();
     this._renderEnvelope(playbackStart, sustainStart, decayStart, decayEnd);
     this._renderControls(playbackStart, sustainStart, decayStart, decayEnd);
+    this._renderText(playbackStart, sustainStart, decayStart, decayEnd);
   }
 }
