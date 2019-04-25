@@ -1,30 +1,20 @@
+:host {
+  display: block;
+}
+
 .top-row {
   justify-content: space-between;
   align-items: baseline;
   padding: 12px;
   border-bottom: var(--border-default);
   margin-bottom: 10px;
+  height: auto;
 }
 
-.button-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-}
-
-.container {
-  border: var(--border-default);
-  margin: 10px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.sound-visualizer {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  margin: 8px;
+.event-cycle-container {
+  display: block;
+  overflow-y: scroll;
+  height: auto;
 }
 
 .ctrl-button {
@@ -46,3 +36,21 @@
 .editor-visible {
   transform: translateX(0);
 }
+
+.bottom-buttons {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: baseline;
+}
+
+.sound-visualizer {
+  margin-right: 8px;
+  background-color: var(--color-black-light);
+}
+
+.add-cycle {}

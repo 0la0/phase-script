@@ -16,8 +16,8 @@ export default class SampleLoader extends BaseComponent {
 
   loadSample() {
     loadAudioFile()
-      .then(decodeAudioData)
-      .then(audiobuffer => sampleBank.addSample('test-name', audiobuffer))
+      .then(({ name, arrayBuffer }) => decodeAudioData(arrayBuffer)
+        .then((audioBuffer) => sampleBank.addSample(name, audioBuffer)))
       .catch(error => console.log(error));
   }
 }
