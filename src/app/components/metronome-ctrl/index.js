@@ -1,5 +1,7 @@
 import BaseComponent from 'common/util/base-component';
 import metronomeManager from 'services/metronome/metronomeManager';
+import { eventBus } from 'services/EventBus';
+import Subscription from 'services/EventBus/Subscription';
 import style from './metronome-ctrl.css';
 import markup from './metronome-ctrl.html';
 
@@ -11,17 +13,19 @@ export default class Metronome extends BaseComponent {
   constructor() {
     super(style, markup, ['clockButton']);
     this.isRunning = false;
-    this.titleIndex = 0;
-  }
-
-  connectedCallback() {
-    this.titleElement = document.getElementsByTagName('title')[0];
-    window.addEventListener('keydown', event => {
-      if (event.code !== 'Space') { return; }
+    this.spaceBarSubscription = new Subscription('KEY_SPACE', () => {
       event.preventDefault();
       event.stopPropagation();
       this.dom.clockButton.click();
     });
+  }
+
+  connectedCallback() {
+    eventBus.subscribe(this.spaceBarSubscription);
+  }
+
+  disconnectedCallback() {
+    eventBus.unsubscribe(this.spaceBarSubscription);
   }
 
   handleMasterClockClick() {

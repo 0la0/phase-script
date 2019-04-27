@@ -13,6 +13,7 @@ import SampleDisplay from 'components/sample-editor/sample-display';
 import SampleEditor from 'components/sample-editor';
 import SampleLoader from 'components/sample-editor/sample-loader';
 import SampleVisualizer from 'components/sample-editor/sample-visualizer';
+import SettingsEditor from 'components/settings-editor';
 
 const components = [
   Primitives.TextButton,
@@ -33,6 +34,7 @@ const components = [
   SampleEditor,
   SampleLoader,
   SampleVisualizer,
+  SettingsEditor,
   SoundRoot,
   SoundVisualizer
 ];

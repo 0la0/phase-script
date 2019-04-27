@@ -3,16 +3,16 @@ import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import { audioEventBus } from 'services/EventBus';
+import Subscription from 'services/EventBus/Subscription';
 
 export default class MessageAddress extends BaseUnitGenerator {
   constructor(address) {
     super();
     this.eventModel = new PatchEventModel();
     this.audioModel = new PatchAudioModel('MSG_ADDRESS', this.eventModel, PATCH_EVENT.EMPTY, PATCH_EVENT.MESSAGE);
-    this.audioEventSubscription = {
-      address,
-      onNext: message => this.eventModel.getOutlets().forEach(outlet => outlet.schedule(message)),
-    };
+    this.audioEventSubscription = new Subscription()
+      .setAddress(address)
+      .setOnNext(message => this.eventModel.getOutlets().forEach(outlet => outlet.schedule(message)));
     audioEventBus.subscribe(this.audioEventSubscription);
   }
 

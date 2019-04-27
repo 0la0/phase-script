@@ -1,0 +1,21 @@
+<div class="top-row">
+  <p class="top-label">Settings</p>
+  <text-button
+    class="close-button"
+    click="handleClose"
+    label="X">
+  </text-button>
+</div>
+
+<div class="settings-row">
+  <label for="fontSizeInput">FontSize:</label>
+  <text-input
+    id="fontSizeInput"
+    type="number"
+    value="24"
+    change="handleFontSizeChange"
+    min="12"
+    max="72"
+  >
+  </text-input>
+</div>

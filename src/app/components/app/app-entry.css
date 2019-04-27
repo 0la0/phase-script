@@ -1,4 +1,6 @@
 :host {
+  height: 100%;
+  width: 100%;
   --color-black: #000;
   --color-black-light: #242424;
   --color-grey-dark: #666;
