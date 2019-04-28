@@ -1,5 +1,6 @@
 import BaseComponent from 'common/util/base-component';
-import { audioEventBus } from 'services/EventBus';
+import { audioEventBus, eventBus } from 'services/EventBus';
+import Subscription from 'services/EventBus/Subscription';
 import metronomeManager from 'services/metronome/metronomeManager';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
 import CycleManager from 'services/EventCycle/CycleManager';
@@ -25,6 +26,7 @@ export default class EventCycle extends BaseComponent {
     this.cycleLength = 16;
     this.isOn = true;
     this.cycleManager = new CycleManager();
+    this.dataStoreSubscription = new Subscription('DATA_STORE', this.handleDataStoreUpdate.bind(this));
   }
 
   connectedCallback() {
@@ -40,9 +42,9 @@ export default class EventCycle extends BaseComponent {
     });
     this.metronomeSchedulable = new MetronomeScheduler({
       processTick: this.handleTick.bind(this),
-      render: () => {}
     });
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
+    eventBus.subscribe(this.dataStoreSubscription);
 
     const testCycleValue = `
       // seq(
@@ -64,6 +66,7 @@ export default class EventCycle extends BaseComponent {
 
   disconnectedCallback() {
     metronomeManager.getScheduler().deregister(this.metronomeSchedulable);
+    eventBus.unsubscribe(this.dataStoreSubscription);
   }
 
   handleCycleChange(cycleString) {
@@ -91,12 +94,12 @@ export default class EventCycle extends BaseComponent {
     }
   }
 
+  handleDataStoreUpdate(obj) {
+    this.dom.cycleInput.style.setProperty('font-size', `${obj.dataStore.fontSize}px`);
+  }
+
   onToggleClick() {
     this.isOn = !this.isOn;
     this.cycleManager.resetCounter();
-  }
-
-  handleFontSizeChange(event) {
-    this.dom.cycleInput.style.setProperty('font-size', `${event.target.value}px`);
   }
 }

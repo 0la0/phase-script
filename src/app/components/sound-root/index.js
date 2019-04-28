@@ -1,6 +1,9 @@
 import BaseComponent from 'common/util/base-component';
-import EventCycle from 'components/event-cycle';
+// import EventCycle from 'components/event-cycle';
 import EditorState from './EditorState';
+import dataStore from 'services/Store';
+import { eventBus } from 'services/EventBus';
+import Subscription from 'services/EventBus/Subscription';
 import style from './sound-root.css';
 import markup from './sound-root.html';
 
@@ -10,29 +13,40 @@ export default class SoundRoot extends BaseComponent {
   }
 
   constructor() {
-    super(style, markup, [ 'eventCycleContainer', 'midiButton', 'sampleButton' ]);
-    this.editorState = new EditorState();
+    super(style, markup, [ 'midiButton', 'sampleButton', 'settingsButton' ]);
+    this.editorState = new EditorState({
+      midiButton: this.dom.midiButton,
+      sampleButton: this.dom.sampleButton,
+      settingsButton: this.dom.settingsButton,
+      closeCallback: () => dataStore.setValue({ editorDrawer: 'OFF' })
+    });
     this.shadowRoot.appendChild(this.editorState.midi);
     this.shadowRoot.appendChild(this.editorState.sample);
     this.shadowRoot.appendChild(this.editorState.settings);
+    this.eventBusSubscription = new Subscription('DATA_STORE', this.handleDataStoreUpdate.bind(this));
   }
 
-  onAddCycle() {
-    const parentElement = this.dom.eventCycleContainer;
-    const component = new EventCycle();
-    component.setOnRemoveCallback(() => parentElement.removeChild(component));
-    parentElement.appendChild(component);
+  connectedCallback() {
+    eventBus.subscribe(this.eventBusSubscription);
+  }
+
+  disconnectedCallback() {
+    eventBus.unsubscribe(this.eventBusSubscription);
   }
 
   handleMidiClick(event) {
-    this.editorState.toggleMidi(event.target.isOn);
+    dataStore.setValue({ editorDrawer: event.target.isOn ? 'MIDI' : 'OFF' });
   }
 
   handleSampleClick(event) {
-    this.editorState.toggleSample(event.target.isOn);
+    dataStore.setValue({ editorDrawer: event.target.isOn ? 'SAMPLE' : 'OFF' });
   }
 
   handleSettingsClick(event) {
-    this.editorState.toggleSettings(event.target.isOn);
+    dataStore.setValue({ editorDrawer: event.target.isOn ? 'SETTINGS' : 'OFF' });
+  }
+
+  handleDataStoreUpdate(obj) {
+    this.editorState.render(obj.dataStore.editorDrawer);
   }
 }

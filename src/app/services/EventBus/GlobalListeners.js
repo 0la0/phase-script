@@ -1,14 +1,16 @@
 import { eventBus } from 'services/EventBus';
 
 const keyEvents = [
-  { code: 'Space', metaKey: false, address: 'KEY_SPACE' },
+  { code: 'Space', ctrlKey: false, address: 'KEY_SPACE' },
+  { code: 'KeyN', ctrlKey: true, address: 'NEW_EDITOR_WINDOW' },
+  { code: 'KeyT', ctrlKey: true, address: 'NEW_EDITOR_WINDOW' },
 ];
 
 function isKeyMatch(event, keyEvent) {
-  return event.code === keyEvent.code && event.metaKey === keyEvent.metaKey;
+  return event.code === keyEvent.code && event.ctrlKey === keyEvent.ctrlKey;
 }
 
-function keyHandler(event) {
+function keyDownHandler(event) {
   keyEvents.forEach(keyEvent => {
     if (!isKeyMatch(event, keyEvent)) { return; }
     eventBus.publish({ address: keyEvent.address, event });
@@ -23,9 +25,7 @@ class Listener {
 }
 
 const listeners = [
-  // new Listener('mousemove', event => eventBus.publish({ address: 'MOUSE_MOVE', event })),
-  // new Listener('mouseup', event => eventBus.publish({ address: 'MOUSE_UP', event })),
-  new Listener('keydown', keyHandler),
+  new Listener('keydown', keyDownHandler),
 ];
 
 export default class GlobalListeners {

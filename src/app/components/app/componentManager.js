@@ -3,6 +3,7 @@ import Primitives from 'common/primitives';
 import Metronome from 'components/metronome-ctrl';
 import GraphicsRoot from 'components/graphics/graphics-root';
 import SoundRoot from 'components/sound-root';
+import EditorWindow from 'components/editor-window';
 import EventCycle from 'components/event-cycle';
 import GraphicsEditor from 'components/graphics/graphics-editor';
 import SoundVisualizer from 'components/SoundVisualizer';
@@ -23,6 +24,7 @@ const components = [
   Primitives.RouterOutlet,
   Primitives.TextInput,
   App,
+  EditorWindow,
   EventCycle,
   FftVisualizer,
   GraphicsEditor,

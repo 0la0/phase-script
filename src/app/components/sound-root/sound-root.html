@@ -1,4 +1,5 @@
 <div class="row top-row">
+  <!-- TODO: create topbar component -->
   <div class="row">
     <toggle-button
       id="midiButton"
@@ -24,19 +25,6 @@
   </div>
   <metronome-ctrl></metronome-ctrl>
 </div>
-
-<div
-  id="eventCycleContainer"
-  class="event-cycle-container">
-</div>
-
-<div class="bottom-buttons">
-  <sound-visualizer class="sound-visualizer"></sound-visualizer>
-  <text-button
-    id="add-cycle"
-    class="add-cycle"
-    click="onAddCycle"
-    label="Add Cycle">
-  </text-button>
-</div>
+<editor-window class="editor-window"></editor-window>
+<sound-visualizer class="sound-visualizer"></sound-visualizer>
 <!-- <graphics-editor></graphics-editor> -->

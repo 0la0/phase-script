@@ -13,7 +13,7 @@
   height: auto;
 }
 
-.event-cycle-container {
+.editor-window {
   display: block;
   overflow-y: scroll;
   height: calc(100% - var(--topbar-height));
@@ -39,19 +39,10 @@
   transform: translateX(0);
 }
 
-.bottom-buttons {
+.sound-visualizer {
   position: absolute;
   bottom: 0;
   right: 0;
   padding: 8px;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-}
-
-.sound-visualizer {
-  margin-right: 8px;
   background-color: var(--color-black-light);
 }
-
-.add-cycle {}
