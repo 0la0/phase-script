@@ -1,7 +1,11 @@
 import { eventBus } from 'services/EventBus';
 
+// TODO: change to { address: key_shortcut }
 const keyEvents = [
   { code: 'Space', ctrlKey: false, address: 'KEY_SPACE' },
+  { code: 'Escape', ctrlKey: false, address: 'KEY_ESCAPE' },
+  { code: 'BracketLeft', ctrlKey: true, address: 'TAB_NAV_LEFT' },
+  { code: 'BracketRight', ctrlKey: true, address: 'TAB_NAV_RIGHT' },
   { code: 'KeyN', ctrlKey: true, address: 'NEW_EDITOR_WINDOW' },
   { code: 'KeyT', ctrlKey: true, address: 'NEW_EDITOR_WINDOW' },
 ];
@@ -11,6 +15,7 @@ function isKeyMatch(event, keyEvent) {
 }
 
 function keyDownHandler(event) {
+  console.log(event)
   keyEvents.forEach(keyEvent => {
     if (!isKeyMatch(event, keyEvent)) { return; }
     eventBus.publish({ address: keyEvent.address, event });

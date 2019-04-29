@@ -24,14 +24,17 @@ export default class SoundRoot extends BaseComponent {
     this.shadowRoot.appendChild(this.editorState.sample);
     this.shadowRoot.appendChild(this.editorState.settings);
     this.eventBusSubscription = new Subscription('DATA_STORE', this.handleDataStoreUpdate.bind(this));
+    this.escapeKeySubscription = new Subscription('KEY_ESCAPE', () => dataStore.setValue({ editorDrawer: 'OFF' }));
   }
 
   connectedCallback() {
     eventBus.subscribe(this.eventBusSubscription);
+    eventBus.subscribe(this.escapeKeySubscription);
   }
 
   disconnectedCallback() {
     eventBus.unsubscribe(this.eventBusSubscription);
+    eventBus.unsubscribe(this.escapeKeySubscription);
   }
 
   handleMidiClick(event) {

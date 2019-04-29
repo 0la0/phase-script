@@ -1,0 +1,40 @@
+:host {
+  display: block;
+}
+
+.tab-row {
+  height: 30px;
+  border: 1px solid white;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.tab {
+  border: 1px solid white;
+  min-width: 65px;
+  max-width: 120px;
+  border-radius: 8px 8px 0 0;
+  background-color: var(--color-black-light);
+  cursor: pointer;
+}
+
+.tab-active {
+  background-color: var(--color-grey-dark);
+}
+
+.add-tab {
+  border: 1px solid red;
+  cursor: pointer;
+}
+
+.editor {
+  display: none;
+}
+
+.editor-active {
+  display: block;
+}
