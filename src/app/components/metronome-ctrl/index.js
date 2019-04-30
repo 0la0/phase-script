@@ -13,7 +13,8 @@ export default class Metronome extends BaseComponent {
   constructor() {
     super(style, markup, ['clockButton']);
     this.isRunning = false;
-    this.spaceBarSubscription = new Subscription('KEY_SPACE', () => {
+    this.spaceBarSubscription = new Subscription('KEY_SHORTCUT', (msg) => {
+      if (msg.shortcut !== 'KEY_SPACE') { return; }
       event.preventDefault();
       event.stopPropagation();
       this.dom.clockButton.click();

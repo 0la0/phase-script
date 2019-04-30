@@ -1,19 +1,10 @@
 import BaseComponent from 'common/util/base-component';
 import EventCycle from 'components/event-cycle';
+import EditorTab from './editor-tab';
 import { eventBus } from 'services/EventBus';
 import Subscription from 'services/EventBus/Subscription';
 import style from './editor-window.css';
 import markup from './editor-window.html';
-
-function buildTabElement(label, onClick) {
-  const tab = document.createElement('div');
-  const tabLabel = document.createElement('p');
-  tab.classList.add('tab');
-  tabLabel.innerText = label;
-  tab.appendChild(tabLabel);
-  tab.addEventListener('click', onClick);
-  return tab;
-}
 
 export default class EditorWindow extends BaseComponent {
   static get tag() {
@@ -22,36 +13,42 @@ export default class EditorWindow extends BaseComponent {
 
   constructor() {
     super(style, markup, [ 'tabContainer', 'contentContainer' ]);
-    this.newEditorSubscription = new Subscription('NEW_EDITOR_WINDOW', this.onAddCycle.bind(this));
-    this.tabNavLeft = new Subscription('TAB_NAV_LEFT', () => this.tabShift(-1));
-    this.tabNavRight = new Subscription('TAB_NAV_RIGHT', () => this.tabShift(1));
+    this.keyShortcutSubscription = new Subscription('KEY_SHORTCUT', (msg) => {
+      if (msg.shortcut === 'TAB_NAV_LEFT') {
+        this.tabShift(-1);
+        return;
+      }
+      if (msg.shortcut === 'TAB_NAV_RIGHT') {
+        this.tabShift(1);
+        return;
+      }
+      if (msg.shortcut === 'NEW_EDITOR_WINDOW') {
+        this.addTab();
+      }
+    });
     this.activeTab = 0;
   }
 
   connectedCallback() {
-    eventBus.subscribe(this.newEditorSubscription);
-    eventBus.subscribe(this.tabNavLeft);
-    eventBus.subscribe(this.tabNavRight);
+    eventBus.subscribe(this.keyShortcutSubscription);
   }
 
   disconnectedCallback() {
-    eventBus.unsubscribe(this.newEditorSubscription);
-    eventBus.unsubscribe(this.tabNavLeft);
-    eventBus.unsubscribe(this.tabNavRight);
+    eventBus.unsubscribe(this.keyShortcutSubscription);
   }
 
-  onAddCycle() {
+  addTab() {
     const index = this.dom.tabContainer.children.length;
     const label = `tab${index + 1}`;
-    const tab = buildTabElement(label, () => this.handleTabClick(index));
-    this.dom.tabContainer.appendChild(tab);
-    requestAnimationFrame(() => this.render());
-
+    const tab = new EditorTab(label, () => this.handleTabClick(index));
+    tab.classList.add('tab');
     const parentElement = this.dom.contentContainer;
     const component = new EventCycle();
+    this.dom.tabContainer.appendChild(tab);
     component.classList.add('editor');
     component.setOnRemoveCallback(() => parentElement.removeChild(component));
     parentElement.appendChild(component);
+    requestAnimationFrame(() => this.render());
   }
 
   handleTabClick(index) {
@@ -60,13 +57,12 @@ export default class EditorWindow extends BaseComponent {
   }
 
   tabShift(amount) {
-    console.log('amt', amount, this.activeTab)
     if (this.activeTab === 0 && amount < 1) {
       this.activeTab = this.dom.tabContainer.children.length - 1;
     } else {
       this.activeTab = (this.activeTab + amount) % this.dom.tabContainer.children.length;
     }
-    this.render();
+    requestAnimationFrame(() => this.render());
   }
 
   render() {

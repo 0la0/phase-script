@@ -1,5 +1,4 @@
 import BaseComponent from 'common/util/base-component';
-// import EventCycle from 'components/event-cycle';
 import EditorState from './EditorState';
 import dataStore from 'services/Store';
 import { eventBus } from 'services/EventBus';
@@ -24,7 +23,10 @@ export default class SoundRoot extends BaseComponent {
     this.shadowRoot.appendChild(this.editorState.sample);
     this.shadowRoot.appendChild(this.editorState.settings);
     this.eventBusSubscription = new Subscription('DATA_STORE', this.handleDataStoreUpdate.bind(this));
-    this.escapeKeySubscription = new Subscription('KEY_ESCAPE', () => dataStore.setValue({ editorDrawer: 'OFF' }));
+    this.escapeKeySubscription = new Subscription('KEY_SHORTCUT', (msg) => {
+      if (msg.shortcut !== 'KEY_ESCAPE') { return; }
+      dataStore.setValue({ editorDrawer: 'OFF' });
+    });
   }
 
   connectedCallback() {
