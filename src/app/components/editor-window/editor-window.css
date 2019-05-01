@@ -14,21 +14,51 @@
 }
 
 .tab {
-  border: 1px solid white;
+  border-left: 2px solid var(--color-grey-dark);
   min-width: 65px;
   max-width: 120px;
-  border-radius: 8px 8px 0 0;
   background-color: var(--color-black-light);
   cursor: pointer;
 }
 
 .tab-active {
-  background-color: var(--color-grey-dark);
+  background-color: var(--color-grey-darker);
+  border-left: 2px solid var(--color-accent);
 }
 
-.add-tab {
-  border: 1px solid red;
+.add-cycle {
   cursor: pointer;
+  position: relative;
+  display: block;
+  margin: 0 0 0 8px;
+  padding: 0;
+  width: 28px;
+  border-radius: 50%;
+  background-color: unset;
+  border: unset;
+  transition: background-color 0.15s ease;
+}
+.add-cycle:hover {
+  background-color: var(--color-grey-darker);
+}
+.add-cycle:hover > .add-cycle-bar {
+  background-color: var(--color-grey);
+}
+.add-cycle-bar {
+  background-color: var(--color-grey-dark);
+  width: 16px;
+  height: 2px;
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transition: background-color 0.15s ease;
+}
+.add-cycle-bar-1 {
+  transform: translate(-50%, -50%);
+}
+.add-cycle-bar-2 {
+  transform: translate(-50%, -50%) rotateZ(90deg);
 }
 
 .editor {

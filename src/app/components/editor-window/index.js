@@ -12,7 +12,7 @@ export default class EditorWindow extends BaseComponent {
   }
 
   constructor() {
-    super(style, markup, [ 'tabContainer', 'contentContainer' ]);
+    super(style, markup, [ 'addTab', 'tabContainer', 'contentContainer' ]);
     this.keyShortcutSubscription = new Subscription('KEY_SHORTCUT', (msg) => {
       if (msg.shortcut === 'TAB_NAV_LEFT') {
         this.tabShift(-1);
@@ -27,6 +27,7 @@ export default class EditorWindow extends BaseComponent {
       }
     });
     this.activeTab = 0;
+    this.dom.addTab.addEventListener('click', this.addTab.bind(this));
   }
 
   connectedCallback() {
@@ -40,13 +41,12 @@ export default class EditorWindow extends BaseComponent {
   addTab() {
     const index = this.dom.tabContainer.children.length;
     const label = `tab${index + 1}`;
-    const tab = new EditorTab(label, () => this.handleTabClick(index));
+    const tab = new EditorTab(label, () => this.handleTabClick(index), () => console.log('handleRemove'));
     tab.classList.add('tab');
     const parentElement = this.dom.contentContainer;
     const component = new EventCycle();
     this.dom.tabContainer.appendChild(tab);
     component.classList.add('editor');
-    component.setOnRemoveCallback(() => parentElement.removeChild(component));
     parentElement.appendChild(component);
     requestAnimationFrame(() => this.render());
   }

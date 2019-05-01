@@ -31,12 +31,4 @@ export default class BaseComponent extends HTMLElement {
     this.shadowRoot.appendChild(markupTemplate.content.cloneNode(true));
     this.dom = buildDomMap(this.shadowRoot, domMap);
   }
-
-  setOnRemoveCallback(onRemoveCallback) {
-    this.onRemoveCallback = onRemoveCallback;
-  }
-
-  onRemove() {
-    this.onRemoveCallback && this.onRemoveCallback();
-  }
 }

@@ -7,9 +7,10 @@ export default class EditorTab extends BaseComponent {
     return 'editor-tab';
   }
 
-  constructor(label, onClick) {
-    super(style, markup, [ 'label' ]);
+  constructor(label, onClick, onRemove) {
+    super(style, markup, [ 'label', 'closeButton' ]);
     this.addEventListener('click', onClick);
     this.dom.label.innerText = label;
+    this.dom.closeButton.addEventListener('click', onRemove);
   }
 }
