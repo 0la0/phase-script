@@ -26,7 +26,7 @@ export default class EditorWindow extends BaseComponent {
         this.addTab();
       }
     });
-    this.activeTab = 0;
+    this.activeTab;
     this.dom.addTab.addEventListener('click', this.addTab.bind(this));
   }
 
@@ -41,43 +41,57 @@ export default class EditorWindow extends BaseComponent {
   addTab() {
     const index = this.dom.tabContainer.children.length;
     const label = `tab${index + 1}`;
-    const tab = new EditorTab(label, () => this.handleTabClick(index), () => console.log('handleRemove'));
-    tab.classList.add('tab');
-    const parentElement = this.dom.contentContainer;
+    const tab = new EditorTab(label, this.handleTabClick.bind(this), this.handleTabRemove.bind(this));
     const component = new EventCycle();
+    tab.classList.add('tab');
     this.dom.tabContainer.appendChild(tab);
     component.classList.add('editor');
-    parentElement.appendChild(component);
+    this.dom.contentContainer.appendChild(component);
+    this.activeTab = tab;
     requestAnimationFrame(() => this.render());
   }
 
-  handleTabClick(index) {
-    this.activeTab = index;
+  handleTabClick(tab) {
+    this.activeTab = tab;
+    requestAnimationFrame(() => this.render());
+  }
+
+  handleTabRemove(tab) {
+    [...this.dom.tabContainer.children].forEach((tabElement, index) => {
+      if (tabElement === tab) {
+        const editorElement = [...this.dom.contentContainer.children][index];
+        this.dom.tabContainer.removeChild(tabElement);
+        this.dom.contentContainer.removeChild(editorElement);
+      }
+    });
+    this.activeTab = [...this.dom.tabContainer.children][0];
     requestAnimationFrame(() => this.render());
   }
 
   tabShift(amount) {
-    if (this.activeTab === 0 && amount < 1) {
-      this.activeTab = this.dom.tabContainer.children.length - 1;
-    } else {
-      this.activeTab = (this.activeTab + amount) % this.dom.tabContainer.children.length;
+    const tabs = [...this.dom.tabContainer.children];
+    for (let i = 0; i < tabs.length; i++) {
+      if (tabs[i] === this.activeTab) {
+        if (i === 0 && amount < 0) {
+          this.activeTab = tabs[tabs.length - 1];
+        } else {
+          const activeIndex = (i + amount) % tabs.length;
+          this.activeTab = tabs[activeIndex];
+        }
+        break;
+      }
     }
     requestAnimationFrame(() => this.render());
   }
 
   render() {
     [...this.dom.tabContainer.children].forEach((tabElement, index) => {
-      if (index === this.activeTab) {
+      const editorElement = [...this.dom.contentContainer.children][index];
+      if (tabElement === this.activeTab) {
         tabElement.classList.add('tab-active');
-      } else {
-        tabElement.classList.remove('tab-active');
-      }
-    });
-
-    [...this.dom.contentContainer.children].forEach((editorElement, index) => {
-      if (index === this.activeTab) {
         editorElement.classList.add('editor-active');
       } else {
+        tabElement.classList.remove('tab-active');
         editorElement.classList.remove('editor-active');
       }
     });
