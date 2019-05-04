@@ -53,8 +53,6 @@ const typeMap = {
   WAVESHAPER: Waveshaper,
 };
 
-let currentBuiltGraph = {};
-
 const outputTypes = [ 'DAC', 'MSG_MIDI_NOTE_OUT', 'MSG_MIDI_CC_OUT', 'MSG_MIDI_IN' ];
 function graphHasSink(graphDefinition) {
   return Object.values(graphDefinition).some(ele => outputTypes.includes(ele.type));
@@ -116,29 +114,34 @@ function disconnectOldNodes(oldGraph, currentGraph) {
     });
 }
 
-// TODO: create definition instace pair
-export function buildEventGraph(graphDefinition = {}, time) {
-  if (!graphHasSink(graphDefinition)) {
-    throw new Error('graphDefinition missing sink (dac, or midiOut)');
+export default class EventGraphBuilder {
+  constructor() {
+    this.currentBuiltGraph = {};
   }
-  const builtNodes = Object.keys(graphDefinition)
-    .reduce((acc, key) => {
-      const nodeDefinition = graphDefinition[key];
-      if (currentBuiltGraph && currentBuiltGraph[nodeDefinition.id]) {
-        const instance = currentBuiltGraph[nodeDefinition.id].instance;
-        instance.updateParams(nodeDefinition.params, time);
+
+  buildEventGraph(graphDefinition = {}, time) {
+    if (!graphHasSink(graphDefinition)) {
+      throw new Error('graphDefinition missing sink (dac, or midiOut)');
+    }
+    const builtNodes = Object.keys(graphDefinition)
+      .reduce((acc, key) => {
+        const nodeDefinition = graphDefinition[key];
+        if (this.currentBuiltGraph && this.currentBuiltGraph[nodeDefinition.id]) {
+          const instance = this.currentBuiltGraph[nodeDefinition.id].instance;
+          instance.updateParams(nodeDefinition.params, time);
+          return Object.assign(acc, {
+            [key]: { nodeDefinition, instance, },
+          });
+        }
+        const NodeClazz = buildNodeType(nodeDefinition);
+        const instance = NodeClazz.fromParams(nodeDefinition.params);
         return Object.assign(acc, {
           [key]: { nodeDefinition, instance, },
         });
-      }
-      const NodeClazz = buildNodeType(nodeDefinition);
-      const instance = NodeClazz.fromParams(nodeDefinition.params);
-      return Object.assign(acc, {
-        [key]: { nodeDefinition, instance, },
-      });
-    }, {});
-  disconnectOldNodes(currentBuiltGraph, builtNodes);
-  connectNodes(builtNodes);
-  connectNodeParams(builtNodes, time);
-  currentBuiltGraph = builtNodes;
+      }, {});
+    disconnectOldNodes(this.currentBuiltGraph, builtNodes);
+    connectNodes(builtNodes);
+    connectNodeParams(builtNodes, time);
+    this.currentBuiltGraph = builtNodes;
+  }
 }

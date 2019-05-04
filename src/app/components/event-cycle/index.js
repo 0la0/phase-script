@@ -4,6 +4,7 @@ import Subscription from 'services/EventBus/Subscription';
 import metronomeManager from 'services/metronome/metronomeManager';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
 import CycleManager from 'services/EventCycle/CycleManager';
+import { uuid } from 'services/Math';
 import style from './event-cycle.css';
 import markup from './event-cycle.html';
 
@@ -16,6 +17,7 @@ const KEY_CODE_ENTER = 13;
 
 const dom = [ 'cycleElement', 'cycleInput', 'cycleState', 'errorDisplay' ];
 
+// TODO: parent component to manage all even cycle components
 export default class EventCycle extends BaseComponent {
   static get tag() {
     return 'event-cycle';
@@ -23,6 +25,7 @@ export default class EventCycle extends BaseComponent {
 
   constructor() {
     super(style, markup, dom);
+    this.cycle = uuid();
     this.cycleLength = 16;
     this.isOn = true;
     this.cycleManager = new CycleManager();
@@ -47,18 +50,10 @@ export default class EventCycle extends BaseComponent {
     eventBus.subscribe(this.dataStoreSubscription);
 
     const testCycleValue = `
-      // seq(
-      //   p('m:127 m m').degrade(0.5),
-      //   p("m", "120 40 20 [90 120]").every(2, speed(0.5).repeat(2).degrade(0.5))
-      // )
-      // addr('m').midiNote('TR-08', 9, 64, 10)
-      midiIn('Launchpad Mini', 0, 112, 'm')
-      addr('m').map(n => 60).envSin(0, 0, 100).gain(0.3, 0x88).dac()
-      // seq(
-      //   p('p', '0 50 120'),
-      //   p('p', '0 50 120 50 0')
-      // )
-      addr('p').midiCc('TR-08', 9, 46)
+      seq(
+        p("a", "48 60 60 72")
+      )
+      addr('a').envSin(0, 0, 400).gain(0.5, 0x1).dac()
     `;
     this.dom.cycleInput.innerText = testCycleValue.trim();
     this.handleCycleChange(testCycleValue);

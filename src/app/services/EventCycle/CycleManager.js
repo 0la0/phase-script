@@ -1,7 +1,7 @@
 import CycleHandler from 'services/EventCycle/CycleHandler';
 import { evaluateUserInput } from 'services/EventCycle/Evaluator';
 import { createEventGraph } from 'services/EventCycle/EventGraphHandler';
-import { buildEventGraph } from 'services/EventCycle/EventGraph/EventGraphBuilder';
+import EventGraphBuilder from 'services/EventCycle/EventGraph/EventGraphBuilder';
 
 export default class CycleManager {
   constructor() {
@@ -9,6 +9,8 @@ export default class CycleManager {
     this.nextCycleHandlers = null;
     this.nextGraphDefinition = null;
     this.errorMessage = '';
+    this.eventGraphBuilder = new EventGraphBuilder();
+    console.log('eventGraphBuilder?', this.eventGraphBuilder)
     this.setCycleString('');
   }
 
@@ -47,7 +49,7 @@ export default class CycleManager {
       this.cycleHandlers = this.nextCycleHandlers;
       this.nextCycleHandlers = null;
       if (this.nextGraphDefinition) {
-        buildEventGraph(this.nextGraphDefinition, time);
+        this.eventGraphBuilder.buildEventGraph(this.nextGraphDefinition, time);
         this.nextGraphDefinition = null;
       }
     }
