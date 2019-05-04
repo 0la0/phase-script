@@ -16,13 +16,13 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
+    "eslint": "^6.0.0-alpha.0",
     "esm": "^3.2.22",
-    "mocha": "^6.0.2",
-    "raw-loader": "^1.0.0",
+    "mocha": "^6.1.4",
+    "raw-loader": "^2.0.0",
     "webpack": "^v5.0.0-alpha.11",
-    "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.2.1"
+    "webpack-cli": "^3.3.1",
+    "webpack-dev-server": "^3.3.1"
   },
   "dependencies": {
     "three": "^0.92.0"

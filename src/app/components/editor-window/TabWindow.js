@@ -24,7 +24,7 @@ export default class TabWindow {
 
   _removeSelf() {
     this.tabContainer.removeChild(this.tab);
-    this.windowContainer.setHandleRemove(this.window);
+    this.windowContainer.removeChild(this.window);
   }
 
   setHandleClick(onClick) {

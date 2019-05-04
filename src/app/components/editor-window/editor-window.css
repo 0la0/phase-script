@@ -5,21 +5,28 @@
 .tab-row {
   height: 30px;
   border: 1px solid white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.row {
+.tab-container {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  align-items: center;
+  overflow-x: scroll;
 }
 
 .add-cycle {
   cursor: pointer;
   position: relative;
   display: block;
-  margin: 0 0 0 8px;
+  margin: 0 8px 0 32px;
   padding: 0;
   width: 28px;
+  height: 28px;
   border-radius: 50%;
   background-color: unset;
   border: unset;
