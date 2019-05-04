@@ -1,9 +1,25 @@
 :host {
+  display: block;
+  height: 100%;
+}
+
+.tab {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 0 8px;
+  border-left: 2px solid var(--color-grey-dark);
+  min-width: 65px;
+  max-width: 120px;
+  background-color: var(--color-black-light);
+  cursor: pointer;
+  height: -webkit-fill-available;
+}
+
+.tab-active {
+  background-color: var(--color-grey-darker);
+  border-left: 2px solid var(--color-accent);
 }
 
 .label {

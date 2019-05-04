@@ -13,19 +13,6 @@
   justify-content: flex-start;
 }
 
-.tab {
-  border-left: 2px solid var(--color-grey-dark);
-  min-width: 65px;
-  max-width: 120px;
-  background-color: var(--color-black-light);
-  cursor: pointer;
-}
-
-.tab-active {
-  background-color: var(--color-grey-darker);
-  border-left: 2px solid var(--color-accent);
-}
-
 .add-cycle {
   cursor: pointer;
   position: relative;

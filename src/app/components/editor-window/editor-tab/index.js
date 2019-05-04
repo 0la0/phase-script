@@ -8,7 +8,7 @@ export default class EditorTab extends BaseComponent {
   }
 
   constructor(label, onClick, onRemove) {
-    super(style, markup, [ 'label', 'closeButton' ]);
+    super(style, markup, [ 'container', 'label', 'closeButton' ]);
     this.addEventListener('click', () => onClick(this));
     this.dom.label.innerText = label;
     this.dom.closeButton.addEventListener('click', (event) => {
@@ -16,5 +16,14 @@ export default class EditorTab extends BaseComponent {
       event.stopPropagation();
       onRemove(this);
     });
+  }
+
+  setActive(isActive) {
+    if (isActive) {
+      this.dom.container.classList.add('tab-active');
+    } else {
+      this.dom.container.classList.remove('tab-active');
+    }
+    return this;
   }
 }
