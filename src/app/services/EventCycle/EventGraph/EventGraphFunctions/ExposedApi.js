@@ -4,7 +4,7 @@ import buildNodeEvaluator from './RuntimeGraphFunctionFactory';
 
 // TODO:
 //   * remove services/midi/mappings directory
-//   * wavetable synths
+//   * wavetable synths (https://github.com/GoogleChromeLabs/web-audio-samples/tree/gh-pages/samples/audio/wave-tables)
 //   * documentation descriptions / param descriptions
 //   * parameter validation
 //   * message duplicator

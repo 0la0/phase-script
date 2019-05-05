@@ -29,6 +29,8 @@ class Listener {
 
 const listeners = [
   new Listener('keydown', keyDownHandler),
+  new Listener('mousemove', event => eventBus.publish({ address: 'MOUSE_MOVE', event })),
+  new Listener('mouseup', event => eventBus.publish({ address: 'MOUSE_UP', event })),
 ];
 
 export default class GlobalListeners {

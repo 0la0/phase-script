@@ -26,6 +26,7 @@ export default class EventCycle extends BaseComponent {
     this.cycleLength = 16;
     this.isOn = true;
     this.requestOn = false;
+    this.lastValidCycleString = '';
     this.cycleManager = new CycleManager();
     this.dataStoreSubscription = new Subscription('DATA_STORE', this.handleDataStoreUpdate.bind(this));
     this.dom.toggleButton.addEventListener('click', this.handleToggleClick.bind(this));
@@ -39,7 +40,14 @@ export default class EventCycle extends BaseComponent {
         this.handleCycleChange(this.dom.cycleInput.innerText);
         return;
       }
-      this.dom.pendingChanges.classList.add(cssClass.pendingChanges);
+    });
+    this.dom.cycleInput.addEventListener('keyup', event => {
+      event.stopPropagation();
+      if (this.dom.cycleInput.innerText.trim() === this.lastValidCycleString) {
+        this.dom.pendingChanges.classList.remove(cssClass.pendingChanges);
+      } else {
+        this.dom.pendingChanges.classList.add(cssClass.pendingChanges);
+      }
     });
     this.metronomeSchedulable = new MetronomeScheduler({
       processTick: this.handleTick.bind(this),
@@ -72,6 +80,7 @@ export default class EventCycle extends BaseComponent {
       return;
     }
     this.dom.errorDisplay.classList.remove(cssClass.errorDisplay);
+    this.lastValidCycleString = cycleString.trim();
     this.dom.pendingChanges.classList.remove(cssClass.pendingChanges);
   }
 
@@ -95,9 +104,7 @@ export default class EventCycle extends BaseComponent {
   }
 
   handleDataStoreUpdate(obj) {
-    requestAnimationFrame(() => {
-      this.dom.cycleInput.style.setProperty('font-size', `${obj.dataStore.fontSize}px`);
-    });
+    this.dom.cycleInput.style.setProperty('font-size', `${obj.dataStore.fontSize}px`);
   }
 
   handleToggleClick() {

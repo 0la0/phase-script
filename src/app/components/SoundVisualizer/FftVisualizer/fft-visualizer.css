@@ -1,0 +1,20 @@
+:host {
+  display: block;
+  position: relative;
+}
+
+.canvas {
+  margin: 0;
+  padding: 0;
+  border-radius: var(--border-radius);
+}
+
+.draggable {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-top: 25px dashed var(--color-grey);
+  border-right: 25px solid transparent;
+}

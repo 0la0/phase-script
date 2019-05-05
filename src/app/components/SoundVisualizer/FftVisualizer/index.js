@@ -1,16 +1,12 @@
 import BaseComponent from 'common/util/base-component';
 import { mapToRange } from 'services/Math';
+import { eventBus } from 'services/EventBus';
+import Subscription from 'services/EventBus/Subscription';
+import markup from './fft-visualizer.html';
+import style from './fft-visualizer.css';
 
-const style = `
-  canvas {
-    margin: 0;
-    padding: 0;
-    border-radius: var(--border-radius);
-  }
-`;
-
-const WIDTH = 2 ** 7;
-const HEIGHT = 50;
+let WIDTH = 2 ** 7;
+let HEIGHT = 50;
 const STROKE_ADJUST = 4;
 const MAX_BYTE = (2 ** 8) - 1;
 
@@ -33,8 +29,50 @@ export default class FftVisualizer extends BaseComponent {
   }
 
   constructor() {
-    super(style, '<canvas id="canvas"></canvas>', [ 'canvas' ]);
+    super(style, markup, [ 'canvas', 'draggable' ]);
     this.g2d = getGraphicsContext(this.dom.canvas, WIDTH, HEIGHT);
+    this.isDragging = false;
+    this.dom.draggable.addEventListener('mousedown', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      this.isDragging = true;
+    });
+    this.dom.draggable.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
+    this.mouseMoveSubscription = new Subscription('MOUSE_MOVE', (msg) => {
+      if (!this.isDragging) { return; }
+      // TODO: wrap in RAF
+      const { event } = msg;
+      const { width, height } = document.body.getBoundingClientRect();
+      const x = event.clientX;
+      const y = event.clientY;
+      const newWidth = width - x;
+      const newHeight = height - y;
+      this.dom.canvas.setAttribute('width', newWidth);
+      this.dom.canvas.setAttribute('height', newHeight);
+      this.dom.canvas.style.setProperty('width', newWidth);
+      this.dom.canvas.style.setProperty('height', newHeight);
+      WIDTH = newWidth;
+      HEIGHT = newHeight;
+    });
+    this.mouseUpSubscription = new Subscription('MOUSE_UP', (msg) => {
+      if (!this.isDragging) { return; }
+      msg.event.preventDefault();
+      msg.event.stopPropagation();
+      this.isDragging = false;
+    });
+  }
+
+  connectedCallback() {
+    eventBus.subscribe(this.mouseMoveSubscription);
+    eventBus.subscribe(this.mouseUpSubscription);
+  }
+
+  disconnectedCallback() {
+    eventBus.unsubscribe(this.mouseMoveSubscription);
+    eventBus.unsubscribe(this.mouseUpSubscription);
   }
 
   clear() {
@@ -42,15 +80,17 @@ export default class FftVisualizer extends BaseComponent {
   }
 
   fadeCanvas() {
-    this.g2d.fillStyle = '#24242460';
+    this.g2d.fillStyle = '#242424FF';
     this.g2d.fillRect(0, 0, WIDTH, HEIGHT);
     this.g2d.fillStyle = '#FFFFFF99';
   }
 
+  // TODO: make stroke with proportional to window size
   renderTimeData(timeData) {
     const bufferLength = timeData.length;
     const step = WIDTH / bufferLength;
     this.fadeCanvas();
+    this.g2d.strokeStyle = '#FFFFFFBB';
     this.g2d.beginPath();
     timeData.forEach((value, index) => {
       const normalValue = (value / MAX_BYTE) * HEIGHT;
