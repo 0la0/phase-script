@@ -58,4 +58,9 @@ export default class CycleManager {
       .filter(schedulables => !!schedulables)
       .flat();
   }
+
+  stop() {
+    this.eventGraphBuilder.cancelAllFutureAudioEvents();
+    this.cycleHandlers.forEach(cycleHandler => cycleHandler.reset());
+  }
 }

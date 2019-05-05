@@ -4,6 +4,7 @@ import buildNodeEvaluator from './RuntimeGraphFunctionFactory';
 
 // TODO:
 //   * remove services/midi/mappings directory
+//   * wavetable synths
 //   * documentation descriptions / param descriptions
 //   * parameter validation
 //   * message duplicator

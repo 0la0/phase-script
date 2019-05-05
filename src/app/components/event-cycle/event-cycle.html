@@ -1,17 +1,10 @@
-<div class="top-bar">
-  <div id="cycleState" class="cycle-state"></div>
-  <toggle-button
-    id="toggleButton"
-    class="toggle-button"
-    click="onToggleClick"
-    onlabel="Stop"
-    offlabel="Start"
-    ison="true">
-  </toggle-button>
-</div>
 <div
   id="cycleInput"
   class="cycle-input"
   contenteditable />
 </div>
-<p id="errorDisplay" class="error-display"></p>
+<div class="meta-container">
+  <button id="toggleButton" class="toggle-button">Active</button>
+  <div id="pendingChanges" class="pending-changes">Pending Changes</div>
+  <p id="errorDisplay" class="error-display"></p>
+</div>

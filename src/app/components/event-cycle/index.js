@@ -8,16 +8,13 @@ import { uuid } from 'services/Math';
 import style from './event-cycle.css';
 import markup from './event-cycle.html';
 
-const CYCLE_STATE = {
-  INVALID: ['background-color', '#DD7799'],
-  QUEUED: ['background-color', '#7799DD'],
-  PLAYING: ['background-color', 'none']
-};
 const KEY_CODE_ENTER = 13;
+const cssClass = {
+  errorDisplay: 'error-display--visible',
+  pendingChanges: 'pending-changes--active',
+};
+const dom = [ 'cycleInput', 'toggleButton', 'pendingChanges', 'errorDisplay' ];
 
-const dom = [ 'cycleElement', 'cycleInput', 'cycleState', 'errorDisplay' ];
-
-// TODO: parent component to manage all even cycle components
 export default class EventCycle extends BaseComponent {
   static get tag() {
     return 'event-cycle';
@@ -28,12 +25,13 @@ export default class EventCycle extends BaseComponent {
     this.cycle = uuid();
     this.cycleLength = 16;
     this.isOn = true;
+    this.requestOn = false;
     this.cycleManager = new CycleManager();
     this.dataStoreSubscription = new Subscription('DATA_STORE', this.handleDataStoreUpdate.bind(this));
+    this.dom.toggleButton.addEventListener('click', this.handleToggleClick.bind(this));
   }
 
   connectedCallback() {
-    document.execCommand('defaultParagraphSeparator', false, 'p');
     this.dom.cycleInput.addEventListener('keydown', event => {
       event.stopPropagation();
       if (event.keyCode === KEY_CODE_ENTER && event.metaKey) {
@@ -41,10 +39,11 @@ export default class EventCycle extends BaseComponent {
         this.handleCycleChange(this.dom.cycleInput.innerText);
         return;
       }
-      this.dom.cycleState.style.setProperty(...CYCLE_STATE.QUEUED);
+      this.dom.pendingChanges.classList.add(cssClass.pendingChanges);
     });
     this.metronomeSchedulable = new MetronomeScheduler({
       processTick: this.handleTick.bind(this),
+      stop: () => this.cycleManager.stop(),
     });
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
     eventBus.subscribe(this.dataStoreSubscription);
@@ -53,7 +52,7 @@ export default class EventCycle extends BaseComponent {
       seq(
         p("a", "48 60 60 72")
       )
-      addr('a').envSin(0, 0, 400).gain(0.5, 0x1).dac()
+      addr('a').envSin(0, 0, 400).gain(0.5).dac()
     `;
     this.dom.cycleInput.innerText = testCycleValue.trim();
     this.handleCycleChange(testCycleValue);
@@ -67,34 +66,48 @@ export default class EventCycle extends BaseComponent {
   handleCycleChange(cycleString) {
     this.cycleManager.setCycleString(cycleString);
     if (!this.cycleManager.isValid()) {
-      this.dom.cycleState.style.setProperty(...CYCLE_STATE.INVALID);
-      this.dom.errorDisplay.classList.add('error-display--visible');
+      this.dom.errorDisplay.classList.add(cssClass.errorDisplay);
       this.dom.errorDisplay.innerText = this.cycleManager.errorMessage;
+      this.dom.pendingChanges.classList.remove(cssClass.pendingChanges);
       return;
     }
-    this.dom.cycleState.style.setProperty(...CYCLE_STATE.PLAYING);
-    this.dom.errorDisplay.classList.remove('error-display--visible');
+    this.dom.errorDisplay.classList.remove(cssClass.errorDisplay);
+    this.dom.pendingChanges.classList.remove(cssClass.pendingChanges);
   }
 
   handleTick(tickNumber, time) {
     if (!this.isOn) { return; }
     const shouldRefresh = tickNumber % this.cycleLength === 0;
+    if (this.requestOn) {
+      if (shouldRefresh) {
+        this.requestOn = false;
+      } else {
+        return;
+      }
+    }
     try {
       this.cycleManager.getAudioEventsAndIncrement(time, metronomeManager.getMetronome().getTickLength(), shouldRefresh)
         .forEach(audioEvent => audioEventBus.publish(audioEvent));
     } catch(error) {
-      console.log('TODO: handle', error);
       this.dom.errorDisplay.innerText = error.message;
-      this.dom.errorDisplay.classList.add('error-display--visible');
+      this.dom.errorDisplay.classList.add(cssClass.errorDisplay);
     }
   }
 
   handleDataStoreUpdate(obj) {
-    this.dom.cycleInput.style.setProperty('font-size', `${obj.dataStore.fontSize}px`);
+    requestAnimationFrame(() => {
+      this.dom.cycleInput.style.setProperty('font-size', `${obj.dataStore.fontSize}px`);
+    });
   }
 
-  onToggleClick() {
+  handleToggleClick() {
     this.isOn = !this.isOn;
-    this.cycleManager.resetCounter();
+    if (!this.isOn) {
+      this.cycleManager.stop();
+      this.dom.toggleButton.innerText = 'Off';
+    } else {
+      this.requestOn = true;
+      this.dom.toggleButton.innerText = 'Active';
+    }
   }
 }

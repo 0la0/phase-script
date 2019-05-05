@@ -1,101 +1,65 @@
 :host {
-  border: var(--border-default);
-  border-radius: var(--border-radius);
-  position: relative;
   display: block;
-  padding: 12px;
-}
-
-.top-bar {
-  border-bottom: var(--border-default);
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.cycle-indicator {
-  display: inline-block;
-  height: 10px;;
-  width: 10px;
-  background-color: none;
-}
-.cycle-inicator--active {
-  background-color: var(--color-grey-light);
-}
-
-.numeric-input {
-  height: 25px;
-  font-size: 1em;
-  margin: 0 2px;
-  width: 28px;
-  background-color: var(--color-black-light);
-  border: none;
-  border-bottom: var(--border-default);
-  outline: none;
-  color: var(--border-default);
-}
-.numeric-input:focus {
-  outline: none;
-}
-
-.cycle-container {
-  border: var(--border-default);
-  border-radius: var(--border-radius);
-  height: 50px;
-}
-
-.cycle-element {
-  border: 4px solid red;
-  border-radius: var(--border-radius);
+  position: relative;
   height: 100%;
-  width: 20px;
-}
-.cycle-element--active {
-  border-color: green;
+  padding: 0 4px;
 }
 
 .cycle-input {
   display: block;
+  position: relative;
   font-size: 24px;
-  background-color: var(--color-black-light);
   color: var(--border-default);
   width: 100%;
-  width: -webkit-fill-available;
+  height: 100%;
   font-family: Hack, monospace;
-  transition: font-size 0.15s ease;
+  overflow-y: scroll;
 }
-
-.cycle-state {
-  display: inline-block;
-  height: 10px;;
-  width: 10px;
-  background-color: none;
-  border: var(--border-default);
-}
-/*
 .cycle-input:focus {
   outline: none;
-} */
-/* .cycle-state--invalid {
-  background-color: red;
-} */
-/* .cycle-state--queued {
-  background-color: yellow;
-} */
-/* .cycle-state--queued {
-  background-color: green;
-} */
+}
 
-.error-display {
+.meta-container {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  padding: 8px;
-  background-color: var(--color-error);
-  border-radius: var(--border-radius);
+  top: 0;
+  right: 4px;
   font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  opacity: 0.8;
+}
+
+.toggle-button {
+  background: unset;
+  margin: unset;
+  padding: 8px;
+  font: unset;
+  border: unset;
+  color: white;
+  cursor: pointer;
+  min-width: 100px;
+  border: 1px solid white;
+}
+
+.pending-changes {
+  padding: 8px;
+  background-color: var(--color-accent);
   color: var(--color-black);
   display: none;
+}
+.pending-changes--active {
+  display: block;
+}
+
+.error-display {
+  padding: 8px;
+  background-color: var(--color-error);
+  color: var(--color-black);
+  opacity: 0.75;
+  display: none;
+  cursor: default;
 }
 
 .error-display--visible {

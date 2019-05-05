@@ -1,10 +1,13 @@
 :host {
-  display: block;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .tab-row {
   height: 30px;
-  border: 1px solid white;
+  border-bottom: 2px solid var(--color-grey-darker);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -17,6 +20,13 @@
   justify-content: flex-start;
   align-items: center;
   overflow-x: scroll;
+  padding: 0 4px;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .add-cycle {
@@ -57,6 +67,7 @@
 
 .editor {
   display: none;
+  flex: 1;
 }
 
 .editor-active {

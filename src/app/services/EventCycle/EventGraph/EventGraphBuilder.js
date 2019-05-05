@@ -144,4 +144,8 @@ export default class EventGraphBuilder {
     connectNodeParams(builtNodes, time);
     this.currentBuiltGraph = builtNodes;
   }
+
+  cancelAllFutureAudioEvents() {
+    console.log('TODO: cancelAllFutureAudioEvents')
+  }
 }

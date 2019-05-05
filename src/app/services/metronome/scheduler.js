@@ -28,6 +28,7 @@ export default class Scheduler {
   }
 
   start() {
+    this.tickCounter = 0;
     this.isRunning = true;
     this.schedulables.forEach(schedulable => schedulable.start());
     this.renderLoop();

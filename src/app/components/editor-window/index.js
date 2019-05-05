@@ -56,7 +56,9 @@ export default class EditorWindow extends BaseComponent {
 
   handleTabRemove(tab) {
     this.tabs = this.tabs.filter(_tab => _tab !== tab);
-    this.activeTab = this.tabs[0];
+    if (tab === this.activeTab) {
+      this.activeTab = this.tabs[0];
+    }
     this.render();
   }
 

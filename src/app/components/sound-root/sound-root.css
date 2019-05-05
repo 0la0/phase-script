@@ -1,5 +1,6 @@
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   width: 100%;
   --topbar-height: 41px;
@@ -9,14 +10,12 @@
   justify-content: space-between;
   align-items: baseline;
   padding: 8px 4px;
-  border-bottom: var(--border-default);
+  border-bottom: 2px solid var(--color-grey-darker);
   height: auto;
 }
 
 .editor-window {
-  display: block;
-  overflow-y: scroll;
-  height: calc(100% - var(--topbar-height));
+  flex: 1;
 }
 
 .ctrl-button {

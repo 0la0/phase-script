@@ -51,4 +51,8 @@ export default class CycleHandler {
     }
     return audioEvents;
   }
+
+  reset() {
+    this.counter.reset();
+  }
 }
