@@ -3,6 +3,7 @@ import {mtof} from 'services/midi/util';
 import { AsrEnvelope } from 'services/audio/Envelope';
 import { playNoiseBuffer } from 'services/audio/whiteNoise';
 import OSCILATORS from 'services/audio/synth/Oscillators';
+import wavetable from './wavetables';
 
 export default function envelopedOscilator(midiNote, startTime, asr, type, gain, outputs, modulator, onComplete) {
   const _type = OSCILATORS[type] || OSCILATORS.SINE;
@@ -19,6 +20,11 @@ export default function envelopedOscilator(midiNote, startTime, asr, type, gain,
   osc.connect(envelope);
   outputs.forEach(output => envelope.connect(output));
   osc.type = _type;
+
+  const wvTable = wavetable.phonemeO;
+  const wave = audioGraph.getAudioContext().createPeriodicWave(wvTable.real, wvTable.imaginary);
+  osc.setPeriodicWave(wave);
+
   osc.frequency.value = frequency;
   if (modulator) {
     modulator.forEach ?

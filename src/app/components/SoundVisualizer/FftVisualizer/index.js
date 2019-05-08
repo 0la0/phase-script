@@ -5,8 +5,8 @@ import Subscription from 'services/EventBus/Subscription';
 import markup from './fft-visualizer.html';
 import style from './fft-visualizer.css';
 
-let WIDTH = 2 ** 7;
-let HEIGHT = 50;
+let WIDTH = 2 ** 8;
+let HEIGHT = 2 ** 7;
 const STROKE_ADJUST = 4;
 const MAX_BYTE = (2 ** 8) - 1;
 
@@ -103,18 +103,21 @@ export default class FftVisualizer extends BaseComponent {
 
   renderFrequencyData(frequencyData) {
     this.fadeCanvas();
-    for (let i = 0; i < WIDTH; i++) {
-      const height = (frequencyData[i] / MAX_BYTE) * HEIGHT;
-      this.g2d.fillRect(i, HEIGHT - height, 1, height);
-    }
+    const step = 2 * WIDTH / frequencyData.length;
+    frequencyData.forEach((value, index) => {
+      const normalValue = (value / MAX_BYTE) * HEIGHT;
+      const height = ( (MAX_BYTE / HEIGHT) + normalValue ) - STROKE_ADJUST;
+      this.g2d.fillRect(step * index, HEIGHT - height, step, height);
+    });
   }
 
   renderSpectrogram(frequencyData) {
     this.g2d.drawImage(this.dom.canvas, 0, 0, WIDTH, HEIGHT, 0, -STROKE_ADJUST, WIDTH, HEIGHT);
-    for (let i = 0; i < WIDTH; i++) {
-      const val = mapToRange(0, MAX_BYTE, 36, MAX_BYTE, frequencyData[i]);
+    const step = 2 * WIDTH / frequencyData.length;
+    frequencyData.forEach((value, index) => {
+      const val = mapToRange(0, MAX_BYTE, 36, MAX_BYTE, value);
       this.g2d.fillStyle = `rgb(${val}, ${val}, ${val})`;
-      this.g2d.fillRect(i, HEIGHT - STROKE_ADJUST, 1, STROKE_ADJUST);
-    }
+      this.g2d.fillRect(step * index, HEIGHT - STROKE_ADJUST, 1, STROKE_ADJUST);
+    });
   }
 }
