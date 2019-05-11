@@ -15,8 +15,8 @@ export default class Metronome extends BaseComponent {
     this.isRunning = false;
     this.spaceBarSubscription = new Subscription('KEY_SHORTCUT', (msg) => {
       if (msg.shortcut !== 'KEY_SPACE') { return; }
-      event.preventDefault();
-      event.stopPropagation();
+      msg.event.preventDefault();
+      msg.event.stopPropagation();
       this.dom.clockButton.click();
     });
   }

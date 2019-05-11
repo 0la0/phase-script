@@ -6,6 +6,7 @@ import OSCILATORS from 'services/audio/synth/Oscillators';
 import wavetables from './wavetableProvider';
 
 export default function envelopedOscilator(midiNote, startTime, asr, type, gain, outputs, modulator, onComplete) {
+  console.log('type', type)
   const _type = OSCILATORS[type] || OSCILATORS.SINE;
   if (_type === OSCILATORS.NOISE) {
     playNoiseBuffer(startTime, asr, gain, outputs);

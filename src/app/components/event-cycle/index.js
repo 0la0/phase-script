@@ -16,6 +16,15 @@ const cssClass = {
 };
 const dom = [ 'cycleInput', 'toggleButton', 'pendingChanges', 'errorDisplay' ];
 
+function focusEditor(inputElement) {
+  const selection = window.getSelection();
+  const range = document.createRange();
+  range.setStart(inputElement, inputElement.childElementCount);
+  range.setEnd(inputElement, inputElement.childElementCount);
+  selection.removeAllRanges();
+  selection.addRange(range);
+}
+
 export default class EventCycle extends BaseComponent {
   static get tag() {
     return 'event-cycle';
@@ -35,11 +44,11 @@ export default class EventCycle extends BaseComponent {
 
   connectedCallback() {
     this.dom.cycleInput.addEventListener('keydown', event => {
-      event.stopPropagation();
       if (keyShortcutManager.offerKeyShortcutEvent(event)) {
         event.preventDefault();
         return;
       }
+      event.stopPropagation();
       if (event.keyCode === KEY_CODE_ENTER && event.metaKey) {
         event.preventDefault();
         this.handleCycleChange(this.dom.cycleInput.innerText);
@@ -62,13 +71,14 @@ export default class EventCycle extends BaseComponent {
     eventBus.subscribe(this.dataStoreSubscription);
 
     const testCycleValue = `
-      seq(
-        p("a", "48 60 60 72")
-      )
-      addr('a').envSin(0, 0, 400).gain(0.5).dac()
+      seq( p("a", "48 60 60 72") )
+      seq( p("b", "48 60 60 72") )
+      let mod = addr('b').envSin(10, 0, 40).gain(500, 0x9)
+      addr('a').envSin(0, 0, 400, mod).gain(0.5, 0x8).dac()
     `;
     this.dom.cycleInput.innerText = testCycleValue.trim();
     this.handleCycleChange(testCycleValue);
+    setTimeout(() => focusEditor(this.dom.cycleInput));
   }
 
   disconnectedCallback() {

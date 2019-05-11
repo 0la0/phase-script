@@ -13,11 +13,11 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('ENVELOPED_OSC', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);
     this.modulationInputs = new Set();
+    this.oscType = oscType;
     this.paramMap = {
       attack: new DiscreteSignalParameter(attack, msToSec),
       sustain: new DiscreteSignalParameter(sustain, msToSec),
       release: new DiscreteSignalParameter(release, msToSec),
-      oscType: new DiscreteSignalParameter(shorthandTypes[oscType], val => val),
       modulator: {
         setParamValue: paramVal => {
           if (!(paramVal instanceof PatchAudioModel)) {
@@ -38,8 +38,7 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
         sustain: this.paramMap.sustain.getValueForTime(message.time),
         release: this.paramMap.release.getValueForTime(message.time),
       };
-      const oscType = this.paramMap.oscType.getValueForTime(message.time);
-      envelopedOscilator(note, message.time.audio, asr, oscType, 1, outputs, this.modulationInputs);
+      envelopedOscilator(note, message.time.audio, asr, this.oscType, 1, outputs, this.modulationInputs);
     });
   }
 
