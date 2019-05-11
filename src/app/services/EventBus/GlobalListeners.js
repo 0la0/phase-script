@@ -1,24 +1,5 @@
 import { eventBus } from 'services/EventBus';
-
-const keyShortcuts = [
-  { code: 'Space', ctrlKey: false, shortcut: 'KEY_SPACE' },
-  { code: 'Escape', ctrlKey: false, shortcut: 'KEY_ESCAPE' },
-  { code: 'BracketLeft', ctrlKey: true, shortcut: 'TAB_NAV_LEFT' },
-  { code: 'BracketRight', ctrlKey: true, shortcut: 'TAB_NAV_RIGHT' },
-  { code: 'KeyN', ctrlKey: true, shortcut: 'NEW_EDITOR_WINDOW' },
-  { code: 'KeyT', ctrlKey: true, shortcut: 'NEW_EDITOR_WINDOW' },
-];
-
-function isKeyMatch(event, keyEvent) {
-  return event.code === keyEvent.code && event.ctrlKey === keyEvent.ctrlKey;
-}
-
-function keyDownHandler(event) {
-  keyShortcuts.forEach(keyEvent => {
-    if (!isKeyMatch(event, keyEvent)) { return; }
-    eventBus.publish({ address: 'KEY_SHORTCUT', shortcut: keyEvent.shortcut, event });
-  });
-}
+import keyShortcutManager from 'services/keyShortcut';
 
 class Listener {
   constructor(name, handler) {
@@ -28,7 +9,7 @@ class Listener {
 }
 
 const listeners = [
-  new Listener('keydown', keyDownHandler),
+  new Listener('keydown', event => keyShortcutManager.offerKeyShortcutEvent(event)),
   new Listener('mousemove', event => eventBus.publish({ address: 'MOUSE_MOVE', event })),
   new Listener('mouseup', event => eventBus.publish({ address: 'MOUSE_UP', event })),
 ];

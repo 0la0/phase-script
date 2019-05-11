@@ -19,12 +19,12 @@ export default function envelopedOscilator(midiNote, startTime, asr, type, gain,
     .build(startTime, gain);
   osc.connect(envelope);
   outputs.forEach(output => envelope.connect(output));
-  osc.type = _type;
+  // osc.type = _type;
 
   // TODO: try `createPeriodicWave` once
-  const testWave = wavetables.wurlitzer2;
-  const wave = audioGraph.getAudioContext().createPeriodicWave(testWave.real, testWave.imaginary, { disableNormalization: true });
-  osc.setPeriodicWave(wave);
+  // const testWave = wavetables.wurlitzer;
+  // const wave = audioGraph.getAudioContext().createPeriodicWave(testWave.real, testWave.imaginary, { disableNormalization: true });
+  // osc.setPeriodicWave(wave);
 
   osc.frequency.value = frequency;
   if (modulator) {

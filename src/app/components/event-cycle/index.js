@@ -4,6 +4,7 @@ import Subscription from 'services/EventBus/Subscription';
 import metronomeManager from 'services/metronome/metronomeManager';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
 import CycleManager from 'services/EventCycle/CycleManager';
+import keyShortcutManager from 'services/keyShortcut';
 import { uuid } from 'services/Math';
 import style from './event-cycle.css';
 import markup from './event-cycle.html';
@@ -35,6 +36,10 @@ export default class EventCycle extends BaseComponent {
   connectedCallback() {
     this.dom.cycleInput.addEventListener('keydown', event => {
       event.stopPropagation();
+      if (keyShortcutManager.offerKeyShortcutEvent(event)) {
+        event.preventDefault();
+        return;
+      }
       if (event.keyCode === KEY_CODE_ENTER && event.metaKey) {
         event.preventDefault();
         this.handleCycleChange(this.dom.cycleInput.innerText);
