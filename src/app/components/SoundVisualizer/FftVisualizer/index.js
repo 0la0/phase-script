@@ -9,6 +9,8 @@ let WIDTH = 2 ** 8;
 let HEIGHT = 2 ** 7;
 const STROKE_ADJUST = 4;
 const MAX_BYTE = (2 ** 8) - 1;
+const MIN_WIDTH = 100;
+const MIN_HEIGHT = 50;
 
 function getGraphicsContext(canvasElement, width, height) {
   const g2d = canvasElement.getContext('2d');
@@ -31,7 +33,9 @@ export default class FftVisualizer extends BaseComponent {
   constructor() {
     super(style, markup, [ 'canvas', 'draggable' ]);
     this.g2d = getGraphicsContext(this.dom.canvas, WIDTH, HEIGHT);
+    this.strokeStyle = '#FFFFFFBB';
     this.isDragging = false;
+    this.lastRenderTime = performance.now();
     this.dom.draggable.addEventListener('mousedown', (event) => {
       event.preventDefault();
       event.stopPropagation();
@@ -48,8 +52,9 @@ export default class FftVisualizer extends BaseComponent {
       const { width, height } = document.body.getBoundingClientRect();
       const x = event.clientX;
       const y = event.clientY;
-      const newWidth = width - x;
-      const newHeight = height - y;
+      const newWidth = Math.max(width - x, MIN_WIDTH);
+      const newHeight = Math.max(height - y, MIN_HEIGHT);
+      this.strokeWidth = (newWidth / 2) / MIN_WIDTH;
       this.dom.canvas.setAttribute('width', newWidth);
       this.dom.canvas.setAttribute('height', newHeight);
       this.dom.canvas.style.setProperty('width', newWidth);
@@ -85,12 +90,12 @@ export default class FftVisualizer extends BaseComponent {
     this.g2d.fillStyle = '#FFFFFF99';
   }
 
-  // TODO: make stroke with proportional to window size
   renderTimeData(timeData) {
     const bufferLength = timeData.length;
     const step = WIDTH / bufferLength;
     this.fadeCanvas();
-    this.g2d.strokeStyle = '#FFFFFFBB';
+    this.g2d.strokeStyle = this.strokeStyle;
+    this.g2d.lineWidth = this.strokeWidth;
     this.g2d.beginPath();
     timeData.forEach((value, index) => {
       const normalValue = (value / MAX_BYTE) * HEIGHT;
@@ -112,12 +117,16 @@ export default class FftVisualizer extends BaseComponent {
   }
 
   renderSpectrogram(frequencyData) {
-    this.g2d.drawImage(this.dom.canvas, 0, 0, WIDTH, HEIGHT, 0, -STROKE_ADJUST, WIDTH, HEIGHT);
+    const timestamp = performance.now();
+    const elapsedTime = timestamp - this.lastRenderTime;
+    this.lastRenderTime = timestamp;
+    const timeDiff = elapsedTime * 0.075;
+    this.g2d.drawImage(this.dom.canvas, 0, 0, WIDTH, HEIGHT, 0, -timeDiff, WIDTH, HEIGHT);
     const step = 2 * WIDTH / frequencyData.length;
     frequencyData.forEach((value, index) => {
       const val = mapToRange(0, MAX_BYTE, 36, MAX_BYTE, value);
       this.g2d.fillStyle = `rgb(${val}, ${val}, ${val})`;
-      this.g2d.fillRect(step * index, HEIGHT - STROKE_ADJUST, 1, STROKE_ADJUST);
+      this.g2d.fillRect(step * index, HEIGHT - timeDiff, step, STROKE_ADJUST);
     });
   }
 }

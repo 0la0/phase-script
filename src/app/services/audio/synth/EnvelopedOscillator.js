@@ -22,7 +22,7 @@ export default function envelopedOscilator(midiNote, startTime, asr, type, gain,
   osc.type = _type;
 
   // TODO: try `createPeriodicWave` once
-  const testWave = wavetables.phonemeEe;
+  const testWave = wavetables.wurlitzer2;
   const wave = audioGraph.getAudioContext().createPeriodicWave(testWave.real, testWave.imaginary, { disableNormalization: true });
   osc.setPeriodicWave(wave);
 
