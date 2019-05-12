@@ -3,6 +3,7 @@ import EditorState from './EditorState';
 import dataStore from 'services/Store';
 import { eventBus } from 'services/EventBus';
 import Subscription from 'services/EventBus/Subscription';
+import GlobalListeners from 'services/EventBus/GlobalListeners';
 import style from './sound-root.css';
 import markup from './sound-root.html';
 
@@ -30,11 +31,13 @@ export default class SoundRoot extends BaseComponent {
   }
 
   connectedCallback() {
+    GlobalListeners.init();
     eventBus.subscribe(this.eventBusSubscription);
     eventBus.subscribe(this.escapeKeySubscription);
   }
 
   disconnectedCallback() {
+    GlobalListeners.tearDown();
     eventBus.unsubscribe(this.eventBusSubscription);
     eventBus.unsubscribe(this.escapeKeySubscription);
   }
