@@ -1,14 +1,8 @@
-export default {
-  SINE: 'sine',
-  SQUARE: 'square',
-  SAWTOOTH: 'sawtooth',
-  TRIANGLE: 'triangle',
-  NOISE: 'noise',
+const shorthandTypes = {
+  sin: 'sine',
+  squ: 'square',
+  saw: 'sawtooth',
+  tri: 'triangle',
 };
 
-export const shorthandTypes = {
-  sin: 'SINE',
-  squ: 'SQUARE',
-  saw: 'SAWTOOTH',
-  tri: 'TRIANGLE',
-};
+export const getOscillatorType = key => shorthandTypes[key];

@@ -467,81 +467,33 @@ const thresholdEventNode = {
   ]
 };
 
-const envelopedOscParams = [
-  {
-    paramName: 'attack',
-    type: PARAM_TYPES.FLOAT,
-  },
-  {
-    paramName: 'sustain',
-    type: PARAM_TYPES.FLOAT,
-  },
-  {
-    paramName: 'release',
-    type: PARAM_TYPES.FLOAT,
-  },
-  {
-    paramName: 'modulator',
-    type: PARAM_TYPES.GRAPH_NODE,
-    isOptional: true,
-  },
-  {
-    paramName: CONSTANTS.ID,
-    type: PARAM_TYPES.NUMBER,
-    isTaggable: true,
-  },
-];
-
-const envelopedSinNode = {
+const envelopedOscNode = {
   name: 'ENVELOPED_OSC',
-  fnName: 'envSin',
-  constantDefinitions: [
+  fnName: 'envOsc',
+  paramDefinitions: [
     {
-      paramName: 'oscType',
-      value: 'sin',
-      isTaggable: true,
-    }
-  ],
-  paramDefinitions: envelopedOscParams,
-};
-
-const envelopedSquNode = {
-  name: 'ENVELOPED_OSC',
-  fnName: 'envSqu',
-  constantDefinitions: [
+      paramName: 'waveform',
+      type: PARAM_TYPES.STRING,
+      // TODO: add "oneOf" field
+    },
     {
-      paramName: 'oscType',
-      value: 'squ',
-      isTaggable: true,
-    }
-  ],
-  paramDefinitions: envelopedOscParams,
-};
-
-const envelopedSawNode = {
-  name: 'ENVELOPED_OSC',
-  fnName: 'envSaw',
-  constantDefinitions: [
+      paramName: 'attack',
+      type: PARAM_TYPES.FLOAT,
+    },
     {
-      paramName: 'oscType',
-      value: 'saw',
-      isTaggable: true,
-    }
-  ],
-  paramDefinitions: envelopedOscParams,
-};
-
-const envelopedTriNode = {
-  name: 'ENVELOPED_OSC',
-  fnName: 'envTri',
-  constantDefinitions: [
+      paramName: 'sustain',
+      type: PARAM_TYPES.FLOAT,
+    },
     {
-      paramName: 'oscType',
-      value: 'tri',
-      isTaggable: true,
-    }
+      paramName: 'release',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'modulator',
+      type: PARAM_TYPES.GRAPH_NODE,
+      isOptional: true,
+    },
   ],
-  paramDefinitions: envelopedOscParams,
 };
 
 const continuousOscParams = [
@@ -638,12 +590,9 @@ export default [
   bitcrusherNode,
   gateNode,
   thresholdEventNode,
-  envelopedSinNode,
-  envelopedSquNode,
-  envelopedSawNode,
-  envelopedTriNode,
-  continuousSinNode,
-  continuousSquNode,
-  continuousSawNode,
-  continuousTriNode,
+  envelopedOscNode,
+  continuousSinNode, // TODO: remove
+  continuousSquNode, // TODO: remove
+  continuousSawNode, // TODO: remove
+  continuousTriNode, // TODO: remove
 ];

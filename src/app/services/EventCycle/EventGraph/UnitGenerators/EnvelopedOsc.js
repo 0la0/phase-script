@@ -3,17 +3,16 @@ import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
 import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
 import PatchEventModel from 'services/PatchSpace/PatchEventModel';
 import envelopedOscilator from 'services/audio/synth/EnvelopedOscillator';
-import { shorthandTypes } from 'services/audio/synth/Oscillators';
 import DiscreteSignalParameter from './_DiscreteSignalParameter';
 import { msToSec } from 'services/Math';
 
 export default class EnvelopedOsc extends BaseUnitGenerator {
-  constructor(attack, sustain, release, oscType) {
+  constructor(waveform, attack, sustain, release) {
     super();
     this.eventModel = new PatchEventModel(this.schedule.bind(this));
     this.audioModel = new PatchAudioModel('ENVELOPED_OSC', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);
     this.modulationInputs = new Set();
-    this.oscType = oscType;
+    this.waveform = waveform;
     this.paramMap = {
       attack: new DiscreteSignalParameter(attack, msToSec),
       sustain: new DiscreteSignalParameter(sustain, msToSec),
@@ -38,11 +37,11 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
         sustain: this.paramMap.sustain.getValueForTime(message.time),
         release: this.paramMap.release.getValueForTime(message.time),
       };
-      envelopedOscilator(note, message.time.audio, asr, this.oscType, 1, outputs, this.modulationInputs);
+      envelopedOscilator(note, message.time.audio, asr, this.waveform, 1, outputs, this.modulationInputs);
     });
   }
 
-  static fromParams({ attack, sustain, release, oscType }) {
-    return new EnvelopedOsc(attack, sustain, release, oscType);
+  static fromParams({ waveform, attack, sustain, release }) {
+    return new EnvelopedOsc(waveform, attack, sustain, release);
   }
 }

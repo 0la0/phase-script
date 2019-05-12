@@ -73,8 +73,8 @@ export default class EventCycle extends BaseComponent {
     const testCycleValue = `
       seq( p("a", "48 60 60 72") )
       seq( p("b", "48 60 60 72") )
-      let mod = addr('b').envSin(10, 0, 40).gain(500, 0x9)
-      addr('a').envSin(0, 0, 400, mod).gain(0.5, 0x8).dac()
+      // let mod = addr('b').envSin(10, 0, 40).gain(500, 0x9)
+      addr('a').envOsc('squ', 0, 0, 400).gain(0.5, 0x8).dac()
     `;
     this.dom.cycleInput.innerText = testCycleValue.trim();
     this.handleCycleChange(testCycleValue);
