@@ -496,73 +496,30 @@ const envelopedOscNode = {
   ],
 };
 
-const continuousOscParams = [
-  {
-    paramName: 'frequency',
-    type: PARAM_TYPES.FLOAT,
-  },
-  {
-    paramName: 'modulator',
-    type: PARAM_TYPES.GRAPH_NODE,
-    isOptional: true,
-  },
-  {
-    paramName: CONSTANTS.ID,
-    type: PARAM_TYPES.NUMBER,
-    isTaggable: true,
-  }
-];
-
-const continuousSinNode = {
+const continuousOscNode = {
   name: 'CONTINUOUS_OSC',
-  fnName: 'sin',
-  constantDefinitions: [
+  fnName: 'osc',
+  paramDefinitions: [
     {
       paramName: 'oscType',
       value: 'sin',
       isTaggable: true,
-    }
-  ],
-  paramDefinitions: continuousOscParams,
-};
-
-const continuousSquNode = {
-  name: 'CONTINUOUS_OSC',
-  fnName: 'squ',
-  constantDefinitions: [
+    },
     {
-      paramName: 'oscType',
-      value: 'squ',
+      paramName: 'frequency',
+      type: PARAM_TYPES.FLOAT,
+    },
+    {
+      paramName: 'modulator',
+      type: PARAM_TYPES.GRAPH_NODE,
+      isOptional: true,
+    },
+    {
+      paramName: CONSTANTS.ID,
+      type: PARAM_TYPES.NUMBER,
       isTaggable: true,
     }
   ],
-  paramDefinitions: continuousOscParams,
-};
-
-const continuousSawNode = {
-  name: 'CONTINUOUS_OSC',
-  fnName: 'saw',
-  constantDefinitions: [
-    {
-      paramName: 'oscType',
-      value: 'saw',
-      isTaggable: true,
-    }
-  ],
-  paramDefinitions: continuousOscParams,
-};
-
-const continuousTriNode = {
-  name: 'CONTINUOUS_OSC',
-  fnName: 'tri',
-  constantDefinitions: [
-    {
-      paramName: 'oscType',
-      value: 'tri',
-      isTaggable: true,
-    }
-  ],
-  paramDefinitions: continuousOscParams,
 };
 
 export default [
@@ -591,8 +548,5 @@ export default [
   gateNode,
   thresholdEventNode,
   envelopedOscNode,
-  continuousSinNode, // TODO: remove
-  continuousSquNode, // TODO: remove
-  continuousSawNode, // TODO: remove
-  continuousTriNode, // TODO: remove
+  continuousOscNode,
 ];

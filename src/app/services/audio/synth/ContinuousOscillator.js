@@ -1,21 +1,17 @@
 import audioGraph from 'services/audio/graph';
-import OSCILLATORS from 'services/audio/synth/Oscillators';
+import applyTypeToOscillator from './OscillatorTypeUtil';
 
 export default class ContinuousOsc {
   constructor(frequency, type) {
-    this.setType(type);
     this.frequency = frequency || 440;
     this.gain = audioGraph.getAudioContext().createGain();
     this.gain.gain.setValueAtTime(0, 0);
     this.osc = audioGraph.getAudioContext().createOscillator();
+    applyTypeToOscillator(this.osc, type);
     this.osc.frequency.value = frequency;
     this.osc.type = this.type;
     this.osc.connect(this.gain);
     this.osc.start();
-  }
-
-  setType(type) {
-    this.type = OSCILLATORS[type] || OSCILLATORS.SINE;
   }
 
   connect(node) {

@@ -45,11 +45,11 @@ export default class EventCycle extends BaseComponent {
   connectedCallback() {
     this.dom.cycleInput.addEventListener('keydown', event => {
       if (keyShortcutManager.offerKeyShortcutEvent(event)) {
-        event.preventDefault();
+        event.stopPropagation();
         return;
       }
       event.stopPropagation();
-      if (event.keyCode === KEY_CODE_ENTER && event.metaKey) {
+      if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
         event.preventDefault();
         this.handleCycleChange(this.dom.cycleInput.innerText);
         return;
@@ -71,10 +71,11 @@ export default class EventCycle extends BaseComponent {
     eventBus.subscribe(this.dataStoreSubscription);
 
     const testCycleValue = `
-      seq( p("a", "48 60 60 72") )
-      seq( p("b", "48 60 60 72") )
+      // seq( p("a", "48 60 60 72") )
+      // seq( p("b", "48 60 60 72") )
       // let mod = addr('b').envSin(10, 0, 40).gain(500, 0x9)
-      addr('a').envOsc('squ', 0, 0, 400).gain(0.5, 0x8).dac()
+      // addr('a').envOsc('squ', 0, 0, 400).gain(0.5, 0x8).dac()
+      osc('sin', 440).gain(0.1).dac()
     `;
     this.dom.cycleInput.innerText = testCycleValue.trim();
     this.handleCycleChange(testCycleValue);
