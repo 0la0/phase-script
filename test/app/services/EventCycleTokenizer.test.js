@@ -13,8 +13,8 @@ describe('Tokenizer', () => {
   });
 
   it('returns an address note pair', () => {
-    assert.deepEqual(parseToken('a:1'), { address: 'a', note: 1 });
-    assert.deepEqual(parseToken('b:127'), { address: 'b', note: 127 });
-    assert.deepEqual(parseToken('hello'), { address: 'hello', note: undefined });
+    assert.deepEqual(parseToken('a:1'), { address: 'a', note: 1, time: 0 });
+    assert.deepEqual(parseToken('b:127'), { address: 'b', note: 127, time: 0 });
+    assert.deepEqual(parseToken('hello'), { address: 'hello', note: 60, time: 0 });
   });
 });

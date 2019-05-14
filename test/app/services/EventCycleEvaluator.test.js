@@ -5,6 +5,8 @@ import { buildAudioEventsFromPattern } from 'services/EventCycle/Pattern/AudioEv
 import TimeSchedule from 'services/metronome/TimeSchedule';
 import AudioEvent from 'services/EventBus/AudioEvent';
 
+const BASE_ADDRESS = '';
+
 describe('CycleEvaluator', () => {
   it('throws an error if the cycle is not an array', () => {
     assert.throws(() => getRelativeCycle('[]'), Error, 'Cycle must be an array');
@@ -22,7 +24,7 @@ describe('CycleEvaluator', () => {
   it('returns a singleton', () => {
     const parsedCycle = parseCycle('[ a ]').content;
     const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
-    const cycleForTime = buildAudioEventsFromPattern(relativeCycle, new TimeSchedule(2, 2000), 4);
+    const cycleForTime = buildAudioEventsFromPattern(relativeCycle, BASE_ADDRESS, new TimeSchedule(2, 2000), 4);
     assert.deepEqual(relativeCycle, [ new RelativeCycleElement('a', 0) ]);
     assert.deepEqual(cycleForTime, [ new AudioEvent('a', undefined, new TimeSchedule(2, 2000)) ]);
   });
@@ -30,7 +32,7 @@ describe('CycleEvaluator', () => {
   it('evenly divides time between two elements', () => {
     const parsedCycle = parseCycle('[ a b ]').content;
     const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
-    const cycleForTime = buildAudioEventsFromPattern(relativeCycle, new TimeSchedule(2, 2000), 4);
+    const cycleForTime = buildAudioEventsFromPattern(relativeCycle, BASE_ADDRESS, new TimeSchedule(2, 2000), 4);
     assert.deepEqual(relativeCycle, [
       new RelativeCycleElement('a', 0),
       new RelativeCycleElement('b', 0.5)
@@ -44,7 +46,7 @@ describe('CycleEvaluator', () => {
   it('evenly divides time between three elements', () => {
     const parsedCycle = parseCycle('[ a b c ]').content;
     const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
-    const cycleForTime = buildAudioEventsFromPattern(relativeCycle, new TimeSchedule(3, 3000), 3);
+    const cycleForTime = buildAudioEventsFromPattern(relativeCycle, BASE_ADDRESS, new TimeSchedule(3, 3000), 3);
     assert.deepEqual(relativeCycle, [
       new RelativeCycleElement('a', 0),
       new RelativeCycleElement('b', 0.333333),
@@ -60,7 +62,7 @@ describe('CycleEvaluator', () => {
   it('evenly divides time between four elements', () => {
     const parsedCycle = parseCycle('[ a b c d ]').content;
     const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
-    const cycleForTime = buildAudioEventsFromPattern(relativeCycle, new TimeSchedule(4, 4000), 2);
+    const cycleForTime = buildAudioEventsFromPattern(relativeCycle, BASE_ADDRESS, new TimeSchedule(4, 4000), 2);
     assert.deepEqual(relativeCycle, [
       new RelativeCycleElement('a', 0),
       new RelativeCycleElement('b', 0.25),
@@ -78,7 +80,7 @@ describe('CycleEvaluator', () => {
   it('flattens nested cycles', () => {
     const parsedCycle = parseCycle('[ [ a ] [ b ] ]').content;
     const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
-    const cycleForTime = buildAudioEventsFromPattern(relativeCycle, new TimeSchedule(2, 2000), 1);
+    const cycleForTime = buildAudioEventsFromPattern(relativeCycle, BASE_ADDRESS, new TimeSchedule(2, 2000), 1);
     assert.deepEqual(relativeCycle, [
       new RelativeCycleElement('a', 0),
       new RelativeCycleElement('b', 0.5)
@@ -92,7 +94,7 @@ describe('CycleEvaluator', () => {
   it('evenly divides time in nested cycles', () => {
     const parsedCycle = parseCycle('[ [ a b c d ] [ 1 2 3 4 ] ]').content;
     const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
-    const cycleForTime = buildAudioEventsFromPattern(relativeCycle, new TimeSchedule(), 8);
+    const cycleForTime = buildAudioEventsFromPattern(relativeCycle, 'base-address', new TimeSchedule(), 8);
     assert.deepEqual(relativeCycle, [
       new RelativeCycleElement('a', 0),
       new RelativeCycleElement('b', 0.125),
@@ -104,21 +106,21 @@ describe('CycleEvaluator', () => {
       new RelativeCycleElement('4', 0.875)
     ]);
     assert.deepEqual(cycleForTime, [
-      new AudioEvent('a', undefined, new TimeSchedule(0, 0)),
-      new AudioEvent('b', undefined, new TimeSchedule(1, 1000)),
-      new AudioEvent('c', undefined, new TimeSchedule(2, 2000)),
-      new AudioEvent('d', undefined, new TimeSchedule(3, 3000)),
-      new AudioEvent('1', undefined, new TimeSchedule(4, 4000)),
-      new AudioEvent('2', undefined, new TimeSchedule(5, 5000)),
-      new AudioEvent('3', undefined, new TimeSchedule(6, 6000)),
-      new AudioEvent('4', undefined, new TimeSchedule(7, 7000))
+      new AudioEvent('a', 60, new TimeSchedule(0, 0)),
+      new AudioEvent('b', 60, new TimeSchedule(1, 1000)),
+      new AudioEvent('c', 60, new TimeSchedule(2, 2000)),
+      new AudioEvent('d', 60, new TimeSchedule(3, 3000)),
+      new AudioEvent('base-address', 1, new TimeSchedule(4, 4000)),
+      new AudioEvent('base-address', 2, new TimeSchedule(5, 5000)),
+      new AudioEvent('base-address', 3, new TimeSchedule(6, 6000)),
+      new AudioEvent('base-address', 4, new TimeSchedule(7, 7000))
     ]);
   });
 
   it('evenly divides time in nested cycles', () => {
     const parsedCycle = parseCycle('[ a [ b [ c d ] ] ]').content;
     const relativeCycle = getRelativeCycle(parsedCycle, 0, 1);
-    const cycleForTime = buildAudioEventsFromPattern(relativeCycle, new TimeSchedule(0, 0), 8);
+    const cycleForTime = buildAudioEventsFromPattern(relativeCycle, BASE_ADDRESS, new TimeSchedule(0, 0), 8);
     assert.deepEqual(relativeCycle, [
       new RelativeCycleElement('a', 0),
       new RelativeCycleElement('b', 0.5),

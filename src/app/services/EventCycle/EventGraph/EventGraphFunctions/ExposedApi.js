@@ -4,8 +4,7 @@ import buildNodeEvaluator from './RuntimeGraphFunctionFactory';
 
 // TODO:
 //   * remove services/midi/mappings directory
-//   * wavetable synths (https://github.com/GoogleChromeLabs/web-audio-samples/tree/gh-pages/samples/audio/wave-tables)
-//   * documentation descriptions / param descriptions
+//   * documentation descriptions / param descriptions / wavetable enums
 //   * parameter validation
 //   * message duplicator
 //   * rand parameters for msgDelay
@@ -14,7 +13,7 @@ import buildNodeEvaluator from './RuntimeGraphFunctionFactory';
 //   * compressor node
 //   * arpeggiators
 //   * anonymous patterns
-//   * key shortcuts: generate node IDs, new tab, etc
+//   * key shortcut: generate node ID
 //   * better standard sample libbrary
 
 const eventGraphNodes = nodeDefinitions.reduce((acc, nodeDefinition) =>
