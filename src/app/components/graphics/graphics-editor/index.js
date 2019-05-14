@@ -29,12 +29,12 @@ export default class GraphicsEditor extends BaseComponent {
       }
     });
 
-    const testCycleValue = `osc.sin(10, 10, 10)`;
+    const testCycleValue = 'osc.sin(10, 10, 10)';
     this.dom.cycleInput.innerText = testCycleValue;
     this.handleCycleChange(testCycleValue);
   }
 
   handleCycleChange(cycleString) {
-    console.log('handleCycleChange', cycleString);
+    console.log('handleCycleChange', cycleString); // eslint-disable-line no-console
   }
 }

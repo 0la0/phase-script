@@ -19,7 +19,7 @@ function buildParameterDefinitonString(parameterDefinitions) {
 
 function typeMatchesDefinition(definition, argument) {
   if (!definition.type) {
-    console.log('TODO: add definition type:', definition);
+    console.log('TODO: add definition type:', definition); // eslint-disable-line no-console
     return true;
   }
   const predicate = argumentValidationMap[definition.type];
@@ -42,7 +42,7 @@ export default function buildNodeEvaluator(dto, _setCurrent) {
         return acc;
       }
       if (!(arg instanceof EventGraphBuilder) && !paramIsValid) {
-        console.log(`${fnName}: invalid parameter ${definition.paramName}: ${arg}\nusage: ${fnName}(${buildParameterDefinitonString(paramDefinitions)})`);
+        console.log(`${fnName}: invalid parameter ${definition.paramName}: ${arg}\nusage: ${fnName}(${buildParameterDefinitonString(paramDefinitions)})`);  // eslint-disable-line no-console
       }
       if (definition.paramName === CONSTANTS.ID) {
         tag += (definition.value || arg || uuid());

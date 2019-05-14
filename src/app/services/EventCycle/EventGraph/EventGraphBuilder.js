@@ -146,6 +146,6 @@ export default class EventGraphBuilder {
   }
 
   cancelAllFutureAudioEvents() {
-    console.log('TODO: cancelAllFutureAudioEvents')
+    console.log('TODO: cancelAllFutureAudioEvents'); // eslint-disable-line no-console
   }
 }

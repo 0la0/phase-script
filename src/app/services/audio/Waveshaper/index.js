@@ -39,7 +39,7 @@ function createCurve(carrierFunction, sampleRate, multiplier) {
 }
 
 export default class Waveshaper {
-  constructor (type = 'sig', wetLevel = 0.5) {
+  constructor (type = 'sig') {
     const audioContext = audioGraph.getAudioContext();
     this.sampleRate = audioContext.sampleRate;
     this.input = audioContext.createGain();

@@ -10,7 +10,6 @@ export default class CycleManager {
     this.nextGraphDefinition = null;
     this.errorMessage = '';
     this.eventGraphBuilder = new EventGraphBuilder();
-    console.log('eventGraphBuilder?', this.eventGraphBuilder)
     this.setCycleString('');
   }
 

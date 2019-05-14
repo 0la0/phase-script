@@ -40,7 +40,7 @@ export default class BaseUnitGenerator {
     Object.keys(params).forEach(paramKey => {
       const paramVal = params[paramKey];
       if (paramVal instanceof DynamicParameter) {
-        console.log('TODO: received dynamicParam, fix');
+        console.log('TODO: received dynamicParam, fix'); // eslint-disable-line no-console
         return;
       }
       if (!this.paramMap[paramKey]) {

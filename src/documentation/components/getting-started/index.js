@@ -66,7 +66,7 @@ function getCopyButton(textToCopy, copyAck) {
         setTimeout(resolve, 2500);
       }))
       .then(() => copyAck.classList.remove('copy-ack-active'))
-      .catch(error => console.log(error));
+      .catch(error => console.log(error)); // eslint-disable-line no-console
   };
   return button;
 }

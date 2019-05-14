@@ -6,11 +6,11 @@ export default class BaseMidiMapper {
 
   setDevice(deviceInput, deviceOutput) {
     if (!deviceInput || !deviceOutput) {
-      console.log(`${this.name}: no connections`);
+      console.log(`${this.name}: no connections`); // eslint-disable-line no-console
       return false;
     }
     if (deviceInput === this.deviceInput && deviceOutput === this.deviceOutput) {
-      console.log(`${this.name}: already connected`);
+      console.log(`${this.name}: already connected`); // eslint-disable-line no-console
       return false;
     }
     this.deviceInput = deviceInput;
@@ -23,6 +23,6 @@ export default class BaseMidiMapper {
   }
 
   destroy() {
-    console.log('TODO: release', this.deviceInput, this.deviceOutput);
+    console.log('TODO: release', this.deviceInput, this.deviceOutput); // eslint-disable-line no-console
   }
 }

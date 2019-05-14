@@ -18,6 +18,6 @@ export default class SampleLoader extends BaseComponent {
     loadAudioFile()
       .then(({ name, arrayBuffer }) => decodeAudioData(arrayBuffer)
         .then((audioBuffer) => sampleBank.addSample(name, audioBuffer)))
-      .catch(error => console.log(error));
+      .catch(error => console.log(error)); // eslint-disable-line no-console
   }
 }
