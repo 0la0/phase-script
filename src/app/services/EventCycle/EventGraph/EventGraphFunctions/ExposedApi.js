@@ -6,6 +6,7 @@ import buildNodeEvaluator from './RuntimeGraphFunctionFactory';
 //   * remove services/midi/mappings directory
 //   * documentation descriptions / param descriptions / wavetable enums
 //   * parameter validation
+//   * cancel audio events after cycle change
 //   * message duplicator
 //   * rand parameters for msgDelay
 //   * message repeater

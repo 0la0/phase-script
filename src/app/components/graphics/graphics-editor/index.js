@@ -1,5 +1,5 @@
 import BaseComponent from 'common/util/base-component';
-import CycleManager from 'services/EventCycle/CycleManager';
+// import CycleManager from 'services/EventCycle/CycleManager';
 import style from './graphics-editor.css';
 import markup from './graphics-editor.html';
 
@@ -16,7 +16,7 @@ export default class GraphicsEditor extends BaseComponent {
     super(style, markup, dom);
     this.cycleLength = 16;
     this.isOn = true;
-    this.cycleManager = new CycleManager();
+    // this.cycleManager = new CycleManager();
   }
 
   connectedCallback() {

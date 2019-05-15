@@ -8,12 +8,17 @@ import vertexShaderRoutine from './shaders/synth-layer.vert';
 
 const vertexShader = `${perlinNoiseLib}${vertexShaderRoutine}`;
 
+import _fragShader from './shaders/_exp.frag';
+
+import testVertShader from './shaders/_exp.vert';
+const testFragShader = `${perlinNoiseLib}${_fragShader}`;
+
 export default class Texture {
   constructor() {
     const defaultScene = buildDefaultScene();
     this.camera = defaultScene.camera;
     this.scene = defaultScene.scene;
-    this.texturePlane = new TexturePlane(vertexShader, fragmentShader);
+    this.texturePlane = new TexturePlane(testVertShader, testFragShader);
     this.scene.add(this.texturePlane.getMesh());
     this.camera.position.set(0, 0, 50);
     this.totalTime = 0;
