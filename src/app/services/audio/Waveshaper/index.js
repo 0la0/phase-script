@@ -6,26 +6,7 @@
  */
 import audioGraph from 'services/audio/graph';
 import WetLevel from 'services/audio/WetLevel';
-
-const CARRIER_FUNCTIONS = {
-  square: x => Math.pow(x, 2),
-  cubed: x => Math.pow(x, 3),
-  chebyshev2: x => 2 * Math.pow(x, 2) - 1,
-  chebyshev3: x => 4 * Math.pow(x, 3) - 3 * x,
-  chebyshev4: x => 8 * Math.pow(x, 4) - 8 * Math.pow(x, 2) + 1,
-  sigmoid: x => 2 / (1 + Math.exp(-4 * x)) - 1,
-  sigmoid2: x => 1.5 / (1 + Math.exp(-10 * x)) - 0.75,
-  sigmoidLike: (x, multiplier) =>  ( 3 + multiplier ) * x * 20 * (Math.PI / 180) / ( Math.PI + multiplier * Math.abs(x) ),
-  hardClip: x =>  (1 + 0.4 * x) / (1 + Math.abs(x))
-};
-
-const CARRIER_NAMES = {
-  squ: 'square',
-  cube: 'cubed',
-  cheb: 'chebyshev2',
-  sig: 'sigmoidLike',
-  clip: 'hardClip',
-};
+import { getCarrierFunction } from './carrierFunctions';
 
 function createCurve(carrierFunction, sampleRate, multiplier) {
   let curve = new Float32Array(sampleRate);
@@ -41,12 +22,13 @@ function createCurve(carrierFunction, sampleRate, multiplier) {
 export default class Waveshaper {
   constructor (type = 'sig') {
     const audioContext = audioGraph.getAudioContext();
+    const carrierFunction = getCarrierFunction(type);
     this.sampleRate = audioContext.sampleRate;
     this.input = audioContext.createGain();
     this.waveshaperNode = audioContext.createWaveShaper();
     this.wetLevel = new WetLevel(audioContext, this.input, this.waveshaperNode);
     this.input.connect(this.waveshaperNode);
-    this.setCarrierFunction(CARRIER_NAMES[type]);
+    this.waveshaperNode.curve = createCurve(carrierFunction, this.sampleRate, 50);
   }
 
   connect(node) {
@@ -63,12 +45,5 @@ export default class Waveshaper {
 
   getWetParam() {
     return this.wetLevel;
-  }
-
-  setCarrierFunction(functionKey) {
-    if (!CARRIER_FUNCTIONS[functionKey]) {
-      throw new Error(`Waveshkaper.setCarrierFunction invalid function ${functionKey}`);
-    }
-    this.waveshaperNode.curve = createCurve(CARRIER_FUNCTIONS[functionKey], this.sampleRate, 50);
   }
 }

@@ -1,3 +1,10 @@
+import scales from 'services/scale/scales';
+import wavetables from 'services/audio/synth/wavetables';
+import { CARRIER_NAMES } from 'services/audio/waveshaper/carrierFunctions';
+
+const defaultWaveforms = [ 'sin', 'squ', 'saw', 'tri', ];
+const waveforms = defaultWaveforms.concat(Object.keys(wavetables));
+
 export const PARAM_TYPES = {
   FLOAT: 'float',
   FUNCTION: 'function',
@@ -226,6 +233,7 @@ const waveshaperNode = {
       paramName: 'type',
       type: PARAM_TYPES.STRING,
       isTaggable: true,
+      enum: Object.keys(CARRIER_NAMES),
     },
     {
       paramName: 'wet',
@@ -384,6 +392,7 @@ const messageScaleLockNode = {
     {
       paramName: 'scaleName',
       type: PARAM_TYPES.STRING,
+      enum: Object.keys(scales),
     }
   ]
 };
@@ -474,7 +483,7 @@ const envelopedOscNode = {
     {
       paramName: 'waveform',
       type: PARAM_TYPES.STRING,
-      // TODO: add "oneOf" field
+      enum: waveforms,
     },
     {
       paramName: 'attack',
@@ -501,10 +510,9 @@ const continuousOscNode = {
   fnName: 'osc',
   paramDefinitions: [
     {
-      paramName: 'oscType',
+      paramName: 'waveform',
       type: PARAM_TYPES.STRING,
-      value: 'sin',
-      isTaggable: true,
+      enum: waveforms,
     },
     {
       paramName: 'frequency',

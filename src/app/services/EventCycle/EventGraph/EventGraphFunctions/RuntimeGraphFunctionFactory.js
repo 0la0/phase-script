@@ -12,22 +12,24 @@ const argumentValidationMap = {
   [PARAM_TYPES.GRAPH_NODE]: instance => instance instanceof EventGraphBuilder,
 };
 
+function getPredicateForParamDefinition(definition) {
+  if (definition.enum) {
+    return instance => definition.enum.includes(instance);
+  }
+  if (!argumentValidationMap[definition.type]) {
+    throw new Error(`Invalid definition ${JSON.stringify(definition)}`);
+  }
+  return argumentValidationMap[definition.type];
+}
+
 function buildParameterDefinitonString(parameterDefinitions) {
   return parameterDefinitions
     .map(({ paramName, type }) => `${paramName}: ${type}`).join(', ');
 }
 
-function typeMatchesDefinition(definition, argument) {
-  if (!definition.type) {
-    console.log('TODO: add definition type:', definition); // eslint-disable-line no-console
-    return true;
-  }
-  const predicate = argumentValidationMap[definition.type];
-  if (!predicate) {
-    throw new Error(`Invalid definition ${definition.type}`);
-  }
-  return predicate(argument);
-}
+// function typeMatchesDefinition(definition, argument) {
+//   return getPredicateForParamDefinition(definition)(argument);
+// }
 
 export default function buildNodeEvaluator(dto, _setCurrent) {
   const { name, fnName, paramDefinitions = [], constantDefinitions = [] } = dto;
@@ -37,7 +39,7 @@ export default function buildNodeEvaluator(dto, _setCurrent) {
     let idx = 0;
     const variableParams = paramDefinitions.reduce((acc, definition) => {
       const arg = args[idx];
-      const paramIsValid = typeMatchesDefinition(definition, arg);
+      const paramIsValid = getPredicateForParamDefinition(definition)(arg);
       if (definition.isOptional && !paramIsValid) {
         return acc;
       }
