@@ -23,17 +23,17 @@ export default class TexturePlane {
     this.uniforms = {
       time: { value: 0 },
 
-      generatorType: { value: GEN_TYPE.OSC_SIN, },
-      generatorFrequency: { value: 3, },
-      generatorSpeed: { value: 2, },
-      generatorAmplitude: { value: 1, },
-      generatorRotation: { value: 0, },
+      generatorType: { value: GEN_TYPE.OSC_SIN },
+      generatorFrequency: { value: 0.04, },
+      generatorSpeed: { value: 0.50, },
+      generatorAmplitude: { value: 0.5, },
+      generatorRotation: { value: 45, },
 
       modulatorType: { value: GEN_TYPE.NOISE, },
-      modulatorFrequency: { value: 2, },
-      modulatorSpeed: { value: 10, },
-      modulatorAmplitude: { value: 2, },
-      modulatorRotation: { value: 45, },
+      modulatorFrequency: { value: 0.05, },
+      modulatorSpeed: { value: 0.5, },
+      modulatorAmplitude: { value: 1, },
+      modulatorRotation: { value: 0, },
     };
 
     const material = new ShaderMaterial({
@@ -55,9 +55,9 @@ export default class TexturePlane {
     this.uniforms.time.value = totalTime;
     // this.uniforms.generatorAmplitude.value = 3 + 0.5 * Math.sin(0.25 * totalTime);
     // this.uniforms.generatorSpeed.value = 4 * (0.5 * Math.sin(totalTime) + 1);
-    this.uniforms.generatorRotation.value = totalTime * 20;
-    this.uniforms.modulatorFrequency.value = 10 + 4 * Math.sin(totalTime * 0.5);
+    // this.uniforms.generatorRotation.value = totalTime * 20;
+    // this.uniforms.modulatorFrequency.value = 10 + 4 * Math.sin(totalTime * 0.5);
     // this.uniforms.modulatorSpeed.value = 9 + 3 * Math.sin(totalTime * 2);
-    this.uniforms.modulatorRotation.value = totalTime * -10;
+    // this.uniforms.modulatorRotation.value = totalTime * -10;
   }
 }

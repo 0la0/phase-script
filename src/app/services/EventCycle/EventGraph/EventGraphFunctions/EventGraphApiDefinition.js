@@ -502,6 +502,7 @@ const continuousOscNode = {
   paramDefinitions: [
     {
       paramName: 'oscType',
+      type: PARAM_TYPES.STRING,
       value: 'sin',
       isTaggable: true,
     },

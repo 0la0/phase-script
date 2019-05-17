@@ -41,7 +41,7 @@ export default function buildNodeEvaluator(dto, _setCurrent) {
       if (definition.isOptional && !paramIsValid) {
         return acc;
       }
-      if (!(arg instanceof EventGraphBuilder) && !paramIsValid) {
+      if (!(arg instanceof EventGraphBuilder) && !paramIsValid && definition.paramName !== CONSTANTS.ID) {
         console.log(`${fnName}: invalid parameter ${definition.paramName}: ${arg}\nusage: ${fnName}(${buildParameterDefinitonString(paramDefinitions)})`);  // eslint-disable-line no-console
       }
       if (definition.paramName === CONSTANTS.ID) {

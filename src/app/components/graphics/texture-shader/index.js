@@ -1,12 +1,12 @@
 import { buildDefaultScene } from 'components/graphics/util';
 import TexturePlane from './TexturePlane';
 // import vertexShader from './shaders/displace.vert';
-import fragmentShader from './shaders/displace.frag';
+// import fragmentShader from './shaders/displace.frag';
 
 import perlinNoiseLib from './shaders/pnoise.vert';
-import vertexShaderRoutine from './shaders/synth-layer.vert';
+// import vertexShaderRoutine from './shaders/synth-layer.vert';
 
-const vertexShader = `${perlinNoiseLib}${vertexShaderRoutine}`;
+// const vertexShader = `${perlinNoiseLib}${vertexShaderRoutine}`;
 
 import _fragShader from './shaders/_exp.frag';
 
