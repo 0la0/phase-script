@@ -1,7 +1,15 @@
 import nodeDefinitions from 'services/EventCycle/EventGraph/EventGraphFunctions/EventGraphApiDefinition';
 
-const buildParams = definition => definition.paramDefinitions ?
-  definition.paramDefinitions.map(({ paramName, type }) => ({ name: paramName, type })) : [];
+function buildParams(definition) {
+  if (!definition || !definition.paramDefinitions) {
+    return [];
+  }
+  return definition.paramDefinitions.map((paramDefinition) => ({
+    name: paramDefinition.paramName,
+    type: paramDefinition.type,
+    enum: paramDefinition.enum
+  }));
+}
 
 const unitGeneratorDefinitions = nodeDefinitions
   .map((definition) => ({

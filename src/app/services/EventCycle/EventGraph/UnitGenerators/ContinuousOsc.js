@@ -7,10 +7,10 @@ import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
 import SignalParameter, { InputType, } from './_SignalParameter';
 
 export default class PatchContinuousOsc extends BaseUnitGenerator {
-  constructor(frequency, oscType) {
+  constructor(frequency, waveform) {
     super();
     const defaultFrequency = this._ifNumberOr(frequency, 440);
-    this.osc = new ContinuousOscillator(defaultFrequency, oscType);
+    this.osc = new ContinuousOscillator(defaultFrequency, waveform);
     this.audioModel = new PatchAudioModel('CONTINUOUS_OSC', this.osc, PATCH_EVENT.EMPTY, PATCH_EVENT.SIGNAL);
     this.paramMap = {
       frequency: new SignalParameter(this.osc.getFrequencyParam(), defaultFrequency, new InputType().numeric().message().build()),
@@ -29,7 +29,7 @@ export default class PatchContinuousOsc extends BaseUnitGenerator {
     metronomeManager.getScheduler().deregister(this.metronomeSchedulable);
   }
 
-  static fromParams({ frequency, oscType }) {
-    return new PatchContinuousOsc(frequency, oscType);
+  static fromParams({ frequency, waveform }) {
+    return new PatchContinuousOsc(frequency, waveform);
   }
 }

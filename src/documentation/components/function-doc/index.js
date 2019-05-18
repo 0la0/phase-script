@@ -30,6 +30,10 @@ export default class FunctionDocumentation extends BaseComponent {
         const spanEle = document.createElement('span');
         spanEle.classList.add('param');
         spanEle.innerText = text;
+        if (param.enum) {
+          const enumText = `[${param.enum.join(', ')}]`;
+          spanEle.innerText = `${text} ${enumText}`;
+        }
         return spanEle;
       })
       .forEach(span => this.dom.fnSignature.appendChild(span));

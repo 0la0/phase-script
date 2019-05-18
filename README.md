@@ -17,14 +17,34 @@ This project has a hard dependency on
 
 And feature level dependencies on
 * [Web Midi API](https://caniuse.com/#feat=midi) to interface with external synths and controllers
+* [Web Audio Worklets](https://developer.mozilla.org/en-US/docs/Web/API/Worklet) for a few unit generators
 * [Broadcast Channel](https://caniuse.com/#feat=broadcastchannel) to interface with a graphics window
-* Web audio worklets
 
 ### TODO
-* linter progress
-* separate core / audio / graphics bundles, & use dynamic imports
-* replace common component wrapper with a static name property
-* feature detection => incompatible browser warnings
-* remove all old and unused components
-* document previous versions
-* documentation and examples
+  * cancel overlapping audio events after cycle change
+  * unit generators:
+    - message duplicator
+    - message delay (random params)
+    - message repeater
+    - mic in
+    - compressor
+    - arpeggiator
+    - shelf filter
+  * improve standard sample library
+  * key shortcuts
+    - comment lines
+    - generate node ID
+  * feature detection, incompatible browser warnings
+  * in-line patterns
+  * document previous versions
+  * patterns
+    - set at time vs interpolation
+    - rename `.speed` to `.fast` and `.slow`
+    - `waitFor`
+    - `stopAfter`
+  * remove services/midi/mappings directory (document mappings somewhere else)
+  * documentation
+    - function descriptions
+    - parameter descriptions
+    - improve getting started guide
+    - key shortcuts
