@@ -1,5 +1,6 @@
 import BaseComponent from 'common/util/base-component';
 import dataStore from 'services/Store';
+import version from 'common/util/version';
 import style from './settings-editor.css';
 import markup from './settings-editor.html';
 
@@ -9,8 +10,9 @@ export default class SettingsEditor extends BaseComponent {
   }
 
   constructor(closeCallback) {
-    super(style, markup, []);
+    super(style, markup, [ 'version', ]);
     this.handleClose = closeCallback;
+    this.dom.version.innerText = version;
   }
 
   handleFontSizeChange(event) {

@@ -30,7 +30,7 @@
   background-color: var(--color-black-light);
   border: var(--border-default);
   width: 400px;
-  height: calc(100% - var(--topbar-height));
+  height: calc(100% - var(--topbar-height) - 2px);
   transform: translateX(-100%);
   transition: transform 0.15s ease-out;
 }
