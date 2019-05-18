@@ -1,4 +1,4 @@
-import nodeDefinitions from 'services/EventCycle/EventGraph/EventGraphFunctions/EventGraphApiDefinition';
+import nodeDefinitions from 'services/EventCycle/EventGraph/EventGraphApiDefinition';
 
 function buildParams(definition) {
   if (!definition || !definition.paramDefinitions) {

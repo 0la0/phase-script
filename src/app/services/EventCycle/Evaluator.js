@@ -1,4 +1,4 @@
-import eventGraphApi from 'services/EventCycle/EventGraph/EventGraphFunctions/ExposedApi';
+import eventGraphApi from 'services/EventCycle/EventGraph/ExposedApi';
 import { patternApi } from 'services/EventCycle/PatternFunctions/ExposedApi';
 import { utilApi } from 'services/EventCycle/Util';
 

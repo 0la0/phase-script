@@ -1,6 +1,6 @@
-import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
-import UgenConnectinType from 'services/AudioParameter/UgenConnectionType';
-import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
+import BaseUnitGenerator from 'services/UnitGenerators/BaseUnitGenerator';
+import UgenConnectinType from 'services/UgenConnection/UgenConnectionType';
+import UgenConnection from 'services/UgenConnection/UgenConnection';
 import metronomeManager from 'services/metronome/metronomeManager';
 import ContinuousOscillator from 'services/audio/ContinuousOscillator';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
@@ -11,7 +11,7 @@ export default class PatchContinuousOsc extends BaseUnitGenerator {
     super();
     const defaultFrequency = this._ifNumberOr(frequency, 440);
     this.osc = new ContinuousOscillator(defaultFrequency, waveform);
-    this.audioModel = new PatchAudioModel('CONTINUOUS_OSC', this.osc, UgenConnectinType.EMPTY, UgenConnectinType.SIGNAL);
+    this.audioModel = new UgenConnection('CONTINUOUS_OSC', this.osc, UgenConnectinType.EMPTY, UgenConnectinType.SIGNAL);
     this.paramMap = {
       frequency: new SignalParameter(this.osc.getFrequencyParam(), defaultFrequency, new InputType().numeric().message().build()),
       modulator: new SignalParameter(this.osc.getFrequencyParam(), defaultFrequency, new InputType().signal().build()),

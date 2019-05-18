@@ -1,7 +1,7 @@
-import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
-import UgenConnectinType from 'services/AudioParameter/UgenConnectionType';
-import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
-import AudioEventToModelAdapter from 'services/AudioParameter/AudioEventToModelAdapter';
+import BaseUnitGenerator from 'services/UnitGenerators/BaseUnitGenerator';
+import UgenConnectinType from 'services/UgenConnection/UgenConnectionType';
+import UgenConnection from 'services/UgenConnection/UgenConnection';
+import AudioEventToModelAdapter from 'services/UgenConnection/AudioEventToModelAdapter';
 import DiscreteSignalParameter from 'services/AudioParameter/DiscreteSignalParameter';
 import MidiMessage, { COMMAND } from 'services/midi/MidiMessage';
 import provideMidiFactory from 'services/midi/midiDeviceFactory';
@@ -10,7 +10,7 @@ export default class MessageMidiNoteOut extends BaseUnitGenerator {
   constructor(deviceName, channel, note, duration) {
     super();
     this.eventModel = new AudioEventToModelAdapter(this.schedule.bind(this));
-    this.audioModel = new PatchAudioModel('MSG_MIDI_NOTE_OUT', this.eventModel, UgenConnectinType.MESSAGE, UgenConnectinType.EMPTY);
+    this.audioModel = new UgenConnection('MSG_MIDI_NOTE_OUT', this.eventModel, UgenConnectinType.MESSAGE, UgenConnectinType.EMPTY);
     this.paramMap = {
       deviceName: new DiscreteSignalParameter(deviceName),
       channel: new DiscreteSignalParameter(channel),

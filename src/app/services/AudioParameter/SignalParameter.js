@@ -1,4 +1,4 @@
-import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
+import UgenConnection from 'services/UgenConnection/UgenConnection';
 
 // TODO: COMBINE WITH PATCH PARAM TYPES
 const InputTypes = {

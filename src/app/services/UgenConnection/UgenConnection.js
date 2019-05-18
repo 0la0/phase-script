@@ -1,4 +1,4 @@
-export default class PatchAudioModel {
+export default class UgenConnection {
   constructor(name, audioModel, inputType, outputType) {
     this.name = name;
     this.audioModel = audioModel;

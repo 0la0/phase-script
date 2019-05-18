@@ -1,13 +1,13 @@
-import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
+import BaseUnitGenerator from 'services/UnitGenerators/BaseUnitGenerator';
 import Gate from 'services/audio/Gate';
-import UgenConnectinType from 'services/AudioParameter/UgenConnectionType';
-import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
+import UgenConnectinType from 'services/UgenConnection/UgenConnectionType';
+import UgenConnection from 'services/UgenConnection/UgenConnection';
 
 export default class PatchGate extends BaseUnitGenerator {
   constructor(threshold) {
     super();
     this.gate = new Gate(threshold);
-    this.audioModel = new PatchAudioModel('GATE', this.gate, UgenConnectinType.SIGNAL, UgenConnectinType.SIGNAL);
+    this.audioModel = new UgenConnection('GATE', this.gate, UgenConnectinType.SIGNAL, UgenConnectinType.SIGNAL);
   }
 
   updateParams({ threshold, }, time) {

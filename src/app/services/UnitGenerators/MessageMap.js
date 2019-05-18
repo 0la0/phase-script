@@ -1,7 +1,7 @@
-import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
-import UgenConnectinType from 'services/AudioParameter/UgenConnectionType';
-import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
-import AudioEventToModelAdapter from 'services/AudioParameter/AudioEventToModelAdapter';
+import BaseUnitGenerator from 'services/UnitGenerators/BaseUnitGenerator';
+import UgenConnectinType from 'services/UgenConnection/UgenConnectionType';
+import UgenConnection from 'services/UgenConnection/UgenConnection';
+import AudioEventToModelAdapter from 'services/UgenConnection/AudioEventToModelAdapter';
 
 const defaultMapFn = note => note;
 
@@ -9,7 +9,7 @@ export default class MessageMap extends BaseUnitGenerator {
   constructor(mapFn) {
     super();
     this.eventModel = new AudioEventToModelAdapter(this.schedule.bind(this));
-    this.audioModel = new PatchAudioModel('MSG_MAP', this.eventModel, UgenConnectinType.MESSAGE, UgenConnectinType.MESSAGE);
+    this.audioModel = new UgenConnection('MSG_MAP', this.eventModel, UgenConnectinType.MESSAGE, UgenConnectinType.MESSAGE);
     this.mapFn = mapFn || defaultMapFn;
   }
 

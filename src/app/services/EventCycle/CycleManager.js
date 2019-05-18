@@ -1,7 +1,7 @@
 import CycleHandler from 'services/EventCycle/CycleHandler';
 import { evaluateUserInput } from 'services/EventCycle/Evaluator';
 import { createEventGraph } from 'services/EventCycle/EventGraphHandler';
-import EventGraphBuilder from 'services/EventCycle/EventGraph/EventGraphBuilder';
+import AudioGraphBuilder from 'services/EventCycle/EventGraph/AudioGraphBuilder';
 
 export default class CycleManager {
   constructor() {
@@ -9,7 +9,7 @@ export default class CycleManager {
     this.nextCycleHandlers = null;
     this.nextGraphDefinition = null;
     this.errorMessage = '';
-    this.eventGraphBuilder = new EventGraphBuilder();
+    this.audioGraphBuilder = new AudioGraphBuilder();
     this.setCycleString('');
   }
 
@@ -48,7 +48,7 @@ export default class CycleManager {
       this.cycleHandlers = this.nextCycleHandlers;
       this.nextCycleHandlers = null;
       if (this.nextGraphDefinition) {
-        this.eventGraphBuilder.buildEventGraph(this.nextGraphDefinition, time);
+        this.audioGraphBuilder.buildAudioGraph(this.nextGraphDefinition, time);
         this.nextGraphDefinition = null;
       }
     }
@@ -59,7 +59,7 @@ export default class CycleManager {
   }
 
   stop() {
-    this.eventGraphBuilder.cancelAllFutureAudioEvents();
+    this.audioGraphBuilder.cancelAllFutureAudioEvents();
     this.cycleHandlers.forEach(cycleHandler => cycleHandler.reset());
   }
 }

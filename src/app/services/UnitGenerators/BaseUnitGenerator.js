@@ -1,4 +1,4 @@
-import DynamicParameter from 'services/EventCycle/EventGraph/EventGraphFunctions/DynamicParameter';
+import DynamicParameter from 'services/EventCycle/EventGraph/DynamicParameter';
 
 export default class BaseUnitGenerator {
   constructor() {

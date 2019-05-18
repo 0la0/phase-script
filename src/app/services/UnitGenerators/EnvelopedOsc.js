@@ -1,7 +1,7 @@
-import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
-import UgenConnectinType from 'services/AudioParameter/UgenConnectionType';
-import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
-import AudioEventToModelAdapter from 'services/AudioParameter/AudioEventToModelAdapter';
+import BaseUnitGenerator from 'services/UnitGenerators/BaseUnitGenerator';
+import UgenConnectinType from 'services/UgenConnection/UgenConnectionType';
+import UgenConnection from 'services/UgenConnection/UgenConnection';
+import AudioEventToModelAdapter from 'services/UgenConnection/AudioEventToModelAdapter';
 import envelopedOscilator from 'services/audio/EnvelopedOscillator';
 import DiscreteSignalParameter from 'services/AudioParameter/DiscreteSignalParameter';
 import { msToSec } from 'services/Math';
@@ -10,7 +10,7 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
   constructor(waveform, attack, sustain, release) {
     super();
     this.eventModel = new AudioEventToModelAdapter(this.schedule.bind(this));
-    this.audioModel = new PatchAudioModel('ENVELOPED_OSC', this.eventModel, UgenConnectinType.MESSAGE, UgenConnectinType.SIGNAL);
+    this.audioModel = new UgenConnection('ENVELOPED_OSC', this.eventModel, UgenConnectinType.MESSAGE, UgenConnectinType.SIGNAL);
     this.modulationInputs = new Set();
     this.waveform = waveform;
     this.paramMap = {

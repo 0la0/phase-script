@@ -1,7 +1,7 @@
-import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
-import UgenConnectinType from 'services/AudioParameter/UgenConnectionType';
-import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
-import AudioEventToModelAdapter from 'services/AudioParameter/AudioEventToModelAdapter';
+import BaseUnitGenerator from 'services/UnitGenerators/BaseUnitGenerator';
+import UgenConnectinType from 'services/UgenConnection/UgenConnectionType';
+import UgenConnection from 'services/UgenConnection/UgenConnection';
+import AudioEventToModelAdapter from 'services/UgenConnection/AudioEventToModelAdapter';
 import ScaleManager from 'services/scale/ScaleManager';
 
 export default class MessageScaleLock extends BaseUnitGenerator {
@@ -11,7 +11,7 @@ export default class MessageScaleLock extends BaseUnitGenerator {
     this.baseNote = baseNote;
     this.scaleManager = new ScaleManager(scaleName);
     this.eventModel = new AudioEventToModelAdapter(this.schedule.bind(this));
-    this.audioModel = new PatchAudioModel('MSG_SCALE_LOCK', this.eventModel, UgenConnectinType.MESSAGE, UgenConnectinType.MESSAGE);
+    this.audioModel = new UgenConnection('MSG_SCALE_LOCK', this.eventModel, UgenConnectinType.MESSAGE, UgenConnectinType.MESSAGE);
   }
 
   schedule(message) {

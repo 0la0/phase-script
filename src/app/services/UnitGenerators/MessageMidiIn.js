@@ -1,7 +1,7 @@
-import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
-import UgenConnectinType from 'services/AudioParameter/UgenConnectionType';
-import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
-import AudioEventToModelAdapter from 'services/AudioParameter/AudioEventToModelAdapter';
+import BaseUnitGenerator from 'services/UnitGenerators/BaseUnitGenerator';
+import UgenConnectinType from 'services/UgenConnection/UgenConnectionType';
+import UgenConnection from 'services/UgenConnection/UgenConnection';
+import AudioEventToModelAdapter from 'services/UgenConnection/AudioEventToModelAdapter';
 import { audioEventBus } from 'services/EventBus';
 import AudioEvent from 'services/EventBus/AudioEvent';
 import TimeSchedule from 'services/metronome/TimeSchedule';
@@ -12,7 +12,7 @@ export default class MessageMidiIn extends BaseUnitGenerator {
   constructor(deviceName, channel, note, address) {
     super();
     this.eventModel = new AudioEventToModelAdapter(this.schedule.bind(this));
-    this.audioModel = new PatchAudioModel('MSG_MIDI_IN', this.eventModel, UgenConnectinType.EMPTY, UgenConnectinType.EMPTY);
+    this.audioModel = new UgenConnection('MSG_MIDI_IN', this.eventModel, UgenConnectinType.EMPTY, UgenConnectinType.EMPTY);
     this.channel = channel;
     this.note = note;
     this.address = address;
