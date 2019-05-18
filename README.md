@@ -38,7 +38,6 @@ And feature level dependencies on
   * in-line patterns
   * document previous versions
   * patterns
-    - set at time vs interpolation
     - rename `.speed` to `.fast` and `.slow`
     - `waitFor`
     - `stopAfter`
@@ -48,3 +47,4 @@ And feature level dependencies on
     - parameter descriptions
     - improve getting started guide
     - key shortcuts
+  * deploy with a CI tool

@@ -20,7 +20,7 @@ export default class PatchThresholdEvent extends BaseUnitGenerator {
   }
 
   handleEvent() {
-    audioEventBus.publish(new AudioEvent(this.address, undefined, new TimeSchedule()));
+    audioEventBus.publish(new AudioEvent(this.address, undefined, new TimeSchedule(), false));
   }
 
   static fromParams({ threshold, address }) {

@@ -26,12 +26,6 @@ export default class Gain  {
     return this;
   }
 
-  setValueAtTime(gain, scheduledTime) {
-    const time = (scheduledTime === undefined) ? 0 : scheduledTime;
-    this.gain.gain.linearRampToValueAtTime(gain, time);
-    return this;
-  }
-
   getGainParam() {
     return this.gain.gain;
   }

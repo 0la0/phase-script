@@ -1,8 +1,9 @@
 export default class AudioEvent {
-  constructor(address = '', note = 60, time = 0) {
+  constructor(address = '', note = 60, time, interpolate = false) {
     this.address = address;
     this.note = note;
     this.time = time;
+    this.interpolate = interpolate;
   }
 
   setAddress(address) {
@@ -32,7 +33,11 @@ export default class AudioEvent {
     return this.time;
   }
 
+  getInterpolation() {
+    return this.interpolate;
+  }
+
   clone() {
-    return new AudioEvent(this.address, this.note, this.time.clone());
+    return new AudioEvent(this.address, this.note, this.time.clone(), this.interpolate);
   }
 }

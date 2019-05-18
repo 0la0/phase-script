@@ -43,7 +43,7 @@ export default class MessageMidiIn extends BaseUnitGenerator {
     if (message.command === COMMAND.NOTE_ON && message.value === 0) {
       return;
     }
-    audioEventBus.publish(new AudioEvent(this.address, message.value, new TimeSchedule()));
+    audioEventBus.publish(new AudioEvent(this.address, message.value, new TimeSchedule(), false));
   }
 
   schedule() {

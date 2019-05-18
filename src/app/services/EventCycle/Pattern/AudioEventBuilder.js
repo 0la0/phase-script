@@ -1,8 +1,20 @@
 import AudioEvent from 'services/EventBus/AudioEvent';
 
-function getNumericVal(noteString) {
-  const floatNote = parseFloat(noteString, 10);
+function getNumericValue(str) {
+  const floatNote = parseFloat(str, 10);
   return Number.isNaN(floatNote) ? undefined : floatNote;
+}
+
+function parseNoteValue(str) {
+  let interpolate = false;
+  let note = undefined;
+  if (str.charAt(0) === '_') {
+    interpolate = true;
+    note = getNumericValue(str.substring(1));
+  } else {
+    note = getNumericValue(str);
+  }
+  return { note, interpolate };
 }
 
 export function parseToken(token, baseAddress) {
@@ -11,21 +23,24 @@ export function parseToken(token, baseAddress) {
   }
   const tokens = token.split(':');
   if (tokens.length === 1) {
-    if (baseAddress && tokens[0] === 'x') {
-      return new AudioEvent(baseAddress, undefined);
+    const token = tokens[0];
+    if (baseAddress && token === 'x') {
+      // interpolate base address ?
+      return new AudioEvent(baseAddress, undefined, undefined, false);
     }
-    const note = getNumericVal(tokens[0]);
+    const { note, interpolate} = parseNoteValue(token);
     if (note === undefined) {
-      // note is address
-      return new AudioEvent(tokens[0], undefined);
+      // interpolate token?
+      return new AudioEvent(token, undefined, undefined, interpolate);
     }
-    const address = baseAddress || tokens[0];
-    return new AudioEvent(address, note);
+    const address = baseAddress || token;
+    return new AudioEvent(address, note, undefined, interpolate);
   }
   if (tokens.length === 2) {
+    // interpolate address or token?
     const [ address, noteString ] = token.split(':');
-    const note = getNumericVal(noteString);
-    return new AudioEvent(address, note);
+    const { note, interpolate} = parseNoteValue(noteString);
+    return new AudioEvent(address, note, undefined, interpolate);
   }
 }
 

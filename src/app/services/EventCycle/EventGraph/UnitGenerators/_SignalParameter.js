@@ -63,7 +63,11 @@ export default class SignalParameter {
       throw new Error('Parameter does not accept message modulation');
     }
     const gainParamOutlet = {
-      schedule: msg => this.param.linearRampToValueAtTime(msg.note, msg.time.audio),
+      schedule: msg => {
+        msg.interpolate ?
+          this.param.linearRampToValueAtTime(msg.note, msg.time.audio) :
+          this.param.setValueAtTime(msg.note, msg.time.audio);
+      },
     };
     dynamicParam.audioModel.outlets.add(gainParamOutlet);
   }
