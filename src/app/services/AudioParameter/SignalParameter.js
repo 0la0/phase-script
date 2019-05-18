@@ -85,7 +85,7 @@ export default class SignalParameter {
   }
 
   setParamValue(value, time) {
-    if (value instanceof PatchAudioModel) {
+    if (value instanceof UgenConnection) {
       this._setDynamicParam(value);
       return;
     }

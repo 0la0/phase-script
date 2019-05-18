@@ -19,8 +19,8 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
       release: new DiscreteSignalParameter(release, msToSec),
       modulator: {
         setParamValue: paramVal => {
-          if (!(paramVal instanceof PatchAudioModel)) {
-            throw new Error('Modulator must be a PatchAudioModel');
+          if (!(paramVal instanceof UgenConnection)) {
+            throw new Error('Modulator must be a UgenConnection');
           }
           this.modulationInputs.add(paramVal.getConnectionFn());
         }
