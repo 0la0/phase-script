@@ -1,5 +1,5 @@
 import audioGraph from 'services/audio/Graph';
-import applyTypeToOscillator from './OscillatorTypeUtil';
+import applyTypeToOscillator from './OscillatorUtil';
 
 export default class ContinuousOsc {
   constructor(frequency, type) {

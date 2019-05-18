@@ -1,15 +1,15 @@
 import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
 import StereoPanner from 'services/audio/stereoPanner';
-import PATCH_EVENT from 'services/AudioParameter/PatchEvent';
+import UgenConnectinType from 'services/AudioParameter/UgenConnectionType';
 import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
-import SignalParameter, { InputType } from './_SignalParameter';
+import SignalParameter, { InputType } from 'services/AudioParameter/SignalParameter';
 
 export default class PatchPanner extends BaseUnitGenerator {
   constructor({ panValue, }) {
     super();
     const defaultPanValue = this._ifNumberOr(panValue, 0);
     this.stereoPanner = new StereoPanner(defaultPanValue);
-    this.audioModel = new PatchAudioModel('STEREO_PANNER', this.stereoPanner, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
+    this.audioModel = new PatchAudioModel('STEREO_PANNER', this.stereoPanner, UgenConnectinType.SIGNAL, UgenConnectinType.SIGNAL);
     this.paramMap = {
       panValue: new SignalParameter(this.stereoPanner.getPanParam(), defaultPanValue, new InputType().numeric().message().signal().build()),
     };

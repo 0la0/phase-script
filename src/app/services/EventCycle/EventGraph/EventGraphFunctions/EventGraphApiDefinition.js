@@ -1,5 +1,5 @@
 import scales from 'services/scale/scales';
-import wavetables from 'services/audio/synth/wavetables';
+import wavetables from 'services/audio/OscillatorUtil/Wavetables';
 import { CARRIER_NAMES } from 'services/audio/waveshaper/carrierFunctions';
 
 const defaultWaveforms = [ 'sin', 'squ', 'saw', 'tri', ];

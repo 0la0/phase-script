@@ -1,7 +1,7 @@
 import audioGraph from 'services/audio/Graph';
 import {mtof} from 'services/midi/util';
 import { AsrEnvelope } from 'services/audio/Envelope';
-import applyTypeToOscillator from './OscillatorTypeUtil';
+import applyTypeToOscillator from './OscillatorUtil';
 
 export default function envelopedOscilator(midiNote, startTime, asr, type, gain, outputs, modulator) {
   const frequency = mtof(midiNote);

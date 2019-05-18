@@ -1,13 +1,13 @@
 import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
 import Reverb from 'services/audio/reverb';
-import PATCH_EVENT from 'services/AudioParameter/PatchEvent';
+import UgenConnectinType from 'services/AudioParameter/UgenConnectionType';
 import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
 
 export default class PatchReverb extends BaseUnitGenerator {
   constructor({ attack, decay, wet }) {
     super();
     this.reverb = new Reverb(attack, decay, wet);
-    this.audioModel = new PatchAudioModel('REVERB', this.reverb, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
+    this.audioModel = new PatchAudioModel('REVERB', this.reverb, UgenConnectinType.SIGNAL, UgenConnectinType.SIGNAL);
   }
 
   updateParams({ attack, decay, wet }, time) {

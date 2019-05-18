@@ -1,16 +1,16 @@
 import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
-import PATCH_EVENT from 'services/AudioParameter/PatchEvent';
+import UgenConnectinType from 'services/AudioParameter/UgenConnectionType';
 import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
-import PatchEventModel from 'services/AudioParameter/PatchEventModel';
-import envelopedOscilator from 'services/audio/synth/EnvelopedOscillator';
-import DiscreteSignalParameter from './_DiscreteSignalParameter';
+import AudioEventToModelAdapter from 'services/AudioParameter/AudioEventToModelAdapter';
+import envelopedOscilator from 'services/audio/EnvelopedOscillator';
+import DiscreteSignalParameter from 'services/AudioParameter/DiscreteSignalParameter';
 import { msToSec } from 'services/Math';
 
 export default class EnvelopedOsc extends BaseUnitGenerator {
   constructor(waveform, attack, sustain, release) {
     super();
-    this.eventModel = new PatchEventModel(this.schedule.bind(this));
-    this.audioModel = new PatchAudioModel('ENVELOPED_OSC', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);
+    this.eventModel = new AudioEventToModelAdapter(this.schedule.bind(this));
+    this.audioModel = new PatchAudioModel('ENVELOPED_OSC', this.eventModel, UgenConnectinType.MESSAGE, UgenConnectinType.SIGNAL);
     this.modulationInputs = new Set();
     this.waveform = waveform;
     this.paramMap = {
@@ -22,7 +22,7 @@ export default class EnvelopedOsc extends BaseUnitGenerator {
           if (!(paramVal instanceof PatchAudioModel)) {
             throw new Error('Modulator must be a PatchAudioModel');
           }
-          this.modulationInputs.add(paramVal.connectionFn);
+          this.modulationInputs.add(paramVal.getConnectionFn());
         }
       },
     };

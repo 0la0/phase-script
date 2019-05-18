@@ -1,15 +1,15 @@
 import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
 import Waveshaper from 'services/audio/waveshaper';
-import PATCH_EVENT from 'services/AudioParameter/PatchEvent';
+import UgenConnectinType from 'services/AudioParameter/UgenConnectionType';
 import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
-import SignalParameter, { InputType, } from './_SignalParameter';
+import SignalParameter, { InputType, } from 'services/AudioParameter/SignalParameter';
 
 export default class PatchWaveshaper extends BaseUnitGenerator {
   constructor({ type, wet }) {
     super();
     const defaultWet = this._ifNumberOr(wet, 0.5);
     this.waveshaper = new Waveshaper(type);
-    this.audioModel = new PatchAudioModel('WAVESHAPER', this.waveshaper, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
+    this.audioModel = new PatchAudioModel('WAVESHAPER', this.waveshaper, UgenConnectinType.SIGNAL, UgenConnectinType.SIGNAL);
     this.paramMap = {
       wet: new SignalParameter(this.waveshaper.getWetParam(), defaultWet, new InputType().numeric().message().build()),
     };

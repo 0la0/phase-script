@@ -1,8 +1,8 @@
 import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
 import Bitcrusher from 'services/audio/Bitcrusher';
-import PATCH_EVENT from 'services/AudioParameter/PatchEvent';
+import UgenConnectinType from 'services/AudioParameter/UgenConnectionType';
 import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
-import SignalParameter, { InputType, } from './_SignalParameter';
+import SignalParameter, { InputType, } from 'services/AudioParameter/SignalParameter';
 
 export default class PatchChorus extends BaseUnitGenerator {
   constructor({ bitDepth, freqReduction, wet, }) {
@@ -11,7 +11,7 @@ export default class PatchChorus extends BaseUnitGenerator {
     const defaultFreqReduction = this._ifNumberOr(freqReduction, 0.5);
     const defaultWet = this._ifNumberOr(wet, 0.5);
     this.bitcrusher = new Bitcrusher(defaultBitDepth, defaultFreqReduction, defaultWet);
-    this.audioModel = new PatchAudioModel('BITCRUSHER', this.bitcrusher, PATCH_EVENT.SIGNAL, PATCH_EVENT.SIGNAL);
+    this.audioModel = new PatchAudioModel('BITCRUSHER', this.bitcrusher, UgenConnectinType.SIGNAL, UgenConnectinType.SIGNAL);
     this.paramMap = {
       bitDepth: new SignalParameter(this.bitcrusher.getBitDepthParam(), defaultBitDepth, new InputType().numeric().message().build()),
       freqReduction: new SignalParameter(this.bitcrusher.getFrequencyReductionParam(), defaultFreqReduction, new InputType().numeric().message().build()),

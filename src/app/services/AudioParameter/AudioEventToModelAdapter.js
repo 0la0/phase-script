@@ -3,7 +3,7 @@ function defaultSchedulable(message) {
   console.log('Schedulable not implemented', message);
 }
 
-export default class PatchEventModel {
+export default class AudioEventToModelAdapter {
   constructor(schedulable) {
     this.schedule = schedulable || defaultSchedulable;
     this.outlets = new Set([]);

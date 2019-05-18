@@ -1,15 +1,15 @@
 import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
-import PATCH_EVENT from 'services/AudioParameter/PatchEvent';
+import UgenConnectinType from 'services/AudioParameter/UgenConnectionType';
 import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
-import PatchEventModel from 'services/AudioParameter/PatchEventModel';
+import AudioEventToModelAdapter from 'services/AudioParameter/AudioEventToModelAdapter';
 
 const defaultFilterFn = () => true;
 
 export default class MessageFilter extends BaseUnitGenerator {
   constructor(filterFn) {
     super();
-    this.eventModel = new PatchEventModel(this.schedule.bind(this));
-    this.audioModel = new PatchAudioModel('MSG_FILTER', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.MESSAGE);
+    this.eventModel = new AudioEventToModelAdapter(this.schedule.bind(this));
+    this.audioModel = new PatchAudioModel('MSG_FILTER', this.eventModel, UgenConnectinType.MESSAGE, UgenConnectinType.MESSAGE);
     this.filterFn = filterFn || defaultFilterFn;
   }
 

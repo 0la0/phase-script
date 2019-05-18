@@ -1,16 +1,16 @@
 import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
-import PATCH_EVENT from 'services/AudioParameter/PatchEvent';
+import UgenConnectinType from 'services/AudioParameter/UgenConnectionType';
 import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
-import PatchEventModel from 'services/AudioParameter/PatchEventModel';
+import AudioEventToModelAdapter from 'services/AudioParameter/AudioEventToModelAdapter';
 import envelopedNoiseGenerator from 'services/audio/EnvelopedNoise';
-import DiscreteSignalParameter from './_DiscreteSignalParameter';
+import DiscreteSignalParameter from 'services/AudioParameter/DiscreteSignalParameter';
 import { msToSec } from 'services/Math';
 
 export default class EnvelopedNoise extends BaseUnitGenerator {
   constructor(attack, sustain, release) {
     super();
-    this.eventModel = new PatchEventModel(this.schedule.bind(this));
-    this.audioModel = new PatchAudioModel('ENVELOPED_NOISE', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);
+    this.eventModel = new AudioEventToModelAdapter(this.schedule.bind(this));
+    this.audioModel = new PatchAudioModel('ENVELOPED_NOISE', this.eventModel, UgenConnectinType.MESSAGE, UgenConnectinType.SIGNAL);
     this.paramMap = {
       attack: new DiscreteSignalParameter(attack, msToSec),
       sustain: new DiscreteSignalParameter(sustain, msToSec),

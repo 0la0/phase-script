@@ -1,10 +1,10 @@
 import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
-import PATCH_EVENT from 'services/AudioParameter/PatchEvent';
+import UgenConnectinType from 'services/AudioParameter/UgenConnectionType';
 import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
-import PatchEventModel from 'services/AudioParameter/PatchEventModel';
+import AudioEventToModelAdapter from 'services/AudioParameter/AudioEventToModelAdapter';
 import { playSample } from 'services/audio/sampler';
 import sampleBank from 'services/audio/sampleBank';
-import DiscreteSignalParameter from './_DiscreteSignalParameter';
+import DiscreteSignalParameter from 'services/AudioParameter/DiscreteSignalParameter';
 import { msToSec } from 'services/Math';
 
 function sampleKeyOrDefault(sampleKey) {
@@ -18,8 +18,8 @@ export default class PatchSampler extends BaseUnitGenerator{
   constructor({ sampleName, attack, sustain, release, }) {
     super();
     this.sampleName = sampleName;
-    this.eventModel = new PatchEventModel(this.schedule.bind(this));
-    this.audioModel = new PatchAudioModel('SAMPLER', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.SIGNAL);
+    this.eventModel = new AudioEventToModelAdapter(this.schedule.bind(this));
+    this.audioModel = new PatchAudioModel('SAMPLER', this.eventModel, UgenConnectinType.MESSAGE, UgenConnectinType.SIGNAL);
     this.paramMap = {
       attack: new DiscreteSignalParameter(attack, msToSec),
       sustain: new DiscreteSignalParameter(sustain, msToSec),
@@ -30,7 +30,7 @@ export default class PatchSampler extends BaseUnitGenerator{
           if (!(paramVal instanceof PatchAudioModel)) {
             throw new Error('Modulator must be a PatchAudioModel');
           }
-          this.modulationInputs.add(paramVal.connectionFn);
+          this.modulationInputs.add(paramVal.getConnectionFn());
         }
       },
     };

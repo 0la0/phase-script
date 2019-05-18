@@ -1,16 +1,16 @@
 import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
-import PATCH_EVENT from 'services/AudioParameter/PatchEvent';
+import UgenConnectinType from 'services/AudioParameter/UgenConnectionType';
 import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
-import PatchEventModel from 'services/AudioParameter/PatchEventModel';
-import DiscreteSignalParameter from './_DiscreteSignalParameter';
+import AudioEventToModelAdapter from 'services/AudioParameter/AudioEventToModelAdapter';
+import DiscreteSignalParameter from 'services/AudioParameter/DiscreteSignalParameter';
 import provideMidiFactory from 'services/midi/midiDeviceFactory';
 import MidiMessage, { COMMAND } from 'services/midi/MidiMessage';
 
 export default class MessageMidiCcOut extends BaseUnitGenerator {
   constructor(deviceName, channel, note) {
     super();
-    this.eventModel = new PatchEventModel(this.schedule.bind(this));
-    this.audioModel = new PatchAudioModel('MSG_MIDI_CC_OUT', this.eventModel, PATCH_EVENT.MESSAGE, PATCH_EVENT.EMPTY);
+    this.eventModel = new AudioEventToModelAdapter(this.schedule.bind(this));
+    this.audioModel = new PatchAudioModel('MSG_MIDI_CC_OUT', this.eventModel, UgenConnectinType.MESSAGE, UgenConnectinType.EMPTY);
     this.paramMap = {
       deviceName: new DiscreteSignalParameter(deviceName),
       channel: new DiscreteSignalParameter(channel),
