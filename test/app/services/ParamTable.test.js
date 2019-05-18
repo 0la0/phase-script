@@ -1,5 +1,5 @@
 import assert from 'assert';
-import ParamTable from 'services/PatchSpace/ParamTable';
+import ParamTable from 'services/AudioParameter/ParamTable';
 
 describe('ParamTable', () => {
   it('returns false on an empty table', () => {

@@ -1,7 +1,7 @@
 import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
 import Reverb from 'services/audio/reverb';
-import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
-import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
+import PATCH_EVENT from 'services/AudioParameter/PatchEvent';
+import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
 
 export default class PatchReverb extends BaseUnitGenerator {
   constructor({ attack, decay, wet }) {

@@ -1,4 +1,4 @@
-import audioGraph from 'services/audio/graph';
+import audioGraph from 'services/audio/Graph';
 
 export default class Gate  {
   constructor(threshold) {

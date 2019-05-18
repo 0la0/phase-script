@@ -1,7 +1,7 @@
 import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
 import Gate from 'services/audio/Gate';
-import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
-import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
+import PATCH_EVENT from 'services/AudioParameter/PatchEvent';
+import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
 
 export default class PatchGate extends BaseUnitGenerator {
   constructor(threshold) {

@@ -1,4 +1,4 @@
-import audioGraph from 'services/audio/graph';
+import audioGraph from 'services/audio/Graph';
 
 const NUM_CHANNELS = 2;
 

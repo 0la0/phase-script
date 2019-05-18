@@ -1,7 +1,7 @@
 import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
 import StereoPanner from 'services/audio/stereoPanner';
-import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
-import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
+import PATCH_EVENT from 'services/AudioParameter/PatchEvent';
+import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
 import SignalParameter, { InputType } from './_SignalParameter';
 
 export default class PatchPanner extends BaseUnitGenerator {

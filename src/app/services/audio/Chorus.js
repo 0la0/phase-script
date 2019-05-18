@@ -1,4 +1,4 @@
-import audioGraph from 'services/audio/graph';
+import audioGraph from 'services/audio/Graph';
 
 export default class Chorus  {
   constructor (frequency = 0.1, depth = 0.003, feedback = 0.25) {

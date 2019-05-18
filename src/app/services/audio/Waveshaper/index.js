@@ -4,7 +4,7 @@
  *  http://music.columbia.edu/cmc/MusicAndComputers/chapter4/04_06.php
  *  http://msp.ucsd.edu/techniques/v0.11/book-html/node78.html
  */
-import audioGraph from 'services/audio/graph';
+import audioGraph from 'services/audio/Graph';
 import WetLevel from 'services/audio/WetLevel';
 import { getCarrierFunction } from './carrierFunctions';
 

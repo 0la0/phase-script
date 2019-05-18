@@ -1,5 +1,5 @@
-import audioGraph from 'services/audio/graph';
-import buildConvolutionBuffer from 'services/audio/reverb/convolutionBuilder';
+import audioGraph from 'services/audio/Graph';
+import buildConvolutionBuffer from 'services/audio/convolutionBuilder';
 
 function undefinedOr(val, fallback) {
   return ((val === undefined) || (val === null)) ? fallback : val;

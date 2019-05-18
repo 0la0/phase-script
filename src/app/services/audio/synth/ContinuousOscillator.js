@@ -1,4 +1,4 @@
-import audioGraph from 'services/audio/graph';
+import audioGraph from 'services/audio/Graph';
 import applyTypeToOscillator from './OscillatorTypeUtil';
 
 export default class ContinuousOsc {

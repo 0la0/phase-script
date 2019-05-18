@@ -1,5 +1,5 @@
 import TimeSchedule from 'services/metronome/TimeSchedule';
-import audioGraph from 'services/audio/graph';
+import audioGraph from 'services/audio/Graph';
 import workerString from './metronome.worker';
 
 const workerUrl = URL.createObjectURL(new Blob([workerString]));

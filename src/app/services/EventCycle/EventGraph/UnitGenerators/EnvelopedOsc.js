@@ -1,7 +1,7 @@
 import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
-import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
-import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
-import PatchEventModel from 'services/PatchSpace/PatchEventModel';
+import PATCH_EVENT from 'services/AudioParameter/PatchEvent';
+import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
+import PatchEventModel from 'services/AudioParameter/PatchEventModel';
 import envelopedOscilator from 'services/audio/synth/EnvelopedOscillator';
 import DiscreteSignalParameter from './_DiscreteSignalParameter';
 import { msToSec } from 'services/Math';

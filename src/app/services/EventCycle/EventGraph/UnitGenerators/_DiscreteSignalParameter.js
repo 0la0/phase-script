@@ -1,4 +1,4 @@
-import ParamTable from 'services/PatchSpace/ParamTable';
+import ParamTable from 'services/AudioParameter/ParamTable';
 
 const identity = val => val;
 

@@ -1,4 +1,4 @@
-import audioGraph from 'services/audio/graph';
+import audioGraph from 'services/audio/Graph';
 import WetLevel from 'services/audio/WetLevel';
 
 export default class Bitcrusher  {

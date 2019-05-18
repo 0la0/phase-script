@@ -2,7 +2,7 @@ import BaseComponent from 'common/util/base-component';
 import Visualizer from 'services/audio/visualizer';
 import metronomeManager from 'services/metronome/metronomeManager';
 import MetronomeScheduler from 'services/metronome/MetronomeScheduler';
-import audioGraph from 'services/audio/graph';
+import audioGraph from 'services/audio/Graph';
 import style from './sound-visualizer.css';
 import markup from './sound-visualizer.html';
 

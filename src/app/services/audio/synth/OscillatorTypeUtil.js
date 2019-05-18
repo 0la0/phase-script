@@ -1,4 +1,4 @@
-import audioGraph from 'services/audio/graph';
+import audioGraph from 'services/audio/Graph';
 import { getOscillatorType, } from 'services/audio/synth/Oscillators';
 import { isPrimitiveWaveform, getPeriodicWave, } from './wavetableProvider';
 

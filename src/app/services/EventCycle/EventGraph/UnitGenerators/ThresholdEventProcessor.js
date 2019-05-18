@@ -1,7 +1,7 @@
 import BaseUnitGenerator from 'services/EventCycle/EventGraph/UnitGenerators/BaseUnitGenerator';
 import ThresholdEventProcessor from 'services/audio/ThresholdEvent';
-import PATCH_EVENT from 'services/PatchSpace/PatchEvent';
-import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
+import PATCH_EVENT from 'services/AudioParameter/PatchEvent';
+import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
 import AudioEvent from 'services/EventBus/AudioEvent';
 import TimeSchedule from 'services/metronome/TimeSchedule';
 import { audioEventBus } from 'services/EventBus';

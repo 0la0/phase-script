@@ -1,4 +1,4 @@
-import audioGraph from 'services/audio/graph';
+import audioGraph from 'services/audio/Graph';
 
 export default function envelopedNoiseGenerator(startTime, asr, gain, outputs) {
   const endTime = startTime + asr.attack + asr.sustain + asr.release;

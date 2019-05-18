@@ -1,7 +1,7 @@
 import BaseComponent from 'common/util/base-component';
 import SampleVisualizer from '../sample-visualizer';
 import { playSample } from 'services/audio/sampler';
-import audioGraph from 'services/audio/graph';
+import audioGraph from 'services/audio/Graph';
 import style from './sample-display.css';
 import markup from './sample-display.html';
 

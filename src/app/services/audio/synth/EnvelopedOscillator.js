@@ -1,4 +1,4 @@
-import audioGraph from 'services/audio/graph';
+import audioGraph from 'services/audio/Graph';
 import {mtof} from 'services/midi/util';
 import { AsrEnvelope } from 'services/audio/Envelope';
 import applyTypeToOscillator from './OscillatorTypeUtil';

@@ -1,4 +1,4 @@
-import PatchAudioModel from 'services/PatchSpace/PatchAudioModel';
+import PatchAudioModel from 'services/AudioParameter/PatchAudioModel';
 
 // TODO: COMBINE WITH PATCH PARAM TYPES
 const InputTypes = {

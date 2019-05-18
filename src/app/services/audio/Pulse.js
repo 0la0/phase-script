@@ -1,4 +1,4 @@
-import audioGraph from 'services/audio/graph';
+import audioGraph from 'services/audio/Graph';
 import OSCILLATORS from 'services/audio/synth/Oscillators';
 
 export default function triggerPulse(frequency, waveType, startTime, duration, resonance, outputs) {

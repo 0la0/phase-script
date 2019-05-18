@@ -1,4 +1,4 @@
-import audioGraph from 'services/audio/graph';
+import audioGraph from 'services/audio/Graph';
 
 export default class Delay  {
   constructor (delayTime = 0, feedback = 0.8, wet = 0.6) {
