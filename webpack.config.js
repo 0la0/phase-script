@@ -14,8 +14,8 @@ const webpackConfig = {
     documentation: './documentation/documentation.js',
   },
   output: {
-    publicPath: 'scripts',
-    path: path.resolve(__dirname, './dist/scripts'),
+    publicPath: 'scripts/',
+    path: path.resolve(__dirname, 'dist', 'scripts'),
     filename: '[name].bundle.js',
     sourceMapFilename: '[name].map',
     chunkFilename: '[id].chunk.js'
