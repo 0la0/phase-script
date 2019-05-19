@@ -51,3 +51,4 @@ And feature level dependencies on
   * editor
     - customizable font / background color
     - strip styles on paste
+  * save / open project

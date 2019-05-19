@@ -1,8 +1,11 @@
-const webpack = require('webpack');
 const path = require('path');
+const webpack = require('webpack');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const packageJson = require('./package.json');
+const wavetables = require('./src/app/services/audio/OscillatorUtil/Wavetables');
 
 const { version } = packageJson;
+const wavetableNames = Object.keys(wavetables.default);
 
 const webpackConfig = {
   context: path.resolve(__dirname, 'src'),
@@ -39,7 +42,11 @@ const webpackConfig = {
   },
   mode: process.env.WEBPACK_SERVE ? 'development' : 'production',
   plugins: [
-    new webpack.DefinePlugin({ VERSION: JSON.stringify(version) })
+    new webpack.DefinePlugin({
+      VERSION: JSON.stringify(version),
+      wavetableNames: JSON.stringify(wavetableNames)
+    }),
+    // new BundleAnalyzerPlugin()
   ]
 };
 

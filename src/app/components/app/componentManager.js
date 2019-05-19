@@ -1,12 +1,12 @@
 import App from 'components/app';
 import Primitives from 'common/primitives';
 import Metronome from 'components/metronome-ctrl';
-import GraphicsRoot from 'components/graphics/graphics-root';
+// import GraphicsRoot from 'components/graphics/graphics-root';
 import SoundRoot from 'components/sound-root';
 import EditorTab from 'components/editor-window/editor-tab';
 import EditorWindow from 'components/editor-window';
 import EventCycle from 'components/event-cycle';
-import GraphicsEditor from 'components/graphics/graphics-editor';
+// import GraphicsEditor from 'components/graphics/graphics-editor';
 import SoundVisualizer from 'components/SoundVisualizer';
 import FftVisualizer from 'components/SoundVisualizer/FftVisualizer';
 import MidiEditor from 'components/midi-editor';
@@ -29,8 +29,8 @@ const components = [
   EditorTab,
   EditorWindow,
   FftVisualizer,
-  GraphicsEditor,
-  GraphicsRoot,
+  // GraphicsEditor,
+  // GraphicsRoot,
   Metronome,
   MidiEditor,
   MidiDevice,
