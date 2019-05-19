@@ -1,7 +1,7 @@
 import CycleHandler from 'services/EventCycle/CycleHandler';
 import { evaluateUserInput } from 'services/EventCycle/Evaluator';
-import { createEventGraph } from 'services/EventCycle/EventGraphHandler';
-import AudioGraphBuilder from 'services/EventCycle/EventGraph/AudioGraphBuilder';
+import { createAudioGraphDefinition } from 'services/EventCycle/AudioGraph/AudioGraphHandler';
+import AudioGraphManager from 'services/EventCycle/AudioGraph/AudioGraphManager';
 
 export default class CycleManager {
   constructor() {
@@ -9,7 +9,7 @@ export default class CycleManager {
     this.nextCycleHandlers = null;
     this.nextGraphDefinition = null;
     this.errorMessage = '';
-    this.audioGraphBuilder = new AudioGraphBuilder();
+    this.audioGraphManager = new AudioGraphManager();
     this.setCycleString('');
   }
 
@@ -24,8 +24,8 @@ export default class CycleManager {
     try {
       const { sequences, audioGraphInlets } = evaluateUserInput(cycleString);
       cycleResults = sequences;
-      const allInlets = audioGraphInlets.map(inlet => inlet.getEventGraph());
-      this.nextGraphDefinition = createEventGraph(allInlets);
+      const allInlets = audioGraphInlets.map(inlet => inlet.getAudioGraph());
+      this.nextGraphDefinition = createAudioGraphDefinition(allInlets);
     } catch(error) {
       console.log(error); // eslint-disable-line no-console
       this._isValid = false;
@@ -48,7 +48,7 @@ export default class CycleManager {
       this.cycleHandlers = this.nextCycleHandlers;
       this.nextCycleHandlers = null;
       if (this.nextGraphDefinition) {
-        this.audioGraphBuilder.buildAudioGraph(this.nextGraphDefinition, time);
+        this.audioGraphManager.buildAudioGraph(this.nextGraphDefinition, time);
         this.nextGraphDefinition = null;
       }
     }
@@ -59,7 +59,7 @@ export default class CycleManager {
   }
 
   stop() {
-    this.audioGraphBuilder.cancelAllFutureAudioEvents();
+    this.audioGraphManager.cancelAllFutureAudioEvents();
     this.cycleHandlers.forEach(cycleHandler => cycleHandler.reset());
   }
 }

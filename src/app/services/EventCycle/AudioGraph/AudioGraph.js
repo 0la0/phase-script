@@ -1,4 +1,4 @@
-export default class EventGraph {
+export default class AudioGraph {
   constructor() {
     this.nodes = [];
   }
@@ -8,14 +8,14 @@ export default class EventGraph {
     return this;
   }
 
-  addEventGraph(eventGraph) {
-    this.nodes = this.nodes.concat(eventGraph.getNodes());
+  addAudioGraph(audioGraph) {
+    this.nodes = this.nodes.concat(audioGraph.getNodes());
   }
 
   getInputNode() {
     const firstNode = this.nodes[0];
     if (!firstNode) {
-      throw new Error('EventGraph.getInputNode on graph without nodes');
+      throw new Error('AudioGraph.getInputNode on graph without nodes');
     }
     return firstNode;
   }
@@ -23,7 +23,7 @@ export default class EventGraph {
   getOutputNode() {
     const lastNode = this.nodes[this.nodes.length - 1];
     if (!lastNode) {
-      throw new Error('EventGraph.getOutputNode on graph without nodes');
+      throw new Error('AudioGraph.getOutputNode on graph without nodes');
     }
     return lastNode;
   }

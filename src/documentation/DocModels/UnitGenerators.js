@@ -1,4 +1,4 @@
-import nodeDefinitions from 'services/EventCycle/EventGraph/EventGraphApiDefinition';
+import nodeDefinitions from 'services/EventCycle/AudioGraph/AudioGraphApiDefinition';
 
 function buildParams(definition) {
   if (!definition || !definition.paramDefinitions) {

@@ -24,7 +24,6 @@ import ThresholdEventProcessor from 'services/UnitGenerators/ThresholdEventProce
 import Waveshaper from 'services/UnitGenerators/Waveshaper';
 import DynamicParameter from './DynamicParameter';
 
-// TODO: use types from EventGraphApiDefinition.js
 const typeMap = {
   BITCRUSHER: Bitcrusher,
   CHORUS: Chorus,
@@ -113,7 +112,7 @@ function disconnectOldNodes(oldGraph, currentGraph) {
     });
 }
 
-export default class AudioGraphBuilder {
+export default class AudioGraphManager {
   constructor() {
     this.currentBuiltGraph = {};
   }

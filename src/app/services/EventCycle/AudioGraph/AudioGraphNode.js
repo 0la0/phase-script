@@ -1,6 +1,6 @@
 import { uuid } from 'services/Math';
 
-export class EventGraphNode {
+export class AudioGraphNode {
   constructor({ type, id, params }) {
     this.type = type;
     this.id = id || uuid();

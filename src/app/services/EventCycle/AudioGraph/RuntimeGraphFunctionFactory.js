@@ -1,7 +1,7 @@
-import { EventGraphNode } from './EventGraphNode';
+import { AudioGraphNode } from './AudioGraphNode';
 import DynamicParameter from './DynamicParameter';
-import EventGraphBuilder from './EventGraphBuilder';
-import { PARAM_TYPES, CONSTANTS} from './EventGraphApiDefinition';
+import AudioGraphBuilder from './AudioGraphBuilder';
+import { PARAM_TYPES, CONSTANTS} from './AudioGraphApiDefinition';
 import { uuid } from 'services/Math';
 
 const argumentValidationMap = {
@@ -9,7 +9,7 @@ const argumentValidationMap = {
   [PARAM_TYPES.NUMBER]: instance => typeof instance === 'number',
   [PARAM_TYPES.FUNCTION]: instance => typeof instance === 'function',
   [PARAM_TYPES.STRING]: instance => typeof instance === 'string',
-  [PARAM_TYPES.GRAPH_NODE]: instance => instance instanceof EventGraphBuilder,
+  [PARAM_TYPES.GRAPH_NODE]: instance => instance instanceof AudioGraphBuilder,
 };
 
 function getPredicateForParamDefinition(definition) {
@@ -43,7 +43,7 @@ export default function buildNodeEvaluator(dto, _setCurrent) {
       if (definition.isOptional && !paramIsValid) {
         return acc;
       }
-      if (!(arg instanceof EventGraphBuilder) && !paramIsValid && definition.paramName !== CONSTANTS.ID) {
+      if (!(arg instanceof AudioGraphBuilder) && !paramIsValid && definition.paramName !== CONSTANTS.ID) {
         console.log(`${fnName}: invalid parameter ${definition.paramName}: ${arg}\nusage: ${fnName}(${buildParameterDefinitonString(paramDefinitions)})`);  // eslint-disable-line no-console
       }
       if (definition.paramName === CONSTANTS.ID) {
@@ -51,7 +51,7 @@ export default function buildNodeEvaluator(dto, _setCurrent) {
         return acc;
       }
       let paramValue;
-      if (arg instanceof EventGraphBuilder) {
+      if (arg instanceof AudioGraphBuilder) {
         const outputNode = arg.currentNode;
         paramValue = new DynamicParameter(outputNode.id, definition.paramName);
       } else {
@@ -74,11 +74,11 @@ export default function buildNodeEvaluator(dto, _setCurrent) {
       acc[definition.paramName] = definition.value;
       return acc;
     }, {});
-    const eventGraphNode = new EventGraphNode({
+    const audioGraphNode = new AudioGraphNode({
       type: name,
       id: tag ? `${name}-${tag}` : undefined,
       params: Object.assign({}, variableParams, constantParams),
     });
-    return _setCurrent.call(this, eventGraphNode);
+    return _setCurrent.call(this, audioGraphNode);
   }, }[scopedFuncitonName];
 }

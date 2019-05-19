@@ -1,4 +1,4 @@
-import DynamicParameter from 'services/EventCycle/EventGraph/DynamicParameter';
+import DynamicParameter from 'services/EventCycle/AudioGraph/DynamicParameter';
 
 export default class BaseUnitGenerator {
   constructor() {

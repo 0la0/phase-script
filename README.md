@@ -48,3 +48,6 @@ And feature level dependencies on
     - improve getting started guide
     - key shortcuts
   * deploy with a CI tool
+  * editor
+    - customizable font / background color
+    - strip styles on paste

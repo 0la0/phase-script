@@ -1,4 +1,4 @@
-export function createEventGraph(addressInputs) {
+export function createAudioGraphDefinition(addressInputs) {
   const allNodes = addressInputs.flatMap(graph => graph.nodes);
   const uniqueNodes = allNodes.reduce((nodeMap, node) => {
     if (nodeMap[node.id]) {
