@@ -4,6 +4,7 @@ import { PatternTransform } from 'services/EventCycle/PatternFunctions/PatternTr
 const countPredicateFn = () => true;
 
 let tempStep = 1;
+let tempDistance = 4;
 
 export default function arpeggiate(arpStyle, distance, rate, repeat) {
   const transformFn = _pattern => {
@@ -14,8 +15,14 @@ export default function arpeggiate(arpStyle, distance, rate, repeat) {
       const nextCycleElement = cycleElements[index + 1];
       const nextElementTime = nextCycleElement ? nextCycleElement.getTime() : 1;
       let arpTime = cycleElement.getTime();
+
+      let arpNote = cycleElement.getElement().getNote();
       while (arpTime < nextElementTime) {
-        extraElements.push(cycleElement.clone().setTime(arpTime));
+        const arpCycleElement = cycleElement.clone();
+        arpNote += tempDistance;
+
+        arpCycleElement.getElement().setNote(arpNote);
+        extraElements.push(arpCycleElement.setTime(arpTime));
         arpTime += relativeStepDuration;
       }
     });

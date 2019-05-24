@@ -75,14 +75,14 @@ export default class EventCycle extends BaseComponent {
     metronomeManager.getScheduler().register(this.metronomeSchedulable);
     eventBus.subscribe(this.dataStoreSubscription);
 
-    // const testCycleValue = `
-    //   seq(
-    //     p('a', '65 72 60').arp('up', 12, 1, 2)
-    //   )
-    //   addr('a').envOsc('piano', 0, 0, 100).gain(0.3, 0x8).dac()
-    // `;
-    // this.dom.cycleInput.innerText = testCycleValue.trim();
-    // this.handleCycleChange(testCycleValue);
+    const testCycleValue = `
+      seq(
+        p('a', '60 72 50').arp('up', 12, 1, 2)
+      )
+      addr('a').envOsc('piano', 0, 0, 100).gain(0.3, 0x8).dac()
+    `;
+    this.dom.cycleInput.innerText = testCycleValue.trim();
+    this.handleCycleChange(testCycleValue);
     setTimeout(() => focusEditor(this.dom.cycleInput));
   }
 

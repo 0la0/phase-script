@@ -10,6 +10,11 @@ export default class RelativeCycleElement {
     return this.element;
   }
 
+  setElement(element) {
+    this.element = element;
+    return this;
+  }
+
   getTime() {
     return this.time;
   }

@@ -31,9 +31,6 @@ And feature level dependencies on
     - arpeggiator
     - shelf filter
   * improve standard sample library
-  * key shortcuts
-    - comment lines
-    - generate node ID
   * feature detection, incompatible browser warnings
   * in-line patterns
   * document previous versions
@@ -51,5 +48,9 @@ And feature level dependencies on
   * editor
     - customizable font / background color
     - strip styles on paste
+    - handle tabs
+    * key shortcuts
+      - comment lines
+      - generate node ID
   * save / open project
   * lighthouse audits
