@@ -1,3 +1,4 @@
+import arpeggiate from './ArpeggiatorHandler';
 import degrade from './DegradeHandler';
 import offset from './OffsetHandler';
 import repeat from './RepeatHandler';
@@ -23,6 +24,11 @@ export class PatternTransform {
 export default class PatternTransformer {
   constructor() {
     this.transforms = [];
+  }
+
+  arp(arpStyle, distance, rate, repeat) {
+    this.transforms.push(arpeggiate(arpStyle, distance, rate, repeat));
+    return this;
   }
 
   degrade(threshold) {

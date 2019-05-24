@@ -1,6 +1,7 @@
 import assert from 'assert';
 import parseCycle from 'services/EventCycle/Pattern/PatternStringParser';
-import { getRelativeCycle, RelativeCycleElement } from 'services/EventCycle/Pattern/RelativeCycleBuilder';
+import getRelativeCycle from 'services/EventCycle/Pattern/RelativeCycleBuilder';
+import RelativeCycleElement from 'services/EventCycle/Pattern/RelativeCycleElement';
 import { buildAudioEventsFromPattern } from 'services/EventCycle/Pattern/AudioEventBuilder';
 import TimeSchedule from 'services/metronome/TimeSchedule';
 import AudioEvent from 'services/EventBus/AudioEvent';

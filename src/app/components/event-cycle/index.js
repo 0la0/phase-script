@@ -10,6 +10,7 @@ import style from './event-cycle.css';
 import markup from './event-cycle.html';
 
 const KEY_CODE_ENTER = 13;
+const KEY_CODE_TAB = 9;
 const cssClass = {
   errorDisplay: 'error-display--visible',
   pendingChanges: 'pending-changes--active',
@@ -54,6 +55,10 @@ export default class EventCycle extends BaseComponent {
         this.handleCycleChange(this.dom.cycleInput.innerText);
         return;
       }
+      if (event.keyCode === KEY_CODE_TAB) {
+        event.preventDefault();
+        console.log('TODO: handle tab');
+      }
     });
     this.dom.cycleInput.addEventListener('keyup', event => {
       event.stopPropagation();
@@ -71,8 +76,10 @@ export default class EventCycle extends BaseComponent {
     eventBus.subscribe(this.dataStoreSubscription);
 
     // const testCycleValue = `
-    //   seq( p("a:220 , a:110 , a:220 ,") )
-    //   osc('sin', addr('a'), 0x9).gain(0.5, 0x8).dac()
+    //   seq(
+    //     p('a', '65 72 60').arp('up', 12, 1, 2)
+    //   )
+    //   addr('a').envOsc('piano', 0, 0, 100).gain(0.3, 0x8).dac()
     // `;
     // this.dom.cycleInput.innerText = testCycleValue.trim();
     // this.handleCycleChange(testCycleValue);
@@ -111,6 +118,7 @@ export default class EventCycle extends BaseComponent {
       this.cycleManager.getAudioEventsAndIncrement(time, metronomeManager.getMetronome().getTickLength(), shouldRefresh)
         .forEach(audioEvent => audioEventBus.publish(audioEvent));
     } catch(error) {
+      console.log(error);
       this.dom.errorDisplay.innerText = error.message;
       this.dom.errorDisplay.classList.add(cssClass.errorDisplay);
     }

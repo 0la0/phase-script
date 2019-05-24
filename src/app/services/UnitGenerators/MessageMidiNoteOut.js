@@ -31,11 +31,12 @@ export default class MessageMidiNoteOut extends BaseUnitGenerator {
           throw new Error(`Cannot find midi device output: ${deviceName}`);
         }
         deviceOutput.send(
-          new MidiMessage(COMMAND.NOTE_ON, channel, note, message.note).serialize(),
+          // TODO: figure out note-vs-velocity
+          new MidiMessage(COMMAND.NOTE_ON, channel, message.note, message.note).serialize(),
           message.time.midi
         );
         deviceOutput.send(
-          new MidiMessage(COMMAND.NOTE_OFF, channel, note, message.note).serialize(),
+          new MidiMessage(COMMAND.NOTE_OFF, channel, message.note, message.note).serialize(),
           message.time.midi + duration
         );
       });

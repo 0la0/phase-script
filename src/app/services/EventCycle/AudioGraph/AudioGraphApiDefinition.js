@@ -531,18 +531,26 @@ const continuousOscNode = {
 };
 
 export default [
+  // signal nodes
   gainNode,
   panNode,
   dacNode,
-  addressNode,
   reverbNode,
-  // chorusNode,
   delayNode,
   lowpassNode,
   highpassNode,
   bandpassNode,
   waveshaperNode,
   samplerNode,
+  envelopedNoiseNode,
+  bitcrusherNode,
+  gateNode,
+  thresholdEventNode,
+  envelopedOscNode,
+  continuousOscNode,
+
+  // message node
+  addressNode,
   messageMapNode,
   messageFilterNode,
   messageDelayNode,
@@ -551,10 +559,4 @@ export default [
   messageMidiNoteOut,
   messageThresholdNode,
   messageScaleLockNode,
-  envelopedNoiseNode,
-  bitcrusherNode,
-  gateNode,
-  thresholdEventNode,
-  envelopedOscNode,
-  continuousOscNode,
 ];

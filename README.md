@@ -52,3 +52,4 @@ And feature level dependencies on
     - customizable font / background color
     - strip styles on paste
   * save / open project
+  * lighthouse audits

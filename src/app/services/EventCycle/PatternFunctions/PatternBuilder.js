@@ -1,5 +1,5 @@
 import parseCycle from 'services/EventCycle/Pattern/PatternStringParser';
-import { getRelativeCycle } from 'services/EventCycle/Pattern/RelativeCycleBuilder';
+import getRelativeCycle from 'services/EventCycle/Pattern/RelativeCycleBuilder';
 import Pattern from 'services/EventCycle/Pattern/Pattern';
 import PatternTransformer from './PatternTransformer';
 
@@ -15,7 +15,7 @@ class PatternBuilder extends PatternTransformer{
     this.baseAddress = baseAddress;
     this.patternString = patternString;
     this.pattern = parseCycle(patternString);
-    this.relativeCycle = this.pattern.ok ? getRelativeCycle(this.pattern.content, 0, 1) : [];
+    this.relativeCycle = this.pattern.ok ? getRelativeCycle(this.pattern.content, 0, 1, this.baseAddress) : [];
     this.numTicks = 16;
     this.cnt = 0;
   }

@@ -23,4 +23,5 @@ export const patternApi = [
   'offset',
   'degrade',
   'every',
+  'arp'
 ].map(name => ({ name, fn: buildPatternFunction(name) }));

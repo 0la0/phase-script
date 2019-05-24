@@ -50,7 +50,7 @@ export function buildAudioEventsFromPattern(relativeCycle, baseAddress, baseTime
   }
   return relativeCycle.map(cycleElement => {
     const preciseTime = baseTime.clone().add(cycleElement.getTime() * cycleDuration);
-    const audioEvent = parseToken(cycleElement.getElement(), baseAddress);
+    const audioEvent = cycleElement.getElement();
     return audioEvent ? audioEvent.setTime(preciseTime) : undefined;
   }).filter(Boolean);
 }
