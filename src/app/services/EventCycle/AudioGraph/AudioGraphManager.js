@@ -107,7 +107,8 @@ function disconnectOldNodes(oldGraph, currentGraph) {
       const currentGraphHasNode = Object.values(currentGraph)
         .some(_node => _node.nodeDefinition.id === node.nodeDefinition.id);
       if (!currentGraphHasNode) {
-        setTimeout(() => node.instance.disconnect());
+        node.instance.disconnect();
+        // setTimeout(() => node.instasnce.disconnect());
       }
     });
 }

@@ -9,7 +9,6 @@ export default class ContinuousOsc {
     this.osc = audioGraph.getAudioContext().createOscillator();
     applyTypeToOscillator(this.osc, type);
     this.osc.frequency.value = frequency;
-    this.osc.type = this.type;
     this.osc.connect(this.gain);
     this.osc.start();
   }

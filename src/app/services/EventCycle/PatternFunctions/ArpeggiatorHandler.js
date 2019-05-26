@@ -1,30 +1,40 @@
 import { PatternTransform } from 'services/EventCycle/PatternFunctions/PatternTransformer';
-// import scales from '../../scale/scales';
 
 const countPredicateFn = () => true;
 
-let tempStep = 1;
-let tempDistance = 4;
+function buildNotesBetweenSteps(cycleElement, nextElementTime, arpNoteDuration, step, distance, repeat) {
+  let arpElements = [];
+  let arpTime = cycleElement.getTime();
+  let baseNote = cycleElement.getElement().getNote();
+  let arpNote = baseNote;
+  let shouldExit = arpTime >= nextElementTime;
+  let cycleCount = 0;
 
-export default function arpeggiate(arpStyle, distance, rate, repeat) {
+  while (arpTime < nextElementTime && !shouldExit) {
+    const arpCycleElement = cycleElement.clone();
+    arpNote += step;
+    arpCycleElement.getElement().setNote(arpNote);
+    arpElements.push(arpCycleElement.setTime(arpTime));
+    arpTime += arpNoteDuration;
+    if (Math.abs(arpNote - baseNote) > distance) {
+      cycleCount++;
+      arpNote = baseNote;
+    }
+    shouldExit = cycleCount >= repeat;
+  }
+  return arpElements;
+}
+
+export default function arpeggiate(arpStyle, step, distance, rate, repeat) {
   const transformFn = _pattern => {
     const cycleElements = _pattern.getRelativeCycle();
     const extraElements = [];
-    const relativeStepDuration = tempStep / _pattern.getNumTicks();
+    const relativeStepDuration = rate / _pattern.getNumTicks();
     cycleElements.forEach((cycleElement, index) => {
       const nextCycleElement = cycleElements[index + 1];
       const nextElementTime = nextCycleElement ? nextCycleElement.getTime() : 1;
-      let arpTime = cycleElement.getTime();
-
-      let arpNote = cycleElement.getElement().getNote();
-      while (arpTime < nextElementTime) {
-        const arpCycleElement = cycleElement.clone();
-        arpNote += tempDistance;
-
-        arpCycleElement.getElement().setNote(arpNote);
-        extraElements.push(arpCycleElement.setTime(arpTime));
-        arpTime += relativeStepDuration;
-      }
+      const stepElements = buildNotesBetweenSteps(cycleElement, nextElementTime, relativeStepDuration, step, distance, repeat);
+      extraElements.push(...stepElements);
     });
     const transformedCycle = cycleElements.concat(extraElements).sort((a, b) => a.getTime() - b.getTime());
     return _pattern.setRelativeCycle(transformedCycle);

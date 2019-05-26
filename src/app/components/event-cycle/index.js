@@ -77,7 +77,7 @@ export default class EventCycle extends BaseComponent {
 
     const testCycleValue = `
       seq(
-        p('a', '60 72 50').arp('up', 12, 1, 2)
+        p('a', '60 72 50').arp('up', 2, 12, 1, 2)
       )
       addr('a').envOsc('piano', 0, 0, 100).gain(0.3, 0x8).dac()
     `;
