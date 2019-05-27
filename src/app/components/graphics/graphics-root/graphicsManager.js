@@ -4,6 +4,7 @@ import Particles from 'components/graphics/Particles';
 import TriangleClusters from 'components/graphics/triangle-clusters';
 import WaterSpheres from 'components/graphics/water-spheres';
 import TextureShader from 'components/graphics/texture-shader';
+import InstanceSpace from 'components/graphics/instance-space';
 
 const options = {
   CONNECTED_GRAPH: {
@@ -29,7 +30,11 @@ const options = {
   TEXTURE_SHADER: {
     label: 'texture shader',
     value: 'TEXTURE_SHADER',
-  }
+  },
+  INSTANCE_SPACE: {
+    label: 'instance space',
+    value: 'INSTANCE_SPACE',
+  },
 };
 
 function getGraphicsStates() {
@@ -45,7 +50,8 @@ class GraphicsManager {
     this.map.set(options.TRIANGLE_CLUSTERS.value, new TriangleClusters());
     this.map.set(options.WATER_SPHERES.value, new WaterSpheres());
     this.map.set(options.TEXTURE_SHADER.value, new TextureShader());
-    this.activeState = options.TEXTURE_SHADER.value;
+    this.map.set(options.INSTANCE_SPACE.value, new InstanceSpace());
+    this.activeState = options.INSTANCE_SPACE.value;
   }
 
   setActiveState(activeState) {

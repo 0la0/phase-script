@@ -20,12 +20,13 @@
     "esm": "^3.2.22",
     "mocha": "^6.1.4",
     "raw-loader": "^2.0.0",
+    "three-instanced-mesh": "^0.96.2",
     "webpack": "^v5.0.0-alpha.12",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.4.1"
   },
   "dependencies": {
-    "three": "^0.92.0"
+    "three": "^0.104.0"
   }
 }

@@ -1,7 +1,7 @@
 import App from 'components/app';
 import Primitives from 'common/primitives';
 import Metronome from 'components/metronome-ctrl';
-// import GraphicsRoot from 'components/graphics/graphics-root';
+import GraphicsRoot from 'components/graphics/graphics-root';
 import SoundRoot from 'components/sound-root';
 import EditorTab from 'components/editor-window/editor-tab';
 import EditorWindow from 'components/editor-window';
@@ -30,7 +30,7 @@ const components = [
   EditorWindow,
   FftVisualizer,
   // GraphicsEditor,
-  // GraphicsRoot,
+  GraphicsRoot,
   Metronome,
   MidiEditor,
   MidiDevice,

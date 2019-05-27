@@ -25,6 +25,7 @@ function buildNotesBetweenSteps(cycleElement, nextElementTime, arpNoteDuration, 
   return arpElements;
 }
 
+// TODO: arpStyles
 export default function arpeggiate(arpStyle, step, distance, rate, repeat) {
   const transformFn = _pattern => {
     const cycleElements = _pattern.getRelativeCycle();
