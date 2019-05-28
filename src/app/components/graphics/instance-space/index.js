@@ -10,14 +10,32 @@ const {
   Vector3,
   Euler,
   Quaternion,
+  Spherical,
 } = THREE;
+
+const getPosNeg = () => Math.random() < 0.5 ? -1 : 1;
+
+function jitter(magnitude = 1) {
+  return getPosNeg() * magnitude * Math.random();
+}
 
 const TWO_PI = 2 * Math.PI;
 
-function getRandPosition() {
-  const mult = Math.random() < 0.5 ? 1 : -1;
-  return mult * 100 * Math.random();
+const rotation = new Vector3(Math.random() * TWO_PI, Math.random() * TWO_PI, Math.random() * TWO_PI);
+const rotationVelocity = new Vector3(Math.random() * TWO_PI, Math.random() * TWO_PI, Math.random() * TWO_PI);
+
+class GeoProperties {
+  constructor() {
+    this.position;
+    this.positionVelocity = new Vector3();
+    this.rotation = rotation.clone(),
+    this.rotationVelocity = rotationVelocity.clone(),
+    this.scale = new Vector3(0.5, 3, 5);
+  }
 }
+
+const repeatX = 200;
+const repeatY = 100;
 
 export default class InstanceSpace {
   constructor() {
@@ -26,15 +44,18 @@ export default class InstanceSpace {
     this.scene = scene;
     this.camera.position.set(0, 0, 100);
 
-    this.numInstances = 10000;
+    this.numInstances = repeatX * repeatY;
 
-    this.rotations = new Array(this.numInstances).fill(null)
-      .map(() => ({
-        rotationVelocity: new Vector3(Math.random() * TWO_PI, Math.random() * TWO_PI, Math.random() * TWO_PI),
-        rotation: new Vector3(Math.random() * TWO_PI, Math.random() * TWO_PI, Math.random() * TWO_PI),
-      }));
+    this.geoProperties = new Array(this.numInstances).fill(null).map((_, i) => {
+      const x = ((i % repeatX) / repeatX) * TWO_PI + jitter(0.01);
+      const y = (i / repeatX) / repeatY * Math.PI + jitter(0.01);
 
-    const geometry = new BoxBufferGeometry(2,2,2,1,1,1);
+      const geoPosition = new GeoProperties();
+      geoPosition.position = new Spherical(60, y, x);
+      return geoPosition;
+    });
+
+    const geometry = new BoxBufferGeometry(2, 2, 2);
     const material = new MeshLambertMaterial({ color: 0x006699 });
 
     const _v3 = new Vector3();
@@ -49,11 +70,11 @@ export default class InstanceSpace {
       true,  // uniform scale
     );
 
-    for ( let i = 0 ; i < this.numInstances ; i ++ ) {
-      this.cluster.setQuaternionAt(i , _q.setFromEuler(new Euler().setFromVector3(this.rotations[i].rotation, 'XYZ')));
-      this.cluster.setPositionAt(i , _v3.set(getRandPosition(), getRandPosition(), getRandPosition()));
-      this.cluster.setScaleAt(i , _v3.set(1, 1, 1) );
-    }
+    this.geoProperties.forEach((geoProperty, index) => {
+      this.cluster.setQuaternionAt(index , _q.setFromEuler(new Euler().setFromVector3(geoProperty.rotation, 'XYZ')));
+      this.cluster.setPositionAt(index , _v3.setFromSpherical(geoProperty.position));
+      this.cluster.setScaleAt(index , geoProperty.scale );
+    });
 
     this.scene.add(this.cluster);
 
@@ -61,7 +82,7 @@ export default class InstanceSpace {
     pointLight.position.set(0, 0, 0);
 
     const ambientLight = new PointLight(0xFFFFFF, 2);
-
+    ambientLight.position.set(0, 0, 100);
     this.scene.add(pointLight);
     this.scene.add(ambientLight);
   }
@@ -75,30 +96,12 @@ export default class InstanceSpace {
   }
 
   update(elapsedTime) {
-
-    // currentMesh.setQuaternionAt( i , o.quaternion.setFromEuler( o.rotation ) );
-
-    // this.geoContainer.update(elapsedTime);
-
-    for ( let i = 0 ; i < this.numInstances ; i ++ ) {
-      // cluster.setQuaternionAt(i , _q );
-
-      const rotation = this.rotations[i];
-      rotation.rotation.add(rotation.rotationVelocity.clone().multiplyScalar(elapsedTime * 0.1));
-      // const updatedRotation = rotation;
-      // rotation.add(rDelta);
-
-      // const instance = this.cluster[i];
-      const quat = this.cluster.getQuaternionAt(i);
-
-      this.cluster.setQuaternionAt(i, quat.setFromEuler(new Euler().setFromVector3(rotation.rotation, 'XYZ')));
-
-      // currentMesh.needsUpdate( 'quaternion' );
-      // this.cluster.setQuaternionAt(i , _q.setFromEuler(rotations[i]));
-      // this.cluster.setPositionAt(i , _v3.set(getRandPosition(), getRandPosition(), getRandPosition()));
-      // this.cluster.setScaleAt(i , _v3.set(1, 1, 1) );
-    }
-    this.cluster.needsUpdate( 'quaternion' );
+    this.geoProperties.forEach((geoProperty, index) => {
+      const quat = this.cluster.getQuaternionAt(index);
+      geoProperty.rotation.add(geoProperty.rotationVelocity.clone().multiplyScalar(elapsedTime * 0.1));
+      this.cluster.setQuaternionAt(index, quat.setFromEuler(new Euler().setFromVector3(geoProperty.rotation, 'XYZ')));
+    });
+    this.cluster.needsUpdate('quaternion');
   }
 
   render(renderer) {
