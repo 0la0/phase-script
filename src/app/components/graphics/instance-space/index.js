@@ -30,30 +30,51 @@ class GeoProperties {
     this.positionVelocity = new Vector3();
     this.rotation = rotation.clone(),
     this.rotationVelocity = rotationVelocity.clone(),
-    this.scale = new Vector3(0.5, 3, 5);
+    this.scale = new Vector3(0.1, 2, 0.25);
   }
 }
 
-const repeatX = 200;
+const repeatX = 100;
 const repeatY = 100;
+const repeatZ = 4;
 
 export default class InstanceSpace {
   constructor() {
     const { camera, scene } = buildDefaultScene();
     this.camera = camera;
     this.scene = scene;
-    this.camera.position.set(0, 0, 100);
+    this.camera.position.set(0, 0, 35);
 
-    this.numInstances = repeatX * repeatY;
+    this.numInstances = repeatX * repeatY * repeatZ;
 
-    this.geoProperties = new Array(this.numInstances).fill(null).map((_, i) => {
-      const x = ((i % repeatX) / repeatX) * TWO_PI + jitter(0.01);
-      const y = (i / repeatX) / repeatY * Math.PI + jitter(0.01);
+      
+    const halfSize = 50;
+    const domain = 1;
+    this.geoProperties = [];
+    for (let x = 0; x < repeatX; x++) {
+      for (let y = 0; y < repeatY; y++) {
+        for (let z = 0; z < repeatZ; z++) {
+          const posX = (x - halfSize) * domain;
+          const posY = (y - halfSize) * domain;
+          const posZ = (z - halfSize) * domain;
+          const geoPosition = new GeoProperties();
+          geoPosition.position = new Vector3(posX, posY, posZ);
+          this.geoProperties.push(geoPosition);
+        }
+      }
+    }
 
-      const geoPosition = new GeoProperties();
-      geoPosition.position = new Spherical(60, y, x);
-      return geoPosition;
-    });
+    // this.geoProperties = new Array(this.numInstances).fill(null).map((_, i) => {
+    //   // const x = ((i % repeatX) / repeatX) * TWO_PI + jitter(0.01);
+    //   // const y = (i / repeatX) / repeatY * Math.PI + jitter(0.01);
+
+    //   const x = ((i % repeatX) / repeatX) * 100 + jitter(1);
+    //   const y = ((i / repeatX) / repeatY) * 100 + jitter(1);
+
+    //   const geoPosition = new GeoProperties();
+    //   geoPosition.position = new Vector3(x, y, jitter(1));
+    //   return geoPosition;
+    // });
 
     const geometry = new BoxBufferGeometry(2, 2, 2);
     const material = new MeshLambertMaterial({ color: 0x006699 });
@@ -70,9 +91,15 @@ export default class InstanceSpace {
       true,  // uniform scale
     );
 
+    // this.geoProperties.forEach((geoProperty, index) => {
+    //   this.cluster.setQuaternionAt(index , _q.setFromEuler(new Euler().setFromVector3(geoProperty.rotation, 'XYZ')));
+    //   this.cluster.setPositionAt(index , _v3.setFromSpherical(geoProperty.position));
+    //   this.cluster.setScaleAt(index , geoProperty.scale );
+    // });
+
     this.geoProperties.forEach((geoProperty, index) => {
       this.cluster.setQuaternionAt(index , _q.setFromEuler(new Euler().setFromVector3(geoProperty.rotation, 'XYZ')));
-      this.cluster.setPositionAt(index , _v3.setFromSpherical(geoProperty.position));
+      this.cluster.setPositionAt(index , geoProperty.position);
       this.cluster.setScaleAt(index , geoProperty.scale );
     });
 
