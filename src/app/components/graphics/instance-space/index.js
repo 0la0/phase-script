@@ -13,6 +13,25 @@ const {
   Spherical,
 } = THREE;
 
+
+const vars = {
+  repeatX: 20,
+  strideX: 1,
+  rotateX: 0.2,
+  rotateVelocityX: 2,
+  repeatY: 30,
+  strideY: 1.5,
+  rotateY: 2,
+  rotateVelocityY: 10,
+  repeatZ: 3,
+  strideZ: 10,
+  rotateZ: 1.3,
+  rotateVelocityZ: 2,
+  sizeX: 1,
+  sizeY: 0.2,
+  sizeZ: 0.5,
+};
+
 const getPosNeg = () => Math.random() < 0.5 ? -1 : 1;
 
 function jitter(magnitude = 1) {
@@ -21,22 +40,15 @@ function jitter(magnitude = 1) {
 
 const TWO_PI = 2 * Math.PI;
 
-const rotation = new Vector3(Math.random() * TWO_PI, Math.random() * TWO_PI, Math.random() * TWO_PI);
-const rotationVelocity = new Vector3(Math.random() * TWO_PI, Math.random() * TWO_PI, Math.random() * TWO_PI);
-
 class GeoProperties {
   constructor() {
-    this.position;
+    this.position = new Vector3();
     this.positionVelocity = new Vector3();
-    this.rotation = rotation.clone(),
-    this.rotationVelocity = rotationVelocity.clone(),
-    this.scale = new Vector3(0.1, 2, 0.25);
+    this.rotation = new Vector3(),
+    this.rotationVelocity = new Vector3(),
+    this.scale = new Vector3();
   }
 }
-
-const repeatX = 100;
-const repeatY = 100;
-const repeatZ = 4;
 
 export default class InstanceSpace {
   constructor() {
@@ -44,44 +56,13 @@ export default class InstanceSpace {
     this.camera = camera;
     this.scene = scene;
     this.camera.position.set(0, 0, 35);
-
-    this.numInstances = repeatX * repeatY * repeatZ;
-
-      
-    const halfSize = 50;
-    const domain = 1;
-    this.geoProperties = [];
-    for (let x = 0; x < repeatX; x++) {
-      for (let y = 0; y < repeatY; y++) {
-        for (let z = 0; z < repeatZ; z++) {
-          const posX = (x - halfSize) * domain;
-          const posY = (y - halfSize) * domain;
-          const posZ = (z - halfSize) * domain;
-          const geoPosition = new GeoProperties();
-          geoPosition.position = new Vector3(posX, posY, posZ);
-          this.geoProperties.push(geoPosition);
-        }
-      }
-    }
-
-    // this.geoProperties = new Array(this.numInstances).fill(null).map((_, i) => {
-    //   // const x = ((i % repeatX) / repeatX) * TWO_PI + jitter(0.01);
-    //   // const y = (i / repeatX) / repeatY * Math.PI + jitter(0.01);
-
-    //   const x = ((i % repeatX) / repeatX) * 100 + jitter(1);
-    //   const y = ((i / repeatX) / repeatY) * 100 + jitter(1);
-
-    //   const geoPosition = new GeoProperties();
-    //   geoPosition.position = new Vector3(x, y, jitter(1));
-    //   return geoPosition;
-    // });
+    this.numInstances = vars.repeatX * vars.repeatY * vars.repeatZ;
+    this.geoProperties = new Array(this.numInstances).fill(null).map(_ => new GeoProperties());
 
     const geometry = new BoxBufferGeometry(2, 2, 2);
-    const material = new MeshLambertMaterial({ color: 0x006699 });
+    const material = new MeshLambertMaterial({ color: 0x006699, side: THREE.FrontSide });
 
-    const _v3 = new Vector3();
-    const _q = new Quaternion(1, 0, 0, 1);
-
+    
     this.cluster = new InstancedMesh(
       geometry,
       material,
@@ -91,18 +72,7 @@ export default class InstanceSpace {
       true,  // uniform scale
     );
 
-    // this.geoProperties.forEach((geoProperty, index) => {
-    //   this.cluster.setQuaternionAt(index , _q.setFromEuler(new Euler().setFromVector3(geoProperty.rotation, 'XYZ')));
-    //   this.cluster.setPositionAt(index , _v3.setFromSpherical(geoProperty.position));
-    //   this.cluster.setScaleAt(index , geoProperty.scale );
-    // });
-
-    this.geoProperties.forEach((geoProperty, index) => {
-      this.cluster.setQuaternionAt(index , _q.setFromEuler(new Euler().setFromVector3(geoProperty.rotation, 'XYZ')));
-      this.cluster.setPositionAt(index , geoProperty.position);
-      this.cluster.setScaleAt(index , geoProperty.scale );
-    });
-
+    
     this.scene.add(this.cluster);
 
     const pointLight = new PointLight(0xFFFFFF, 1, 0, 0);
@@ -112,6 +82,35 @@ export default class InstanceSpace {
     ambientLight.position.set(0, 0, 100);
     this.scene.add(pointLight);
     this.scene.add(ambientLight);
+
+    this._reset();
+  }
+
+  _reset() {
+    const _q = new Quaternion(1, 0, 0, 1);
+
+    const halfX = (vars.repeatX * vars.strideX) / 2;
+    const halfY = (vars.repeatY * vars.strideY) / 2;
+    const halfZ = (vars.repeatZ * vars.strideZ) / 2;
+
+    this.geoProperties.forEach((geoProperty, index) => {
+      const z = index % vars.repeatZ;
+      const y = Math.floor(index / vars.repeatZ) % vars.repeatY;
+      const x = Math.floor(index / (vars.repeatY * vars.repeatZ)) % vars.repeatX;
+      const posX = x * vars.strideX - halfX;
+      const posY = y * vars.strideY - halfY;
+      const posZ = z * vars.strideZ - halfZ;
+      geoProperty.position = new Vector3(posX, posY + Math.sin(posY * 0.5), posZ);
+      geoProperty.rotation = new Vector3(vars.rotateX, vars.rotateY, vars.rotateZ);
+      geoProperty.rotationVelocity = new Vector3(vars.rotateVelocityX, vars.rotateVelocityY, vars.rotateVelocityZ);
+      geoProperty.scale = new Vector3(vars.sizeX, vars.sizeY, vars.sizeZ);
+    });
+
+    this.geoProperties.forEach((geoProperty, index) => {
+      this.cluster.setQuaternionAt(index , _q.setFromEuler(new Euler().setFromVector3(geoProperty.rotation, 'XYZ')));
+      this.cluster.setPositionAt(index , geoProperty.position);
+      this.cluster.setScaleAt(index , geoProperty.scale );
+    });
   }
 
   onTick() {
@@ -119,7 +118,7 @@ export default class InstanceSpace {
   }
 
   onClick() {
-    // this.geoContainer.reset();
+    this._reset();
   }
 
   update(elapsedTime) {
