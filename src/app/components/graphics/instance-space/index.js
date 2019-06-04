@@ -13,20 +13,26 @@ const {
   Spherical,
 } = THREE;
 
+/**
+ *  box().repeat(10, 10, 3).rotate(1, 1, 0).scale(1, 1, 1)
+*/
 
 const vars = {
-  repeatX: 20,
+  repeatX: 30,
   strideX: 1,
   rotateX: 0.2,
   rotateVelocityX: 2,
+  positionVelocityX: 1,
   repeatY: 30,
   strideY: 1.5,
   rotateY: 2,
   rotateVelocityY: 10,
+  positionVelocityY: 20,
   repeatZ: 3,
   strideZ: 10,
   rotateZ: 1.3,
   rotateVelocityZ: 2,
+  positionVelocityZ: 0.01,
   sizeX: 1,
   sizeY: 0.2,
   sizeZ: 0.5,
@@ -37,8 +43,6 @@ const getPosNeg = () => Math.random() < 0.5 ? -1 : 1;
 function jitter(magnitude = 1) {
   return getPosNeg() * magnitude * Math.random();
 }
-
-const TWO_PI = 2 * Math.PI;
 
 class GeoProperties {
   constructor() {
@@ -59,10 +63,9 @@ export default class InstanceSpace {
     this.numInstances = vars.repeatX * vars.repeatY * vars.repeatZ;
     this.geoProperties = new Array(this.numInstances).fill(null).map(_ => new GeoProperties());
 
-    const geometry = new BoxBufferGeometry(2, 2, 2);
+    const geometry = new BoxBufferGeometry(1, 1, 1);
     const material = new MeshLambertMaterial({ color: 0x006699, side: THREE.FrontSide });
 
-    
     this.cluster = new InstancedMesh(
       geometry,
       material,
@@ -100,7 +103,8 @@ export default class InstanceSpace {
       const posX = x * vars.strideX - halfX;
       const posY = y * vars.strideY - halfY;
       const posZ = z * vars.strideZ - halfZ;
-      geoProperty.position = new Vector3(posX, posY + Math.sin(posY * 0.5), posZ);
+      geoProperty.position = new Vector3(posX, posY, posZ);
+      geoProperty.positionVelocity = new Vector3(vars.positionVelocityX, vars.positionVelocityY, vars.positionVelocityZ);
       geoProperty.rotation = new Vector3(vars.rotateX, vars.rotateY, vars.rotateZ);
       geoProperty.rotationVelocity = new Vector3(vars.rotateVelocityX, vars.rotateVelocityY, vars.rotateVelocityZ);
       geoProperty.scale = new Vector3(vars.sizeX, vars.sizeY, vars.sizeZ);
@@ -109,7 +113,7 @@ export default class InstanceSpace {
     this.geoProperties.forEach((geoProperty, index) => {
       this.cluster.setQuaternionAt(index , _q.setFromEuler(new Euler().setFromVector3(geoProperty.rotation, 'XYZ')));
       this.cluster.setPositionAt(index , geoProperty.position);
-      this.cluster.setScaleAt(index , geoProperty.scale );
+      this.cluster.setScaleAt(index , geoProperty.scale);
     });
   }
 
@@ -126,8 +130,10 @@ export default class InstanceSpace {
       const quat = this.cluster.getQuaternionAt(index);
       geoProperty.rotation.add(geoProperty.rotationVelocity.clone().multiplyScalar(elapsedTime * 0.1));
       this.cluster.setQuaternionAt(index, quat.setFromEuler(new Euler().setFromVector3(geoProperty.rotation, 'XYZ')));
+      // this.cluster.setPositionAt(index, geoProperty.position.add(geoProperty.positionVelocity.clone().multiplyScalar(elapsedTime * 0.1)));
     });
     this.cluster.needsUpdate('quaternion');
+    // this.cluster.needsUpdate('position');
   }
 
   render(renderer) {
