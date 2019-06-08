@@ -16,6 +16,7 @@ import SampleEditor from 'components/sample-editor';
 import SampleLoader from 'components/sample-editor/sample-loader';
 import SampleVisualizer from 'components/sample-editor/sample-visualizer';
 import SettingsEditor from 'components/settings-editor';
+import MarkupTestbed from 'components/ps-markup/markup-testbed';
 
 const components = [
   Primitives.TextButton,
@@ -31,6 +32,7 @@ const components = [
   FftVisualizer,
   // GraphicsEditor,
   GraphicsRoot,
+  MarkupTestbed,
   Metronome,
   MidiEditor,
   MidiDevice,
@@ -40,7 +42,7 @@ const components = [
   SampleVisualizer,
   SettingsEditor,
   SoundRoot,
-  SoundVisualizer
+  SoundVisualizer,
 ];
 
 components.forEach(component => customElements.define(component.tag, component));

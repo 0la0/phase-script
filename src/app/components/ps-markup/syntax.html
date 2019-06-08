@@ -1,0 +1,37 @@
+<ps-seq>
+    <ps-pat-mod degrade="0.5">
+      <ps-pat>
+  
+      </ps-pat>
+    </ps-pat-mod>
+  </ps-seq>
+  
+  
+  <ps-dac>
+    <ps-pan val="pan-1">
+  
+    </ps-pan>
+    <ps-gain value="0.5">
+      <ps-env-osc adr="0 0 100" wav="sin">
+        <ps-pat-midi>30 50 30 30 [ 50 30 30 ]</ps-pat-midi>
+        <ps-pat-midi>30 50 30 30 [ 50 30 30 ]</ps-pat-midi>
+      </ps-env-osc>
+      <ps-env-osc attack="" wav="squ" trigger="a b" mod="test1 test2"></ps-env-osc>
+      <ps-env-osc adr="0 0 100" wav="saw" trigger="a"></ps-env-osc>
+    </ps-gain>
+  </ps-dac>
+  
+  <ps-gain id="test">
+    <ps-osc wav="sin"></ps-osc>
+  </ps-gain>
+  
+  <ps-dac>
+    <ps-inlet from="test"></ps-inlet>
+    <ps-inlet from="test1 test2 test3"></ps-inlet>
+  </ps-dac>
+  
+  <ps-midi-in addr="a"></ps-midi-in>
+  
+  <ps-samp src="808hat" adr=""></ps-samp>
+  
+  

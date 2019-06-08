@@ -120,7 +120,8 @@ export default class AudioGraphManager {
 
   buildAudioGraph(graphDefinition = {}, time) {
     if (!graphHasSink(graphDefinition)) {
-      throw new Error('graphDefinition missing sink (dac, or midiOut)');
+      return {};
+      // throw new Error('graphDefinition missing sink (dac, or midiOut)');
     }
     const builtNodes = Object.keys(graphDefinition)
       .reduce((acc, key) => {
