@@ -7,26 +7,54 @@ import envelopedOscilator from 'services/audio/EnvelopedOscillator';
 import DiscreteSignalParameter from 'services/AudioParameter/DiscreteSignalParameter';
 import { msToSec } from 'services/Math';
 import Subscription from 'services/EventBus/Subscription';
-// import AudioEventToModelAdapter from 'services/UgenConnection/AudioEventToModelAdapter';
 import { audioEventBus } from 'services/EventBus';
 
+function parseNumOrDefault(value, defaultValue) {
+  const val = parseFloat(value, 10);
+  if (Number.isNaN(val)) {
+    return defaultValue;
+  }
+  return val;
+}
+
+function getNumericAttribute(name, defaultValue) {
+  if (!this.hasAttribute(name)) {
+    return defaultValue;
+  }
+  return parseNumOrDefault(this.getAttribute(name), defaultValue);
+}
+
+function getStringAttribute(name, defaultValue) {
+  if (!this.hasAttribute(name)) {
+    return defaultValue;
+  }
+  return this.getAttribute(name) || defaultValue;
+}
 
 export default class PsEnvOsc extends PsBase {
   static get tag() {
     return 'ps-env-osc';
   }
 
+  static get observedAttributes() {
+    return [ 'attack', 'sustain', 'release', 'wav' ];
+  }
+
   connectedCallback() {
-    // GlobalListeners.init();
-    console.log('ps-env-osc connected');
     this.eventModel = new AudioEventToModelAdapter(this.schedule.bind(this));
     this.audioModel = new UgenConnection('ENVELOPED_OSC', this.eventModel, UgenConnectinType.MESSAGE, UgenConnectinType.SIGNAL);
     this.modulationInputs = new Set();
-    this.waveform = 'sin';
+    
+    const attack = getNumericAttribute.call(this, 'attack', 0);
+    const sustain = getNumericAttribute.call(this, 'sustain', 0);
+    const release = getNumericAttribute.call(this, 'release', 100);
+    this.waveform = getStringAttribute.call(this, 'wav', 'sin');
+    
     this.paramMap = {
-      attack: new DiscreteSignalParameter(0, msToSec),
-      sustain: new DiscreteSignalParameter(0, msToSec),
-      release: new DiscreteSignalParameter(100, msToSec),
+      attack: new DiscreteSignalParameter(attack, msToSec),
+      sustain: new DiscreteSignalParameter(sustain, msToSec),
+      release: new DiscreteSignalParameter(release, msToSec),
+      wav: { setParamValue: waveform => this.waveform = waveform },
       modulator: {
         setParamValue: paramVal => {
           if (!(paramVal instanceof UgenConnection)) {
@@ -42,20 +70,15 @@ export default class PsEnvOsc extends PsBase {
       .setOnNext(message => this.schedule(message));
     audioEventBus.subscribe(this.audioEventSubscription);
 
-    console.log('osc parent', this.parentNode, this.parentNode.audioModel);
-
     this.audioModel.connectTo(this.parentNode.audioModel);
   }
 
   disconnectedCallback() {
-    // super.disconnectedCallback();
     console.log('ps-env-osc disconnected');
-    // this.audioModel.disconnect();
     audioEventBus.unsubscribe(this.audioEventSubscription);
   }
 
   schedule(message) {
-    // console.log('markup scheduling', message)
     setTimeout(() => {
       const note = message.note !== undefined ? message.note : 60;
       const outputs = [...this.eventModel.getOutlets()];
@@ -66,5 +89,20 @@ export default class PsEnvOsc extends PsBase {
       };
       envelopedOscilator(note, message.time.audio, asr, this.waveform, 1, outputs, this.modulationInputs);
     });
+  }
+
+  attributeChangedCallback(attrName, oldVal, newVal) {
+    if (!this.paramMap) { return; }
+    console.log('attributeChanged', attrName, oldVal, newVal);
+    const param = this.paramMap[attrName];
+    if (!param) {
+      throw new Error(`Observed attribute not mapped ${attrName}`);
+    }
+    const val = parseFloat(newVal, 10);
+    console.log('val', val)
+    if (Number.isNaN(val)) {
+      throw new Error(`Non-numeric attribute: ${attrName}`);
+    }
+    param.setParamValue(val);
   }
 }
