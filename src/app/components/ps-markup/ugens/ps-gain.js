@@ -3,6 +3,57 @@ import Gain from 'services/audio/gain';
 import UgenConnectinType from 'services/UgenConnection/UgenConnectionType';
 import UgenConnection from 'services/UgenConnection/UgenConnection';
 import SignalParameter, { InputType, } from 'services/AudioParameter/SignalParameter';
+import Subscription from 'services/EventBus/Subscription';
+import { audioEventBus } from 'services/EventBus';
+
+const PARENTHESES = /\(([^)]+)\)/;
+
+class ParamTest {
+  constructor({ attrName, param, inputType, defaultValue, }) {
+    this.attrName = attrName;
+    this.param = param;
+    this.inputType = inputType;
+    this.defaultValue = defaultValue;
+  }
+
+  extractVal(val) {
+    if (val === null) {
+      return this.defaultValue;
+    }
+    if (this.inputType.isMessage && val.indexOf('addr') === 0) {
+      const match = val.match(PARENTHESES);
+      if (!match) {
+        console.log(`error paring address ${val}`);
+        return this.defaultValue;
+      }
+      const address = match[1];
+      this.audioEventSubscription = new Subscription()
+        .setAddress(address)
+        .setOnNext(message => {
+          message.interpolate ?
+            this.param.linearRampToValueAtTime(message.note, message.time.audio) :
+            this.param.setValueAtTime(message.note, message.time.audio);
+        });
+      audioEventBus.subscribe(this.audioEventSubscription);
+      return val;
+    }
+    if (this.inputType.isSignal && val.indexOf('mod') === 0) {
+      const match = val.match(PARENTHESES);
+      if (!match) {
+        console.log(`error paring modulation value ${val}`);
+        return this.defaultValue;
+      }
+      console.log('TODO connect to signal', match[1]);
+      return val;
+    }
+    const numericValue = parseFloat(val, 10);
+    if (this.inputType.isNumeric && !Number.isNaN(numericValue)) {
+      this.param.linearRampToValueAtTime(numericValue, 0);
+      return;
+    }
+    console.log(`error classifying ${val}`);
+  }
+}
 
 function parseNumOrDefault(value, defaultValue) {
   const val = parseFloat(value, 10);
@@ -28,16 +79,27 @@ export default class PsGain extends PsBase {
     return [ 'value' ];
   }
 
-  connectedCallback() {
-    this.gain = new Gain();
-    this.audioModel = new UgenConnection('GAIN', this.gain, UgenConnectinType.SIGNAL, UgenConnectinType.SIGNAL);
-    
-    const gain = getNumericAttribute.call(this, 'value', 0.4);
-    this.paramMap = {
-      value: new SignalParameter(this.gain.getGainParam(), gain, new InputType().numeric().message().signal().build()),
-    };
+  constructor() {
+    super();
+    this.isMounted = false;
+  }
 
+  connectedCallback() {
+    const gain = new Gain();
+    const defaultValue = getNumericAttribute.call(this, 'value', 0.4);
+
+    this.isMounted = true;
+    this.audioModel = new UgenConnection('GAIN', gain, UgenConnectinType.SIGNAL, UgenConnectinType.SIGNAL);
+    this.paramMap = {
+      value: new SignalParameter(gain.getGainParam(), defaultValue, new InputType().numeric().message().signal().build()),
+    };
     this.audioModel.connectTo(this.parentNode.audioModel);
+    this.paramTest = new ParamTest({
+      attrName: 'value',
+      param: gain.getGainParam(),
+      inputType: new InputType().numeric().message().signal(),
+      defaultValue: 0.4,
+    });
   }
 
   disconnectedCallback() {
@@ -46,17 +108,7 @@ export default class PsGain extends PsBase {
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
-    if (!this.paramMap) { return; }
-    console.log('attributeChanged', attrName, oldVal, newVal);
-    const param = this.paramMap[attrName];
-    if (!param) {
-      throw new Error(`Observed attribute not mapped ${attrName}`);
-    }
-    const val = parseFloat(newVal, 10);
-    console.log('val', val)
-    if (Number.isNaN(val)) {
-      throw new Error(`Non-numeric attribute: ${attrName}`);
-    }
-    param.setParamValue(val, { audio: 0 });
+    if (!this.isMounted) { return; }
+    this.paramTest.extractVal(newVal);
   }
 }
