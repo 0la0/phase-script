@@ -66,7 +66,7 @@ export default class PsEnvOsc extends PsBase {
     };
 
     this.audioEventSubscription = new Subscription()
-      .setAddress('a')
+      .setAddress(this.getAttribute('trigger'))
       .setOnNext(message => this.schedule(message));
     audioEventBus.subscribe(this.audioEventSubscription);
 

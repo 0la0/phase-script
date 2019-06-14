@@ -16,7 +16,7 @@ class ParamTest {
     this.defaultValue = defaultValue;
   }
 
-  extractVal(val) {
+  extractVal(element, val) {
     if (val === null) {
       return this.defaultValue;
     }
@@ -43,7 +43,16 @@ class ParamTest {
         console.log(`error paring modulation value ${val}`);
         return this.defaultValue;
       }
-      console.log('TODO connect to signal', match[1]);
+      const target = element.getRootNode().getElementById(match[1]);
+      if (!target) { return this.defaultValue; }
+      
+      if (target && target.audioModel) {
+        target.audioModel.connectTo({
+          getInputType: () => 'SIGNAL',
+          getAudioModelInput: () => this.param,
+        });
+        return;
+      }
       return val;
     }
     const numericValue = parseFloat(val, 10);
@@ -93,7 +102,9 @@ export default class PsGain extends PsBase {
     this.paramMap = {
       value: new SignalParameter(gain.getGainParam(), defaultValue, new InputType().numeric().message().signal().build()),
     };
-    this.audioModel.connectTo(this.parentNode.audioModel);
+    if (this.parentNode.audioModel) {
+      this.audioModel.connectTo(this.parentNode.audioModel);
+    }
     this.paramTest = new ParamTest({
       attrName: 'value',
       param: gain.getGainParam(),
@@ -109,6 +120,6 @@ export default class PsGain extends PsBase {
 
   attributeChangedCallback(attrName, oldVal, newVal) {
     if (!this.isMounted) { return; }
-    this.paramTest.extractVal(newVal);
+    this.paramTest.extractVal(this, newVal);
   }
 }
