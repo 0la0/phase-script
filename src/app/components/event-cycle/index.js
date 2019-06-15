@@ -80,6 +80,7 @@ export default class EventCycle extends BaseComponent {
         p('a', '60 72').arp('updown', 2, 6, 1, 2)
       )
       // addr('a').envOsc('piano', 0, 0, 100).gain(0.3, 0x8).dac()
+      seq( p('b', '54 , 54 ,') )
     `;
     this.dom.cycleInput.innerText = testCycleValue.trim();
     this.handleCycleChange(testCycleValue);
