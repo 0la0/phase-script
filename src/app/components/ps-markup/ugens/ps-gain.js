@@ -8,6 +8,7 @@ import { audioEventBus } from 'services/EventBus';
 
 const PARENTHESES = /\(([^)]+)\)/;
 
+// TODO: need to tear down old connections if type change
 class ParamTest {
   constructor({ attrName, param, inputType, defaultValue, element, }) {
     this.attrName = attrName;
@@ -16,8 +17,8 @@ class ParamTest {
     this.defaultValue = defaultValue;
     this.element = element;
     this.audioEventSubscription;
-    this.setDefaultValue();
-    setTimeout(() => this.extractVal(element, element.getAttribute(attrName)));
+    this._setDefaultValue();
+    setTimeout(() => this.extractVal(element.getAttribute(attrName)));
   }
 
   disconnect() {
@@ -29,55 +30,69 @@ class ParamTest {
     }
   }
 
-  setDefaultValue() {
+  _setDefaultValue() {
     this.param.linearRampToValueAtTime(this.defaultValue, 0);
   }
 
-  extractVal(element, val) {
+  _setMessage(val) {
+    const match = val.match(PARENTHESES);
+    if (!match) {
+      console.log(`error paring address ${val}`);
+      return this._setDefaultValue();
+    }
+    const address = match[1];
+    this.audioEventSubscription = new Subscription()
+      .setAddress(address)
+      .setOnNext(message => {
+        message.interpolate ?
+          this.param.linearRampToValueAtTime(message.note, message.time.audio) :
+          this.param.setValueAtTime(message.note, message.time.audio);
+      });
+    audioEventBus.subscribe(this.audioEventSubscription);
+  }
+
+  _setSignal(val) {
+    const match = val.match(PARENTHESES);
+    if (!match) {
+      console.log(`error paring modulation value ${val}`);
+      return this._setDefaultValue();
+    }
+    const target = this.element.getRootNode().getElementById(match[1]);
+    if (!target) {
+      return this._setDefaultValue();
+    }
+    
+    if (target && target.audioModel) {
+      target.audioModel.connectTo({
+        getInputType: () => 'SIGNAL',
+        getAudioModelInput: () => this.param,
+      });
+      return;
+    }
+    this._setDefaultValue();
+  }
+
+  _setNumeric(stringValue) {
+    const numericValue = parseFloat(stringValue, 10);
+    if (Number.isNaN(numericValue)) {
+      console.log(`non numeric value ${stringValue}`);
+      return this._setDefaultValue();
+    }
+    this.param.linearRampToValueAtTime(numericValue, 0);
+  }
+
+  extractVal(val) {
     if (val === null) {
-      return this.setDefaultValue();
+      return this._setDefaultValue();
     }
     if (this.inputType.isMessage && val.indexOf('addr') === 0) {
-      const match = val.match(PARENTHESES);
-      if (!match) {
-        console.log(`error paring address ${val}`);
-        return this.setDefaultValue();
-      }
-      const address = match[1];
-      this.audioEventSubscription = new Subscription()
-        .setAddress(address)
-        .setOnNext(message => {
-          message.interpolate ?
-            this.param.linearRampToValueAtTime(message.note, message.time.audio) :
-            this.param.setValueAtTime(message.note, message.time.audio);
-        });
-      audioEventBus.subscribe(this.audioEventSubscription);
-      return;
+      return this._setMessage(val);
     }
     if (this.inputType.isSignal && val.indexOf('mod') === 0) {
-      const match = val.match(PARENTHESES);
-      if (!match) {
-        console.log(`error paring modulation value ${val}`);
-        return this.setDefaultValue();
-      }
-      const target = element.getRootNode().getElementById(match[1]);
-      if (!target) {
-        return this.setDefaultValue();
-      }
-      
-      if (target && target.audioModel) {
-        target.audioModel.connectTo({
-          getInputType: () => 'SIGNAL',
-          getAudioModelInput: () => this.param,
-        });
-        return;
-      }
-      return this.setDefaultValue();
-    }
-    const numericValue = parseFloat(val, 10);
-    if (this.inputType.isNumeric && !Number.isNaN(numericValue)) {
-      this.param.linearRampToValueAtTime(numericValue, 0);
-      return;
+      return this._setSignal(val);
+     }
+    if (this.inputType.isNumeric) {
+      return this._setNumeric(val);
     }
     console.log(`error classifying ${val}`);
   }
@@ -126,6 +141,6 @@ export default class PsGain extends PsBase {
 
   attributeChangedCallback(attrName, oldVal, newVal) {
     if (!this.isMounted) { return; }
-    this.paramTest.extractVal(this, newVal);
+    this.paramTest.extractVal(newVal);
   }
 }
