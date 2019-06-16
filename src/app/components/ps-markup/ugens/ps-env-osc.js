@@ -1,13 +1,11 @@
 import PsBase from '../ps-base';
-import BaseUnitGenerator from 'services/UnitGenerators/BaseUnitGenerator';
 import UgenConnectinType from 'services/UgenConnection/UgenConnectionType';
 import UgenConnection from 'services/UgenConnection/UgenConnection';
 import AudioEventToModelAdapter from 'services/UgenConnection/AudioEventToModelAdapter';
 import envelopedOscilator from 'services/audio/EnvelopedOscillator';
 import { msToSec } from 'services/Math';
-import Subscription from 'services/EventBus/Subscription';
-import { audioEventBus } from 'services/EventBus';
 import DiscreteParameter, { InputType, } from '../util/DiscreteParam';
+import TriggerParameter from '../util/TriggerParameter';
 
 export default class PsEnvOsc extends PsBase {
   static get tag() {
@@ -15,7 +13,7 @@ export default class PsEnvOsc extends PsBase {
   }
 
   static get observedAttributes() {
-    return [ 'attack', 'sustain', 'release', 'wav' ];
+    return [ 'attack', 'sustain', 'release', 'wav', 'trigger' ];
   }
 
   constructor() {
@@ -61,6 +59,11 @@ export default class PsEnvOsc extends PsBase {
         element: this,
         isAddressable: false,
       }),
+      trigger: new TriggerParameter({
+        attrName: 'trigger',
+        element: this,
+        eventHandler: this.schedule.bind(this),
+      }),
       // TODO: make as ContinuousParam
       modulator: {
         setValue: paramVal => {
@@ -72,18 +75,11 @@ export default class PsEnvOsc extends PsBase {
       },
     };
 
-    // TODO: make as TriggerParameter
-    this.audioEventSubscription = new Subscription()
-      .setAddress(this.getAttribute('trigger'))
-      .setOnNext(message => this.schedule(message));
-    audioEventBus.subscribe(this.audioEventSubscription);
-
     this.audioModel.connectTo(this.parentNode.audioModel);
   }
 
   disconnectedCallback() {
     console.log('ps-env-osc disconnected');
-    audioEventBus.unsubscribe(this.audioEventSubscription);
     Object.keys(this.paramMap).forEach(key => this.paramMap[key].disconnect());
   }
 
