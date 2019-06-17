@@ -6,6 +6,7 @@ import envelopedOscilator from 'services/audio/EnvelopedOscillator';
 import { msToSec } from 'services/Math';
 import DiscreteParameter, { InputType, } from '../util/DiscreteParam';
 import TriggerParameter from '../util/TriggerParameter';
+import DiscreteModulationParam from '../util/DiscreteModulationParam';
 
 export default class PsEnvOsc extends PsBase {
   static get tag() {
@@ -13,7 +14,7 @@ export default class PsEnvOsc extends PsBase {
   }
 
   static get observedAttributes() {
-    return [ 'attack', 'sustain', 'release', 'wav', 'trigger' ];
+    return [ 'attack', 'sustain', 'release', 'wav', 'trigger', 'modulator' ];
   }
 
   constructor() {
@@ -25,7 +26,6 @@ export default class PsEnvOsc extends PsBase {
     this.isMounted = true;
     this.eventModel = new AudioEventToModelAdapter(this.schedule.bind(this));
     this.audioModel = new UgenConnection('ENVELOPED_OSC', this.eventModel, UgenConnectinType.MESSAGE, UgenConnectinType.SIGNAL);
-    this.modulationInputs = new Set();
 
     this.paramMap = {
       attack: new DiscreteParameter({
@@ -64,17 +64,11 @@ export default class PsEnvOsc extends PsBase {
         element: this,
         eventHandler: this.schedule.bind(this),
       }),
-      // TODO: make as ContinuousParam
-      modulator: {
-        setValue: paramVal => {
-          if (!(paramVal instanceof UgenConnection)) {
-            throw new Error('Modulator must be a UgenConnection');
-          }
-          this.modulationInputs.add(paramVal.getConnectionFn());
-        }
-      },
+      modulator: new DiscreteModulationParam({
+        attrName: 'modulator',
+        element: this,
+      }),
     };
-
     this.audioModel.connectTo(this.parentNode.audioModel);
   }
 
@@ -88,12 +82,13 @@ export default class PsEnvOsc extends PsBase {
       const note = message.note !== undefined ? message.note : 60;
       const outputs = [...this.eventModel.getOutlets()];
       const waveform = this.paramMap.wav.getValueForTime(message.time);
+      const modulationInputs = this.paramMap.modulator.modulationInputs;
       const asr = {
         attack: this.paramMap.attack.getValueForTime(message.time),
         sustain: this.paramMap.sustain.getValueForTime(message.time),
         release: this.paramMap.release.getValueForTime(message.time),
       };
-      envelopedOscilator(note, message.time.audio, asr, waveform, 1, outputs, this.modulationInputs);
+      envelopedOscilator(note, message.time.audio, asr, waveform, 1, outputs, modulationInputs);
     });
   }
 
