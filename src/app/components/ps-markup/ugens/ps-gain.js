@@ -20,6 +20,7 @@ export default class PsGain extends PsBase {
   }
 
   connectedCallback() {
+    console.log('ps-gain connected');
     const gain = new Gain();
     
     this.isMounted = true;

@@ -22,6 +22,7 @@ export default class PsEnvOsc extends PsBase {
   }
 
   connectedCallback() {
+    console.log('ps-osc connected');
     this.isMounted = true;
 
     const waveform = this.getAttribute('wav');
