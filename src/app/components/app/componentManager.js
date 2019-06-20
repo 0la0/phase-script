@@ -17,6 +17,7 @@ import SampleLoader from 'components/sample-editor/sample-loader';
 import SampleVisualizer from 'components/sample-editor/sample-visualizer';
 import SettingsEditor from 'components/settings-editor';
 import MarkupTestbed from 'components/ps-markup/markup-testbed';
+import MarkupEditor from 'components/ps-markup/markup-editor';
 
 const components = [
   Primitives.TextButton,
@@ -32,6 +33,7 @@ const components = [
   FftVisualizer,
   // GraphicsEditor,
   GraphicsRoot,
+  MarkupEditor,
   MarkupTestbed,
   Metronome,
   MidiEditor,

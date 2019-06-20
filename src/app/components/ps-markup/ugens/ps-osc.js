@@ -37,7 +37,10 @@ export default class PsEnvOsc extends PsBase {
         defaultValue: 440,
         element: this,
       }),
-      wav: { setValue: val => console.log('TODO: set waveform', val) },
+      wav: {
+        setValue: val => console.log('TODO: set waveform', val),
+        disconnect: () => {},
+      },
       modulator: new ContinuousParam({
         attrName: 'modulator',
         param: this.osc.getFrequencyParam(),

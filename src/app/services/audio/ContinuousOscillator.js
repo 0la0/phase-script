@@ -10,7 +10,7 @@ export default class ContinuousOsc {
     applyTypeToOscillator(this.osc, type);
     this.osc.frequency.value = frequency;
     this.osc.connect(this.gain);
-    // this.osc.start();
+    this.osc.start();
   }
 
   connect(node) {

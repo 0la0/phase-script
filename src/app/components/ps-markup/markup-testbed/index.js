@@ -4,8 +4,6 @@ import GlobalListeners from 'services/EventBus/GlobalListeners';
 import style from './markup-testbed.css';
 import markup from './markup-testbed.html';
 
-import test from '../evaluator';
-
 function templateTest() {
   const markupTemplate = document.createElement('template');
   markupTemplate.innerHTML = markup;

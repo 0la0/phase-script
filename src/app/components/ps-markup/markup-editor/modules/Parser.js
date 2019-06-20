@@ -7,7 +7,7 @@ const parserOptions = {
 
 export class AstNode {
   constructor(tagName = '', attributes = {}) {
-    this.tagName = tagName;
+    this.tagName = tagName.toUpperCase();
     this.attributes = attributes;
     this.children = [];
   }
