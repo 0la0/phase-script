@@ -27,7 +27,10 @@
     "webpack-dev-server": "^3.4.1"
   },
   "dependencies": {
+    "live-dom": "../ps-markup/live-vdom",
     "@babel/parser": "^7.4.5",
+    "fast-json-patch": "^2.1.0",
+    "lodash": "^4.17.11",
     "three": "^0.104.0"
   }
 }

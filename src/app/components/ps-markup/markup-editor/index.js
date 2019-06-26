@@ -1,10 +1,8 @@
 import BaseComponent from 'common/util/base-component';
 import keyShortcutManager from 'services/keyShortcut';
-import parseToAst from './modules/Parser';
-import astToDom from './modules/evaluator';
+import LiveDom from 'live-dom';
 import style from './markup-editor.css';
 import markup from './markup-editor.html';
-import { join } from 'path';
 
 const KEY_CODE_ENTER = 13;
 const testScript = `
@@ -36,9 +34,14 @@ export default class MarkupEditor extends BaseComponent {
   connectedCallback() {
     console.log('markup-editor connected');
     this.rootNode = this.getRootNode();
+    this.lastAst = [];
 
     this.dom.markupInput.innerText = testScript.trim();
-    this.handleInputSubmit();
+
+    this.liveDom = new LiveDom({
+      html: this.dom.markupInput.innerText.trim(),
+      domNode: this.dom.hiddenOutput
+    });
 
     this.dom.markupInput.addEventListener('keydown', event => {
       if (keyShortcutManager.offerKeyShortcutEvent(event)) {
@@ -54,22 +57,8 @@ export default class MarkupEditor extends BaseComponent {
     });
   }
 
-  _getSanatizedMarkup() {
-    const inputString = this.dom.markupInput.innerText.trim();
-    return `<div>${inputString}</div>`;
-  }
-
   handleInputSubmit() {
-    const markupString = this._getSanatizedMarkup();
-    console.log('parseToAst', markupString);
-    try {
-      const ast = parseToAst(markupString);
-      if (ast.length > 1) {
-        throw new Error('Ambiguous root node', ast);
-      }
-      astToDom(ast[0], this.dom.hiddenOutput, this.rootNode);
-    } catch (error) {
-      console.log(error);
-    }
+    const markupString = this.dom.markupInput.innerText.trim();
+    this.liveDom.setHtml(markupString);
   }
 }

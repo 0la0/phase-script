@@ -29,7 +29,7 @@ export default class ContinuousParam {
   }
 
   _setDefaultValue() {
-    this.param.linearRampToValueAtTime(this.defaultValue, 0);
+    this.param.linearRampToValueAtTime(this.defaultValue, 0); // TODO: current time + epsilon
   }
 
   _teardownPreviousConnections() {
